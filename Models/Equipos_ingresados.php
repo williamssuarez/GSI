@@ -37,7 +37,7 @@ class Equipos_ingresados{
                 t1.recibido_por,
                 t1.problema
                 FROM
-                equipos_ingresados t1 INNER JOIN departamentos t2 WHERE t1.departamento = t2.id_departamento";
+                equipos_ingresados t1 INNER JOIN departamentos t2 WHERE t2.id_departamento = t1.departamento";
         $datos = $this->con->consultaRetorno($sql);
 
         while($row = $datos->fetch_assoc()){
