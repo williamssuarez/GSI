@@ -30,14 +30,14 @@ class Equipos_ingresados{
     public function lista(){
 
         $sql = "SELECT
-                id_equipo, 
-                numero_bien, 
-                departamento, 
-                fecha_recibido, 
-                recibido_por,
-                problema
+                t1.id_equipo, 
+                t1.numero_bien, 
+                t2.nombre_departamento AS departamento, 
+                t1.fecha_recibido, 
+                t1.recibido_por,
+                t1.problema
                 FROM
-                equipos_ingresados";
+                equipos_ingresados t1 INNER JOIN departamentos t2 WHERE t1.departamento = t2.id_departamento";
         $datos = $this->con->consultaRetorno($sql);
 
         while($row = $datos->fetch_assoc()){
