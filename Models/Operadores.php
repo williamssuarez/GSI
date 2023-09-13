@@ -26,6 +26,24 @@ class Operadores{
         return $this->$atributo;
     }
 
+    public function getOperador(){
+
+        $sql= "SELECT
+                id_operador,
+                nombre
+                FROM
+                operadores";
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;   
+    }
+
     public function lista(){
 
         $sql = "SELECT
@@ -85,16 +103,25 @@ class Operadores{
     public function view(){
 
         $sql = "SELECT
-                *
+                id_operador, 
+                nombre, 
+                apellido, 
+                cedula_identidad, 
+                correo
                 FROM
                 operadores
                 WHERE
                 id_operador = '{$this->id_operador}' ";
 
         $datos = $this->con->consultaRetorno($sql);
-        $row = mysqli_fetch_assoc($datos);
 
-        return $row;
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
     }
 
 }

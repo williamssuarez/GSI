@@ -82,6 +82,15 @@ use Repository\Procesos1 as Repository1;
             
         }
 
+        public function view($id){
+        
+            $this->operador->set('id_operador', $id);
+
+            $datos[] = $this->operador->view();
+            return $datos;
+            
+        }
+
 
       
     }

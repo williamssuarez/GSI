@@ -34,10 +34,12 @@ class Equipos_ingresados{
                 t1.numero_bien, 
                 t2.nombre_departamento AS departamento, 
                 t1.fecha_recibido, 
-                t1.recibido_por,
+                t3.nombre as nombre_operador,
                 t1.problema
                 FROM
-                equipos_ingresados t1 INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento";
+                equipos_ingresados t1 
+                INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento
+                INNER JOIN operadores t3 ON t1.recibido_por = t3.id_operador";
         $datos = $this->con->consultaRetorno($sql);
 
         while($row = $datos->fetch_assoc()){
@@ -52,9 +54,17 @@ class Equipos_ingresados{
     public function add(){
         
         $sql = "INSERT INTO
-                equipos_ingresados(numero_bien, departamento, fecha_recibido, recibido_por, problema)
+                equipos_ingresados(numero_bien, 
+                                    departamento, 
+                                    fecha_recibido, 
+                                    recibido_por, 
+                                    problema)
                 VALUES 
-                ('{$this->numero_bien}', '{$this->departamento}', '{$this->fecha_recibido}', '{$this->recibido_por}', '{$this->problema}')";
+                ('{$this->numero_bien}', 
+                '{$this->departamento}', 
+                '{$this->fecha_recibido}', 
+                '{$this->recibido_por}', 
+                '{$this->problema}')";
         
         $this->con->consultaSimple($sql);
     }
