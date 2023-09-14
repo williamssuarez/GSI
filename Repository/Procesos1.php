@@ -1,25 +1,24 @@
 <?php namespace Repository;
 
-use Models\Estudiante;
-use Models\Seccion;
+use Models\Equipos_ingresados;
+use Models\Equipos_salida;
+use Models\Operadores;
 
 class Procesos1{
 
-    private $secciones; 
-    private $estudiantes;
+    private $equipos_ingreso; 
+    private $equipos_salida;
     
     public function __construct() {
         
-        $secciones = new Seccion();
-        $estudiantes  = new Estudiante();
+        $equipos_ingreso = new Equipos_ingresados();
+        $equipos_salida  = new Equipos_salida();
 
     }
 
-    public function getSecciones(){
+    public function setReporte(){
 
-        $secciones['secciones'] = $this->secciones->lista();
-
-        return $secciones;
+        
     }
 }
 

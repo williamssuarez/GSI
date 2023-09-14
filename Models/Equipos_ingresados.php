@@ -27,6 +27,25 @@ class Equipos_ingresados{
         return $this->$atributo;
     }
 
+    public function getEquipos(){
+
+        $sql= "SELECT
+                id_equipo,
+                numero_bien
+                FROM
+                equipos_ingresados";
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+
+    }
+
     public function lista(){
 
         $sql = "SELECT

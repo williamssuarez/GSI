@@ -1,10 +1,9 @@
-<?php $datos = $equipos->getDataIngreso(); ?>
+<?php $datos = $equipos->getDataSalida(); ?>
 
 <h1> <?php echo $datos['titulo']; ?> edit!</h1>
 
 <form action="" method="post">
 
-    Numero de Bien: <input required type="text" name="numero_bien" id="numero_bien"> <br>
     Departamento: 
         <select required name="departamento" id="departamento">
 
@@ -13,8 +12,16 @@
             <?php } ?>
 
         </select> <br>
-    Fecha Recibido: <input type="datetime-local" name="fecha_recibido" id="fecha_recibido" value=""> <br>
-    Recibido Por: 
+    Equipo: 
+        <select required name="equipo" id="equipo">
+
+            <?php foreach ($datos['equipos'] as $equipo) { ?>
+                <option value="<?php echo $equipo['id_equipo']; ?>"> <?php echo $equipo['numero_bien'] ?> </option>
+            <?php } ?>
+
+        </select> <br>
+    Fecha Entrega: <input type="datetime-local" name="fecha_recibido" id="fecha_recibido" value=""> <br>
+    Entregado Por: 
         <select required name="recibido_por" id="recibido_por">
                 
                 <?php foreach($datos['operadores'] as $operadores) {  ?>
@@ -22,7 +29,7 @@
                 <?php } ?>
 
         </select> <br>
-    Problema: <input required type="text" name="problema" id="problema"><br>
+    Conclusion: <input required type="text" name="problema" id="problema"><br>
      <br>
     <button type="submit">Registrar</button>
 </form>

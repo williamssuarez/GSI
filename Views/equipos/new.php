@@ -1,4 +1,4 @@
-<?php $datos = $equipos->getData() ?>
+<?php $datos = $equipos->getDataIngreso() ?>
 
 <h1> <?php echo $datos['titulo']; ?> new!</h1>
 
