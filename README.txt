@@ -27,4 +27,4 @@ va en la carpeta operadores, y sus archivos llevan nombre de su respectivo metod
 -La template general con el header y el footer esta en Views/template.php, el __construct tiene el header y el __destruct tiene
 el footer
 
--El Script2.py es el que genera la 
+-El Script2.py es el que genera las ip para la tabla en la base de datos
