@@ -8,3 +8,8 @@
 <h2>Pulsa aca para ir a los Equipos</h2>
 <a href="equipos/index">Equipos</a>
 
+<h3>O</h3>
+
+<h2>Pulsa aca para administrar las direcciones IP</h2>
+<a href="direcciones/index">Direcciones</a>
+
