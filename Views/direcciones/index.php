@@ -4,7 +4,7 @@
 
 <a href="new">Agregar</a>
 
-<table border="1" width="80%" >
+<table border="1" width="80%" id="example" class="table table-striped">
     <thead>
         <tr>            
             <th>Direccion IP</th>
@@ -29,3 +29,7 @@
         
     </tbody>
 </table>
+
+<script>
+    new DataTable('#example');
+</script>

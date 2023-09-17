@@ -6,6 +6,7 @@ class inicioController{
 
     public function index(){
         
+        print "Hola buenas tardes";
         
             
     }

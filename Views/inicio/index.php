@@ -13,3 +13,5 @@
 <h2>Pulsa aca para administrar las direcciones IP</h2>
 <a href="direcciones/index">Direcciones</a>
 
+<button type="submit" class="btn btn-danger">Hola</button>
+

@@ -34,13 +34,7 @@ class Enrutador{
 
         //print "<br>".$ruta."<br>";
         //Cargar Vista
-        $metodo = $request->getMetodo();
-        if(!method_exists($controlador, $metodo)){
-            $metodo = 'index';            
-        }
-        if($metodo == "index.php"){
-            $metodo = "index";
-        }
+        
         $ruta = ROOT . "Views" . DS . $request->getControlador() . DS . $metodo . ".php";
         //print "<br>".$ruta."<br>";
         if(is_readable($ruta)){
