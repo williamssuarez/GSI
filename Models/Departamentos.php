@@ -7,6 +7,8 @@ class Departamentos{
     private $id_departamento;
     private $nombre_departamento;
     private $piso;
+    private int $ingresos;
+    private int $suma_ingresos;
     private $con;
     private $resultado;
 
@@ -22,6 +24,32 @@ class Departamentos{
 
     public function get($atributo){
         return $this->$atributo;
+    }
+
+    public function sumarIngreso(){
+
+        $sql = "UPDATE
+                departamentos
+                SET
+                ingresos = '{$this->ingresos}'
+                WHERE
+                id_departamento = '{$this->id_departamento}' ";
+
+        $this->con->consultaSimple($sql);
+    }
+
+    public function totalIngresos(){
+
+        $sql="SELECT
+                ingresos
+                FROM
+                departamentos
+                WHERE
+                id_departamento = '{$this->id_departamento}' ";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos;
     }
 
     public function lista(){

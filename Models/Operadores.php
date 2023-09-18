@@ -9,6 +9,10 @@ class Operadores{
     private $apellido;
     private $cedula_identidad;
     private $correo;
+    private int $equipos_entregados;
+    private int $equipos_ingresados;
+    private int $suma_entrega;
+    private int $suma_ingreso;
     private $con;
     private $resultado;
 
@@ -24,6 +28,58 @@ class Operadores{
 
     public function get($atributo){
         return $this->$atributo;
+    }
+
+    public function ingresos(){
+
+        $sql = "UPDATE 
+                operadores
+                SET
+                equipos_ingresados = '{$this->equipos_ingresados}'
+                WHERE
+                id_operador = '{$this->id_operador}' ";
+
+        $this->con->consultaSimple($sql);
+    }
+
+    public function entrega(){
+
+        $sql = "UPDATE 
+                operadores
+                SET
+                equipos_entregados = '{$this->equipos_entregados}'
+                WHERE
+                id_operador = '{$this->id_operador}' ";
+
+        $this->con->consultaSimple($sql);
+    }
+
+    public function totalIngreso(){
+
+        $sql = "SELECT
+                equipos_ingresados
+                FROM
+                operadores
+                WHERE
+                id_operador = '{$this->id_operador}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos;
+    }
+
+    public function totalEntrega(){
+
+        $sql = "SELECT
+                equipos_entregados
+                FROM
+                operadores
+                WHERE
+                id_operador = '{$this->id_operador}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos;
     }
 
     public function getOperador(){
