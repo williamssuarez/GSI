@@ -28,3 +28,5 @@ va en la carpeta operadores, y sus archivos llevan nombre de su respectivo metod
 el footer
 
 -El Script2.py es el que genera las ip para la tabla en la base de datos
+
+-AVISO: HUBO QUE AGREGAR RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.gif|robots\.txt)$ [NC] AL htaccess PARA QUE LOS ESTILOS CSS SE APLICARAN CORRECTAMENTE

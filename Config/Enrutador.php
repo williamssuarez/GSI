@@ -29,7 +29,8 @@ class Enrutador{
         } 
         
         else {
-            print"<h1>No se encontro la ruta al controlador o no ha sido creado</h1>";
+            $ruta = ROOT . "Views" . DS . "error" . DS . "index" . ".php";
+            require_once $ruta;
         }
 
         //print "<br>".$ruta."<br>";
@@ -40,7 +41,8 @@ class Enrutador{
         if(is_readable($ruta)){
             require_once $ruta;
         } else {
-            print "<br>No se encontro la ruta, no existe o no ha sido creada<br>";
+            $ruta = ROOT . "Views" . DS . "error" . DS . "index" . ".php";
+            require_once $ruta;
         }
     }
 }

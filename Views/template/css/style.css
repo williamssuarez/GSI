@@ -1,0 +1,36 @@
+.inicio {
+    margin: auto;
+}
+
+.hola-inicio{
+    margin-top: 50px;
+    text-align: center;
+    font-size: 100px;
+}
+
+.gsi-imagen-inicio{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+      
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.flex-child {
+    flex: 1;
+    border: 2px;
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+
+.boton-inicio{
+    width:100%;
+    display:block;
+}

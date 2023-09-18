@@ -1,25 +1,44 @@
 <?php $datos = $direcciones->getDireccionesLibres() ?>
 
-<h1> <?php echo $datos['titulo']; ?> new!</h1>
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?> new!</h1>
+ <p class="mb-4">Defina la direccion IP que le gustaria asignar al departamento</p>
 
-<form action="new" method="post">
-    
-    Departamento: 
-        <select required name="departamento" id="departamento">
+         <h1 class="h3 mb-2 text-gray-800">Formulario</h1>
 
-            <?php foreach ($datos['departamentos'] as $departamento) { ?>
-                <option value="<?php echo $departamento['id_departamento']; ?>"> <?php echo $departamento['nombre_departamento'] ?> </option>
-            <?php } ?>
 
-        </select> <br>    
-    Direccion: 
-        <select required name="direccion" id="direccion">
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        Direccion
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+
+        <form action="new" method="post">
+            <div>
+                <label class="form-label mt-4">Departamento</label>
+                <select required class="form-select" name="departamento" id="departamento">
+
+                    <?php foreach ($datos['departamentos'] as $departamento) { ?>
+                        <option value="<?php echo $departamento['id_departamento']; ?>"> <?php echo $departamento['nombre_departamento'] ?> </option>
+                    <?php } ?>
+
+                </select>
                 
-                <?php foreach($datos['direcciones'] as $direcciones) {  ?>
-                    <option value="<?php echo $direcciones['id']; ?>"> <?php echo $direcciones['direccion'] ?> </option>
-                <?php } ?>
+                <label class="form-label mt-4">Direccion</label>
+                <select required class="form-select" name="direccion" id="direccion">
+                        
+                        <?php foreach($datos['direcciones'] as $direcciones) {  ?>
+                            <option value="<?php echo $direcciones['id']; ?>"> <?php echo $direcciones['direccion'] ?> </option>
+                        <?php } ?>
 
-        </select> <br>
-     <br>
-    <button type="submit">Registrar</button>
-</form>
+                </select>
+                
+                <button class="btn btn-success" type="submit">Asignar</button>
+            </div>
+
+        </form>
+
+        </div>
+    </div>
+</div>
