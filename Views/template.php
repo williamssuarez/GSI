@@ -185,7 +185,6 @@ class Template{
    
     
 </div>
-
 <?php
     }
 
@@ -195,6 +194,7 @@ class Template{
 ?>
 
     </div>
+</div>
 </div>
     
  <!-- Bootstrap core JavaScript-->
@@ -220,12 +220,8 @@ class Template{
 
     </body>
     </html>
-
-<?php
-        
+<?php        
     }
 }
-
-
 
 ?>

@@ -30,56 +30,28 @@ class Operadores{
         return $this->$atributo;
     }
 
-    public function ingresos(){
+    public function actualizarEquiposIngresados(){
 
         $sql = "UPDATE 
                 operadores
                 SET
-                equipos_ingresados = '{$this->equipos_ingresados}'
+                equipos_ingresados = equipos_ingresados + 1
                 WHERE
                 id_operador = '{$this->id_operador}' ";
 
         $this->con->consultaSimple($sql);
     }
 
-    public function entrega(){
+    public function actualizarEquiposEntregados(){
 
         $sql = "UPDATE 
                 operadores
                 SET
-                equipos_entregados = '{$this->equipos_entregados}'
+                equipos_entregados = equipos_entregados + 1
                 WHERE
                 id_operador = '{$this->id_operador}' ";
 
         $this->con->consultaSimple($sql);
-    }
-
-    public function totalIngreso(){
-
-        $sql = "SELECT
-                equipos_ingresados
-                FROM
-                operadores
-                WHERE
-                id_operador = '{$this->id_operador}'";
-
-        $datos = $this->con->consultaRetorno($sql);
-
-        return $datos;
-    }
-
-    public function totalEntrega(){
-
-        $sql = "SELECT
-                equipos_entregados
-                FROM
-                operadores
-                WHERE
-                id_operador = '{$this->id_operador}'";
-
-        $datos = $this->con->consultaRetorno($sql);
-
-        return $datos;
     }
 
     public function getOperador(){

@@ -26,31 +26,18 @@ class Departamentos{
         return $this->$atributo;
     }
 
-    public function sumarIngreso(){
+    public function actualizarEquiposIngresados(){
 
         $sql = "UPDATE
                 departamentos
                 SET
-                ingresos = '{$this->ingresos}'
+                ingresos = ingresos + 1
                 WHERE
                 id_departamento = '{$this->id_departamento}' ";
 
         $this->con->consultaSimple($sql);
     }
 
-    public function totalIngresos(){
-
-        $sql="SELECT
-                ingresos
-                FROM
-                departamentos
-                WHERE
-                id_departamento = '{$this->id_departamento}' ";
-
-        $datos = $this->con->consultaRetorno($sql);
-
-        return $datos;
-    }
 
     public function lista(){
 

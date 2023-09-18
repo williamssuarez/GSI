@@ -74,11 +74,40 @@ use Repository\Procesos1 as Repository1;
                 $this->equipo_ingresado->set('recibido_por', $recibido_por);
                 $this->equipo_ingresado->set('problema', $problema);
 
+                //INGRESANDO EQUIPO
                 $this->equipo_ingresado->add();
 
-                header('Location: index');
+                //OBTENIENDO EL TOTAL DE INGRESOS DE DEPARTAMENTO Y SUMANDOLE 1
+                $this->totalDepartamentos($departamento);
+
+                //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
+                $this->totalOperador($recibido_por);
+
+                if (headers_sent()) {
+                    $ruta = ROOT . "Views" . DS . "error" . DS . "index" . ".php";
+                    require_once $ruta;
+                    die("Redireccion Fallida. Click para volver");
+                }
+                else{
+                    exit(header("Location: '. URL .'equipos/index"));
+                }
 
             }                        
+
+        }
+
+        //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
+        private function totalOperador($id){
+
+            $this->operadores->set('id_operador', $id);
+            $this->operadores->actualizarEquiposIngresados();
+        }
+
+        //OBTENIENDO EL TOTAL DE INGRESOS DE UN DEPARTAMENTO Y SUMANDOLE 1
+        private function totalDepartamentos($id){
+
+            $this->departamento->set('id_departamento', $id);
+            $this->departamento->actualizarEquiposIngresados();
 
         }
 
