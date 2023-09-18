@@ -30,3 +30,19 @@ el footer
 -El Script2.py es el que genera las ip para la tabla en la base de datos
 
 -AVISO: HUBO QUE AGREGAR RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.gif|robots\.txt)$ [NC] AL htaccess PARA QUE LOS ESTILOS CSS SE APLICARAN CORRECTAMENTE
+
+
+---These are the steps to follow when you want your PHP application to be installed on a LAN server (not on web)
+
+Get the internal IP or Static IP of the server (Ex: 192.168.1.193)
+Open XAMPP>apache>conf>httpd.conf file in notepad
+Search for Listen 80
+Above line would read like- #Listen 0.0.0.0:80 / 12.34.56.78:80
+Change the IP address and replace it with the static IP
+Save the httpd.conf file ensuring that the server is pointed to #Listen 192.168.1.193:80
+In the application root config.php (db connection) replace localhost with IP address of the server
+Note: If firewall is installed, ensure that you add the http port 80 and 8080 to exceptions and allow to listen. Go to Control Panel>Windows Firewall>Allow a program to communicate through windows firewall>Add another program Name: http Port: 80 Add one more as http - 8080
+
+If IIS (Microsoft .Net Application Internet Information Server) is installed with any Microsoft .Net application already on server, then it would have already occupied 80 port. In that case change the #Listen 192.168.1.193:80 to #Listen 192.168.1.193:8080
+
+Hope this helps! :)
