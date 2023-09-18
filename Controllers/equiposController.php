@@ -166,7 +166,7 @@ use Repository\Procesos1 as Repository1;
 
                 $this->equipo_ingresado->edit();
 
-                header('Location: /gsi/operadores/index');
+                header('Location: /gsi/equipos/index');
 
             }           
 

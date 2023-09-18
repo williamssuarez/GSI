@@ -1,8 +1,86 @@
+<?php $ingresos = $inicio->index(); 
+        $entregas = $inicio->ato();
+?>
+
 <div class="px-3 py-5 bg-gradient-primary text-white">
-    <h1 class="text-center">BIENVENIDO!</h1>
+    <h1 class="text-center">¡BIENVENIDO!</h1>
 </div>
 
 <br>
+
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Equipos Pendientes</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                
+                                                <?php foreach ($ingresos['pendiente'] as $data) {
+                                                    echo $data['totalIngreso'];
+                                                } ?>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+<!-- Earnings (Annual) Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Equipos Entregados</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+
+                                                asasasd
+
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+<!-- Earnings (Annual) Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Ganancias</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+
+                                                <?php foreach ($entregas['xd'] as $datas) {
+                                                    echo $datas['totalEntrega'];
+                                                } ?>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+</div>
+
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -17,19 +95,19 @@
             <div class="flex-container">
 
                 <div class="flex-child magenta">
-                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="operadores/index">Pulsa aca para ir a los operadores</a>
+                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="<?php echo URL; ?>operadores/index">Pulsa aca para ir a los operadores</a>
                 </div>
 
                 <div class="flex-child green">
-                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="equipos/index">Pulsa aca para ir a los Equipos</a>
+                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="<?php echo URL; ?>equipos/index">Pulsa aca para ir a los Equipos</a>
                 </div>
 
                 <div class="flex-child blue">
-                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="direcciones/index">Pulsa aca para administrar las direcciones IP</a>
+                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="<?php echo URL; ?>direcciones/index">Pulsa aca para administrar las direcciones IP</a>
                 </div>
 
                 <div class="flex-child red">
-                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="soportes/index">Pulsa aca para administrar los soportes</a>
+                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="<?php echo URL; ?>soportes/index">Pulsa aca para administrar los soportes</a>
                 </div>
 
             </div>

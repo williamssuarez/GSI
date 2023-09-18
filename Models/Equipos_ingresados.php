@@ -10,6 +10,7 @@ class Equipos_ingresados{
     private $fecha_recibido;
     private $recibido_por;
     private $problema;
+    private $estado;
     private $con;
     private $resultado;
 
@@ -25,6 +26,44 @@ class Equipos_ingresados{
 
     public function get($atributo){
         return $this->$atributo;
+    }
+
+    public function getIngresosTotalesEquipos(){
+
+        $sql = "SELECT
+                COUNT(estado) AS totalIngreso
+                FROM
+                equipos_ingresados
+                WHERE estado = 0";
+        
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+    }
+
+    public function getIngresosTotalesEntregados(){
+
+        $sql = "SELECT
+                COUNT(estado) AS totalEntrega
+                FROM
+                equipos_ingresados
+                WHERE estado != 0";
+        
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
     }
 
     public function getEquipos(){

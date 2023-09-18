@@ -16,13 +16,28 @@ class Procesos1{
     
     public function __construct() {
         
-        $equipos_ingreso = new Equipos_ingresados();
-        $equipos_salida  = new Equipos_salida();
-        $departamentos = new Departamentos();
-        $operadores = new Operadores();
-        $con = new Conexion();
+        $this->equipos_ingreso = new Equipos_ingresados();
+        $this->equipos_salida  = new Equipos_salida();
+        $this->departamentos = new Departamentos();
+        $this->operadores = new Operadores();
+        $this->con = new Conexion();
 
     }
+
+    public function getIngresosEnTotal(){
+
+        $datos = $this->equipos_ingreso->getIngresosTotalesEquipos();
+
+        return $datos;
+    }
+
+    public function getEntregasEnTotal(){
+
+        $datos = $this->equipos_ingreso->getIngresosTotalesEntregados();
+
+        return $datos;
+    }
+  
 
     public function setReporte(){
 
