@@ -45,4 +45,4 @@ Note: If firewall is installed, ensure that you add the http port 80 and 8080 to
 
 If IIS (Microsoft .Net Application Internet Information Server) is installed with any Microsoft .Net application already on server, then it would have already occupied 80 port. In that case change the #Listen 192.168.1.193:80 to #Listen 192.168.1.193:8080
 
-Hope this helps! :)
+Hope this helps!
