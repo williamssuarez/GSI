@@ -91,7 +91,15 @@ use Repository\Procesos1 as Repository1;
             
         }
 
+        public function suspend($id){
 
+            $this->operador->set('id_operador', $id);
+
+            $this->operador->suspend();
+
+                header('Location: /gsi/operadores/index');
+                exit;
+        }
       
     }
 

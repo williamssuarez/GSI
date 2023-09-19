@@ -37,6 +37,10 @@ class Procesos1{
 
         return $datos;
     }
+
+    public function Entrega(){
+
+    }
   
 
     public function setReporte(){

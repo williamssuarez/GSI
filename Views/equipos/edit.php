@@ -23,7 +23,7 @@
         </select>
 
         <label class="form-label mt-4">Fecha Recibido</label>
-        <input required class="form-control" type="datetime-local" name="fecha_recibido" id="fecha_recibido"> 
+        <input required class="form-control" type="datetime-local" name="fecha_recibido" id="fecha_recibido" value="" max="" min="2020-01-01T00:00"> 
 
         <label class="form-label mt-4">Recibido Por</label>
         <select required class="form-select" name="recibido_por" id="recibido_por">
@@ -43,3 +43,5 @@
     </div>
     
 </form>
+
+

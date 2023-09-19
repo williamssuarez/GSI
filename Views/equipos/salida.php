@@ -8,11 +8,11 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6>Equipos Entregados</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Equipos Entregados</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-striped table-hover responsive nowrap" id="example" width="100%" cellspacing="0">
+            <table class="table table-striped table-hover responsive nowrap" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Equipo</th>
@@ -26,7 +26,7 @@
                 <tbody>
 
                     <?php foreach($salida['equipos_salida'] as $data){ ?>
-                        <tr class="table-secondary">            
+                        <tr>            
                             <td> <?php echo $data['equipo'] ?> </td>
                             <td> <?php echo $data['departamento'] ?> </td>
                             <td> <?php echo $data['fecha_entrega'] ?> </td>
@@ -34,7 +34,7 @@
                             <td> <?php echo $data['conclusion'] ?> </td>
                             <td>                            
                                 <a class="btn btn-danger" href='delete/<?php echo $data['id_entrega'] ?>'>Eliminar</a> 
-                                <a class="btn btn-" href='edit/<?php echo $data['id_entrega'] ?>'>Editar</a>
+                                <a class="btn btn-info" href='edit/<?php echo $data['id_entrega'] ?>'>Editar</a>
                             </td>
                         </tr>
                     <?php } ?>

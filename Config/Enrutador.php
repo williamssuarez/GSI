@@ -29,7 +29,7 @@ class Enrutador{
         } 
         
         else {
-            $ruta = ROOT . "Views" . DS . "error" . DS . "index" . ".php";
+            $ruta = ROOT . "Views" . DS . "error" . DS . "404" . ".php";
             require_once $ruta;
         }
 
@@ -41,7 +41,7 @@ class Enrutador{
         if(is_readable($ruta)){
             require_once $ruta;
         } else {
-            $ruta = ROOT . "Views" . DS . "error" . DS . "index" . ".php";
+            $ruta = ROOT . "Views" . DS . "error" . DS . "404" . ".php";
             require_once $ruta;
         }
     }

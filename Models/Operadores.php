@@ -11,8 +11,7 @@ class Operadores{
     private $correo;
     private int $equipos_entregados;
     private int $equipos_ingresados;
-    private int $suma_entrega;
-    private int $suma_ingreso;
+    private int $estado;
     private $con;
     private $resultado;
 
@@ -79,7 +78,10 @@ class Operadores{
                 nombre, 
                 apellido, 
                 cedula_identidad, 
-                correo
+                correo,
+                estado,
+                equipos_entregados,
+                equipos_ingresados
                 FROM
                 operadores";
         $datos = $this->con->consultaRetorno($sql);
@@ -150,6 +152,16 @@ class Operadores{
         }
 
         return $this->resultado;
+    }
+
+    public function suspend(){
+
+        $sql = "UPDATE
+                operadores
+                SET
+                estado = 0
+                WHERE
+                id_operador = '{$this->id_operador}' ";
     }
 
 }

@@ -17,19 +17,30 @@ class Template{
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/css/style.css">
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/css/sb-admin-2.min.css">
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/vendor/fontawesome-free/css/all.min.css">
-        <!--DataTables-->
-        <link href="<?php echo URL; ?>Views/template/DataTables/datatables.min.css">
-        <link href="<?php echo URL; ?>Views/template/DataTables/Responsive/css/responsive.dataTables.min.css">
-        <link href="<?php echo URL; ?>Views/template/DataTables/responsive.dataTables.min.css">
-        <link href="<?php echo URL; ?>Views/template/DataTables/js_responsive.dataTables.min.css">
-        <script>
-                function redirigir(){
-                    var ir = document.getElementById("ir").value;
-                    
-                    document.location.href="/GSI/" + ir +"/index";
-                    return false;
-                }            
-        </script>
+
+        <!-- JQuery -->
+        <script src="<?php echo URL; ?>Views/template/jquery/dist/jquery.js"></script>
+        <script src="<?php echo URL; ?>Views/template/jquery/dist/jquery.min.js"></script>
+
+        <!--DataTables CSS-->
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/vendor/datatables/datatables.bootstrap4.css">
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/vendor/datatables/datatables.bootstrap4.min.css">
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/select.bootstrap.min.css">
+        
+        <!--DataTables JS-->
+        <script src="<?php echo URL; ?>Views/template/vendor/datatables/datatables.bootstrap4.js"></script>
+        <script src="<?php echo URL; ?>Views/template/vendor/datatables/datatables.bootstrap4.min.js"></script>
+        <script src="<?php echo URL; ?>Views/template/DataTables/datatables.select.min.js"></script>
+        <script src="<?php echo URL; ?>Views/template/js/demo/datatables-demo.js"></script>
+
+        <!--Redirigir-->
+        <script src="<?php echo URL; ?>Views/template/js/scripts/redirigirTopbar.js" ></script>
+
+        <!-- Page level plugins -->
+        <script src="<?php echo URL; ?>Views/template/vendor/datatables/jquery.dataTables.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="<?php echo URL; ?>Views/template/DataTables/demo/datatables-demo.js"></script>
     </head>
     <body>
 
@@ -214,6 +225,7 @@ class Template{
 
     <!-- Core plugin JavaScript-->
     <script src="<?php echo URL; ?>Views/template/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?php echo URL; ?>Views/template/vendor/datatables/jquery.dataTables.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo URL; ?>Views/template/js/sb-admin-2.min.js"></script>
@@ -228,6 +240,8 @@ class Template{
     <!-- DataTables Jquery -->
     <script src="<?php echo URL; ?>Views/template/DataTables/datatables.min.js"></script>
     <script src="<?php echo URL; ?>Views/template/DataTables/Responsive/js/dataTables.responsive.min.js"></script>
+
+    
 
     </body>
     </html>

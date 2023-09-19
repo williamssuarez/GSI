@@ -84,7 +84,7 @@ use Repository\Procesos1 as Repository1;
                 $this->totalOperador($recibido_por);
 
                 if (headers_sent()) {
-                    $ruta = ROOT . "Views" . DS . "error" . DS . "index" . ".php";
+                    $ruta = ROOT . "Views" . DS . "error" . DS . "equipos" . ".php";
                     require_once $ruta;
                     die("Redireccion Fallida. Click para volver");
                 }

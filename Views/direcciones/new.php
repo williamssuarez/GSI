@@ -7,9 +7,9 @@
          <h1 class="h3 mb-2 text-gray-800">Formulario</h1>
 
 
-<div class="card shadow mb-4">
+<div class="card border-left-primary shadow h-100 mb-4">
     <div class="card-header py-3">
-        Direccion
+       <h6 class="m-0 font-weight-bold text-primary">Direccion</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -24,6 +24,8 @@
                     <?php } ?>
 
                 </select>
+
+                <br>
                 
                 <label class="form-label mt-4">Direccion</label>
                 <select required class="form-select" name="direccion" id="direccion">
@@ -34,6 +36,8 @@
 
                 </select>
                 
+                        </br>
+
                 <button class="btn btn-success" type="submit">Asignar</button>
             </div>
 
