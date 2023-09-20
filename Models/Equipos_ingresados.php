@@ -28,6 +28,41 @@ class Equipos_ingresados{
         return $this->$atributo;
     }
 
+    public function getDataForEntrega(){
+
+        $sql = "SELECT
+                departamento,
+                id_equipo
+                FROM
+                equipos_ingresados
+                WHERE
+                id_equipo = '{$this->id_equipo}'
+                ";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+        
+    }
+
+    public function actualizarEstadodeEquipo(){
+
+        $sql = "UPDATE
+                equipos_ingresados
+                SET
+                estado = 1             
+                WHERE
+                id_equipo = '{$this->id_equipo}' ";
+        
+        $this->con->consultaSimple($sql);
+    }
+
     public function getIngresosTotalesEquipos(){
 
         $sql = "SELECT

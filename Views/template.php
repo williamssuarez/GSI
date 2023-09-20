@@ -18,26 +18,21 @@ class Template{
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/css/sb-admin-2.min.css">
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/vendor/fontawesome-free/css/all.min.css">
 
-        <!-- JQuery -->
-        <script src="<?php echo URL; ?>Views/template/jquery/dist/jquery.js"></script>
-        <script src="<?php echo URL; ?>Views/template/jquery/dist/jquery.min.js"></script>
+         <!-- BOOTSTRAP 5.3 CSS -->
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
 
-        <!--DataTables CSS-->
-        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/vendor/datatables/datatables.bootstrap4.css">
-        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/vendor/datatables/datatables.bootstrap4.min.css">
-        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/select.bootstrap.min.css">
+        <!-- DATATABLES CSS -->
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/css/dataTables.bootstrap5.min.css">        
         
-        <!--DataTables JS-->
-        <script src="<?php echo URL; ?>Views/template/vendor/datatables/datatables.bootstrap4.js"></script>
-        <script src="<?php echo URL; ?>Views/template/vendor/datatables/datatables.bootstrap4.min.js"></script>
-        <script src="<?php echo URL; ?>Views/template/DataTables/datatables.select.min.js"></script>
-        <script src="<?php echo URL; ?>Views/template/js/demo/datatables-demo.js"></script>
+        <!--DataTables JS
+        <script src="<//?php echo URL; ?>Views/template/js/demo/datatables-demo.js"></script> -->
 
         <!--Redirigir-->
         <script src="<?php echo URL; ?>Views/template/js/scripts/redirigirTopbar.js" ></script>
 
-        <!-- Page level plugins -->
-        <script src="<?php echo URL; ?>Views/template/vendor/datatables/jquery.dataTables.min.js"></script>
+        <!-- Page level plugins
+        <script src="<//?php echo URL; ?>Views/template/vendor/datatables/jquery.dataTables.min.js"></script> -->
 
         <!-- Page level custom scripts -->
         <script src="<?php echo URL; ?>Views/template/DataTables/demo/datatables-demo.js"></script>
@@ -223,10 +218,6 @@ class Template{
  <script src="<?php echo URL; ?>Views/template/vendor/jquery/jquery.min.js"></script>
     <script src="<?php echo URL; ?>Views/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="<?php echo URL; ?>Views/template/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="<?php echo URL; ?>Views/template/vendor/datatables/jquery.dataTables.min.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="<?php echo URL; ?>Views/template/js/sb-admin-2.min.js"></script>
 
@@ -237,10 +228,22 @@ class Template{
     <script src="<?php echo URL; ?>Views/template/js/demo/chart-area-demo.js"></script>
     <script src="<?php echo URL; ?>Views/template/js/demo/chart-pie-demo.js"></script>
 
-    <!-- DataTables Jquery -->
-    <script src="<?php echo URL; ?>Views/template/DataTables/datatables.min.js"></script>
-    <script src="<?php echo URL; ?>Views/template/DataTables/Responsive/js/dataTables.responsive.min.js"></script>
+    <!-- JQUERY JS -->
+    <script src="<?php echo URL; ?>Views/template/DataTables/js/jquery-3.7.1.js"></script>
 
+    <!-- BOOTSTRAP 5.3 JS -->
+    <script src="<?php echo URL; ?>Views/template/DataTables/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DATATABLES JS -->
+    <script src="<?php echo URL; ?>Views/template/DataTables/js/jquery.dataTables.js"></script>
+    <script src="<?php echo URL; ?>Views/template/DataTables/js/jquery.dataTables.min.js"></script>
+    <script src="<?php echo URL; ?>Views/template/DataTables/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- INICIANDO TABLAS DATATABLE -->
+    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_ingresados.js"></script>
+    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_salida.js"></script>
+    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/direcciones.js"></script>
+    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/operadores.js"></script>
     
 
     </body>

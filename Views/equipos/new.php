@@ -28,9 +28,7 @@
                         <option value="<?php echo $departamento['id_departamento']; ?>"> <?php echo $departamento['nombre_departamento'] ?> </option>
                     <?php } ?>
 
-                </select>
-
-                <br>
+                </select>                
 
                 <label class="form-label mt-4">Fecha Recibido</label>
                 <input class="form-control" required type="datetime-local" name="fecha_recibido" id="fecha_recibido" value="" max="" min="2020-01-01T00:00"> 
@@ -46,11 +44,9 @@
 
                 </select>
 
-                <br>
-
                 <label class="form-label mt-4">Problema</label>
                 <input required class="form-control" type="text" name="problema" id="problema" placeholder="Cual es el problema del equipo">
-
+                
                 <br>
             
                 <button class="btn btn-success" type="submit">Ingresar</button>

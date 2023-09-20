@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover responsive nowrap" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-striped table-hover responsive nowrap" id="tabla_direcciones" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Direccion IP</th>
@@ -40,15 +40,3 @@
             </div>
             <a class="btn btn-success" href="new">Agregar</a>
         </div>
-
-    
-
-
-<script>
-
-$(document).ready(function () {
-            $('#dataTable').DataTable(); 
-            })
-
-
-</script>

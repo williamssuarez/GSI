@@ -6,7 +6,7 @@ class Equipos_salida{
 
     private $id_entrega;
     private $departamento;
-    private $equipo;
+    private $ingreso;
     private $fecha_entrega;
     private $entregado_por;
     private $conclusion;
@@ -40,7 +40,7 @@ class Equipos_salida{
                 equipos_salida t1 
                 INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento
                 INNER JOIN operadores t3 ON t1.entregado_por = t3.id_operador
-                INNER JOIN equipos_ingresados t4 ON t1.equipo = t4.id_equipo";
+                INNER JOIN equipos_ingresados t4 ON t1.ingreso = t4.id_equipo";
                 
         $datos = $this->con->consultaRetorno($sql);
 
@@ -57,13 +57,13 @@ class Equipos_salida{
         
         $sql = "INSERT INTO
                 equipos_salida(departamento, 
-                                equipo, 
+                                ingreso, 
                                 fecha_entrega, 
                                 entregado_por, 
                                 conclusion)
                 VALUES 
                 ('{$this->departamento}', 
-                '{$this->equipo}', 
+                '{$this->ingreso}', 
                 '{$this->fecha_entrega}', 
                 '{$this->entregado_por}', 
                 '{$this->conclusion}')";
@@ -87,7 +87,7 @@ class Equipos_salida{
                 equipos_salida
                 SET
                 departamento = '{$this->departamento}', 
-                equipo = '{$this->equipo}', 
+                ingreso = '{$this->ingreso}', 
                 fecha_entrega = '{$this->fecha_entrega}', 
                 entregado_por = '{$this->entregado_por}'
                 conclusion = '{$this->conclusion}'
@@ -102,7 +102,7 @@ class Equipos_salida{
         $sql = "SELECT 
                 id_entrega, 
                 departamento, 
-                equipo, 
+                ingreso, 
                 fecha_entrega, 
                 entregado_por,
                 conclusion 

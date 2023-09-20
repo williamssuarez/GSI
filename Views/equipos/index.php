@@ -14,7 +14,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover responsive" id="tablaequipos" width="100%" cellspacing="0">
+            <table class="table table-striped table-bordered table-hover responsive" id="tablaequipos_ingresados" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Numero de Bien</th>
@@ -50,13 +50,3 @@
     <a class="btn btn-success" href="new">Agregar</a>
 
 
-
-
-
-    <script>
-    $(document).ready(function () {
-        $('#tablaequipos').DataTable( {
-            select: true           
-        } );
-    });
-</script>

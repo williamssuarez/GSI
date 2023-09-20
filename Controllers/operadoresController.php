@@ -91,14 +91,44 @@ use Repository\Procesos1 as Repository1;
             
         }
 
+        public function historial($id){
+
+            $this->operador->set('id_operador', $id);
+
+            $datos[] = $this->operador->historial();
+            return $datos;
+        }
+
         public function suspend($id){
 
             $this->operador->set('id_operador', $id);
 
             $this->operador->suspend();
 
-                header('Location: /gsi/operadores/index');
-                exit;
+            if (headers_sent()) {
+                $ruta = ROOT . "Views" . DS . "error" . DS . "operadores" . ".php";
+                require_once $ruta;
+                die("Redireccion Fallida. Click para volver");
+            }
+            else{
+                exit(header("Location: '. URL .'operadores/index"));
+            }
+        }
+
+        public function activate($id){
+
+            $this->operador->set('id_operador', $id);
+
+            $this->operador->activate();
+
+            if (headers_sent()) {
+                $ruta = ROOT . "Views" . DS . "error" . DS . "operadores" . ".php";
+                require_once $ruta;
+                die("Redireccion Fallida. Click para volver");
+            }
+            else{
+                exit(header("Location: '. URL .'operadores/index"));
+            }
         }
       
     }

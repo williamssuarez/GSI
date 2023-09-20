@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover nowrap" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered table-striped table-hover nowrap" id="tablaoperadores" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -47,7 +47,16 @@
                             <td>                            
                                 <a class="btn btn-danger" href='delete/<?php echo $data['id_operador'] ?>'>Eliminar</a> 
                                 <a class="btn btn-primary" href='edit/<?php echo $data['id_operador'] ?>'>Editar</a>
-                                <a class="btn btn-warning" href='suspend/<?php echo $data['id_operador'] ?>'>Suspender</a>                    
+                                <?php if($data['estado'] == 0){ ?>
+
+                                    <a class="btn btn-warning" href='suspend/<?php echo $data['id_operador'] ?>'>Suspender</a>
+
+                                <?php } else {  ?>
+
+                                    <a class="btn btn-success" href='activate/<?php echo $data['id_operador'] ?>'>Reactivar</a>
+
+                                <?php } ?>
+                                                    
                             </td>
                         </tr>
                     <?php } ?>

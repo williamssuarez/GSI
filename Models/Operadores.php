@@ -57,7 +57,8 @@ class Operadores{
 
         $sql= "SELECT
                 id_operador,
-                nombre
+                nombre,
+                apellido
                 FROM
                 operadores";
         $datos = $this->con->consultaRetorno($sql);
@@ -154,6 +155,11 @@ class Operadores{
         return $this->resultado;
     }
 
+    public function historial(){
+
+        $sql = "";
+    }
+
     public function suspend(){
 
         $sql = "UPDATE
@@ -162,6 +168,20 @@ class Operadores{
                 estado = 0
                 WHERE
                 id_operador = '{$this->id_operador}' ";
+
+        $this->con->consultaSimple($sql);
+    }
+
+    public function activate(){
+
+        $sql = "UPDATE
+                operadores
+                SET
+                estado = 1
+                WHERE
+                id_operador = '{$this->id_operador}' ";
+
+        $this->con->consultaSimple($sql);
     }
 
 }
