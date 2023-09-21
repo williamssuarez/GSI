@@ -9,16 +9,16 @@
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Direcciones</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Direcciones <i class="fa-solid fa-globe"></i></h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover responsive nowrap" id="tabla_direcciones" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Direccion IP</th>
-                                <th>Departamento</th>
-                                <th>Acciones</th>
+                                <th>Direccion IP <i class="fa-solid fa-ethernet"></i></th>
+                                <th>Departamento <i class="fa-solid fa-network-wired"></i></th>
+                                <th>Acciones <i class="fa-solid fa-gears"></i></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,9 +27,14 @@
                             <tr class="table">
                                 <td> <?php echo $data['direccion'] ?> </td>
                                 <td> <?php echo $data['departamento'] ?> </td>
-                                <td>                            
-                                    <a class="btn btn-danger" href='delete/<?php echo $data['id_ip'] ?>'>Eliminar</a> 
-                                    <a class="btn btn-primary" href='edit/<?php echo $data['id_ip'] ?>'>Editar</a>                    
+                                <td>                         
+                                    <a id="confirmButton" class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_ip'] ?>'>                                
+                                        Eliminar
+                                    </a> 
+
+                                    <a class="btn btn-primary" href='edit/<?php echo $data['id_ip'] ?>'>                                        
+                                        Editar
+                                    </a>                    
                                 </td>
                             </tr>
                         <?php } ?>    
@@ -38,5 +43,13 @@
                     </table>
                 </div>
             </div>
-            <a class="btn btn-success" href="new">Agregar</a>
+            <a class="btn btn-success btn-icon-split" href="new">
+                <i class="fa-solid fa-ethernet"></i>
+                Agregar
+            </a>
         </div>
+
+        <a class="btn btn-success" href="new">
+        <i class="fa-solid fa-user-plus"></i>
+        Agregar
+    </a>

@@ -172,7 +172,7 @@ class Operadores{
         $this->con->consultaSimple($sql);
     }
 
-    public function activate(){
+    public function activando(){
 
         $sql = "UPDATE
                 operadores

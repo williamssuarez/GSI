@@ -21,12 +21,13 @@ use Repository\Procesos1 as Repository1;
             $this->operadores = new Operadores();
         }
 
-        public function index(){
+        public function index() {
             $datos['titulo'] = "Equipos Ingresados";
+            $datos['total'] = $this->equipo_ingresado->getIngresosTotalesEquipos();
             $datos['equipos'] = $this->equipo_ingresado->lista();
             return $datos;
         }
-
+        
         public function salida(){
             $datos['titulo'] = "Equipos Salida";
             $datos['equipos_salida'] = $this->equipo_salida->lista();
@@ -83,14 +84,24 @@ use Repository\Procesos1 as Repository1;
                 //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
                 $this->totalOperador($recibido_por);
 
-                if (headers_sent()) {
-                    $ruta = ROOT . "Views" . DS . "error" . DS . "equipos" . ".php";
-                    require_once $ruta;
-                    die("Redireccion Fallida. Click para volver");
-                }
-                else{
-                    exit(header("Location: '. URL .'equipos/index"));
-                }
+                //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Equipo Ingresado Exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }                        
 
@@ -119,8 +130,24 @@ use Repository\Procesos1 as Repository1;
 
                 $this->equipo_ingresado->delete();
 
-                header('Location: /gsi/equipos/index');
-                exit;
+                //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Equipo Eliminado Exitosamente.",
+                                icon: "warning",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
 
@@ -143,7 +170,24 @@ use Repository\Procesos1 as Repository1;
     
                     $this->equipo_ingresado->edit();
     
-                    header('Location: /gsi/operadores/index');
+                    //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                    echo '<script>
+                    Swal.fire({
+                        title: "Exito!",
+                        text: "Equipo Editado Exitosamente.",
+                        icon: "info",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3464eb",
+                        customClass: {
+                            confirmButton: "rounded-button" // Identificador personalizado
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "' . URL . 'equipos/index";
+                        }
+                    });
+                    </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                 }            
             
@@ -187,7 +231,24 @@ use Repository\Procesos1 as Repository1;
                 //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
                 $this->cambiarEstadoEquipoIngresado($ingreso);
 
-                header('Location: /gsi/equipos/salida');
+                //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Equipo Entregado Exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/salida";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
 

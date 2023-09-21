@@ -8,7 +8,7 @@
 
 <div class="card border-left-primary shadow h-100 mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" >Entregar Equipo</h6>
+        <h6 class="m-0 font-weight-bold text-primary" >Entregar Equipo <i class="fa-solid fa-truck-fast"></i></h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -18,26 +18,29 @@
 
             <div>
                 
-                <label class="form-label mt-4">Fecha Entrega</label>
+                <label class="form-label mt-4"><i class="fa-solid fa-calendar-days"></i> Fecha Entrega</label>
                 <input required class="form-control" type="datetime-local" name="fecha_entrega" id="fecha_entrega" value="" max="" min="2020-01-01T00:00">
 
                 
 
-                <label class="form-label mt-4">Entregado Por</label>
+                <label class="form-label mt-4"><i class="fa-solid fa-user-gear" style="color: #005af5;"></i> Entregado Por</label>
                 <select required class="form-select" name="entregado_por" id="entregado_por">
                 
                 <?php foreach($datos['operadores'] as $operadores) {  ?>
                     <option value="<?php echo $operadores['id_operador']; ?>"> <?php echo $operadores['nombre'] ?>  <?php echo $operadores['apellido'] ?></option>
                 <?php } ?>
 
-                </select>                
+                </select>
 
-                <label class="form-label mt-4">Conclusion</label>
+                <label class="form-label mt-4"><i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i> Conclusion</label>
                 <input required class="form-control" type="text" name="conclusion" id="conclusion" placeholder="Cual fue la solucion que se le dio al equipo">
 
                 <br>
             
-                <button class="btn btn-success" type="submit">Entregar</button>
+                <button class="btn btn-success" type="submit">
+                    <i class="fa-solid fa-truck-ramp-box"></i>
+                    Entregar
+                </button>
 
             </div>
 

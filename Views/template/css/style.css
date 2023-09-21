@@ -34,3 +34,8 @@
     width:100%;
     display:block;
 }
+
+/* CSS personalizado para redondear los bordes del botón de confirmación */
+.rounded-button {
+    border-radius: 200px; /* Ajusta el valor según la cantidad de redondeo que desees */
+}

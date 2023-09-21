@@ -1,6 +1,7 @@
 <?php  namespace Controllers;
 
 use Repository\Procesos1;
+use Models\Equipos_ingresados;
 
 class inicioController{
 
@@ -10,18 +11,14 @@ class inicioController{
     public function __construct()
     {
         $this->proceso1 = new Procesos1();
+        $this->equipos_ingresados = new Equipos_ingresados();
+
     }
 
     public function index(){
         
-        $datos['pendiente'] = $this->proceso1->getIngresosEnTotal();
-
-        return $datos;
-    }
-
-    public function ato(){
-
-        $datos['xd'] = $this->proceso1->getEntregasEnTotal();
+        $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
+        $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
 
         return $datos;
     }

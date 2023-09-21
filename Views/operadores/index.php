@@ -8,21 +8,21 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" >Operadores</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Operadores <i class="fa-solid fa-users-gear"></i></h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover nowrap" id="tablaoperadores" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Cedula</th>
-                        <th>Correo</th>
-                        <th>Estado</th>
-                        <th>Equipos Entregados</th>
-                        <th>Equipos Ingresados</th>                        
-                        <th>Acciones</th>
+                        <th>Nombre <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
+                        <th>Apellido <i class="fa-solid fa-person"></i></th>
+                        <th>Cedula <i class="fa-solid fa-id-card" style="color: #e7820d;"></i></th>
+                        <th>Correo <i class="fa-solid fa-envelope" style="color: #0ab6cd;"></i></th>                        
+                        <th>Equipos Entregados <i class="fa-solid fa-people-carry-box" style="color: #48b71f;"></i></th>
+                        <th>Equipos Ingresados <i class="fa-solid fa-display" style="color: #d21414;"></i></th>                        
+                        <th>Estado <i class="fa-solid fa-user-tag" style="color: #347f8d;"></i></th>
+                        <th>Acciones <i class="fa-solid fa-gears"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,7 +32,9 @@
                             <td> <?php echo $data['nombre'] ?> </td>
                             <td> <?php echo $data['apellido'] ?> </td>
                             <td> <?php echo $data['cedula_identidad'] ?> </td>
-                            <td> <?php echo $data['correo'] ?> </td>
+                            <td> <?php echo $data['correo'] ?> </td>                            
+                            <td> <?php echo $data['equipos_entregados'] ?> </td>
+                            <td> <?php echo $data['equipos_ingresados'] ?> </td>
                             <td><?php 
                                 if($data['estado'] == 0){
                                     echo "Activo";
@@ -42,20 +44,34 @@
                                 }
                                  ?> 
                             </td>
-                            <td> <?php echo $data['equipos_entregados'] ?> </td>
-                            <td> <?php echo $data['equipos_ingresados'] ?> </td>
-                            <td>                            
-                                <a class="btn btn-danger" href='delete/<?php echo $data['id_operador'] ?>'>Eliminar</a> 
-                                <a class="btn btn-primary" href='edit/<?php echo $data['id_operador'] ?>'>Editar</a>
+                            <td>      
+                                
                                 <?php if($data['estado'] == 0){ ?>
 
-                                    <a class="btn btn-warning" href='suspend/<?php echo $data['id_operador'] ?>'>Suspender</a>
+                                    <a class="btn btn-warning btn-icon-split" href='suspend/<?php echo $data['id_operador'] ?>'>
+                                        <i class="fa-solid fa-user-large-slash"></i>
+                                        Suspender
+                                    </a>
 
                                 <?php } else {  ?>
 
-                                    <a class="btn btn-success" href='activate/<?php echo $data['id_operador'] ?>'>Reactivar</a>
+                                    <a class="btn btn-success btn-icon-split" href='activate/<?php echo $data['id_operador'] ?>'>
+                                        <i class="fa-solid fa-user-check"></i>
+                                        Reactivar
+                                    </a>
 
                                 <?php } ?>
+                                
+                                <a class="btn btn-primary btn-icon-split" href='edit/<?php echo $data['id_operador'] ?>'>
+                                    <i class="fa-solid fa-user-pen"></i>
+                                    Editar
+                                </a>
+                                
+
+                                <a class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_operador'] ?>'>
+                                    <i class="fa-solid fa-user-minus"></i>
+                                    Eliminar
+                                </a> 
                                                     
                             </td>
                         </tr>
@@ -66,4 +82,7 @@
         </div>
     </div>
 
-    <a class="btn btn-success" href="new">Agregar</a>
+    <a class="btn btn-success" href="new">
+        <i class="fa-solid fa-user-plus"></i>
+        Agregar
+    </a>

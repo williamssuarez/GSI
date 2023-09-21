@@ -15,12 +15,12 @@
             <table class="table table-striped table-hover responsive nowrap" id="tablaequipos_salida" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Equipo</th>
-                        <th>Departamento</th>
-                        <th>Fecha Entrega</th>
-                        <th>Entregado Por</th>
-                        <th>Conclusion</th>
-                        <th>Acciones</th>
+                        <th>Equipo <i class="fa-solid fa-tag" style="color: #279608;"></i></th>
+                        <th>Departamento <i class="fa-solid fa-building" style="color: #913080;"></i></th>
+                        <th>Fecha Entrega <i class="fa-solid fa-calendar-days"></i></th>
+                        <th>Entregado Por <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
+                        <th>Conclusion <i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i></th>
+                        <th>Acciones <i class="fa-solid fa-gears"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,8 +32,7 @@
                             <td> <?php echo $data['fecha_entrega'] ?> </td>
                             <td> <?php echo $data['entregado_por'] ?> </td>
                             <td> <?php echo $data['conclusion'] ?> </td>
-                            <td>                            
-                                <a class="btn btn-danger" href='delete/<?php echo $data['id_entrega'] ?>'>Eliminar</a> 
+                            <td>                             
                                 <a class="btn btn-info" href='edit/<?php echo $data['id_entrega'] ?>'>Editar</a>
                             </td>
                         </tr>
@@ -41,5 +40,9 @@
 
                 </tbody>
             </table>
+            <a class="btn btn-warning" href="<?php echo URL; ?>equipos/index">
+                <i class="fa-solid fa-arrow-left"></i>
+                Ir a Equipos Pendientes
+            </a>
         </div>
     </div>

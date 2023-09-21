@@ -38,7 +38,23 @@ use Repository\Procesos1 as Repository1;
 
                 $this->operador->add();
 
-                header('Location: index');
+                echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Agregado Exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'operadores/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }                        
 
@@ -52,8 +68,23 @@ use Repository\Procesos1 as Repository1;
 
                 $this->operador->delete();
 
-                header('Location: /gsi/operadores/index');
-                exit;
+                echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Eliminado Exitosamente.",
+                                icon: "warning",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'operadores/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
 
@@ -76,7 +107,23 @@ use Repository\Procesos1 as Repository1;
     
                     $this->operador->edit();
     
-                    header('Location: /gsi/operadores/index');
+                    echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Editado Exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'operadores/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                 }            
             
@@ -105,30 +152,52 @@ use Repository\Procesos1 as Repository1;
 
             $this->operador->suspend();
 
-            if (headers_sent()) {
-                $ruta = ROOT . "Views" . DS . "error" . DS . "operadores" . ".php";
-                require_once $ruta;
-                die("Redireccion Fallida. Click para volver");
-            }
-            else{
-                exit(header("Location: '. URL .'operadores/index"));
-            }
+            echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Suspendido Exitosamente.",
+                                icon: "warning",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'operadores/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
         }
 
         public function activate($id){
 
+            $this->activar($id);
+
+            echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Reactivado Exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'operadores/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+        }
+
+        private function activar($id){
+
             $this->operador->set('id_operador', $id);
-
-            $this->operador->activate();
-
-            if (headers_sent()) {
-                $ruta = ROOT . "Views" . DS . "error" . DS . "operadores" . ".php";
-                require_once $ruta;
-                die("Redireccion Fallida. Click para volver");
-            }
-            else{
-                exit(header("Location: '. URL .'operadores/index"));
-            }
+            $this->operador->activando();
         }
       
     }

@@ -23,10 +23,22 @@ class Template{
         <link rel="stylesheet" href="styles.css">
 
         <!-- DATATABLES CSS -->
-        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/css/dataTables.bootstrap5.min.css">        
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/css/dataTables.bootstrap5.min.css">
+        
+        <!-- FONTAWESOME CSS -->
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/FontAwesome/font-awesome_6.4.2_css_all.min.css">
+
+        <!-- SWEETALERT2 CSS -->
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/sweetalert2/dist/sweetalert2.min.css">
+
+        <!-- FONTAWESOME JS -->
+        <script src="<?php echo URL; ?>Views/template/FontAwesome/font-awesome_6.4.2_js_all.min.js"></script>
         
         <!--DataTables JS
         <script src="<//?php echo URL; ?>Views/template/js/demo/datatables-demo.js"></script> -->
+
+        <!-- SWEETALERT2 JS -->
+        <script src="<?php echo URL; ?>Views/template/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
         <!--Redirigir-->
         <script src="<?php echo URL; ?>Views/template/js/scripts/redirigirTopbar.js" ></script>
@@ -70,7 +82,7 @@ class Template{
     <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <img src="<?php echo URL; ?>Views/template/img/assets/equipo/equipo1.png" alt="">
+                    <i class="fa-solid fa-desktop"></i>
                     <span>Equipos</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -90,19 +102,19 @@ class Template{
     <!-- Nav Item - Charts -->
     <li class="nav-item">
         <a class="nav-link" href="<?php echo URL; ?>operadores/index">
-            <img src="<?php echo URL; ?>Views/template/img/assets/operador/operador1.png" alt="">
+            <i class="fa-solid fa-users-gear"></i>
             <span>Operadores</span></a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo URL; ?>direcciones/index">
-            <img src="<?php echo URL; ?>Views/template/img/assets/direccion/direccion1.png" alt="">
+            <i class="fa-solid fa-globe"></i>
             <span>Direcciones</span></a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo URL; ?>soportes/index">
-            <img src="<?php echo URL; ?>Views/template/img/assets/soporte/soporte1.png" alt="">
+            <i class="fa-solid fa-gear"></i>
             <span>Soportes</span></a>
     </li>
 
@@ -111,17 +123,18 @@ class Template{
 
     <li class="nav-item">
         <a class="nav-link" href="#">
-            <img src="<?php echo URL; ?>Views/template/img/assets/logout/logout1.png" alt="">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             <span>Logout</span></a>
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
+
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle">
-                
+            <i class="fa-solid fa-chevron-left"></i>
         </button>
     </div>
 </ul>
@@ -148,7 +161,7 @@ class Template{
                 aria-label="Search" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">
-                    <img src="<?php echo URL; ?>Views/template/img/lupa2.png" alt="">
+                    <i class="fas fa-search fa-sm"></i>
                 </button>
             </div>
         </div>

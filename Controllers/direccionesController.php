@@ -43,7 +43,23 @@ use Repository\Procesos1 as Repository1;
 
                 $this->direccion->add();
 
-                header('Location: index');
+                echo '<script>
+                            Swal.fire({
+                                title: "Redireccionando...",
+                                text: "Agregado Exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'direcciones/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }                        
 
@@ -57,8 +73,23 @@ use Repository\Procesos1 as Repository1;
 
                 $this->direccion->delete();
 
-                header('Location: /gsi/direcciones/index');
-                exit;
+                echo '<script>
+                            Swal.fire({
+                                title: "Redireccionando...",
+                                text: "Eliminado Exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'direcciones/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
 
@@ -77,7 +108,8 @@ use Repository\Procesos1 as Repository1;
     
                     $this->direccion->edit();
     
-                    header('Location: /gsi/operadores/index');
+                    echo '<script>window.location.href = "' . URL . 'direcciones/index";</script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                 }            
             

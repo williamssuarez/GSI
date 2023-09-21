@@ -65,40 +65,16 @@ class Equipos_ingresados{
 
     public function getIngresosTotalesEquipos(){
 
-        $sql = "SELECT
-                COUNT(estado) AS totalIngreso
-                FROM
-                equipos_ingresados
-                WHERE estado = 0";
-        
+        $sql = "SELECT COUNT(estado) AS totalIngreso FROM equipos_ingresados WHERE estado = 0";
         $datos = $this->con->consultaRetorno($sql);
-
-        while($row = $datos->fetch_assoc()){
-
-            $this->resultado[] = $row;
-
-        }
-
-        return $this->resultado;
+        return $datos->fetch_assoc();
     }
 
     public function getIngresosTotalesEntregados(){
 
-        $sql = "SELECT
-                COUNT(estado) AS totalEntrega
-                FROM
-                equipos_ingresados
-                WHERE estado != 0";
-        
+        $sql = "SELECT COUNT(estado) AS totalEntrega FROM equipos_ingresados WHERE estado != 0";
         $datos = $this->con->consultaRetorno($sql);
-
-        while($row = $datos->fetch_assoc()){
-
-            $this->resultado[] = $row;
-
-        }
-
-        return $this->resultado;
+        return $datos->fetch_assoc();
     }
 
     public function getEquipos(){
@@ -128,7 +104,8 @@ class Equipos_ingresados{
                 t2.nombre_departamento AS departamento, 
                 t1.fecha_recibido, 
                 t3.nombre as nombre_operador,
-                t1.problema
+                t1.problema,
+                t1.estado
                 FROM
                 equipos_ingresados t1 
                 INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento
