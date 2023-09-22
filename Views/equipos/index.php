@@ -6,10 +6,22 @@
 <h1 class="h3 mb-2 text-gray-800"><?php echo $ingreso['titulo']; ?></h1>
  <p class="mb-4">Una tabla para administrar a los equipos ingresados</p>
 
+<?php if($ingreso['total']['totalIngreso'] > 0) { ?>
+
     <h3 class="h3 mb-2 text-gray-800">
-        <i class="fa-solid fa-circle-info" style="color: #f0bb70;"></i>    
+        <i class="fa-solid fa-circle-exclamation fa-2x" style="color: #d4ac40;"></i>    
         Hay un total de <?php echo $ingreso['total']['totalIngreso'] ?> equipos pendientes
     </h3>
+
+<?php } else { ?>
+
+    <h3 class="h3 mb-2 text-gray-800">
+    <i class="fa-solid fa-circle-check fa-2x" style="color: #3aa413;"></i>  
+        No hay equipos pendientes!
+    </h3>
+
+<?php } ?>
+
 
          <h1 class="h3 mb-2 text-gray-800">Tabla</h1>
 
@@ -42,12 +54,19 @@
                             <td> <?php echo isset($data['problema']) ? $data['problema'] : ''; ?> </td>
                             <td>
                                 <?php
-                                if (isset($data['estado'])) {
-                                    echo $data['estado'] == 0 ? "Pendiente" : "Entregado";
-                                } else {
-                                    echo "Sin estado";
-                                }
-                                ?>
+                                if ($data['estado'] == 0) { ?>
+
+                                    <span class=" font-weight-bold" >
+                                        Pendiente <i class="fa-solid fa-circle-exclamation" style="color: #d4ac40;"></i>
+                                    </span>
+
+                                <?php } else { ?>
+
+                                    <span class=" font-weight-bold" >
+                                        Entregado <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
+                                    </span>
+
+                                <?php }  ?>
                             </td>
                             <td>                            
                                 <a class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_equipo'] ?>'>

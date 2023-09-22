@@ -18,6 +18,7 @@
 
             <div>
                 
+            
                 <label class="form-label mt-4"><i class="fa-solid fa-calendar-days"></i> Fecha Entrega</label>
                 <input required class="form-control" type="datetime-local" name="fecha_entrega" id="fecha_entrega" value="" max="" min="2020-01-01T00:00">
 
@@ -25,7 +26,7 @@
 
                 <label class="form-label mt-4"><i class="fa-solid fa-user-gear" style="color: #005af5;"></i> Entregado Por</label>
                 <select required class="form-select" name="entregado_por" id="entregado_por">
-                
+    
                 <?php foreach($datos['operadores'] as $operadores) {  ?>
                     <option value="<?php echo $operadores['id_operador']; ?>"> <?php echo $operadores['nombre'] ?>  <?php echo $operadores['apellido'] ?></option>
                 <?php } ?>
@@ -33,7 +34,11 @@
                 </select>
 
                 <label class="form-label mt-4"><i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i> Conclusion</label>
-                <input required class="form-control" type="text" name="conclusion" id="conclusion" placeholder="Cual fue la solucion que se le dio al equipo">
+                <div class="form-floating">
+                    <input required class="form-control" type="text" name="conclusion" id="conclusion" placeholder="Cual fue la solucion que se le dio al equipo">                    
+                    <label for="conclusion">Cual fue la solucion que se le dio al equipo</label>
+                </div>
+                
 
                 <br>
             
