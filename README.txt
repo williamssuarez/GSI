@@ -8,7 +8,8 @@ mas complejos entre modelos, en Controllers se interactua con la vista y el mode
 
 -Al final todos los archivos se cargan en el index.php, el Autoload carga las clases necesarias, el Request.php obtiene la url,
 la limpia, y le asigna las variables controlador, metodo, y argumento, si ningun controlador es especificado para $controlador
-entonces a la variable se le asignara el controlador "inicio"
+entonces a la variable se le asignara el controlador "inicio", si ningun metodo es especificado se le asigna el index, y si el controlador
+o metodo son especificados pero no existen, entonces se mostrara el mensaje de error en la carpeta error en Views, especificamente el 404.php
 
 -El Enrutador.php es el que realmente se encarga del enrutamiento, a $controlador le concatena la palabra "Controller" y mas abajo
 se concatena el resto de la ruta, la funcion se ve asi

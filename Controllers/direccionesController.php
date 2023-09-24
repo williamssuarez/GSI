@@ -4,6 +4,7 @@ use Models\Direcciones;
 use Models\Departamentos;
 use Models\Dispositivos;
 use Models\Direcciones_ip;
+use Models\setRango;
 use Repository\Procesos1 as Repository1;
 
     class direccionesController{
@@ -12,13 +13,15 @@ use Repository\Procesos1 as Repository1;
         private $departamento;
         private $dispositivo;
         private $direccion_ip;
+        private $setRangoIp;
 
         public function __construct()
         {
             $this->direccion = new Direcciones();
             $this->departamento = new Departamentos();
             $this->dispositivo = new Dispositivos();
-            $this->direccion_ip = new Direcciones_ip;
+            $this->direccion_ip = new Direcciones_ip();
+            $this->setRangoIp = new setRango();
         }
 
         public function index(){
@@ -33,9 +36,6 @@ use Repository\Procesos1 as Repository1;
                 $datos['direcciones'] = $this->direccion_ip->getDireccionesporRango();
                 $datos['dispositivos'] = $this->dispositivo->lista();
 
-                var_dump($this->direccion_ip->get('id_departamento'));
-                die();
-    
                 return $datos;
             
         }
@@ -45,29 +45,41 @@ use Repository\Procesos1 as Repository1;
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 $departamento = $_POST['departamento'];
-
-                $this->direccion_ip->setRangoDepartamento($departamento);
-
-                var_dump($this->direccion_ip->get('id_departamento'));
-
+    
+                $this->setRangoIp->set('id_departamento',$departamento);
+    
+                $this->setRangoIp->setRangoForIp();
+    
                 echo '<script>
-                            window.location.href = "' . URL . 'direcciones/new";
-                        </script>';
-                exit;
-            }
+                                Swal.fire({
+                                    title: "Redireccionando...",
+                                    text: "Rango de direcciones obtenido!",
+                                    icon: "success",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'direcciones/new";
+                                    }
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                }
 
             $datos['titulo'] = "Seleccione el departamento";
             $datos['departamentos'] = $this->departamento->lista();
             return $datos;
         }
 
-        public function setRango($id){
+        public function setrango(){
 
-            $this->direccion_ip->setRangoDepartamento($id);
-
+            
         }
 
-        public function new(){
+        public function new(){            
            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -79,11 +91,17 @@ use Repository\Procesos1 as Repository1;
                 $this->direccion->set('id_direccion', $direccion);
                 $this->direccion->set('numero_bien', $numero_bien);
 
+                //Agregando la nueva direccion a la base de datos
                 $this->direccion->add();
 
-                $this->changeEstado($this->direccion->get('id_direccion'));
+                //Cambiando estado de 0 libre a 1 ocupado
+                $this->changeEstado($direccion);
 
-                $this->actualizarDireccionesenDepartamento($this->direccion_ip->get('id_departamento'));
+                //Sumando el numero de direcciones asignadas al departamento
+                $this->actualizarDireccionesenDepartamento();
+
+                //Liberando el rango en la tabla setrango en la base de datos
+                $this->liberarRango();
 
                 echo '<script>
                             Swal.fire({
@@ -103,13 +121,19 @@ use Repository\Procesos1 as Repository1;
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-            }                        
+            }
 
         }
 
-        public function actualizarDireccionesenDepartamento($id){
+        public function liberarRango(){
 
-            $this->departamento->set('id_departamento', $id);
+            $this->setRangoIp->liberarRangoForIp();
+
+        }
+
+        public function actualizarDireccionesenDepartamento(){
+
+            $this->departamento->actualizarDireccionesAsignadas();
         }
 
         public function changeEstado($id){

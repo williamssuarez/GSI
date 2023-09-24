@@ -41,10 +41,14 @@ class Departamentos{
     public function actualizarDireccionesAsignadas(){
 
         $sql = "UPDATE
-                departamentos
+                departamentos t1,
+                setRango t2
                 SET
-                direcciones_asignadas = direcciones_asignadas + 1
-                id_departamento = '{$this->id_departamento}'";
+                t1.direcciones_asignadas = t1.direcciones_asignadas + 1
+                WHERE
+                t1.id_departamento = t2.id_departamento";
+
+        $this->con->consultaSimple($sql);
     }
 
 

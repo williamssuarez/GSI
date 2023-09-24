@@ -33,10 +33,10 @@ class Direcciones_ip{
     public function getDireccionesporRango(){
 
         $sql= "SELECT 
-                id_ip,
-                direccion
-                FROM direccion_ip
-                WHERE id_departamento = '{$this->id_departamento}'
+                t1.id_ip,
+                t1.direccion
+                FROM direccion_ip t1, setrango t2
+                WHERE t1.id_departamento = t2.id_departamento
                 AND estado = 0
                 ORDER BY RAND() LIMIT 10";
 
@@ -59,6 +59,8 @@ class Direcciones_ip{
                 estado = 1
                 WHERE
                 id_ip = '{$this->id_ip}'";
+
+        $this->con->consultaSimple($sql);
     }
 
 }
