@@ -63,7 +63,7 @@
                                 <?php } else { ?>
 
                                     <span class=" font-weight-bold" >
-                                        Entregado <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
+                                         <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
                                     </span>
 
                                 <?php }  ?>

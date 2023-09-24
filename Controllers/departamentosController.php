@@ -1,20 +1,20 @@
 <?php namespace Controllers;
 
-use Models\Operadores as Operadores;
+use Models\Departamentos;
 use Repository\Procesos1 as Repository1;
 
-    class operadoresController{
+    class departamentosController{
 
-        private $operador;
+        private $departamento;
 
         public function __construct()
         {
-            $this->operador = new Operadores();
+            $this->departamento = new Departamentos();
         }
 
         public function index(){
-            $datos['titulo'] = "Operadores";
-            $datos['operadores'] = $this->operador->lista();
+            $datos['titulo'] = "Departamentos";
+            $datos['departamentos'] = $this->departamento->lista();
             return $datos;
         }
 
@@ -31,12 +31,12 @@ use Repository\Procesos1 as Repository1;
                 $cedula = $_POST['cedula_identidad'];
                 $correo = $_POST['correo'];
 
-                $this->operador->set('nombre', $nombre);
-                $this->operador->set('apellido', $apellido);
-                $this->operador->set('cedula_identidad', $cedula);
-                $this->operador->set('correo', $correo);
+                $this->departamento->set('nombre', $nombre);
+                $this->departamento->set('apellido', $apellido);
+                $this->departamento->set('cedula_identidad', $cedula);
+                $this->departamento->set('correo', $correo);
 
-                $this->operador->add();
+                $this->departamento->add();
 
                 echo '<script>
                             Swal.fire({
@@ -64,9 +64,9 @@ use Repository\Procesos1 as Repository1;
 
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
-                $this->operador->set('id_operador', $id);
+                $this->departamento->set('id_operador', $id);
 
-                $this->operador->delete();
+                $this->departamento->delete();
 
                 echo '<script>
                             Swal.fire({
@@ -92,14 +92,8 @@ use Repository\Procesos1 as Repository1;
 
         public function edit($id){
 
-
-            $data['titulo'] = "Editando Operador";
-            $data['operador'] = $this->getDataForEdit($id);
-
             //var_dump($data);
             //die(); 
-
-            return $data;
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -108,13 +102,13 @@ use Repository\Procesos1 as Repository1;
                     $cedula = $_POST['cedula_identidad'];
                     $correo = $_POST['correo'];
 
-                    $this->operador->set('id_operador', $id);
-                    $this->operador->set('nombre', $nombre);
-                    $this->operador->set('apellido', $apellido);
-                    $this->operador->set('cedula_identidad', $cedula);
-                    $this->operador->set('correo', $correo);
+                    $this->departamento->set('id_operador', $id);
+                    $this->departamento->set('nombre', $nombre);
+                    $this->departamento->set('apellido', $apellido);
+                    $this->departamento->set('cedula_identidad', $cedula);
+                    $this->departamento->set('correo', $correo);
     
-                    $this->operador->edit();
+                    $this->departamento->edit();
     
                     echo '<script>
                             Swal.fire({
@@ -138,86 +132,16 @@ use Repository\Procesos1 as Repository1;
             
         }
 
-        public function getDataForEdit($id){
-
-            $this->operador->set('id_operador', $id);
-
-            return $this->operador->getDataEdit();
-            
-        }
-
         public function view($id){
         
-            $this->operador->set('id_operador', $id);
+            $this->departamento->set('id_operador', $id);
 
-            $datos[] = $this->operador->view();
+            $datos[] = $this->departamento->view();
             return $datos;
             
-        }
-
-        public function historial($id){
-
-            $this->operador->set('id_operador', $id);
-
-            $datos[] = $this->operador->historial();
-            return $datos;
-        }
-
-        public function suspend($id){
-
-            $this->operador->set('id_operador', $id);
-
-            $this->operador->suspend();
-
-            echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Suspendido Exitosamente.",
-                                icon: "warning",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
-                                }
-                            });
-                        </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-        }
-
-        public function activate($id){
-
-            $this->activar($id);
-
-            echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Reactivado Exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
-                                }
-                            });
-                        </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-        }
-
-        private function activar($id){
-
-            $this->operador->set('id_operador', $id);
-            $this->operador->activando();
         }
       
     }
 
-    $operadores = new operadoresController();
+    $departamentos = new departamentosController();
 ?>

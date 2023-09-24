@@ -18,6 +18,9 @@
                             <tr>
                                 <th>Direccion IP <i class="fa-solid fa-ethernet"></i></th>
                                 <th>Departamento <i class="fa-solid fa-network-wired"></i></th>
+                                <th>Dispositivo </th>
+                                <th>Numero de Bien </th>
+                                <th>Fecha Asignada </th>
                                 <th>Acciones <i class="fa-solid fa-gears"></i></th>
                             </tr>
                         </thead>
@@ -27,12 +30,14 @@
                             <tr class="table">
                                 <td> <?php echo $data['direccion'] ?> </td>
                                 <td> <?php echo $data['departamento'] ?> </td>
+                                <td> <?php echo $data['dispositivo'] ?> </td>
+                                <td> <?php echo $data['numero_bien'] ?> </td>
+                                <td> <?php echo $data['fecha_asignada'] ?> </td>
                                 <td>                         
-                                    <a id="confirmButton" class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_ip'] ?>'>                                
+                                    <a id="confirmButton" class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_asignacion'] ?>'>                                
                                         Eliminar
                                     </a> 
-
-                                    <a class="btn btn-primary" href='edit/<?php echo $data['id_ip'] ?>'>                                        
+                                    <a class="btn btn-primary" href='edit/<?php echo $data['id_asignacion'] ?>'>                                        
                                         Editar
                                     </a>                    
                                 </td>
@@ -43,13 +48,8 @@
                     </table>
                 </div>
             </div>
-            <a class="btn btn-success btn-icon-split" href="new">
+            <a class="btn btn-success btn-icon-split" href="rango">
                 <i class="fa-solid fa-ethernet"></i>
-                Agregar
+                Asignar
             </a>
         </div>
-
-        <a class="btn btn-success" href="new">
-        <i class="fa-solid fa-user-plus"></i>
-        Agregar
-    </a>

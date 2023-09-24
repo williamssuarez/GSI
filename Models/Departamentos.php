@@ -38,6 +38,15 @@ class Departamentos{
         $this->con->consultaSimple($sql);
     }
 
+    public function actualizarDireccionesAsignadas(){
+
+        $sql = "UPDATE
+                departamentos
+                SET
+                direcciones_asignadas = direcciones_asignadas + 1
+                id_departamento = '{$this->id_departamento}'";
+    }
+
 
     public function lista(){
 

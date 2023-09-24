@@ -1,4 +1,6 @@
-<?php $datos = $direcciones->getDireccionesLibres() ?>
+<?php $datos = $direcciones->getDireccionesLibresporRango();
+
+?>
 
 <!-- Page Heading -->
 <h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?> new!</h1>
@@ -16,11 +18,11 @@
 
         <form action="new" method="post">
             <div>
-                <label class="form-label mt-4">Departamento</label>
-                <select required class="form-select" name="departamento" id="departamento">
+                <label class="form-label mt-4">Tipo de dispositivo</label>
+                <select required class="form-select" name="dispositivo" id="dispositivo">
 
-                    <?php foreach ($datos['departamentos'] as $departamento) { ?>
-                        <option value="<?php echo $departamento['id_departamento']; ?>"> <?php echo $departamento['nombre_departamento'] ?> </option>
+                    <?php foreach ($datos['dispositivos'] as $dispositivo) { ?>
+                        <option value="<?php echo $dispositivo['id_dispositivos']; ?>"> <?php echo $dispositivo['nombre_dispositivo'] ?> </option>
                     <?php } ?>
 
                 </select>
@@ -31,12 +33,15 @@
                 <select required class="form-select" name="direccion" id="direccion">
                         
                         <?php foreach($datos['direcciones'] as $direcciones) {  ?>
-                            <option value="<?php echo $direcciones['id']; ?>"> <?php echo $direcciones['direccion'] ?> </option>
+                            <option value="<?php echo $direcciones['id_ip']; ?>"> <?php echo $direcciones['direccion'] ?> </option>
                         <?php } ?>
 
                 </select>
                 
-                        </br>
+                </br>
+
+                <label class="form-label mt-4"><i class="fa-solid fa-tag" style="color: #279608;"></i> Numero de Bien (Opcional)</label>
+                <input class="form-control" type="number" name="numero_bien" id="numero_bien" maxlength="6" minlength="6" placeholder="Introduzca Numero de Bien">
 
                 <button class="btn btn-success" type="submit">Asignar</button>
             </div>

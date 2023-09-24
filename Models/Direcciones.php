@@ -4,9 +4,12 @@ namespace Models;
 
 class Direcciones{
 
-    private $id_ip;
-    private $ip;
-    private $departamento;
+    private $id_asignacion;
+    private $id_direccion;
+    private $tipo_dispositivo;
+    private $numero_bien;
+    private $fecha_asignada;
+    private $id_departamento;
     private $con;
     private $resultado;
 
@@ -24,38 +27,21 @@ class Direcciones{
         return $this->$atributo;
     }
 
-    public function getDireccionesRandom(){
-
-        $sql= "SELECT 
-                id,
-                ip as direccion
-                FROM direcciones_ip
-                WHERE id NOT IN (SELECT ip FROM direcciones)
-                ORDER BY RAND()
-                LIMIT 10;";
-
-        $datos = $this->con->consultaRetorno($sql);
-
-        while($row = $datos->fetch_assoc()){
-
-            $this->resultado[] = $row;
-
-        }
-
-        return $this->resultado;
-    }
-
     public function listar(){
 
         $sql = "SELECT 
-        t1.id_ip,
-        t2.ip as direccion,
-        t3.nombre_departamento as departamento 
-        FROM
-        direcciones t1
-        INNER JOIN direcciones_ip t2 ON t1.ip = t2.id
-        INNER JOIN departamentos t3 ON t1.departamento = t3.id_departamento
-        ";
+                t1.id_asignacion,
+                t2.direccion as direccion,
+                t3.nombre_departamento as departamento,
+                t4.nombre_dispositivo as dispositivo,
+                t1.numero_bien,
+                t1.fecha_asignada
+                FROM
+                direcciones_asignadas t1
+                INNER JOIN direccion_ip t2 ON t1.id_direccion = t2.id_ip
+                INNER JOIN departamentos t3 ON t2.id_departamento = t3.id_departamento
+                INNER JOIN dispositivos t4 ON t1.tipo_dispositivo = t4.id_dispositivos
+                ";
         
         $datos = $this->con->consultaRetorno($sql);
 
@@ -71,9 +57,9 @@ class Direcciones{
     public function add(){
         
         $sql = "INSERT INTO
-                direcciones(ip, departamento)
-                VALUES
-                ( '{$this->ip}', '{$this->departamento}')";
+                direcciones_asignadas(id_direccion, tipo_dispositivo, numero_bien)
+                VALUES 
+                ('{$this->id_direccion}', '{$this->tipo_dispositivo}', '{$this->numero_bien}')";
         
         $this->con->consultaSimple($sql);
     }
@@ -81,9 +67,9 @@ class Direcciones{
     public function delete(){
 
         $sql = "DELETE FROM
-                direcciones
+                direcciones_asignadas
                 WHERE
-                id_ip = '{$this->id_ip}'";
+                id_asignacion = '{$this->id_asignacion}'";
         
         $this->con->consultaSimple($sql);
     }
@@ -91,36 +77,13 @@ class Direcciones{
     public function edit(){
 
         $sql = "UPDATE
-                direcciones
+                direcciones_asignadas
                 SET
-                ip = '{$this->ip}', departamento = '{$this->departamento}'
+                id_direccion = '{$this->id_direccion}', tipo_dispositivo = '{$this->tipo_dispositivo}', numero_bien = '{$this->numero_bien}'
                 WHERE
-                id_ip = '{$this->id_ip}'";
+                id_direccion = '{$this->id_direccion}'";
         
         $this->con->consultaSimple($sql);
-    }
-
-    public function view(){
-
-        $sql = "SELECT 
-                t1.id_ip,
-                t2.ip as direccion,
-                t3.nombre_departamento as departamento 
-                FROM
-                direcciones t1
-                INNER JOIN direcciones_ip t2 ON t1.ip = t2.id
-                INNER JOIN departamentos t3 ON t1.departamento = t3.id_departamento
-                WHERE a.id_ip = '{$this->id_ip}'";
-
-        $datos = $this->con->consultaRetorno($sql);
-
-        while($row = $datos->fetch_assoc()){
-
-            $this->resultado[] = $row;
-
-        }
-
-        return $this->resultado;
     }
 }
 

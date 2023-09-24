@@ -118,6 +118,12 @@ class Template{
             <span>Soportes</span></a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="<?php echo URL; ?>departamentos/index">
+            <i class="fa-solid fa-building"></i>
+            <span>Departamentos</span></a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
@@ -257,6 +263,7 @@ class Template{
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_salida.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/direcciones.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/operadores.js"></script>
+    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/departamentos.js"></script>
     
 
     </body>

@@ -155,6 +155,30 @@ class Operadores{
         return $this->resultado;
     }
 
+    public function getDataEdit(){
+
+        $sql = "SELECT
+                id_operador, 
+                nombre, 
+                apellido, 
+                cedula_identidad, 
+                correo
+                FROM
+                operadores
+                WHERE
+                id_operador = '{$this->id_operador}' ";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+    }
+
     public function historial(){
 
         $sql = "";

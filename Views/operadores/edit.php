@@ -1,4 +1,4 @@
-<?php $datos = $operadores->index(); ?>
+<?php $datos = $operadores->edit($_GET['id_operador']); ?>
 
 <!-- Page Heading -->
 <h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?> edit!</h1>
@@ -19,10 +19,10 @@
 
                 <div>
                     <label class="form-label mt-4"><i class="fa-solid fa-user-gear"></i> Primer y Segundo Nombre del Operador </label>
-                    <input required class="form-control" type="text" name="nombre" id="nombre" placeholder="Introduzca Nombres">
+                    <input required value="<?php echo $datos['operadores']['nombre'] ?>" class="form-control" type="text" name="nombre" id="nombre" placeholder="Introduzca Nombres">
                     
                     <label class="form-label mt-4"><i class="fa-solid fa-person"></i> Primer y Segundo Apellido del Operador</label>
-                    <input required class="form-control" type="text" name="apellido" id="apellido" placeholder="Introduzca Apellido">
+                    <input required value="" class="form-control" type="text" name="apellido" id="apellido" placeholder="Introduzca Apellido">
 
                     <label class="form-label mt-4"><i class="fa-solid fa-id-card"></i> Cedula de identidad del Operador</label>
                     <input required class="form-control" type="number" max="100000000" name="cedula_identidad" id="cedula_identidad" placeholder="Introduzca Cedula"> 
