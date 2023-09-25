@@ -72,6 +72,34 @@ class Operadores{
         return $this->resultado;   
     }
 
+    public function verificarCedula(){
+
+        $sql = "SELECT
+                COUNT(*) as cuenta
+                FROM
+                operadores
+                WHERE
+                cedula_identidad = '{$this->cedula_identidad}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
+    public function verificarCorreo(){
+
+        $sql = "SELECT
+                COUNT(*) as cuenta
+                FROM
+                operadores
+                WHERE
+                correo = '{$this->correo}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function lista(){
 
         $sql = "SELECT
@@ -95,6 +123,19 @@ class Operadores{
 
         return $this->resultado;
     }
+
+    /*public function insertarOperador($nombre, $apellido, $cedula, $correo) {
+        
+        // Sentencia preparada para la inserción
+        $stmt = $this->con->prepare("INSERT INTO operadores(nombre, apellido, cedula_identidad, correo) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $nombre, $apellido, $cedula, $correo);
+        
+        if ($stmt->execute()) {
+            return true; // Éxito
+        } else {
+            return false; // Error
+        }
+    }*/
 
     public function add(){
         

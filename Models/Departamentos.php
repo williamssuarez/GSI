@@ -75,7 +75,8 @@ class Departamentos{
                 nombre_departamento, 
                 piso
                 FROM
-                departamentos";
+                departamentos
+                ORDER BY nombre_departamento";
         $datos = $this->con->consultaRetorno($sql);
 
         while($row = $datos->fetch_assoc()){

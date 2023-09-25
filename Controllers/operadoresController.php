@@ -31,30 +31,147 @@ use Repository\Procesos1 as Repository1;
                 $cedula = $_POST['cedula_identidad'];
                 $correo = $_POST['correo'];
 
-                $this->operador->set('nombre', $nombre);
-                $this->operador->set('apellido', $apellido);
-                $this->operador->set('cedula_identidad', $cedula);
-                $this->operador->set('correo', $correo);
+                //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
+                if(empty($nombre) || empty($apellido) || empty($apellido) || empty($cedula)){
 
-                $this->operador->add();
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Parece que uno de los campos quedo vacio.",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'operadores/new";
+                                    }
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
 
-                echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Agregado Exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
-                                }
-                            });
-                        </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                } 
+                //SI NO ESTAN VACIOS PROSEGUIR
+                else {
+
+                    $errores = array();
+
+                    // Validar nombre y apellido como texto
+                    if (!ctype_alpha($nombre) || !ctype_alpha($apellido)) {
+                        $errores[] = "Nombre y apellido deben contener solo letras.";
+                    }
+                
+                    // Validar cedula_identidad como número entero
+                    if (!is_numeric($cedula)) {
+                        $errores[] = "Cédula de identidad debe ser un número.";
+                    }
+                
+                    // Validar formato de correo electrónico
+                    if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+                        $errores[] = "Correo electrónico no válido.";
+                    }
+                
+                    if (empty($errores)) {
+                        // No hay errores de validación, procesa los datos
+                        $this->operador->set('nombre', $nombre);
+                        $this->operador->set('apellido', $apellido);
+                        $this->operador->set('cedula_identidad', $cedula);
+                        $this->operador->set('correo', $correo);
+
+                        //VERIFICANDO SI LA CEDULA YA EXISTE
+                        $cuenta = $this->operador->verificarCedula();
+                        $cuenta_correo = $this->operador->verificarCorreo(); 
+
+                        //SI YA EXISTE, REDIRIGIR DE NUEVO AL FORMULARIO CON MENSAJE DE ERROR
+                        if($cuenta['cuenta'] > 0){
+
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Error!",
+                                            text: "Esta Cedula ya existe.",
+                                            icon: "error",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'operadores/new";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                        }
+                        elseif ($cuenta_correo['cuenta'] > 0) {
+                            
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Error!",
+                                            text: "Este correo ya existe.",
+                                            icon: "error",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'operadores/new";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                        } 
+                        //CASO CONTRARIO, PROSEGUIR
+                        else {
+
+                            $this->operador->add();
+
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Exito!",
+                                            text: "Agregado Exitosamente.",
+                                            icon: "success",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'operadores/index";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.   
+
+                        }
+                    } else {
+                        // Hubo errores de validación, muestra los mensajes de error
+                        echo '<script>
+                                        Swal.fire({
+                                            title: "Hubo errores de validacion...",
+                                            text: " Recuerda que la cedula debe ser numerica, y los nombres y apellidos no deben llevar numeros",
+                                            icon: "error",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'operadores/new";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                    }
+                }
 
             }                        
 

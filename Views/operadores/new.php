@@ -43,3 +43,5 @@
         </div>
     </div>
 </div>
+
+<script src="<?php echo URL; ?>Views/template/js/scripts/validarFormOperadores.js"></script>
