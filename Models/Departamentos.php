@@ -51,6 +51,22 @@ class Departamentos{
         $this->con->consultaSimple($sql);
     }
 
+    public function getDataEdit(){
+
+        $sql = "SELECT
+                id_departamento, 
+                nombre_departamento, 
+                piso
+                FROM
+                departamentos
+                WHERE
+                id_departamento = '{$this->id_departamento}' ";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+    }
+
 
     public function lista(){
 
@@ -103,6 +119,7 @@ class Departamentos{
         
         $this->con->consultaSimple($sql);
     }
+
 
     public function view(){
 

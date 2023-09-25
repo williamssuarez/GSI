@@ -1,7 +1,7 @@
 <?php $datos = $equipos->getDataSalida(); ?>
 
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?> Entrega!</h1>
+<h1 class="h3 mb-2 text-gray-800"><?php echo $data['title']; ?> Entrega!</h1>
  <p class="mb-4">Ingrese los datos del equipo a entregar en el formulario</p>
 
          <h1 class="h3 mb-2 text-gray-800">Formulario</h1>
@@ -22,8 +22,6 @@
                 <label class="form-label mt-4"><i class="fa-solid fa-calendar-days"></i> Fecha Entrega</label>
                 <input required class="form-control" type="datetime-local" name="fecha_entrega" id="fecha_entrega" value="" max="" min="2020-01-01T00:00">
 
-                
-
                 <label class="form-label mt-4"><i class="fa-solid fa-user-gear" style="color: #005af5;"></i> Entregado Por</label>
                 <select required class="form-select" name="entregado_por" id="entregado_por">
     
@@ -34,6 +32,8 @@
                 </select>
 
                 <label class="form-label mt-4"><i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i> Conclusion</label>
+                <br>
+                <label for=""><i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i> Problema por el que ingreso el equipo: <?php echo $data['problem']['problema'] ?></label>
                 <div class="form-floating">
                     <input required class="form-control" type="text" name="conclusion" id="conclusion" placeholder="Cual fue la solucion que se le dio al equipo">                    
                     <label for="conclusion">Cual fue la solucion que se le dio al equipo</label>

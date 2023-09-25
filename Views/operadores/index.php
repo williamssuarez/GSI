@@ -48,14 +48,14 @@
                                 
                                 <?php if($data['estado'] == 0){ ?>
 
-                                    <a class="btn btn-warning btn-icon-split" href='suspend/<?php echo $data['id_operador'] ?>'>
+                                    <a id="suspendiendo" class="btn btn-warning btn-icon-split" href='suspend/<?php echo $data['id_operador'] ?>'>
                                         <i class="fa-solid fa-user-large-slash"></i>
                                         Suspender
                                     </a>
 
                                 <?php } else {  ?>
 
-                                    <a class="btn btn-success btn-icon-split" href='activate/<?php echo $data['id_operador'] ?>'>
+                                    <a id="reactivando" class="btn btn-success btn-icon-split" href='activate/<?php echo $data['id_operador'] ?>'>
                                         <i class="fa-solid fa-user-check"></i>
                                         Reactivar
                                     </a>

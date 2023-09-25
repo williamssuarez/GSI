@@ -9,14 +9,14 @@
 <?php if($ingreso['total']['totalIngreso'] > 0) { ?>
 
     <h3 class="h3 mb-2 text-gray-800">
-        <i class="fa-solid fa-circle-exclamation fa-2x" style="color: #d4ac40;"></i>    
+        <i class="fa-solid fa-circle-exclamation fa-1x" style="color: #d4ac40;"></i>    
         Hay un total de <?php echo $ingreso['total']['totalIngreso'] ?> equipos pendientes
     </h3>
 
 <?php } else { ?>
 
     <h3 class="h3 mb-2 text-gray-800">
-    <i class="fa-solid fa-circle-check fa-2x" style="color: #3aa413;"></i>  
+    <i class="fa-solid fa-circle-check fa-1x" style="color: #3aa413;"></i>  
         No hay equipos pendientes!
     </h3>
 
@@ -63,25 +63,24 @@
                                 <?php } else { ?>
 
                                     <span class=" font-weight-bold" >
-                                         <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
+                                        Entregado <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
                                     </span>
 
                                 <?php }  ?>
                             </td>
                             <td>                            
-                                <a class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_equipo'] ?>'>
-                                    <i class="fa-solid fa-trash"></i>
-                                    Eliminar
-                                </a> 
-                                <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_equipo'] ?>'>
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                    Editar
-                                </a> 
                                 <?php if(isset($data['estado']) && $data['estado'] == 0) { ?>    
                                 <a class="btn btn-success btn-icon-split" href='entregar/<?php echo $data['id_equipo'] ?>'>                                
                                     <i class="fa-solid fa-truck-fast"></i>                                
                                     Entregar    
                                 </a>
+                                <?php } else { ?>
+
+                                <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_equipo'] ?>'>
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                Editar
+                                </a> 
+
                                 <?php } ?>
                             </td>
                         </tr>

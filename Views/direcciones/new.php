@@ -4,7 +4,7 @@
 
 <!-- Page Heading -->
 <h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?> new!</h1>
- <p class="mb-4">Defina la direccion IP que le gustaria asignar al departamento</p>
+ <p class="mb-4">Defina la direccion IP que le gustaria asignar al departamento de  <?php echo $datos['rango']['nombre']?> </p>
 
          <h1 class="h3 mb-2 text-gray-800">Formulario</h1>
 

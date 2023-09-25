@@ -22,9 +22,9 @@ class Enrutador{
             $controlador = new $mostrar;
 
             if(!isset($argumento)){
-                call_user_func(array($controlador, $metodo));
+                $data = call_user_func(array($controlador, $metodo));
             } else {
-                call_user_func_array(array($controlador, $metodo), $argumento);
+                $data = call_user_func_array(array($controlador, $metodo), $argumento);
             }
         } 
         

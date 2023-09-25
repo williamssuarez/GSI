@@ -63,6 +63,32 @@ class Direcciones_ip{
         $this->con->consultaSimple($sql);
     }
 
+    public function release(){
+
+        $sql = "UPDATE
+                direccion_ip
+                SET
+                estado = 0
+                WHERE
+                id_ip = '{$this->id_ip}'";
+
+        $this->con->consultaSimple($sql);
+
+        $this->reducirDireccionesenDepartamento();
+    }
+
+    private function reducirDireccionesenDepartamento(){
+
+        $sql = "UPDATE
+                departamentos t2, direccion_ip t1
+                SET
+                t2.direcciones_asignadas = t2.direcciones_asignadas - 1
+                WHERE t1.id_ip = '{$this->id_ip}'
+                AND t1.id_departamento = t2.id_departamento
+                ";
+        $this->con->consultaSimple($sql);
+    }
+
 }
 
 

@@ -200,13 +200,6 @@ use Repository\Procesos1 as Repository1;
                 //OBTENIENDO DATA NECESARIA DEL EQUIPO PARA ENTREGARLO, DIRECTO DE LA TABLA EQUIPOS_INGRESADOS
                 $data = $this->DataForEntrega($id);
 
-                /*var_dump($data);
-                echo "<br>";
-                print_r($data[0] ['departamento']);
-                echo "<br>";
-                print_r($data[0] ['id_equipo']);
-                die();*/
-
                 $departamento = $data[0]['departamento'];
                 $ingreso = $data[0]['id_equipo'];
 
@@ -251,6 +244,14 @@ use Repository\Procesos1 as Repository1;
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
+
+            $this->equipo_ingresado->set('id_equipo',$id);
+                $data['title'] = "Entregando Equipo";
+                $data['problem'] = $this->equipo_ingresado->getProblema();
+
+                //var_dump($data['operador']);
+                //die(); 
+                return $data;
 
         }
 

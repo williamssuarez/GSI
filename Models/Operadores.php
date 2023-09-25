@@ -170,13 +170,7 @@ class Operadores{
 
         $datos = $this->con->consultaRetorno($sql);
 
-        while($row = $datos->fetch_assoc()){
-
-            $this->resultado[] = $row;
-
-        }
-
-        return $this->resultado;
+        return $datos->fetch_assoc();
     }
 
     public function historial(){
@@ -184,7 +178,7 @@ class Operadores{
         $sql = "";
     }
 
-    public function suspend(){
+    public function suspender(){
 
         $sql = "UPDATE
                 operadores
@@ -206,6 +200,7 @@ class Operadores{
                 id_operador = '{$this->id_operador}' ";
 
         $this->con->consultaSimple($sql);
+
     }
 
 }

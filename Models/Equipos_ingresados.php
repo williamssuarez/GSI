@@ -28,6 +28,20 @@ class Equipos_ingresados{
         return $this->$atributo;
     }
 
+    public function getProblema(){
+
+        $sql = "SELECT
+                problema
+                FROM
+                equipos_ingresados
+                WHERE
+                id_equipo = '{$this->id_equipo}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+    }
+
     public function getDataForEntrega(){
 
         $sql = "SELECT

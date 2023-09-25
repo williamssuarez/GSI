@@ -16,4 +16,23 @@ $(document).ready( function () {
             }
         }
     })
+    $("#liberate").on("click", function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
+    
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¿Deseas liberar esta asignación?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, liberar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirmó, redirige al enlace del botón.
+                window.location.href = $(this).attr("href");
+            }
+        });
+    });
 } );

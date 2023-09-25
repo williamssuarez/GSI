@@ -92,21 +92,14 @@ use Repository\Procesos1 as Repository1;
 
         public function edit($id){
 
-            //var_dump($data);
-            //die(); 
-
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    $nombre = $_POST['nombre'];
-                    $apellido = $_POST['apellido'];
-                    $cedula = $_POST['cedula_identidad'];
-                    $correo = $_POST['correo'];
+                    $this->departamento->set('id_departamento',$id);
+                    $nombre_departamento = $_POST['nombre'];
+                    $piso = $_POST['piso'];
 
-                    $this->departamento->set('id_operador', $id);
-                    $this->departamento->set('nombre', $nombre);
-                    $this->departamento->set('apellido', $apellido);
-                    $this->departamento->set('cedula_identidad', $cedula);
-                    $this->departamento->set('correo', $correo);
+                    $this->departamento->set('nombre_departamento', $nombre_departamento);
+                    $this->departamento->set('piso', $piso);
     
                     $this->departamento->edit();
     
@@ -122,15 +115,24 @@ use Repository\Procesos1 as Repository1;
                                 }
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
+                                    window.location.href = "' . URL . 'departamentos/index";
                                 }
                             });
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
-                }            
-            
+                }  
+                
+                $this->departamento->set('id_departamento',$id);
+                $data['titulo'] = "Editando Nombre de Departamento";
+                $data['departamento'] = $this->departamento->getDataEdit();
+
+                //var_dump($data['operador']);
+                //die(); 
+
+                return $data;
         }
+            
 
         public function view($id){
         

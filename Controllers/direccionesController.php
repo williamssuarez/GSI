@@ -33,6 +33,7 @@ use Repository\Procesos1 as Repository1;
         public function getDireccionesLibresporRango(){
 
                 $datos['titulo'] = "Direcciones IP";
+                $datos['rango'] = $this->setRangoIp->getRango();
                 $datos['direcciones'] = $this->direccion_ip->getDireccionesporRango();
                 $datos['dispositivos'] = $this->dispositivo->lista();
 
@@ -72,11 +73,6 @@ use Repository\Procesos1 as Repository1;
             $datos['titulo'] = "Seleccione el departamento";
             $datos['departamentos'] = $this->departamento->lista();
             return $datos;
-        }
-
-        public function setrango(){
-
-            
         }
 
         public function new(){            
@@ -125,18 +121,21 @@ use Repository\Procesos1 as Repository1;
 
         }
 
-        public function liberarRango(){
+        //Liberando el rango en la tabla setrango en la base de datos
+        private function liberarRango(){
 
             $this->setRangoIp->liberarRangoForIp();
 
         }
 
-        public function actualizarDireccionesenDepartamento(){
+        //Sumando el numero de direcciones asignadas al departamento
+        private function actualizarDireccionesenDepartamento(){
 
             $this->departamento->actualizarDireccionesAsignadas();
         }
 
-        public function changeEstado($id){
+        //Cambiando estado de 0 libre a 1 ocupado
+        private function changeEstado($id){
 
             $this->direccion_ip->set('id_ip', $id);
 
@@ -147,14 +146,48 @@ use Repository\Procesos1 as Repository1;
 
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
-                $this->direccion->set('id_ip', $id);
+                $this->direccion->set('id_asignacion', $id);
+
+                $data = $this->direccion->getDataForLiberation();
 
                 $this->direccion->delete();
+
+                $id_direccion = $data['id_direccion'];
+                
+                $this->liberar($id_direccion);
+
+                echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Eliminado Exitosamente.",
+                                icon: "warning",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'operadores/index";
+                                }
+                            });
+                        </script>';
+                exit;
+
+            }
+
+        }
+
+        public function liberar($id){
+
+                $this->direccion_ip->set('id_ip', $id);
+
+                $this->direccion_ip->release();
 
                 echo '<script>
                             Swal.fire({
                                 title: "Redireccionando...",
-                                text: "Eliminado Exitosamente.",
+                                text: "Direccion Liberada Exitosamente.",
                                 icon: "success",
                                 showConfirmButton: true,
                                 confirmButtonColor: "#3464eb",
@@ -168,8 +201,6 @@ use Repository\Procesos1 as Repository1;
                             });
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-
-            }
 
         }
 

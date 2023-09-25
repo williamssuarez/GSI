@@ -88,8 +88,12 @@ class Template{
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Administrar Equipos:</h6>
-                        <a class="collapse-item" href="<?php echo URL; ?>equipos/index">Equipos Ingresados</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>equipos/salida">Equipos Entregados</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>equipos/index">
+                            <i class="fa-solid fa-truck-arrow-right fa-flip-horizontal"></i>
+                            Equipos Ingresados</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>equipos/salida">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            Equipos Entregados</a>
                     </div>
                 </div>
             </li>
@@ -118,11 +122,28 @@ class Template{
             <span>Soportes</span></a>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="<?php echo URL; ?>departamentos/index">
-            <i class="fa-solid fa-building"></i>
-            <span>Departamentos</span></a>
-    </li>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Extras</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Extras: </h6>
+                        <a class="collapse-item" href="<?php echo URL; ?>departamentos/index">
+                            <i class="fa-solid fa-building"></i>    
+                            Departamentos</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
+                            <i class="fa-solid fa-print"></i>
+                            Dispositivos</a>
+                </div>
+            </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

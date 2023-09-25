@@ -34,8 +34,8 @@
                                 <td> <?php echo $data['numero_bien'] ?> </td>
                                 <td> <?php echo $data['fecha_asignada'] ?> </td>
                                 <td>                         
-                                    <a id="confirmButton" class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_asignacion'] ?>'>                                
-                                        Eliminar
+                                    <a id="liberate" class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_asignacion'] ?>'>                                
+                                        Liberar
                                     </a> 
                                     <a class="btn btn-primary" href='edit/<?php echo $data['id_asignacion'] ?>'>                                        
                                         Editar

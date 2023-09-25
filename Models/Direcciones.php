@@ -64,6 +64,21 @@ class Direcciones{
         $this->con->consultaSimple($sql);
     }
 
+    public function getDataForLiberation(){
+
+        $sql = "SELECT
+                id_asignacion,
+                id_direccion
+                FROM
+                direcciones_asignadas
+                WHERE
+                id_asignacion = {$this->id_asignacion}";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+    }
+
     public function delete(){
 
         $sql = "DELETE FROM
