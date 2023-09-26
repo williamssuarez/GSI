@@ -1,5 +1,6 @@
 $(document).ready( function () {
     $('#tablaequipos_ingresados').DataTable({
+        order: [[2, 'desc']],
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
             zeroRecords: "Ningun equipo encontrado",

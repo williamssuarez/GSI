@@ -1,5 +1,6 @@
 $(document).ready( function () {
     $('#tabla_direcciones').DataTable({
+        order: [[4, 'desc']],
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
             zeroRecords: "Ninguna direccion encontrada",

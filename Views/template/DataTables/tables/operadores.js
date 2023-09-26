@@ -55,4 +55,23 @@ $(document).ready( function () {
             }
         });
     });
+    $("#eliminando").on("click", function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
+    
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¿Deseas eliminar a este operador?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirmó, redirige al enlace del botón.
+                window.location.href = $(this).attr("href");
+            }
+        });
+    });
 } );
