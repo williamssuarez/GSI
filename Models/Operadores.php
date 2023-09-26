@@ -124,12 +124,17 @@ class Operadores{
         return $this->resultado;
     }
 
-    /*public function insertarOperador($nombre, $apellido, $cedula, $correo) {
-        
-        // Sentencia preparada para la inserción
-        $stmt = $this->con->prepare("INSERT INTO operadores(nombre, apellido, cedula_identidad, correo) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $nombre, $apellido, $cedula, $correo);
-        
+    /*public function insertarOperador() {
+        // Sentencia SQL preparada
+        $sql = "INSERT INTO operadores (nombre, apellido, cedula_identidad, correo) VALUES (?, ?, ?, ?)";
+    
+        // Preparar la sentencia
+        $stmt = $this->con->prepare($sql);
+    
+        // Vincular parámetros
+        $stmt->bind_param("ssss", $this->nombre, $this->apellido, $this->cedula_identidad, $this->correo);
+    
+        // Ejecutar la sentencia preparada
         if ($stmt->execute()) {
             return true; // Éxito
         } else {
