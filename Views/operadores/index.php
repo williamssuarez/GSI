@@ -68,7 +68,7 @@
                                 </a>
                                 
 
-                                <a class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_operador'] ?>'>
+                                <a id="eliminando" class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_operador'] ?>'>
                                     <i class="fa-solid fa-user-minus"></i>
                                     Eliminar
                                 </a> 

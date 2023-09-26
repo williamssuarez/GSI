@@ -68,7 +68,8 @@ class Direcciones{
 
         $sql = "SELECT
                 id_asignacion,
-                id_direccion
+                id_direccion,
+                tipo_dispositivo
                 FROM
                 direcciones_asignadas
                 WHERE
