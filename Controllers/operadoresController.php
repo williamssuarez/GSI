@@ -260,7 +260,7 @@ use Repository\Procesos1 as Repository1;
                             Swal.fire({
                                 title: "Exito!",
                                 text: "Eliminado Exitosamente.",
-                                icon: "warning",
+                                icon: "success",
                                 showConfirmButton: true,
                                 confirmButtonColor: "#3464eb",
                                 customClass: {

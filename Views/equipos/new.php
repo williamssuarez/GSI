@@ -50,7 +50,7 @@
                 <br>
             
                 <button class="btn btn-success" type="submit">
-                    <i class="fa-solid fa-circle-arrow-down"></i>
+                <i class="fa-solid fa-truck-arrow-right fa-flip-horizontal"></i>
                     Ingresar
                 </button>
 

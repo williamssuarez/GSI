@@ -24,11 +24,37 @@ class Dispositivos{
         return $this->$atributo;
     }
 
+    public function actualizarDireccionesAsignadas(){
+
+        $sql = "UPDATE
+                dispositivos
+                SET
+                total_asignaciones = total_asignaciones + 1
+                WHERE
+                id_dispositivos = '{$this->id_dispositivos}'";
+
+        $this->con->consultaSimple($sql);
+    }
+
+    public function reducirDireccionesenAsignadas(){
+
+        $sql = "UPDATE
+                dispositivos
+                SET
+                total_asignaciones = total_asignaciones - 1
+                WHERE
+                id_dispositivos = '{$this->id_dispositivos}'";
+
+        $this->con->consultaSimple($sql);
+
+    }
+
     public function lista(){
 
         $sql= "SELECT 
                 id_dispositivos,
-                nombre_dispositivo
+                nombre_dispositivo,
+                total_asignaciones
                 FROM dispositivos";
 
         $datos = $this->con->consultaRetorno($sql);
@@ -50,6 +76,21 @@ class Dispositivos{
                 ('{$this->nombre_dispositivo}')";
         
         $this->con->consultaSimple($sql);
+    }
+
+    public function getDataEdit(){
+
+        $sql = "SELECT
+                id_dispositivos,
+                nombre_dispositivo
+                FROM
+                dispositivos
+                WHERE
+                id_dispositivos = '{$this->id_dispositivos}' ";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
     }
 
 

@@ -37,6 +37,19 @@ class setRango{
         return $datos->fetch_assoc();
     }
 
+    public function validarRango(){
+
+        $sql = "SELECT
+                COUNT(*) as cuenta
+                FROM
+                setrango";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+
+    }
+
     public function setRangoForIp(){
 
         $sql = "INSERT INTO setrango(id_departamento)

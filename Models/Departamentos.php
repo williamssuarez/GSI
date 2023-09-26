@@ -73,7 +73,8 @@ class Departamentos{
         $sql = "SELECT
                 id_departamento, 
                 nombre_departamento, 
-                piso
+                piso,
+                direcciones_asignadas
                 FROM
                 departamentos
                 ORDER BY nombre_departamento";

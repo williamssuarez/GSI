@@ -48,8 +48,23 @@ use Repository\Procesos1 as Repository1;
                 $departamento = $_POST['departamento'];
     
                 $this->setRangoIp->set('id_departamento',$departamento);
-    
-                $this->setRangoIp->setRangoForIp();
+
+                //VERIFICANDO SI HAY UN RANGO NO ELIMINADO CORRECTAMENTE
+                $cuenta = $this->setRangoIp->validarRango();
+
+                //SI YA EXISTE, ELIMINAR Y LUEGO INSERTAR
+                if($cuenta['cuenta'] > 0){
+
+                    $this->setRangoIp->liberarRangoForIp();
+                    $this->setRangoIp->setRangoForIp();
+
+                }
+                //CASO CONTRARIO, SOLO INSERTAR
+                else {
+
+                    $this->setRangoIp->setRangoForIp();
+
+                }
     
                 echo '<script>
                                 Swal.fire({
@@ -94,7 +109,11 @@ use Repository\Procesos1 as Repository1;
                 $this->changeEstado($direccion);
 
                 //Sumando el numero de direcciones asignadas al departamento
+                //El departamento no requiere pasar ninguna variable porque se usa el especificado en el rango
                 $this->actualizarDireccionesenDepartamento();
+
+                //Sumando el numero de direcciones asignadas al dispositivo
+                $this->actualizarDireccionesenDispositivos($dispositivo);
 
                 //Liberando el rango en la tabla setrango en la base de datos
                 $this->liberarRango();
@@ -142,19 +161,38 @@ use Repository\Procesos1 as Repository1;
             $this->direccion_ip->ocupar();
         }
 
+
+        //Sumandole +1 al dispositivo asignadoS
+        private function actualizarDireccionesenDispositivos($id_dispositivos){
+
+            $this->dispositivo->set('id_dispositivos', $id_dispositivos);
+
+            $this->dispositivo->actualizarDireccionesAsignadas();
+        }
+
         public function delete($id){
 
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
+                //Fijando la asignacion
                 $this->direccion->set('id_asignacion', $id);
 
+                //Obteniendo la data necesaria antes de eliminar
                 $data = $this->direccion->getDataForLiberation();
 
+                //Eliminando de la DB
                 $this->direccion->delete();
 
+                //guardando la direccion
                 $id_direccion = $data['id_direccion'];
+
+                //guardando el dispositivo
+                $id_dispositivo = $data['tipo_dispositivo'];
+
                 
-                $this->liberar($id_direccion);
+                
+                //funcion que cambia el estado de la ip, y reduce el total en el departamento y el dispositivo
+                $this->liberar($id_direccion, $id_dispositivo);
 
                 echo '<script>
                             Swal.fire({
@@ -178,10 +216,19 @@ use Repository\Procesos1 as Repository1;
 
         }
 
-        public function liberar($id){
+        //funcion que cambia el estado de la ip, y reduce el total en el departamento y el dispositivo
+        public function liberar($id_direccion, $id_dispositivo){
 
-                $this->direccion_ip->set('id_ip', $id);
+                //Fijando el dispositivo
+                $this->dispositivo->set('id_dispositivos', $id_dispositivo);
 
+                //Reduciendole uno en asignaciones totales
+                $this->dispositivo->reducirDireccionesenAsignadas();
+
+                //Fijando la direccion ip
+                $this->direccion_ip->set('id_ip', $id_direccion);
+
+                //Cambiandole el estado de ocupado a libre y reduciendole 1 al departamento correspondiente
                 $this->direccion_ip->release();
 
                 echo '<script>

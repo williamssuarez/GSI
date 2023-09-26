@@ -18,6 +18,7 @@
                             <tr>
                                 <th>Nombre de Departamento <i class="fa-solid fa-building" style="color: #913080;"></i></th>
                                 <th>Piso <i class="fa-solid fa-stairs" style="color: #005cfa;"></i></th>
+                                <th>Direcciones Asignadas en total</th>
                                 <th>Acciones <i class="fa-solid fa-gears"></i></th>
                             </tr>
                         </thead>
@@ -27,6 +28,7 @@
                             <tr class="table">
                                 <td> <?php echo $data['nombre_departamento'] ?> </td>
                                 <td> <?php echo $data['piso'] ?> </td>
+                                <td> <?php echo $data['direcciones_asignadas'] ?> </td>
                                 <td>                         
                                     <a class="btn btn-primary" href='edit/<?php echo $data['id_departamento'] ?>'>                                        
                                         Editar Nombre
