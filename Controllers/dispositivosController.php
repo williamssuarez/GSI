@@ -10,6 +10,27 @@ use Repository\Procesos1 as Repository1;
         public function __construct()
         {
             $this->dispositivos = new Dispositivos();
+            if (!isset($_SESSION['usuario'])) {
+                // El usuario no está autenticado, redirige al formulario de inicio de sesión.
+                echo '<script>
+                Swal.fire({
+                    title: "Error",
+                    text: "Tienes que inicar sesion primero!",
+                    icon: "warning",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Iniciar Sesion",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'login/index";
+                    }
+                });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+            }
         }
 
         public function index(){

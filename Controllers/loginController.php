@@ -14,53 +14,96 @@ class loginController{
 
     public function logout(){
 
-        //echo "<h1>logout exitoso</h1>";
-        
-        //session_start();
-
-        //session_unset();
-        unset($_SESSION['nombre_usuario']);
-        // Destruye la sesión
-        session_destroy();
+        session_unset(); // Limpia todas las variables de sesión.
+        session_destroy(); // Destruye la sesión.
         
         // Redirige al usuario a la página de inicio o a donde desees
-        header('Location: /CursoPHPPOO/EjercicioFinal/');
-        exit;
+        echo '<script>
+                Swal.fire({
+                    title: "Exito!",
+                    text: "Hasta luego!",
+                    icon: "success",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Continuar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'login/index";
+                    }
+                });
+            </script>';
+        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
                     
     }
 
     public function index(){
 
          //Verificando si hay sesion
-        if(!isset($_SESSION['nombre_usuario'])){
+        if(!isset($_SESSION['usuario'])){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                $username = $_POST['nombre_usuario'];
+                $username = $_POST['usuario'];
                 $clave = $_POST['clave'];
     
-                $this->usuario->set('nombre_usuario', $username);
+                $this->usuario->set('usuario', $username);
                 $this->usuario->set('clave', $clave);
     
                 $user = $this->usuario->getUser();
     
-                //var_dump($user);
+               // var_dump($user['clave']);
+                //die();
     
-                if($user && isset($user[0]['clave'])){
+                if($user && isset($user['clave'])){
     
-                    $flag = $this->verificar($user[0]['clave'],$clave);
+                    $flag = $this->verificar($user['clave'],$clave);
     
                     if($flag == true){
     
-                        $_SESSION['nombre_usuario'] = $username;
+                        $_SESSION['usuario'] = $username;
     
-                        header('Location: /CursoPHPPOO/EjercicioFinal/inicio/ahorasiarreglao');
-                        exit;
+                        echo '<script>
+                                        Swal.fire({
+                                            title: "Exito!",
+                                            text: "Bienvenido!",
+                                            icon: "success",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            confirmButtonText: "Continuar",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'inicio/index";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                     } else {
     
-                        $error = "Nombre de usuario o clave incorrectos";
-                        print $error;
+                        echo '<script>
+                                Swal.fire({
+                                    title: "Error...",
+                                    text: "Clave invalida",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    confirmButtonText: "Continuar",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'login/index";
+                                    }
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
                     }
     
                     /*$success = "<h3>Las credenciales son correctas, Bienvenido</h3>";
@@ -68,11 +111,48 @@ class loginController{
                     print "<br> Clave ingresada: ".$clave ;
                     print "<br> Clave de DB: ".$user[0]['clave'] ;*/
     
+                } else {
+
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Error...",
+                                    text: "Usuario invalido",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    confirmButtonText: "Continuar",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'login/index";
+                                    }
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
                 } 
             }
         } else {
-            header('Location: /CursoPHPPOO/EjercicioFinal/inicio/redireccionencasodeestarlogeado');
-            exit;
+            echo '<script>
+            Swal.fire({
+                title: "Ya estas logeado!",
+                text: "Bienvenido!",
+                icon: "success",
+                showConfirmButton: true,
+                confirmButtonColor: "#3464eb",
+                confirmButtonText: "Continuar",
+                customClass: {
+                    confirmButton: "rounded-button" // Identificador personalizado
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "' . URL . 'inicio/index";
+                }
+            });
+            </script>';
+            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
         }
     }
 

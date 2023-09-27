@@ -19,10 +19,10 @@
 
                 <div>
                     <label class="form-label mt-4"><i class="fa-solid fa-user-gear" style="color: #005af5;"></i> Primer y Segundo Nombre del Operador </label>
-                    <input required class="form-control" type="text" name="nombre" id="nombre" placeholder="Introduzca Nombres">
+                    <input required pattern="[A-Za-z\s]+" title="Solo se permiten letras y espacios" class="form-control" type="text" name="nombre" id="nombre" placeholder="Introduzca Nombres">
                     
                     <label class="form-label mt-4"><i class="fa-solid fa-person"></i> Primer y Segundo Apellido del Operador</label>
-                    <input required class="form-control" type="text" name="apellido" id="apellido" placeholder="Introduzca Apellido">
+                    <input required pattern="[A-Za-z\s]+" title="Solo se permiten letras y espacios" class="form-control" type="text" name="apellido" id="apellido" placeholder="Introduzca Apellido">
 
                     <label class="form-label mt-4"><i class="fa-solid fa-id-card" style="color: #e7820d;"></i> Cedula de identidad del Operador</label>
                     <input required class="form-control" type="number" minlength="7" maxlength="9" name="cedula_identidad" id="cedula_identidad" placeholder="Introduzca Cedula"> 

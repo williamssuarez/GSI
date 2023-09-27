@@ -60,7 +60,7 @@ class Template{
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo URL; ?>inicio/index">
         <div class="sidebar-brand-icon rotate-n-15">
-            <img src="<?php echo URL; ?>Views/template/img/3.png" alt="">
+            <i class="fa-solid fa-gear fa-2xl"></i>
         </div>
         <div class="sidebar-brand-text mx-3">GSI</div>
     </a>
@@ -71,7 +71,7 @@ class Template{
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
         <a class="nav-link" href="<?php echo URL; ?>inicio/index">
-            <img src="<?php echo URL; ?>Views/template/img/assets/inicio/inicio1.png" alt="">
+        <i class="fa-solid fa-house"></i>
             <span> Inicio</span></a>
     </li>
 
@@ -149,7 +149,7 @@ class Template{
     <hr class="sidebar-divider d-none d-md-block">
 
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="<?php echo URL; ?>login/logout">
             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             <span>Logout</span></a>
     </li>
@@ -157,13 +157,11 @@ class Template{
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
-
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
+
 </ul>
 <!-- End of Sidebar -->
 
@@ -203,7 +201,13 @@ class Template{
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Usuario 1</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                    <?php $nombre = $_SESSION['usuario']; 
+                    
+                        echo $nombre;
+
+                    ?>    
+                </span>
                 <img class="img-profile rounded-circle"
                     src="<?php echo URL; ?>Views/template/img/profile.png">
             </a>
@@ -224,7 +228,7 @@ class Template{
                     Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="<?php echo URL; ?>login/logout" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>

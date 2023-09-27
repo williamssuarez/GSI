@@ -6,14 +6,23 @@
 <h1 class="h3 mb-2 text-gray-800"><?php echo $ingreso['titulo']; ?></h1>
  <p class="mb-4">Una tabla para administrar a los equipos ingresados</p>
 
-<?php if($ingreso['total']['totalIngreso'] > 0) { ?>
+<?php if($ingreso['total']['totalIngreso'] > 0) { 
+    
+    if($ingreso['total']['totalIngreso'] == 1){ ?>
 
     <h3 class="h3 mb-2 text-gray-800">
         <i class="fa-solid fa-circle-exclamation fa-1x" style="color: #d4ac40;"></i>    
-        Hay un total de <?php echo $ingreso['total']['totalIngreso'] ?> equipos pendientes
+        Hay <?php echo $ingreso['total']['totalIngreso'] ?> equipo pendiente
     </h3>
 
-<?php } else { ?>
+    <?php } else { ?>
+    
+    <h3 class="h3 mb-2 text-gray-800">
+        <i class="fa-solid fa-circle-exclamation fa-1x" style="color: #d4ac40;"></i>    
+        Hay <?php echo $ingreso['total']['totalIngreso'] ?> equipos pendientes
+    </h3>
+
+<?php } } else { ?>
 
     <h3 class="h3 mb-2 text-gray-800">
     <i class="fa-solid fa-circle-check fa-1x" style="color: #3aa413;"></i>  

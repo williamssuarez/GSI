@@ -1,10 +1,6 @@
 <?php $ingresos = $inicio->index();
 ?>
 
-<div class="px-3 py-5 bg-gradient-primary text-white">
-    <h1 class="text-center">¡BIENVENIDO!</h1>
-</div>
-
 <br>
 
 <div class="row">
@@ -47,14 +43,13 @@
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Equipos Pendientes</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                
                                                 No hay equipos pendientes
-
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fa-solid fa-circle-check fa-2x" style="color: #3aa413;"></i>
+                                        <i class="fa-solid fa-circle-check fa-3x" style="color: #3aa413;"></i>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
