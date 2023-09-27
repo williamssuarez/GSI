@@ -18,6 +18,8 @@ class Conexion{
         $this->con = new \mysqli($this->datos['host'], $this->datos['user'], $this->datos['password'], $this->datos['db']);
     }
 
+    
+ 
     public function consultaSimple($sql){
         $this->con->query($sql);
     }
@@ -51,8 +53,4 @@ class Conexion{
 
 
 }
-
-
-
-
 ?>
