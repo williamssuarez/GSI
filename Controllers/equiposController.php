@@ -1,5 +1,6 @@
 <?php namespace Controllers;
 
+use Models\Equipos;
 use Models\Equipos_ingresados;
 use Models\Equipos_salida;
 use Models\Departamentos;
@@ -8,6 +9,7 @@ use Repository\Procesos1 as Repository1;
 
     class equiposController{
 
+        private $equipo;
         private $equipo_ingresado;
         private $equipo_salida;
         private $departamento;
@@ -15,6 +17,7 @@ use Repository\Procesos1 as Repository1;
 
         public function __construct()
         {
+            $this->equipo = new Equipos();
             $this->equipo_ingresado = new Equipos_ingresados();
             $this->equipo_salida = new Equipos_salida();
             $this->departamento = new Departamentos();
@@ -42,6 +45,16 @@ use Repository\Procesos1 as Repository1;
             }
         }
 
+        //LISTANDO LOS EQUIPOS REGISTRADOS
+        public function registrados(){
+
+            $datos['titulo'] = "Equipos Registrados";
+            $datos['equipos'] = $this->equipo->lista();
+
+            return $datos;
+        }
+
+        //LISTANDO LOS EQUIPOS INGRESADOS
         public function index() {
             $datos['titulo'] = "Equipos Ingresados";
             $datos['total'] = $this->equipo_ingresado->getIngresosTotalesEquipos();
@@ -49,6 +62,7 @@ use Repository\Procesos1 as Repository1;
             return $datos;
         }
         
+        //LISTANDO LOS EQUIPOS ENTREGADOS
         public function salida(){
             $datos['titulo'] = "Equipos Salida";
             $datos['equipos_salida'] = $this->equipo_salida->lista();
@@ -124,7 +138,7 @@ use Repository\Procesos1 as Repository1;
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-            }                        
+            }
 
         }
 
@@ -165,6 +179,67 @@ use Repository\Procesos1 as Repository1;
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     window.location.href = "' . URL . 'equipos/index";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+            }
+
+        }
+
+        public function viewequipo($id){
+
+            $this->equipo->set('id_equipo', $id);
+
+            $datos['titulo'] = "Caracteristicas del equipo";
+            $datos['equipo'] = $this->equipo->view();
+
+            return $datos;
+
+        }
+
+        public function newregistro(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $numero_bien = $_POST['numero_bien'];
+                $departamento = $_POST['departamento'];
+                $usuario = $_POST['usuario'];
+                $direccion_mac = $_POST['direccion_mac'];
+                $direccion_ip = $_POST['usuariodireccion_ip'];
+                $cpu = $_POST['cpu'];
+                $almacenamiento = $_POST['almacenamiento'];
+                $memoria_ram = $_POST['memoria_ram'];
+                $sistema_operativo = $_POST['sistema_operativo'];
+
+                $this->equipo->set('numero_bien', $numero_bien);
+                $this->equipo->set('departamento', $departamento);
+                $this->equipo->set('usuario', $usuario);
+                $this->equipo->set('direccion_mac', $direccion_mac);
+                $this->equipo->set('direccion_ip', $direccion_ip);
+                $this->equipo->set('cpu', $cpu);
+                $this->equipo->set('almacenamiento', $almacenamiento);
+                $this->equipo->set('memoria_ram', $memoria_ram);
+                $this->equipo->set('sistema_operativo', $sistema_operativo);
+
+                //REGISTRANDO EQUIPO
+                $this->equipo->add();
+
+                //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Equipo registrado exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/registrados";
                                 }
                             });
                         </script>';

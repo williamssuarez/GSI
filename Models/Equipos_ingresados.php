@@ -4,8 +4,8 @@ namespace Models;
 
 class Equipos_ingresados{
 
+    private $id_ingreso;
     private $id_equipo;
-    private $numero_bien;
     private $departamento;
     private $fecha_recibido;
     private $recibido_por;
@@ -35,7 +35,7 @@ class Equipos_ingresados{
                 FROM
                 equipos_ingresados
                 WHERE
-                id_equipo = '{$this->id_equipo}'";
+                id_ingreso = '{$this->id_ingreso}'";
 
         $datos = $this->con->consultaRetorno($sql);
 
@@ -50,7 +50,7 @@ class Equipos_ingresados{
                 FROM
                 equipos_ingresados
                 WHERE
-                id_equipo = '{$this->id_equipo}'
+                id_ingreso = '{$this->id_ingreso}'
                 ";
 
         $datos = $this->con->consultaRetorno($sql);
@@ -72,7 +72,7 @@ class Equipos_ingresados{
                 SET
                 estado = 1             
                 WHERE
-                id_equipo = '{$this->id_equipo}' ";
+                id_ingreso = '{$this->id_ingreso}' ";
         
         $this->con->consultaSimple($sql);
     }
@@ -113,8 +113,9 @@ class Equipos_ingresados{
     public function lista(){
 
         $sql = "SELECT
-                t1.id_equipo, 
-                t1.numero_bien, 
+                t1.id_ingreso,
+                t4.id_equipo, 
+                t4.numero_bien, 
                 t2.nombre_departamento AS departamento, 
                 t1.fecha_recibido, 
                 t3.nombre as nombre_operador,
@@ -123,7 +124,8 @@ class Equipos_ingresados{
                 FROM
                 equipos_ingresados t1 
                 INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento
-                INNER JOIN operadores t3 ON t1.recibido_por = t3.id_operador";
+                INNER JOIN operadores t3 ON t1.recibido_por = t3.id_operador
+                INNER JOIN equipos t4 ON t1.id_equipo = t4.id_equipo";
         $datos = $this->con->consultaRetorno($sql);
 
         while($row = $datos->fetch_assoc()){
@@ -138,13 +140,13 @@ class Equipos_ingresados{
     public function add(){
         
         $sql = "INSERT INTO
-                equipos_ingresados(numero_bien, 
+                equipos_ingresados(id_equipo, 
                                     departamento, 
                                     fecha_recibido, 
                                     recibido_por, 
                                     problema)
                 VALUES 
-                ('{$this->numero_bien}', 
+                ('{$this->id_equipo}', 
                 '{$this->departamento}', 
                 '{$this->fecha_recibido}', 
                 '{$this->recibido_por}', 
@@ -158,7 +160,7 @@ class Equipos_ingresados{
         $sql = "DELETE FROM
                 equipos_ingresados
                 WHERE
-                id_equipo = '{$this->id_equipo}'";
+                id_ingreso = '{$this->id_ingreso}'";
         
         $this->con->consultaSimple($sql);
     }
@@ -168,22 +170,22 @@ class Equipos_ingresados{
         $sql = "UPDATE
                 equipos_ingresados
                 SET
-                numero_bien = '{$this->numero_bien}', 
+                id_equipo = '{$this->id_equipo}', 
                 departamento = '{$this->departamento}', 
                 fecha_recibido = '{$this->fecha_recibido}', 
                 recibido_por = '{$this->recibido_por}'
                 problema = '{$this->problema}'
                 WHERE
-                id_equipo = '{$this->id_equipo}' ";
+                id_ingreso = '{$this->id_ingreso}' ";
         
         $this->con->consultaSimple($sql);
     }
 
     public function view(){
 
-        $sql = "SELECT 
+        $sql = "SELECT
+                id_ingreso, 
                 id_equipo, 
-                numero_bien, 
                 departamento, 
                 fecha_recibido, 
                 recibido_por,
@@ -191,7 +193,7 @@ class Equipos_ingresados{
                 FROM
                 equipos_ingresados
                 WHERE
-                id_equipo = '{$this->id_equipo}' ";
+                id_ingreso = '{$this->id_ingreso}' ";
 
         $datos = $this->con->consultaRetorno($sql);
         $row = mysqli_fetch_assoc($datos);

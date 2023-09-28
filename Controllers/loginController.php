@@ -20,7 +20,7 @@ class loginController{
         // Redirige al usuario a la página de inicio o a donde desees
         echo '<script>
                 Swal.fire({
-                    title: "Exito!",
+                    title: "Sesion Cerrada",
                     text: "Hasta luego!",
                     icon: "success",
                     showConfirmButton: true,

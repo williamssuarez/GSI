@@ -32,6 +32,7 @@ class Equipos_salida{
         $sql = "SELECT
                 t1.id_entrega, 
                 t2.nombre_departamento AS departamento,
+                t5.id_ingreso AS ingreso,
                 t4.numero_bien AS equipo, 
                 t1.fecha_entrega, 
                 t3.nombre AS entregado_por,
@@ -40,7 +41,8 @@ class Equipos_salida{
                 equipos_salida t1 
                 INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento
                 INNER JOIN operadores t3 ON t1.entregado_por = t3.id_operador
-                INNER JOIN equipos_ingresados t4 ON t1.ingreso = t4.id_equipo";
+                INNER JOIN equipos t4 ON t1.ingreso = t4.id_equipo
+                INNER JOIN equipos_ingresados t5 ON t1.ingreso = t4.id_equipo";
                 
         $datos = $this->con->consultaRetorno($sql);
 

@@ -88,6 +88,9 @@ class Template{
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Administrar Equipos:</h6>
+                        <a class="collapse-item" href="<?php echo URL; ?>equipos/registrados">
+                            <i class="fa-solid fa-desktop"></i>
+                            Equipos Registrados</a>
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/index">
                             <i class="fa-solid fa-truck-arrow-right fa-flip-horizontal"></i>
                             Equipos Ingresados</a>
@@ -142,6 +145,9 @@ class Template{
                         <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
                             <i class="fa-solid fa-print"></i>
                             Dispositivos</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
+                            <i class="fa-brands fa-ubuntu"></i>    
+                            Sistemas</a>
                 </div>
             </li>
 
