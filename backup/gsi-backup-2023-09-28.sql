@@ -154,12 +154,14 @@ CREATE TABLE `equipos` (
   `cpu` varchar(70) NOT NULL,
   `almacenamiento` int(11) NOT NULL,
   `memoria_ram` int(11) NOT NULL,
-  `sistema_operativo` varchar(70) NOT NULL,
+  `sistema_operativo` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_equipo`),
   KEY `departamento` (`departamento`),
   KEY `direccion_ip` (`direccion_ip`),
+  KEY `sistema_operativo` (`sistema_operativo`),
   CONSTRAINT `equipos_ibfk_1` FOREIGN KEY (`departamento`) REFERENCES `departamentos` (`id_departamento`),
-  CONSTRAINT `equipos_ibfk_2` FOREIGN KEY (`direccion_ip`) REFERENCES `direcciones_asignadas` (`id_asignacion`)
+  CONSTRAINT `equipos_ibfk_2` FOREIGN KEY (`direccion_ip`) REFERENCES `direcciones_asignadas` (`id_asignacion`),
+  CONSTRAINT `equipos_ibfk_3` FOREIGN KEY (`sistema_operativo`) REFERENCES `sistemas_operativos` (`id_os`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -169,7 +171,7 @@ CREATE TABLE `equipos` (
 
 LOCK TABLES `equipos` WRITE;
 /*!40000 ALTER TABLE `equipos` DISABLE KEYS */;
-INSERT INTO `equipos` VALUES (2,30525,5,'Cristiano Ronaldo','00-11-22-33-44-55',NULL,'2023-09-28 00:06:27',0,'Pentium 4',250,1,'Windows 10 MiniOS'),(3,21026,16,'Sonny Brisko','11-00-33-22-33-66',NULL,'2023-09-28 00:06:27',0,'Dual Core',320,2,'Zorin'),(5,225,1,'Enna Alouette','11-22-33-44-55-66',NULL,'2023-09-28 00:06:27',0,'Intel i3',500,4,'Windows 10');
+INSERT INTO `equipos` VALUES (2,30525,5,'Cristiano Ronaldo','00-11-22-33-44-55',NULL,'2023-09-28 00:06:27',0,'Pentium 4',250,1,12),(3,21026,16,'Sonny Brisko','11-00-33-22-33-66',NULL,'2023-09-28 00:06:27',0,'Dual Core',320,2,3),(5,225,1,'Enna Alouette','11-22-33-44-55-66',NULL,'2023-09-28 00:06:27',0,'Intel i3',500,4,2);
 /*!40000 ALTER TABLE `equipos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,7 +310,7 @@ CREATE TABLE `sistemas_operativos` (
   `tipo` int(11) DEFAULT 0,
   `fecha_agregado` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_os`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -317,6 +319,7 @@ CREATE TABLE `sistemas_operativos` (
 
 LOCK TABLES `sistemas_operativos` WRITE;
 /*!40000 ALTER TABLE `sistemas_operativos` DISABLE KEYS */;
+INSERT INTO `sistemas_operativos` VALUES (1,'Windows 10 Home',0,'2023-09-28 05:26:13'),(2,'Windows 10 Pro',0,'2023-09-28 05:26:13'),(3,'Windows 10 MiniOS',0,'2023-09-28 05:29:48'),(4,'Windows 10 Enterprise LTSC',0,'2023-09-28 05:29:48'),(5,'Windows 7',0,'2023-09-28 05:29:48'),(6,'Windows 8',0,'2023-09-28 05:29:48'),(7,'Windows 8.1',0,'2023-09-28 05:29:48'),(8,'Windows XP',0,'2023-09-28 05:29:48'),(9,'Windows Vista',0,'2023-09-28 05:29:48'),(10,'Windows 11',0,'2023-09-28 05:29:48'),(11,'Ubuntu',1,'2023-09-28 05:30:51'),(12,'Zorin',1,'2023-09-28 05:30:51'),(13,'Fedora',1,'2023-09-28 05:30:51'),(17,'Uwuntu',1,'2023-09-28 06:12:49'),(18,'Uwuntu2',1,'2023-09-28 06:14:01');
 /*!40000 ALTER TABLE `sistemas_operativos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -365,4 +368,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-28  1:20:59
+-- Dump completed on 2023-09-28  3:04:48
