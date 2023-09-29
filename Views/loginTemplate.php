@@ -13,9 +13,9 @@ class loginTemplate{
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Sistema GSI</title>
+        <title>Sistema GSI - Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/x-icon" href="<?php echo URL; ?>Views/template/img/2.png">
+        <link rel="icon" type="image/x-icon" href="<?php echo URL; ?>Views/template/img/favicon/favicon.ico">
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/css/style.css">
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/css/sb-admin-2.min.css">
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/vendor/fontawesome-free/css/all.min.css">
