@@ -379,6 +379,7 @@ use Repository\Procesos1 as Repository1;
 
         }
 
+        //EDITAR EQUIPO REGISTRADO
         public function editregistro($id){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){

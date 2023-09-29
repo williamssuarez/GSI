@@ -21,7 +21,7 @@
                     <label class="form-label mt-4"><i class="fa-solid fa-tag" style="color: #279608;"></i> Numero de Bien</label>
                     <input required value="<?php echo $data['equipo']['numero_bien'] ?>" class="form-control" type="number" name="numero_bien" id="numero_bien" maxlength="6" minlength="6" placeholder="Introduzca Numero de Bien">
 
-                    <label class="form-label mt-4"><i class="fa-brands fa-linux" style="color: #e08910;"></i> Sistema Operativo</label>
+                    <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Departamento</label>
                     <select required class="form-select" name="departamento" id="departamento">
 
                         <?php foreach ($data['departamentos'] as $departamentos) { 
