@@ -67,6 +67,26 @@ class Departamentos{
         return $datos->fetch_assoc();
     }
 
+    public function getDepartamentos(){
+        $sql = "SELECT
+                id_departamento,
+                nombre_departamento
+                FROM
+                departamentos
+                ORDER BY nombre_departamento";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+            
+    }
+
 
     public function lista(){
 

@@ -50,6 +50,25 @@ class Sistemas_operativos{
 
     }*/
 
+    public function getSistemas(){
+
+        $sql = "SELECT
+                id_os,
+                nombre
+                FROM sistemas_operativos
+                ORDER BY nombre";
+        
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+    }
+
     public function lista(){
 
         $sql= "SELECT 
@@ -84,7 +103,8 @@ class Sistemas_operativos{
 
         $sql = "SELECT
                 id_os,
-                nombre
+                nombre,
+                tipo
                 FROM
                 sistemas_operativos
                 WHERE

@@ -140,12 +140,14 @@ use Repository\Procesos1 as Repository1;
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    $this->dispositivos->set('id_dispositivos',$id);
-                    $nombre_dispositivo = $_POST['nombre'];
+                    $this->sistemas->set('id_os',$id);
+                    $nombre = $_POST['nombre'];
+                    $tipo = $_POST['tipo'];
 
-                    $this->dispositivos->set('nombre_dispositivo', $nombre_dispositivo);
+                    $this->sistemas->set('nombre', $nombre);
+                    $this->sistemas->set('tipo', $tipo);
     
-                    $this->dispositivos->edit();
+                    $this->sistemas->edit();
     
                     echo '<script>
                             Swal.fire({
@@ -159,7 +161,7 @@ use Repository\Procesos1 as Repository1;
                                 }
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'dispositivos/index";
+                                    window.location.href = "' . URL . 'sistemas/index";
                                 }
                             });
                         </script>';
@@ -167,9 +169,9 @@ use Repository\Procesos1 as Repository1;
     
                 }  
                 
-                $this->dispositivos->set('id_dispositivos',$id);
-                $data['titulo'] = "Editando Nombre del Dispositivo";
-                $data['dispositivos'] = $this->dispositivos->getDataEdit();
+                $this->sistemas->set('id_os',$id);
+                $data['titulo'] = "Editando Nombre del Sistema Operativo";
+                $data['sistemas'] = $this->sistemas->getDataEdit();
 
                 //var_dump($data['operador']);
                 //die(); 
@@ -180,9 +182,9 @@ use Repository\Procesos1 as Repository1;
 
         public function view($id){
         
-            $this->dispositivos->set('id_operador', $id);
+            $this->sistemas->set('id_os', $id);
 
-            $datos[] = $this->dispositivos->view();
+            $datos[] = $this->sistemas->view();
             return $datos;
             
         }

@@ -37,17 +37,13 @@
                             <td> <?php echo $data['fecha_registro'] ?> </td>
                             <td> <?php echo $data['ingresos'] ?> </td>
                             <td>
-                                <a class="btn btn-info" href='edit/<?php echo $data['id_equipo'] ?>'>Editar</a>
+                                <a class="btn btn-info" href='editregistro/<?php echo $data['id_equipo'] ?>'>Editar</a>
                             </td>
                         </tr>
                     <?php } ?>
 
                 </tbody>
             </table>
-            <a class="btn btn-warning" href="<?php echo URL; ?>equipos/index">
-                <i class="fa-solid fa-arrow-left"></i>
-                Equipos ingresados
-            </a>
         </div>
     </div>
     <a class="btn btn-success" href="newregistro">

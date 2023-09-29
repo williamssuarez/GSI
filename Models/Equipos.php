@@ -57,8 +57,7 @@ class Equipos{
         $this->con->consultaSimple($sql);
     }
 
-
-    public function verificarNumeroBien(){
+    public function verificarEquipoBien(){
 
         $sql = "SELECT
                 COUNT(*) as cuenta
@@ -66,6 +65,20 @@ class Equipos{
                 equipos
                 WHERE
                 numero_bien = '{$this->numero_bien}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
+    public function verificarEquipoMac(){
+
+        $sql = "SELECT
+                COUNT(*) as cuenta
+                FROM
+                equipos
+                WHERE
+                direccion_mac = '{$this->direccion_mac}'";
             
         $result = $this->con->consultaRetorno($sql);
 
@@ -101,25 +114,24 @@ class Equipos{
     public function add(){
         
         $sql = "INSERT INTO
-                equipos(numero_bien, 
-                        departamento, 
-                        usuario, 
-                        direccion_mac, 
-                        direccion_ip, 
-                        cpu, 
-                        almacenamiento, 
-                        memoria_ram, 
-                        sistema_operativo)
+                equipos
+                (numero_bien, 
+                departamento, 
+                usuario, 
+                direccion_mac, 
+                cpu, 
+                almacenamiento, 
+                memoria_ram, 
+                sistema_operativo)
                 VALUES 
                 ('{$this->numero_bien}', 
                 '{$this->departamento}', 
                 '{$this->usuario}', 
                 '{$this->direccion_mac}', 
-                '{$this->direccion_ip}', 
-                '{$this->cpu}',
-                '{$this->almacenamiento}',
-                '{$this->memoria_ram}',
-                '{$this->sistema_operativo}', )";
+                '{$this->cpu}', 
+                '{$this->almacenamiento}', 
+                '{$this->memoria_ram}', 
+                '{$this->sistema_operativo}')";
         
         $this->con->consultaSimple($sql);
 
@@ -144,7 +156,10 @@ class Equipos{
                 departamento = '{$this->departamento}', 
                 usuario = '{$this->usuario}', 
                 direccion_mac = '{$this->direccion_mac}',
-                direccion_ip = '{$this->direccion_ip}',
+                cpu = '{$this->cpu}',
+                almacenamiento = '{$this->almacenamiento}',
+                memoria_ram = '{$this->memoria_ram}',
+                sistema_operativo = '{$this->sistema_operativo}',
                 WHERE
                 id_equipo = '{$this->id_equipo}' ";
         
@@ -188,7 +203,10 @@ class Equipos{
                 departamento, 
                 usuario, 
                 direccion_mac,
-                direccion_ip
+                cpu,
+                memoria_ram,
+                almacenamiento,
+                sistema_operativo
                 FROM
                 equipos
                 WHERE

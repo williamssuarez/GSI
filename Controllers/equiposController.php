@@ -5,6 +5,7 @@ use Models\Equipos_ingresados;
 use Models\Equipos_salida;
 use Models\Departamentos;
 use Models\Operadores;
+use Models\Sistemas_operativos;
 use Repository\Procesos1 as Repository1;
 
     class equiposController{
@@ -14,6 +15,7 @@ use Repository\Procesos1 as Repository1;
         private $equipo_salida;
         private $departamento;
         private $operadores;
+        private $sistema_operativo;
 
         public function __construct()
         {
@@ -22,6 +24,7 @@ use Repository\Procesos1 as Repository1;
             $this->equipo_salida = new Equipos_salida();
             $this->departamento = new Departamentos();
             $this->operadores = new Operadores();
+            $this->sistema_operativo = new Sistemas_operativos();
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -69,6 +72,17 @@ use Repository\Procesos1 as Repository1;
             return $datos;
         }
 
+        //OBTENIENDO DATA NECESARIA PARA EL REGISTRO
+        public function getDataRegistro(){
+
+            $datos['titulo'] = "Registrar equipo nuevo";
+            $datos['departamentos'] = $this->departamento->getDepartamentos();
+            $datos['sistemas'] = $this->sistema_operativo->getSistemas();
+
+            return $datos;
+        }
+
+        //OBTENIENDO DATA NECESARIA PARA EL INGRESO
         public function getDataIngreso(){
 
             $datos['titulo'] = "Equipos Ingresados";
@@ -78,6 +92,7 @@ use Repository\Procesos1 as Repository1;
             return $datos;
         }
 
+        //OBTENIENDO DATA NECESARIA PARA LA SALIDA
         public function getDataSalida(){
 
             $datos['titulo'] = "Entregando Equipo...";
@@ -88,6 +103,7 @@ use Repository\Procesos1 as Repository1;
             return $datos;
         }
 
+        //INGRESANDO EQUIPO NUEVO
         public function new(){
            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -142,6 +158,168 @@ use Repository\Procesos1 as Repository1;
 
         }
 
+        //REGISTRANDO NUEVO EQUIPO
+        public function newregistro(){
+           
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $numero_bien = $_POST['numero_bien'];
+                $departamento = $_POST['departamento'];
+                $usuario = $_POST['usuario'];
+                $direccion_mac = $_POST['direccion_mac'];
+                $cpu = $_POST['cpu'];
+                $almacenamiento = $_POST['almacenamiento'];
+                $memoria_ram = $_POST['memoria_ram'];
+                $sistema_operativo = $_POST['sistema'];
+
+                //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
+                if(empty($numero_bien) || empty($usuario) || empty($direccion_mac)){
+
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Parece que uno de los campos quedo vacio",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/newregistro";
+                                    }
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+                } 
+                //SI NO ESTAN VACIOS PROSEGUIR
+                else {
+
+                    $errores = array();
+
+                    //Validar usuario como texto
+                    if (!preg_match('/^[A-Za-z\s]+$/', $usuario)) {
+                        $errores[] = "El nombre del usuario debe contener solo letras y espacios.";
+                    }
+                    
+                    // Validar numero de bien como número entero
+                    if (!is_numeric($numero_bien) || !is_numeric($memoria_ram) || !is_numeric($almacenamiento)) {
+                        $errores[] = "Cédula de identidad debe ser un número.";
+                    }
+                
+                    if (empty($errores)) {
+                        // No hay errores de validación, procesa los datos
+                        $this->equipo->set('numero_bien', $numero_bien);
+                        $this->equipo->set('departamento', $departamento);
+                        $this->equipo->set('usuario', $usuario);
+                        $this->equipo->set('direccion_mac', $direccion_mac);
+                        $this->equipo->set('cpu', $cpu);
+                        $this->equipo->set('almacenamiento', $almacenamiento);
+                        $this->equipo->set('memoria_ram', $memoria_ram);
+                        $this->equipo->set('sistema_operativo', $sistema_operativo);
+
+                        
+
+                        //VERIFICANDO SI EL NUMERO DE BIEN Y LA MAC YA EXISTEN
+                        $cuenta = $this->equipo->verificarEquipoBien();
+                        $cuenta_mac = $this->equipo->verificarEquipoMac(); 
+
+                        //SI YA EXISTE, REDIRIGIR DE NUEVO AL FORMULARIO CON MENSAJE DE ERROR
+                        if($cuenta['cuenta'] > 0){
+
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Error!",
+                                            text: "Esta Numero de bien ya existe",
+                                            icon: "error",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'equipos/newregistro";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                        }
+                        if ($cuenta_mac['cuenta'] > 0) {
+                            
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Error!",
+                                            text: "Esta direccion ya existe",
+                                            icon: "error",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'equipos/newregistro";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                        } 
+                        //CASO CONTRARIO, PROSEGUIR
+                        else {
+
+                            $this->equipo->add();
+
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Exito!",
+                                            text: "Equipo registrado exitosamente",
+                                            icon: "success",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'equipos/registrados";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.   
+
+                        }
+                    } else {
+                        // Hubo errores de validación, muestra los mensajes de error
+                        echo '<script>
+                                        Swal.fire({
+                                            title: "Hubo errores de validacion...",
+                                            text: " Recuerda que el numero de bien deben ser solo los numeros, y los nombres y apellidos no deben llevar numeros",
+                                            icon: "error",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'equipos/newregistro";
+                                            }
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                    }
+                }
+
+            }                        
+
+        }
+         
+
         //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
         private function totalOperador($id){
 
@@ -157,6 +335,7 @@ use Repository\Procesos1 as Repository1;
 
         }
 
+        //ELIMINANDO INGRESO
         public function delete($id){
 
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
@@ -188,6 +367,7 @@ use Repository\Procesos1 as Repository1;
 
         }
 
+        //VER EQUIPO REGISTRADO
         public function viewequipo($id){
 
             $this->equipo->set('id_equipo', $id);
@@ -199,53 +379,62 @@ use Repository\Procesos1 as Repository1;
 
         }
 
-        public function newregistro(){
+        public function editregistro($id){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
+                $this->equipo->set('id_equipo',$id);
                 $numero_bien = $_POST['numero_bien'];
                 $departamento = $_POST['departamento'];
                 $usuario = $_POST['usuario'];
                 $direccion_mac = $_POST['direccion_mac'];
-                $direccion_ip = $_POST['usuariodireccion_ip'];
                 $cpu = $_POST['cpu'];
                 $almacenamiento = $_POST['almacenamiento'];
                 $memoria_ram = $_POST['memoria_ram'];
-                $sistema_operativo = $_POST['sistema_operativo'];
+                $sistema_operativo = $_POST['sistema'];
 
                 $this->equipo->set('numero_bien', $numero_bien);
                 $this->equipo->set('departamento', $departamento);
                 $this->equipo->set('usuario', $usuario);
                 $this->equipo->set('direccion_mac', $direccion_mac);
-                $this->equipo->set('direccion_ip', $direccion_ip);
                 $this->equipo->set('cpu', $cpu);
                 $this->equipo->set('almacenamiento', $almacenamiento);
                 $this->equipo->set('memoria_ram', $memoria_ram);
                 $this->equipo->set('sistema_operativo', $sistema_operativo);
 
-                //REGISTRANDO EQUIPO
-                $this->equipo->add();
 
-                //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                $this->equipo->edit();
+
                 echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Equipo registrado exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'equipos/registrados";
-                                }
-                            });
-                        </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                        Swal.fire({
+                            title: "Exito!",
+                            text: "Editado Exitosamente.",
+                            icon: "success",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'sistemas/index";
+                            }
+                        });
+                    </script>';
+            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-            }
+            }  
+            
+            $this->equipo->set('id_equipo',$id);
+            $data['titulo'] = "Editando Datos del Equipo";
+            $data['equipo'] = $this->equipo->getDataEdit();
+            $data['departamentos'] = $this->departamento->getDepartamentos();
+            $data['sistemas'] = $this->sistema_operativo->getSistemas();
+
+            //var_dump($data['operador']);
+            //die(); 
+
+            return $data;
 
         }
 
