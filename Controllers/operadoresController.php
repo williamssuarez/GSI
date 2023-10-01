@@ -1,15 +1,18 @@
 <?php namespace Controllers;
 
-use Models\Operadores as Operadores;
+use Models\Operadores;
+use Models\Auditoria;
 use Repository\Procesos1 as Repository1;
 
     class operadoresController{
 
         private $operador;
+        private $auditoria;
 
         public function __construct()
         {
             $this->operador = new Operadores();
+            $this->auditoria = new Auditoria();
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -274,8 +277,42 @@ use Repository\Procesos1 as Repository1;
 
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
-                $this->operador->set('id_operador', $id);
+                //PREPARANDO AUDITORIA
+                $tipo_cambio = 'delete';
+                $tabla_afectada = 'operadores';
+                $id_tabla = 'id_operador';
+                $registro_afectado = $id;
+                $json_clave1 = 'nombre';
+                $json_valor1 = 'nombre';
+                $json_clave2 = 'apellido';
+                $json_valor2 = 'apellido';
+                $json_clave3 = 'cedula_identidad';
+                $json_valor3 = 'cedula_identidad';
+                $valor_despues = 'eliminado';
+                $usuario  = $_SESSION['usuario'];
 
+                //SETEANDO AUDITORIA
+                $this->auditoria->set('tipo_cambio', $tipo_cambio);
+                $this->auditoria->set('tabla_afectada', $tabla_afectada);
+                $this->auditoria->set('id_tabla', $id_tabla);
+                $this->auditoria->set('registro_afectado', $registro_afectado);
+                //SETEANDO CLAVES JSON
+                $this->auditoria->set('json_clave1', $json_clave1);
+                $this->auditoria->set('json_clave2', $json_clave2);
+                $this->auditoria->set('json_clave3', $json_clave3);
+                //SETEANDO VALORES JSON
+                $this->auditoria->set('json_valor1', $json_valor1);
+                $this->auditoria->set('json_valor2', $json_valor2);
+                $this->auditoria->set('json_valor3', $json_valor3);
+                //SETEANDO LOS DEMAS CAMPOS NECESARIOS
+                $this->auditoria->set('valor_despues', $valor_despues);
+                $this->auditoria->set('usuario', $usuario);
+
+                //EJECUTANDO LA AUDITORIA
+                $this->auditoria->auditarDelete();
+
+                //ELIMINANDO
+                $this->operador->set('id_operador', $id);
                 $this->operador->delete();
 
                 echo '<script>
