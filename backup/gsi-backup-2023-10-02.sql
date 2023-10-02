@@ -76,7 +76,7 @@ CREATE TABLE `departamentos` (
 
 LOCK TABLES `departamentos` WRITE;
 /*!40000 ALTER TABLE `departamentos` DISABLE KEYS */;
-INSERT INTO `departamentos` VALUES (1,'Bienes','6',5,1),(3,'Radio Municipal','7',0,0),(4,'Auditoria Interna','6',0,0),(5,'Presupuesto','6',0,0),(6,'Tesoreria','6',0,1),(8,'Catastro Direccion','6',0,0),(9,'Catastro Juridico','6',0,0),(10,'Catastro Economico','6',0,0),(11,'Catastro Atencion','6',0,0),(12,'Catastro Fisico','6',0,0),(13,'Sala Politica','5',0,0),(14,'Sindicato Empleados','5',0,0),(15,'Gestion Social','5',0,1),(16,'Rh Direccion','5',0,0),(17,'Rh Fondo de Proteccion','5',0,2),(18,'Rh Administracion','5',0,0),(19,'Rh Nomina','5',0,1),(20,'Rh Juridico','5',0,0),(21,'Rh Seguridad Laboral','5',0,0),(22,'Rh Biometrico','5',0,0),(23,'Ingenieria Municipal','4',0,0),(24,'Construgirardot','4',0,0),(25,'Ingenieria Ambientes','4',0,0),(26,'Tecnologia y Sistemas','3',0,0),(27,'Satrim','3',0,0),(29,'Despacho','2',0,0),(30,'Sindicatura','2',0,0),(31,'Relaciones Publicas','2',0,0),(32,'Prensa','2',0,0),(33,'Atencion Ciudadana','PB',0,0),(34,'Administracion xd','PB',0,1),(35,'Compra','Sotano',0,0),(36,'Catastro Archivo','Sotano',0,0),(37,'Servicios Generales','Sotano',0,0);
+INSERT INTO `departamentos` VALUES (1,'Bienes','6',5,1),(3,'Radio Municipal','7',0,0),(4,'Auditoria Interna','6',0,0),(5,'Presupuesto','6',0,0),(6,'Tesoreria','6',0,1),(8,'Catastro Direccion','6',0,0),(9,'Catastro Juridico','6',0,0),(10,'Catastro Economico','6',0,0),(11,'Catastro Atencion','6',0,0),(12,'Catastro Fisico','6',0,0),(13,'Sala Politica','5',0,0),(14,'Sindicato Empleados','5',0,0),(15,'Gestion Social','5',0,1),(16,'Rh Direccion','5',0,0),(17,'Rh Fondo de Proteccion','5',0,2),(18,'Rh Administracion','5',0,0),(19,'Rh Nomina','5',0,1),(20,'Rh Juridico','5',0,0),(21,'Rh Seguridad Laboral','5',0,0),(22,'Rh Biometrico','5',0,0),(23,'Ingenieria Municipal','4',0,0),(24,'Construgirardot','4',0,0),(25,'Ingenieria Ambientes','4',0,0),(26,'Tecnologia y Sistemas','3',0,0),(27,'Satrim','3',0,0),(29,'Despacho','2',0,0),(30,'Sindicatura','2',0,0),(31,'Relaciones Publicas','2',0,0),(32,'Prensa','2',1,0),(33,'Atencion Ciudadana','PB',0,0),(34,'Administracion ','PB',0,1),(35,'Compra','Sotano',0,0),(36,'Catastro Archivo','Sotano',0,0),(37,'Servicios Generales','Sotano',0,0);
 /*!40000 ALTER TABLE `departamentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,6 +175,7 @@ DROP TABLE IF EXISTS `equipos`;
 CREATE TABLE `equipos` (
   `id_equipo` int(11) NOT NULL AUTO_INCREMENT,
   `numero_bien` int(6) NOT NULL,
+  `departamento` int(11) NOT NULL,
   `usuario` varchar(70) NOT NULL,
   `direccion_mac` varchar(17) NOT NULL,
   `direccion_ip` int(11) DEFAULT NULL,
@@ -186,8 +187,10 @@ CREATE TABLE `equipos` (
   `sistema_operativo` int(11) DEFAULT NULL,
   `estado` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_equipo`),
+  KEY `departamento` (`departamento`),
   KEY `direccion_ip` (`direccion_ip`),
   KEY `sistema_operativo` (`sistema_operativo`),
+  CONSTRAINT `equipos_ibfk_1` FOREIGN KEY (`departamento`) REFERENCES `departamentos` (`id_departamento`),
   CONSTRAINT `equipos_ibfk_2` FOREIGN KEY (`direccion_ip`) REFERENCES `direcciones_asignadas` (`id_asignacion`),
   CONSTRAINT `equipos_ibfk_3` FOREIGN KEY (`sistema_operativo`) REFERENCES `sistemas_operativos` (`id_os`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -199,7 +202,7 @@ CREATE TABLE `equipos` (
 
 LOCK TABLES `equipos` WRITE;
 /*!40000 ALTER TABLE `equipos` DISABLE KEYS */;
-INSERT INTO `equipos` VALUES (2,30525,'Cristiano Ronaldo','00-11-22-33-44-55',NULL,'2023-09-28 00:06:27',0,'Pentium 4',250,1,12,0),(3,21026,'Sonny Brisko','11-00-33-22-33-66',NULL,'2023-09-28 00:06:27',0,'Dual Core',320,2,12,0),(5,225,'Enna Alouette','11-22-33-44-55-66',NULL,'2023-09-28 00:06:27',0,'Intel i3',500,4,2,0),(6,20555,'qeqw','33-44-55-44-55-11',NULL,'2023-10-02 07:30:08',0,'Dual Core',1000,4,2,0);
+INSERT INTO `equipos` VALUES (2,30525,5,'Cristiano Ronaldo','00-11-22-33-44-55',NULL,'2023-09-28 00:06:27',0,'Pentium 4',250,1,12,0),(3,21026,16,'Sonny Brisko','11-00-33-22-33-66',NULL,'2023-09-28 00:06:27',0,'Dual Core',320,2,12,0),(5,225,1,'Enna Alouette','11-22-33-44-55-66',NULL,'2023-09-28 00:06:27',0,'Intel i3',500,4,2,0),(6,20555,32,'qeqw','33-44-55-44-55-11',NULL,'2023-10-02 07:30:08',1,'Dual Core',1000,4,2,2);
 /*!40000 ALTER TABLE `equipos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,19 +216,16 @@ DROP TABLE IF EXISTS `equipos_ingresados`;
 CREATE TABLE `equipos_ingresados` (
   `id_ingreso` int(11) NOT NULL AUTO_INCREMENT,
   `id_equipo` int(11) DEFAULT NULL,
-  `departamento` int(11) DEFAULT NULL,
   `fecha_recibido` timestamp NOT NULL DEFAULT current_timestamp(),
   `recibido_por` int(11) DEFAULT NULL,
   `problema` varchar(70) DEFAULT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_ingreso`),
-  KEY `departamento` (`departamento`),
   KEY `recibido_por` (`recibido_por`),
   KEY `id_equipo` (`id_equipo`),
-  CONSTRAINT `equipos_ingresados_ibfk_1` FOREIGN KEY (`departamento`) REFERENCES `departamentos` (`id_departamento`),
   CONSTRAINT `equipos_ingresados_ibfk_2` FOREIGN KEY (`recibido_por`) REFERENCES `operadores` (`id_operador`),
   CONSTRAINT `equipos_ingresados_ibfk_3` FOREIGN KEY (`id_equipo`) REFERENCES `equipos` (`id_equipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -234,7 +234,7 @@ CREATE TABLE `equipos_ingresados` (
 
 LOCK TABLES `equipos_ingresados` WRITE;
 /*!40000 ALTER TABLE `equipos_ingresados` DISABLE KEYS */;
-INSERT INTO `equipos_ingresados` VALUES (1,5,1,'2023-09-11 22:45:03',1,'No arranca',1),(2,3,16,'2023-09-11 22:45:03',8,'Fuente Quemada',1),(3,3,16,'2023-09-18 03:33:00',1,'Actualizacion S.O',1),(4,3,16,'2023-09-18 03:33:00',1,'Actualizacion S.O',1),(5,5,1,'2023-09-18 03:40:00',8,'Respaldo',1),(6,3,16,'2023-09-18 03:59:00',8,'Respaldo Zorin',1),(7,3,16,'2023-09-18 03:59:00',8,'Respaldo Zorin',1),(8,5,1,'2023-09-18 04:05:00',1,'No video',1),(9,5,1,'2023-09-18 04:10:00',1,'Actualizacion S.O',0),(10,5,1,'2023-09-18 04:11:00',1,'Respaldo Zorin',1),(11,3,16,'2023-09-18 04:13:00',8,'Respaldo Zorin',0),(12,3,16,'2023-09-18 04:13:00',8,'Respaldo Zorin',1),(13,3,16,'2023-09-18 04:13:00',8,'Respaldo Zorin',0),(14,3,16,'2023-09-18 04:13:00',8,'Respaldo Zorin',1),(15,3,16,'2023-09-20 23:31:00',7,'No enciende',1);
+INSERT INTO `equipos_ingresados` VALUES (1,5,'2023-09-11 22:45:03',1,'No arranca',1),(2,3,'2023-09-11 22:45:03',8,'Fuente Quemada',1),(3,3,'2023-09-18 03:33:00',1,'Actualizacion S.O',1),(4,3,'2023-09-18 03:33:00',1,'Actualizacion S.O',1),(5,5,'2023-09-18 03:40:00',8,'Respaldo',1),(6,3,'2023-09-18 03:59:00',8,'Respaldo Zorin',1),(7,3,'2023-09-18 03:59:00',8,'Respaldo Zorin',1),(8,5,'2023-09-18 04:05:00',1,'No video',1),(9,5,'2023-09-18 04:10:00',1,'Actualizacion S.O',0),(10,5,'2023-09-18 04:11:00',1,'Respaldo Zorin',1),(11,3,'2023-09-18 04:13:00',8,'Respaldo Zorin',0),(12,3,'2023-09-18 04:13:00',8,'Respaldo Zorin',1),(13,3,'2023-09-18 04:13:00',8,'Respaldo Zorin',0),(14,3,'2023-09-18 04:13:00',8,'Respaldo Zorin',1),(15,3,'2023-09-20 23:31:00',7,'No enciende',1),(19,6,'2023-10-02 08:39:00',1,'Actualizar',0),(20,6,'2023-10-02 08:39:00',1,'Actualizar',0);
 /*!40000 ALTER TABLE `equipos_ingresados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,16 +247,13 @@ DROP TABLE IF EXISTS `equipos_salida`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `equipos_salida` (
   `id_entrega` int(11) NOT NULL AUTO_INCREMENT,
-  `departamento` int(11) DEFAULT NULL,
   `ingreso` int(11) DEFAULT NULL,
   `fecha_entrega` timestamp NOT NULL DEFAULT current_timestamp(),
   `entregado_por` int(11) DEFAULT NULL,
   `conclusion` varchar(70) DEFAULT NULL,
   PRIMARY KEY (`id_entrega`),
-  KEY `departamento` (`departamento`),
   KEY `equipo` (`ingreso`),
   KEY `entregado_por` (`entregado_por`),
-  CONSTRAINT `equipos_salida_ibfk_1` FOREIGN KEY (`departamento`) REFERENCES `departamentos` (`id_departamento`),
   CONSTRAINT `equipos_salida_ibfk_2` FOREIGN KEY (`ingreso`) REFERENCES `equipos_ingresados` (`id_ingreso`),
   CONSTRAINT `equipos_salida_ibfk_3` FOREIGN KEY (`entregado_por`) REFERENCES `operadores` (`id_operador`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -268,7 +265,7 @@ CREATE TABLE `equipos_salida` (
 
 LOCK TABLES `equipos_salida` WRITE;
 /*!40000 ALTER TABLE `equipos_salida` DISABLE KEYS */;
-INSERT INTO `equipos_salida` VALUES (3,1,1,'2023-09-20 02:12:00',1,'cambio de fuente'),(4,16,3,'2023-09-21 03:50:00',11,'Actualizacion'),(5,16,4,'2023-09-21 03:52:00',12,'Actualizacion'),(6,16,2,'2023-09-21 03:53:00',12,'cambio de fuente'),(7,1,8,'2023-09-21 03:53:00',11,'Cambio de Ram'),(8,1,5,'2023-09-21 03:54:00',1,'Respaldo Terminado'),(9,16,6,'2023-09-21 04:13:00',1,'Respaldo Terminado'),(10,16,7,'2023-09-21 04:40:00',1,'Respaldo Terminado'),(11,16,14,'2023-09-22 01:43:00',1,'Respaldo Terminado'),(12,1,10,'2023-09-22 01:43:00',12,'Respaldo Terminado'),(13,16,12,'2023-09-22 21:54:00',8,'Respaldo Terminado'),(14,16,15,'2023-09-25 01:25:00',1,'cambio de fuente');
+INSERT INTO `equipos_salida` VALUES (3,1,'2023-09-20 02:12:00',1,'cambio de fuente'),(4,3,'2023-09-21 03:50:00',11,'Actualizacion'),(5,4,'2023-09-21 03:52:00',12,'Actualizacion'),(6,2,'2023-09-21 03:53:00',12,'cambio de fuente'),(7,8,'2023-09-21 03:53:00',11,'Cambio de Ram'),(8,5,'2023-09-21 03:54:00',1,'Respaldo Terminado'),(9,6,'2023-09-21 04:13:00',1,'Respaldo Terminado'),(10,7,'2023-09-21 04:40:00',1,'Respaldo Terminado'),(11,14,'2023-09-22 01:43:00',1,'Respaldo Terminado'),(12,10,'2023-09-22 01:43:00',12,'Respaldo Terminado'),(13,12,'2023-09-22 21:54:00',8,'Respaldo Terminado'),(14,15,'2023-09-25 01:25:00',1,'cambio de fuente');
 /*!40000 ALTER TABLE `equipos_salida` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -299,7 +296,7 @@ CREATE TABLE `operadores` (
 
 LOCK TABLES `operadores` WRITE;
 /*!40000 ALTER TABLE `operadores` DISABLE KEYS */;
-INSERT INTO `operadores` VALUES (1,'Williams','Suarez',30525051,'williamssuarez@gmail.com','04120401290',6,5,0),(7,'Juancho','Casteneda',21026062,'mail6@gmail.com','04248225441',0,4,1),(8,'Luis','Monserrat',25025021,'mail@gmail.com','04243185145',1,7,0),(11,'Leonardo','Gonzales',21001220,'mail@gmail.com','04243402313',2,0,0),(12,'Javier','Castaneda',31001220,'mail@gmail.com','04243084640',3,0,0),(15,'Lionel','Messi',13131313,'mail@gmail.com','041211232412',0,0,0),(19,'Sonny ','pantoja',22333222,'mail7@gmail.com','',0,0,0),(20,'Sonny Brisko','Brisko',11444111,'mail11@gmail.com','',0,0,0);
+INSERT INTO `operadores` VALUES (1,'Williams','Suarez',30525051,'williamssuarez@gmail.com','04120401290',6,6,0),(7,'Juancho','Casteneda',21026062,'mail6@gmail.com','04248225441',0,4,1),(8,'Luis','Monserrat',25025021,'mail@gmail.com','04243185145',1,7,0),(11,'Leonardo','Gonzales',21001220,'mail@gmail.com','04243402313',2,0,0),(12,'Javier','Castaneda',31001220,'mail@gmail.com','04243084640',3,0,0),(15,'Lionel','Messi',13131313,'mail@gmail.com','041211232412',0,0,0),(19,'Sonny ','pantoja',22333222,'mail7@gmail.com','',0,0,0),(20,'Sonny Brisko','Brisko',11444111,'mail11@gmail.com','',0,0,0);
 /*!40000 ALTER TABLE `operadores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,4 +394,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-02  4:13:54
+-- Dump completed on 2023-10-02  5:56:25
