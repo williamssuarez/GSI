@@ -53,6 +53,24 @@ class Operadores{
         $this->con->consultaSimple($sql);
     }
 
+    public function getOperadorforAuditoria(){
+
+        $sql= "SELECT
+                id_operador,
+                nombre,
+                apellido,
+                cedula_identidad,
+                correo
+                FROM
+                operadores
+                WHERE
+                id_operador = '{$this->id_operador}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function getOperador(){
 
         $sql= "SELECT

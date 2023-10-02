@@ -250,7 +250,47 @@ use Repository\Procesos1 as Repository1;
 
         public function getDataForEdit($id){
 
+            //OBTENIENDO DATA PARA AUDITORIA
             $this->operador->set('id_operador', $id);
+            $data = $this->operador->getOperadorforAuditoria();
+
+            //PREPARANDO AUDITORIA
+            $tipo_cambio = 'Intento de editar';
+            $tabla_afectada = 'operadores';
+            $registro_afectado = $data['id_operador'];
+            $json_clave1 = 'nombre';
+            $json_valor1 = $data['nombre'];
+            $json_clave2 = 'apellido';
+            $json_valor2 = $data['apellido'];
+            $json_clave3 = 'cedula_identidad';
+            $json_valor3 = $data['cedula_identidad'];
+            $json_clave4 = 'correo';
+            $json_valor4 = $data['correo'];
+            $valor_despues = 'En proceso';
+            $usuario  = $_SESSION['usuario'];
+
+            //SETEANDO AUDITORIA
+            /*$this->auditoria->set('tipo_cambio', $tipo_cambio);
+            $this->auditoria->set('tabla_afectada', $tabla_afectada);
+            $this->auditoria->set('registro_afectado', $registro_afectado);
+            //SETEANDO CLAVES JSON
+            $this->auditoria->set('json_clave1', $json_clave1);
+            $this->auditoria->set('json_clave2', $json_clave2);
+            $this->auditoria->set('json_clave3', $json_clave3);
+            $this->auditoria->set('json_clave3', $json_clave4);
+            //SETEANDO VALORES JSON
+            $this->auditoria->set('json_valor1', $json_valor1);
+            $this->auditoria->set('json_valor2', $json_valor2);
+            $this->auditoria->set('json_valor3', $json_valor3);
+            $this->auditoria->set('json_valor3', $json_valor4);
+            //SETEANDO LOS DEMAS CAMPOS NECESARIOS
+            $this->auditoria->set('valor_despues', $valor_despues);
+            $this->auditoria->set('usuario', $usuario);*/
+
+            $this->auditoria->auditar('delete', 'operadores', $id, $valoresAntes, $valoresDespues, $_SESSION['usuario']);
+
+            //EJECUTANDO LA AUDITORIA
+            $this->auditoria->auditarEdit();
 
             return $this->operador->getDataEdit();
             
@@ -277,24 +317,26 @@ use Repository\Procesos1 as Repository1;
 
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
+                //OBTENIENDO DATA PARA AUDITORIA
+                $this->operador->set('id_operador', $id);
+                $data = $this->operador->getOperadorforAuditoria();
+
                 //PREPARANDO AUDITORIA
                 $tipo_cambio = 'delete';
                 $tabla_afectada = 'operadores';
-                $id_tabla = 'id_operador';
-                $registro_afectado = $id;
+                $registro_afectado = $data['id_operador'];
                 $json_clave1 = 'nombre';
-                $json_valor1 = 'nombre';
+                $json_valor1 = $data['nombre'];
                 $json_clave2 = 'apellido';
-                $json_valor2 = 'apellido';
+                $json_valor2 = $data['apellido'];
                 $json_clave3 = 'cedula_identidad';
-                $json_valor3 = 'cedula_identidad';
+                $json_valor3 = $data['cedula_identidad'];
                 $valor_despues = 'eliminado';
                 $usuario  = $_SESSION['usuario'];
 
                 //SETEANDO AUDITORIA
                 $this->auditoria->set('tipo_cambio', $tipo_cambio);
                 $this->auditoria->set('tabla_afectada', $tabla_afectada);
-                $this->auditoria->set('id_tabla', $id_tabla);
                 $this->auditoria->set('registro_afectado', $registro_afectado);
                 //SETEANDO CLAVES JSON
                 $this->auditoria->set('json_clave1', $json_clave1);
@@ -312,7 +354,6 @@ use Repository\Procesos1 as Repository1;
                 $this->auditoria->auditarDelete();
 
                 //ELIMINANDO
-                $this->operador->set('id_operador', $id);
                 $this->operador->delete();
 
                 echo '<script>

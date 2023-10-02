@@ -148,6 +148,8 @@ class Template{
                         <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
                             <i class="fa-brands fa-ubuntu"></i>    
                             Sistemas</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>auditoria/index">
+                            Auditoria</a>
                 </div>
             </li>
 
