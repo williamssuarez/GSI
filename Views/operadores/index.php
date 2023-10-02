@@ -46,21 +46,10 @@
                             </td>
                             <td>      
                                 
-                                <?php if($data['estado'] == 0){ ?>
-
-                                    <a id="suspendiendo" class="btn btn-warning btn-icon-split" href='suspend/<?php echo $data['id_operador'] ?>'>
-                                        <i class="fa-solid fa-user-large-slash"></i>
-                                        Suspender
-                                    </a>
-
-                                <?php } else {  ?>
-
-                                    <a id="reactivando" class="btn btn-success btn-icon-split" href='activate/<?php echo $data['id_operador'] ?>'>
-                                        <i class="fa-solid fa-user-check"></i>
-                                        Reactivar
-                                    </a>
-
-                                <?php } ?>
+                                <a class="btn btn-warning btn-icon-split" href='view/<?php echo $data['id_operador'] ?>'>
+                                    <i class="fa-solid fa-eye"></i>
+                                    Ver Informacion
+                                </a>
                                 
                                 <a class="btn btn-primary btn-icon-split" href='edit/<?php echo $data['id_operador'] ?>'>
                                     <i class="fa-solid fa-user-pen"></i>

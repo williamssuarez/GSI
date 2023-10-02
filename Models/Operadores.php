@@ -202,21 +202,19 @@ class Operadores{
                 nombre, 
                 apellido, 
                 cedula_identidad, 
-                correo
+                correo,
+                telefono,
+                equipos_entregados,
+                equipos_ingresados,
+                estado
                 FROM
                 operadores
                 WHERE
                 id_operador = '{$this->id_operador}' ";
 
-        $datos = $this->con->consultaRetorno($sql);
+        $result = $this->con->consultaRetorno($sql);
 
-        while($row = $datos->fetch_assoc()){
-
-            $this->resultado[] = $row;
-
-        }
-
-        return $this->resultado;
+        return $result->fetch_assoc();
     }
 
     public function getDataEdit(){

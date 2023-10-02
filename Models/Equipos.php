@@ -16,6 +16,7 @@ class Equipos{
     private $almacenamiento;
     private $memoria_ram;
     private $sistema_operativo;
+    private $estado;
     private $con;
     private $resultado;
 
@@ -45,6 +46,20 @@ class Equipos{
         $this->con->consultaSimple($sql);
     }
 
+    public function actualizarIngresosdeEquipoDepartamento(){
+
+        $sql = "SELECT
+                departamento
+                FROM
+                equipos
+                WHERE
+                id_equipo = '{$this->id_equipo}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function reducirIngresosdeEquipo(){
 
         $sql = "UPDATE 
@@ -55,6 +70,32 @@ class Equipos{
                 id_equipo = '{$this->id_equipo}' ";
 
         $this->con->consultaSimple($sql);
+    }
+
+    public function cambiarEstadoAenProceso(){
+
+        $sql = "UPDATE 
+                equipos
+                SET
+                estado = 2
+                WHERE
+                id_equipo = '{$this->id_equipo}' ";
+
+        $this->con->consultaSimple($sql);
+
+    }
+
+    public function cambiarEstadoaActivo(){
+
+        $sql = "UPDATE 
+                equipos
+                SET
+                estado = 0
+                WHERE
+                id_equipo = '{$this->id_equipo}' ";
+
+        $this->con->consultaSimple($sql);
+
     }
 
     public function verificarEquipoBien(){
@@ -85,6 +126,20 @@ class Equipos{
         return $result->fetch_assoc();
     }
 
+    public function getEquipobyNumerodeBien(){
+
+        $sql = "SELECT
+                id_equipo
+                FROM
+                equipos
+                WHERE
+                numero_bien = '{$this->numero_bien}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function lista(){
 
         $sql = "SELECT
@@ -95,7 +150,8 @@ class Equipos{
                 t1.direccion_mac,
                 t1.direccion_ip,
                 t1.fecha_registro,
-                t1.ingresos
+                t1.ingresos,
+                t1.estado
                 FROM
                 equipos t1 
                 INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento";
@@ -159,7 +215,7 @@ class Equipos{
                 cpu = '{$this->cpu}',
                 almacenamiento = '{$this->almacenamiento}',
                 memoria_ram = '{$this->memoria_ram}',
-                sistema_operativo = '{$this->sistema_operativo}',
+                sistema_operativo = '{$this->sistema_operativo}'
                 WHERE
                 id_equipo = '{$this->id_equipo}' ";
         
@@ -181,7 +237,8 @@ class Equipos{
                 t1.almacenamiento,
                 t1.memoria_ram,
                 t3.nombre as sistema_operativo,
-                t3.tipo as tipo
+                t3.tipo as tipo,
+                t1.estado
                 FROM
                 equipos t1 
                 INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento

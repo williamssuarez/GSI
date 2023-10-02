@@ -96,7 +96,6 @@ use Repository\Procesos1 as Repository1;
         public function getDataSalida(){
 
             $datos['titulo'] = "Entregando Equipo...";
-            $datos['departamentos'] = $this->departamento->lista();
             $datos['operadores'] = $this->operadores->getOperador();
             $datos['equipos'] = $this->equipo_ingresado->getEquipos();
 
@@ -109,7 +108,6 @@ use Repository\Procesos1 as Repository1;
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 $numero_bien = $_POST['numero_bien'];
-                $departamento = $_POST['departamento'];
 
                 if(isset($_POST['fecha_recibido']) > 0){
                     $fecha_recibido = $_POST['fecha_recibido'];
@@ -120,39 +118,82 @@ use Repository\Procesos1 as Repository1;
                 $recibido_por = $_POST['recibido_por'];
                 $problema = $_POST['problema'];
 
-                $this->equipo_ingresado->set('numero_bien', $numero_bien);
-                $this->equipo_ingresado->set('departamento', $departamento);
-                $this->equipo_ingresado->set('fecha_recibido', $fecha_recibido);
-                $this->equipo_ingresado->set('recibido_por', $recibido_por);
-                $this->equipo_ingresado->set('problema', $problema);
+                //VERIFICANDO SI EL EQUIPO ESTA REGISTRADO
+                $this->equipo->set('numero_bien', $numero_bien);
+                $cuenta = $this->equipo->verificarEquipoBien();
 
-                //INGRESANDO EQUIPO
-                $this->equipo_ingresado->add();
+                //SI LA CUENTA ES MENOR A UNO ES QUE EL EQUIPO NO ESTA REGISTRADO
+                if($cuenta['cuenta'] < 1){ 
+                    
+                    //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Equipo no registrado!",
+                                    text: "Este equipo no esta registrado, registrelo antes de ingresarlo.",
+                                    icon: "warning",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    confirmButtonText: "Registrar",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/newregistro";
+                                    }
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-                //OBTENIENDO EL TOTAL DE INGRESOS DE DEPARTAMENTO Y SUMANDOLE 1
-                $this->totalDepartamentos($departamento);
+                } else {
 
-                //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
-                $this->totalOperador($recibido_por);
+                    //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
+                    $id_equipo = $this->equipo->getEquipobyNumerodeBien();
+                    //UNA VEZ OBTENIDO LO SETEAMOS PARA CAMBIARLE EL ESTADO, OBTENER EL DEPARTAMENTO E INCREMENTARLE EL INGRESO
+                    $this->equipo->set('id_equipo', $id_equipo['id_equipo']);
 
-                //REDIRECCIONANDO CON UN MENSAJE DE EXITO
-                echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Equipo Ingresado Exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'equipos/index";
-                                }
-                            });
-                        </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                    //PREPARANDO DATOS A INSERTAR
+                    $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
+                    $this->equipo_ingresado->set('fecha_recibido', $fecha_recibido);
+                    $this->equipo_ingresado->set('recibido_por', $recibido_por);
+                    $this->equipo_ingresado->set('problema', $problema);
+
+                    //INGRESANDO EQUIPO
+                    $this->equipo_ingresado->add();
+
+                    //OBTENIENDO EL TOTAL DE INGRESOS DE DEPARTAMENTO Y SUMANDOLE 1
+                    $datos = $this->equipo->actualizarIngresosdeEquipoDepartamento();
+                    $departamento = $datos['departamento'];
+                    $this->totalDepartamentos($departamento);
+
+                    //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
+                    $this->totalOperador($recibido_por);
+
+                    //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE ACTIVO A EN PROCESO, DE 0 A 2
+                    $this->equipo->cambiarEstadoAenProceso();
+
+                    //CAMBIANDO EL NUMERO DE INGRESOS DEL EQUIPO REGISTRADO A +1
+                    $this->equipo->incrementarIngresosdeEquipo();
+
+                    //PROCESO TERMINADO, REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Exito!",
+                                    text: "Equipo Ingresado Exitosamente.",
+                                    icon: "success",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/index";
+                                    }
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                }
 
             }
 
@@ -418,7 +459,7 @@ use Repository\Procesos1 as Repository1;
                             }
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = "' . URL . 'sistemas/index";
+                                window.location.href = "' . URL . 'equipos/registrados";
                             }
                         });
                     </script>';
@@ -483,19 +524,17 @@ use Repository\Procesos1 as Repository1;
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                //OBTENIENDO DATA NECESARIA DEL EQUIPO PARA ENTREGARLO, DIRECTO DE LA TABLA EQUIPOS_INGRESADOS
+                //OBTENIENDO DATA NECESARIA PARA INSERTAR
                 $data = $this->DataForEntrega($id);
-
-                $departamento = $data[0]['departamento'];
-                $ingreso = $data[0]['id_equipo'];
+                $id_equipo = $data['id_equipo'];
 
                 //OBTENIENDO DATA NECESARIA DEL EQUIPO PARA ENTREGARLO, DESDE EL FORMULARIO
+                $ingreso = $id;
                 $fecha_entrega = $_POST['fecha_entrega'];
                 $entregado_por = $_POST['entregado_por'];
                 $conclusion = $_POST['conclusion'];
 
                 //AGRUPANDO LOS DATOS
-                $this->equipo_salida->set('departamento', $departamento);
                 $this->equipo_salida->set('ingreso', $ingreso);
                 $this->equipo_salida->set('fecha_entrega', $fecha_entrega);
                 $this->equipo_salida->set('entregado_por', $entregado_por);
@@ -509,6 +548,9 @@ use Repository\Procesos1 as Repository1;
  
                 //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
                 $this->cambiarEstadoEquipoIngresado($ingreso);
+
+                //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
+                $this->cambiarEstadoEquipoRegistrado($id_equipo);
 
                 //REDIRECCIONANDO CON UN MENSAJE DE EXITO
                 echo '<script>
@@ -531,7 +573,7 @@ use Repository\Procesos1 as Repository1;
 
             }
 
-            $this->equipo_ingresado->set('id_equipo',$id);
+                $this->equipo_ingresado->set('id_ingreso',$id);
                 $data['title'] = "Entregando Equipo";
                 $data['problem'] = $this->equipo_ingresado->getProblema();
 
@@ -545,7 +587,6 @@ use Repository\Procesos1 as Repository1;
         private function DataForEntrega($id){
             
             $this->equipo_ingresado->set('id_equipo', $id);
-
             $data = $this->equipo_ingresado->getDataForEntrega();
 
             return $data;
@@ -561,8 +602,15 @@ use Repository\Procesos1 as Repository1;
         //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
         private function cambiarEstadoEquipoIngresado($id){
 
-            $this->equipo_ingresado->set('id_equipo', $id);
+            $this->equipo_ingresado->set('ingreso', $id);
             $this->equipo_ingresado->actualizarEstadodeEquipo();
+        }
+
+        //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
+        private function cambiarEstadoEquipoRegistrado($id){
+
+            $this->equipo->set('id_equipo', $id);
+            $this->equipo->cambiarEstadoaActivo();
         }
 
       

@@ -22,6 +22,7 @@
                         <th>Direccion IP <i class="fa-solid fa-globe" style="color: #1049ad;"></i></th>
                         <th>Fecha Registro <i class="fa-solid fa-calendar-days"></i></th>
                         <th>Ingresos  <i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i></th>
+                        <th>Estado <i class="fa-solid fa-question" style="color: #5b0d9b;"></i></th>
                         <th>Acciones <i class="fa-solid fa-gears"></i></th>
                     </tr>
                 </thead>
@@ -36,6 +37,28 @@
                             <td> <?php echo $data['direccion_ip'] ?> </td>
                             <td> <?php echo $data['fecha_registro'] ?> </td>
                             <td> <?php echo $data['ingresos'] ?> </td>
+                            <td>
+                                <?php
+                                if ($data['estado'] == 0) { ?>
+
+                                    <span class=" font-weight-bold" >
+                                        Activo <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
+                                    </span>
+
+                                <?php } elseif ($data['estado'] == 2) { ?>
+
+                                    <span class=" font-weight-bold" >
+                                        En Soporte <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i>
+                                    </span> 
+
+                                <?php } else { ?>
+
+                                    <span class=" font-weight-bold" >
+                                        Inactivo <i class="fa-solid fa-circle-exclamation" style="color: #d4ac40;"></i>
+                                    </span>
+
+                                <?php }  ?>
+                            </td>
                             <td>
                                 <a class="btn btn-info" href='editregistro/<?php echo $data['id_equipo'] ?>'>Editar</a>
                             </td>

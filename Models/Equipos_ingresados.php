@@ -6,7 +6,6 @@ class Equipos_ingresados{
 
     private $id_ingreso;
     private $id_equipo;
-    private $departamento;
     private $fecha_recibido;
     private $recibido_por;
     private $problema;
@@ -45,23 +44,15 @@ class Equipos_ingresados{
     public function getDataForEntrega(){
 
         $sql = "SELECT
-                departamento,
                 id_equipo
                 FROM
                 equipos_ingresados
                 WHERE
-                id_ingreso = '{$this->id_ingreso}'
-                ";
+                id_ingreso = '{$this->id_ingreso}'";
 
-        $datos = $this->con->consultaRetorno($sql);
+        $result = $this->con->consultaRetorno($sql);
 
-        while($row = $datos->fetch_assoc()){
-
-            $this->resultado[] = $row;
-
-        }
-
-        return $this->resultado;
+        return $result->fetch_assoc();
         
     }
 
@@ -123,9 +114,9 @@ class Equipos_ingresados{
                 t1.estado
                 FROM
                 equipos_ingresados t1 
-                INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento
-                INNER JOIN operadores t3 ON t1.recibido_por = t3.id_operador
-                INNER JOIN equipos t4 ON t1.id_equipo = t4.id_equipo";
+                INNER JOIN equipos t4 ON t1.id_equipo = t4.id_equipo
+                INNER JOIN departamentos t2 ON t4.departamento = t2.id_departamento
+                INNER JOIN operadores t3 ON t1.recibido_por = t3.id_operador";
         $datos = $this->con->consultaRetorno($sql);
 
         while($row = $datos->fetch_assoc()){
@@ -140,14 +131,12 @@ class Equipos_ingresados{
     public function add(){
         
         $sql = "INSERT INTO
-                equipos_ingresados(id_equipo, 
-                                    departamento, 
+                equipos_ingresados(id_equipo,
                                     fecha_recibido, 
                                     recibido_por, 
                                     problema)
                 VALUES 
-                ('{$this->id_equipo}', 
-                '{$this->departamento}', 
+                ('{$this->id_equipo}',
                 '{$this->fecha_recibido}', 
                 '{$this->recibido_por}', 
                 '{$this->problema}')";
@@ -170,8 +159,7 @@ class Equipos_ingresados{
         $sql = "UPDATE
                 equipos_ingresados
                 SET
-                id_equipo = '{$this->id_equipo}', 
-                departamento = '{$this->departamento}', 
+                id_equipo = '{$this->id_equipo}',
                 fecha_recibido = '{$this->fecha_recibido}', 
                 recibido_por = '{$this->recibido_por}'
                 problema = '{$this->problema}'
@@ -185,8 +173,7 @@ class Equipos_ingresados{
 
         $sql = "SELECT
                 id_ingreso, 
-                id_equipo, 
-                departamento, 
+                id_equipo,
                 fecha_recibido, 
                 recibido_por,
                 problema 

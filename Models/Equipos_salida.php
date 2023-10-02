@@ -5,7 +5,6 @@ namespace Models;
 class Equipos_salida{
 
     private $id_entrega;
-    private $departamento;
     private $ingreso;
     private $fecha_entrega;
     private $entregado_por;
@@ -58,14 +57,12 @@ class Equipos_salida{
     public function add(){
         
         $sql = "INSERT INTO
-                equipos_salida(departamento, 
-                                ingreso, 
+                equipos_salida(ingreso, 
                                 fecha_entrega, 
                                 entregado_por, 
                                 conclusion)
                 VALUES 
-                ('{$this->departamento}', 
-                '{$this->ingreso}', 
+                ('{$this->ingreso}', 
                 '{$this->fecha_entrega}', 
                 '{$this->entregado_por}', 
                 '{$this->conclusion}')";
@@ -88,7 +85,6 @@ class Equipos_salida{
         $sql = "UPDATE
                 equipos_salida
                 SET
-                departamento = '{$this->departamento}', 
                 ingreso = '{$this->ingreso}', 
                 fecha_entrega = '{$this->fecha_entrega}', 
                 entregado_por = '{$this->entregado_por}'
@@ -103,7 +99,6 @@ class Equipos_salida{
 
         $sql = "SELECT 
                 id_entrega, 
-                departamento, 
                 ingreso, 
                 fecha_entrega, 
                 entregado_por,
