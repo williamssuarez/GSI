@@ -26,7 +26,7 @@
 
     <h3 class="h3 mb-2 text-gray-800">
     <i class="fa-solid fa-circle-check fa-1x" style="color: #3aa413;"></i>  
-        No hay equipos pendientes!
+        No hay equipos pendientes
     </h3>
 
 <?php } ?>

@@ -18,11 +18,25 @@
                                     <hr>
                                         <h1 class="h5 text-gray-900 mb-4"> ID: <?php echo $data['equipo']['id_equipo'] ?>  </h1>
                                         <h1 class="h5 text-gray-900 mb-4"> 
-                                            Estado:<?php if ($data['equipo']['estado'] == 0){ ?>  
-                                                        Activo <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
+                                            Estado:<?php if ($data['equipo']['estado'] == 0){ ?>
+
+                                                <span class="font-weight-bold" >
+                                                    Activo <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
+                                                </span>
+
+                                                    <?php } elseif($data['equipo']['estado'] == 1) { ?>
+
+                                                        <span class=" font-weight-bold" >
+                                                            Inactivo <i class="fa-solid fa-circle-exclamation" style="color: #d4ac40;"></i>
+                                                        </span>
+
                                                     <?php } else { ?>
-                                                        Inactivo <i class="fa-solid fa-circle-exclamation" style="color: #d4ac40;"></i>
-                                                    <?php } ?>                                            
+
+                                                        <span class=" font-weight-bold" >
+                                                            En Soporte <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i>
+                                                        </span> 
+                                                        
+                                                    <?php } ?>
                                         </h1>
                                         <h1 class="h5 text-gray-900 mb-4"><i class="fa-solid fa-tag" style="color: #279608;"></i> Numero de Bien: <?php echo $data['equipo']['numero_bien'] ?>  </h1>
                                         <h1 class="h5 text-gray-900 mb-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Departamento: <?php echo $data['equipo']['departamento'] ?>  </h1>
@@ -45,8 +59,21 @@
                                         </h1>
                                         <div class="btn-group btn-user btn-block">
                                             <a href="<?php echo URL; ?>equipos/registrados" class="btn btn-primary" aria-current="page">Volver</a>
-                                            <a href="<?php echo URL; ?>equipos/registrados" class="btn btn-warning">Editar</a>
-                                            <a href="" class="btn btn-danger">Eliminar</a>
+
+                                            <a href="<?php echo URL; ?>equipos/editregistro/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-warning">Editar</a>
+                                            <?php if($data['equipo']['estado'] == 0) { ?>
+
+                                                <a id="desactivandoequipo" href="<?php echo URL; ?>equipos/desactivar/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-danger">Desactivar</a>
+
+                                            <?php } elseif($data['equipo']['estado'] == 1) { ?>
+
+                                                <a id="reactivandoequipo" href="<?php echo URL; ?>equipos/reactivar/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-success">Reactivar</a>
+
+                                            <?php } else { ?>
+
+                                                <a href="<?php echo URL; ?>equipos/index" class="btn btn-warning">Ir a equipos ingresados</a>
+
+                                            <?php } ?>
                                         </div>
                                     <hr>
                                 </div>

@@ -29,19 +29,20 @@ class Equipos_salida{
     public function lista(){
 
         $sql = "SELECT
-                t1.id_entrega, 
-                t2.nombre_departamento AS departamento,
-                t5.id_ingreso AS ingreso,
-                t4.numero_bien AS equipo, 
-                t1.fecha_entrega, 
-                t3.nombre AS entregado_por,
+                t1.id_entrega,
+                t4.numero_bien as equipo,
+                t4.usuario,
+                t5.nombre_departamento as departamento,
+                t1.fecha_entrega,
+                t2.nombre as entregado_por,
+                t3.problema,
                 t1.conclusion
                 FROM
                 equipos_salida t1 
-                INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento
-                INNER JOIN operadores t3 ON t1.entregado_por = t3.id_operador
-                INNER JOIN equipos t4 ON t1.ingreso = t4.id_equipo
-                INNER JOIN equipos_ingresados t5 ON t1.ingreso = t4.id_equipo";
+                INNER JOIN operadores t2 ON t2.id_operador = t1.entregado_por
+                INNER JOIN equipos_ingresados t3 ON t3.id_ingreso = t1.ingreso 
+                INNER JOIN equipos t4 ON t4.id_equipo = t3.id_equipo
+                INNER JOIN departamentos t5 ON t5.id_departamento = t4.departamento";
                 
         $datos = $this->con->consultaRetorno($sql);
 

@@ -292,6 +292,7 @@ class Template{
     <script src="<?php echo URL; ?>Views/template/DataTables/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- INICIANDO TABLAS DATATABLE -->
+    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_registrados.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_ingresados.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_salida.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/direcciones.js"></script>

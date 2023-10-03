@@ -97,7 +97,6 @@ use Repository\Procesos1 as Repository1;
 
             $datos['titulo'] = "Entregando Equipo...";
             $datos['operadores'] = $this->operadores->getOperador();
-            $datos['equipos'] = $this->equipo_ingresado->getEquipos();
 
             return $datos;
         }
@@ -526,6 +525,8 @@ use Repository\Procesos1 as Repository1;
 
                 //OBTENIENDO DATA NECESARIA PARA INSERTAR
                 $data = $this->DataForEntrega($id);
+                /*var_dump($data['id_equipo']);
+                die();*/
                 $id_equipo = $data['id_equipo'];
 
                 //OBTENIENDO DATA NECESARIA DEL EQUIPO PARA ENTREGARLO, DESDE EL FORMULARIO
@@ -586,7 +587,7 @@ use Repository\Procesos1 as Repository1;
         //OBTENIENDO DATA NECESARIA DEL EQUIPO PARA ENTREGARLO, DIRECTO DE LA TABLA EQUIPOS_INGRESADOS
         private function DataForEntrega($id){
             
-            $this->equipo_ingresado->set('id_equipo', $id);
+            $this->equipo_ingresado->set('id_ingreso', $id);
             $data = $this->equipo_ingresado->getDataForEntrega();
 
             return $data;
@@ -611,6 +612,58 @@ use Repository\Procesos1 as Repository1;
 
             $this->equipo->set('id_equipo', $id);
             $this->equipo->cambiarEstadoaActivo();
+        }
+
+        public function desactivar($id){
+
+            $this->equipo->set('id_equipo', $id);
+            $this->equipo->desactivarEquipo();
+
+            //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+            echo '<script>
+            Swal.fire({
+                title: "Exito",
+                text: "Equipo desactivado exitosamente",
+                icon: "success",
+                showConfirmButton: true,
+                confirmButtonColor: "#3464eb",
+                customClass: {
+                    confirmButton: "rounded-button" // Identificador personalizado
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "' . URL . 'equipos/registrados";
+                }
+            });
+            </script>';
+            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+        }
+
+        public function reactivar($id){
+
+            $this->equipo->set('id_equipo', $id);
+            $this->equipo->reactivarEquipo();
+
+            //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+            echo '<script>
+            Swal.fire({
+                title: "Exito",
+                text: "Equipo reactivado exitosamente",
+                icon: "success",
+                showConfirmButton: true,
+                confirmButtonColor: "#3464eb",
+                customClass: {
+                    confirmButton: "rounded-button" // Identificador personalizado
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "' . URL . 'equipos/registrados";
+                }
+            });
+            </script>';
+            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
         }
 
       

@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-striped table-hover responsive nowrap" id="tablaequipos_salida" width="100%" cellspacing="0">
+            <table class="table table-striped table-hover responsive nowrap" id="tablaequipos_registrados" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Numero de Bien <i class="fa-solid fa-tag" style="color: #279608;"></i></th>
@@ -41,7 +41,7 @@
                                 <?php
                                 if ($data['estado'] == 0) { ?>
 
-                                    <span class=" font-weight-bold" >
+                                    <span class="font-weight-bold" >
                                         Activo <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
                                     </span>
 

@@ -19,6 +19,7 @@
                         <th>Departamento <i class="fa-solid fa-building" style="color: #913080;"></i></th>
                         <th>Fecha Entrega <i class="fa-solid fa-calendar-days"></i></th>
                         <th>Entregado Por <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
+                        <th>Problema <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i></th>
                         <th>Conclusion <i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i></th>
                         <th>Acciones <i class="fa-solid fa-gears"></i></th>
                     </tr>
@@ -31,6 +32,7 @@
                             <td> <?php echo $data['departamento'] ?> </td>
                             <td> <?php echo $data['fecha_entrega'] ?> </td>
                             <td> <?php echo $data['entregado_por'] ?> </td>
+                            <td> <?php echo $data['problema'] ?> </td>
                             <td> <?php echo $data['conclusion'] ?> </td>
                             <td>                             
                                 <a class="btn btn-info" href='edit/<?php echo $data['id_entrega'] ?>'>Editar</a>

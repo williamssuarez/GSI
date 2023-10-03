@@ -274,6 +274,30 @@ class Equipos{
         return $datos->fetch_assoc();
     }
 
+    public function desactivarEquipo(){
+
+        $sql = "UPDATE
+                equipos
+                SET
+                estado = 1
+                WHERE
+                id_equipo = '{$this->id_equipo}'";
+
+        $this->con->consultaSimple($sql);
+    }
+
+    public function reactivarEquipo(){
+
+        $sql = "UPDATE
+                equipos
+                SET
+                estado = 0
+                WHERE
+                id_equipo = '{$this->id_equipo}'";
+
+        $this->con->consultaSimple($sql);
+    }
+
     public function historial(){
 
         $sql = "";
