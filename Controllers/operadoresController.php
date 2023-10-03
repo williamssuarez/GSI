@@ -377,13 +377,13 @@ use Repository\Procesos1 as Repository1;
             
         }
 
-        public function historial($id){
+        /*public function historial($id){
 
             $this->operador->set('id_operador', $id);
 
             $datos[] = $this->operador->historial();
             return $datos;
-        }
+        }*/
 
         public function delete($id){
 
