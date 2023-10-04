@@ -40,7 +40,7 @@
                 
                 </br>
 
-                <label class="form-label mt-4"><i class="fa-solid fa-tag" style="color: #279608;"></i> Numero de Bien (Opcional)</label>
+                <label class="form-label mt-4"><i class="fa-solid fa-tag" style="color: #279608;"></i> Numero de Bien (Obligatorio si el dispositivo es una computadora)</label>
                 <input class="form-control" type="number" name="numero_bien" id="numero_bien" maxlength="6" minlength="6" placeholder="Introduzca Numero de Bien">
 
                 <button class="btn btn-success" type="submit">Asignar</button>

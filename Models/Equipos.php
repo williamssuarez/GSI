@@ -143,18 +143,21 @@ class Equipos{
     public function lista(){
 
         $sql = "SELECT
-                t1.id_equipo, 
-                t1.numero_bien, 
-                t2.nombre_departamento AS departamento,
-                t1.usuario,
-                t1.direccion_mac,
-                t1.direccion_ip,
-                t1.fecha_registro,
-                t1.ingresos,
-                t1.estado
+                    t1.id_equipo, 
+                    t1.numero_bien, 
+                    t2.nombre_departamento AS departamento,
+                    t1.usuario,
+                    t1.direccion_mac,
+                    t4.direccion AS direccion_ip,
+                    t1.fecha_registro,
+                    t1.ingresos,
+                    t1.estado
                 FROM
-                equipos t1 
-                INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento";
+                    equipos t1 
+                LEFT JOIN departamentos t2 ON t1.departamento = t2.id_departamento
+                LEFT JOIN direcciones_asignadas t3 ON t1.direccion_ip = t3.id_asignacion
+                LEFT JOIN direccion_ip t4 ON t3.id_direccion = t4.id_ip;
+                ";
 
                 $datos = $this->con->consultaRetorno($sql);
 
@@ -191,6 +194,18 @@ class Equipos{
         
         $this->con->consultaSimple($sql);
 
+    }
+
+    public function AsignarDireccionEquipo(){
+
+        $sql = "UPDATE
+                equipos
+                SET
+                direccion_ip = '{$this->direccion_ip}'
+                WHERE
+                id_equipo = '{$this->id_equipo}' ";
+
+        $this->con->consultaSimple($sql);
     }
 
     public function delete(){
@@ -301,6 +316,16 @@ class Equipos{
     public function historial(){
 
         $sql = "";
+    }
+
+    public function liberarDireccionEquipo(){
+
+        $sql = "UPDATE
+                equipos
+                SET
+                direccion_ip = NULL
+                WHERE
+                id_equipo = '{$this->id_equipo}'";
     }
 
 }

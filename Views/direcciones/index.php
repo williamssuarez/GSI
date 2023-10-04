@@ -31,7 +31,19 @@
                                 <td> <?php echo $data['direccion'] ?> </td>
                                 <td> <?php echo $data['departamento'] ?> </td>
                                 <td> <?php echo $data['dispositivo'] ?> </td>
-                                <td> <?php echo $data['numero_bien'] ?> </td>
+                                <td> 
+                                    <?php if(!empty($data['equipo'])){  ?>
+
+                                        <a href="<?php echo URL ;?>equipos/viewequipo/<?php echo $data['equipo'] ?>" style="text-decoration:none"> 
+                                            <?php echo $data['numero_bien'] ?> 
+                                        </a>
+
+                                    <?php } else { ?>
+
+                                        <?php echo $data['numero_bien'] ?>
+                                        
+                                    <?php } ?>
+                                </td>
                                 <td> <?php echo $data['fecha_asignada'] ?> </td>
                                 <td>                         
                                     <a id="liberate" class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_asignacion'] ?>'>                                
