@@ -240,26 +240,28 @@ class Equipos{
     public function view(){
 
         $sql = "SELECT
-                t1.id_equipo, 
-                t1.numero_bien, 
-                t2.nombre_departamento AS departamento,
-                t1.usuario,
-                t1.direccion_mac,
-                t1.direccion_ip,
-                t1.fecha_registro,
-                t1.ingresos,
-                t1.cpu,
-                t1.almacenamiento,
-                t1.memoria_ram,
-                t3.nombre as sistema_operativo,
-                t3.tipo as tipo,
-                t1.estado
+                    t1.id_equipo, 
+                    t1.numero_bien, 
+                    t3.nombre_departamento AS departamento,
+                    t1.usuario,
+                    t1.direccion_mac,
+                    t6.direccion AS direccion_ip,
+                    t1.fecha_registro,
+                    t1.ingresos,
+                    t1.cpu,
+                    t1.almacenamiento,
+                    t1.memoria_ram,
+                    t4.nombre as sistema_operativo,
+                    t4.tipo as tipo,
+                    t1.estado
                 FROM
-                equipos t1 
-                INNER JOIN departamentos t2 ON t1.departamento = t2.id_departamento
-                INNER JOIN sistemas_operativos t3 ON t1.sistema_operativo = t3.id_os
+                    equipos t1
+                INNER JOIN departamentos t3 ON t1.departamento = t3.id_departamento
+                INNER JOIN sistemas_operativos t4 ON t1.sistema_operativo = t4.id_os
+                LEFT JOIN direcciones_asignadas t5 ON t1.direccion_ip = t5.id_asignacion
+                LEFT JOIN direccion_ip t6 ON t5.id_direccion = t6.id_ip
                 WHERE
-                id_equipo = '{$this->id_equipo}' ";
+                    t1.id_equipo = '{$this->id_equipo}' ";
 
         $result = $this->con->consultaRetorno($sql);
 

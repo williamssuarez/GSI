@@ -7,6 +7,7 @@ define('URL', "http://localhost/GSI/");
 session_start();
 
 require_once "Config/Autoload.php";
+require_once "vendor/autoload.php";
 Config\Autoload::run();
 if (!isset($_SESSION['usuario'])) {
     // El usuario no está autenticado, redirige al formulario de inicio de sesión.
@@ -17,6 +18,5 @@ if (!isset($_SESSION['usuario'])) {
 
 }
 Config\Enrutador::run(new Config\Request());
-
 
 ?>
