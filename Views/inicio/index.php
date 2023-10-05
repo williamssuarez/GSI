@@ -5,6 +5,9 @@
 
 <div class="row">
 
+
+<a href="<?php echo URL; ?>reportes/reporteprueba" target="_blank" class="btn btn-success">Generar PDF</a>
+
     <!-- Earnings (Monthly) Card Example -->
 <?php if($ingresos['pendiente']['totalIngreso'] > 0) { ?>
 
