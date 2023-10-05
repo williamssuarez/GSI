@@ -11,7 +11,6 @@ class reportesController{
     public function __construct() {
 
         $this->mpdf = new mPDF();
-        ob_start();
 
     }
 
