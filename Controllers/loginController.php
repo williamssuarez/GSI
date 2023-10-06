@@ -44,6 +44,13 @@ class loginController{
          //Verificando si hay sesion
         if(!isset($_SESSION['usuario'])){
 
+            if(isset($_SESSION['pregunta1'])){
+
+                session_unset();
+                session_destroy();
+
+            }
+
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 //OBTENIENDO DATOS DEL FORMULARIO
@@ -277,8 +284,10 @@ class loginController{
 
                     $this->usuario->set('id_user', $id_usuario);
 
-                    // Crear un array con números del 1 al 6
-                    $numeros = range(1, 6);
+                    $preguntas = $this->usuario->getPreguntasSeguridad();
+
+                    // Crear un array con números del 0 al 5
+                    $numeros = range(0, 5);
 
                     // Mezclar los números
                     shuffle($numeros);
@@ -286,10 +295,42 @@ class loginController{
                     // Obtener los dos primeros números mezclados
                     $numerosAleatorios = array_slice($numeros, 0, 2);
 
-                    $pregunta1 = $numerosAleatorios[0];
-                    $pregunta2 = $numerosAleatorios[1];
+                    // Asignando los numeros en variables separadas
+                    $numerosAleatorio1 = $numerosAleatorios[0];
+                    $numerosAleatorio2 = $numerosAleatorios[1];
 
-                    $this->usuario->getPreguntas();
+                    // Usando los numeros anteriores para determinar las preguntas para el usuario
+                    $pregunta1 = $preguntas[$numerosAleatorio1]['pregunta'];
+                    $idpregunta1 = $preguntas[$numerosAleatorio1]['id_pregunta'];
+                    $pregunta2 = $preguntas[$numerosAleatorio2]['pregunta'];
+                    $idpregunta2 = $preguntas[$numerosAleatorio2]['id_pregunta'];
+
+
+                    $_SESSION['idpregunta1'] = $idpregunta1;
+                    $_SESSION['idpregunta2'] = $idpregunta2;
+                    $_SESSION['pregunta1'] = $pregunta1;
+                    $_SESSION['pregunta2'] = $pregunta2;
+                    $_SESSION['id_usuario'] = $id_usuario;
+
+                    echo '<script>
+                        Swal.fire({
+                            title: "Redireccionando",
+                            text: "Obteniendo preguntas...",
+                            icon: "success",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            confirmButtonText: "Aceptar",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'login/preguntas";
+                            }
+                        });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
                 }
                 //LA CEDULA NO EXISTE
                 else{
@@ -317,7 +358,193 @@ class loginController{
     }
 
 }
+
+    public function preguntas(){
+
+        if(isset($_SESSION['usuario'])){
+            echo '<script>
+                        Swal.fire({
+                            title: "Ya estas logeado",
+                            text: "Bienvenido",
+                            icon: "success",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            confirmButtonText: "Aceptar",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'inicio/index";
+                            }
+                        });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+        } else {
+
+            if(isset($_SESSION['pregunta1'])){
+
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                    $idusuario = $_SESSION['id_usuario'];
+
+                    $idpregunta1 = $_SESSION['pregunta1'];
+                    $idpregunta2 = $_SESSION['pregunta2'];
+
+                    $respuesta1 = $_POST['respuesta1'];                    
+                    $respuesta2 = $_POST['respuesta1'];
+
+                    var_dump($idusuario, $idpregunta2, $respuesta2);
+                    die();
+                    
+                    $flag1 = $this->verificarPregunta1($idusuario, $idpregunta1, $respuesta1);
+                    $flag2 = $this->verificarPregunta1($idusuario, $idpregunta2, $respuesta2);
+
+                    
+
+                    if( $flag1 == true && $flag2 == true ){
+
+                        echo '<script>
+                        Swal.fire({
+                            title: "Validado",
+                            text: "Redireccionando a formulario...",
+                            icon: "success",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            confirmButtonText: "Aceptar",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'login/restablecerclave";
+                            }
+                        });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                    } else {
+
+                        session_unset();
+                        session_destroy();
+                        echo '<script>
+                        Swal.fire({
+                            title: "Error",
+                            text: "Una de las preguntas no es valida, vuelve a intentar",
+                            icon: "error",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            confirmButtonText: "Restablecer",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'login/restablecer";
+                                }
+                            });
+                            </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                    }
+
+
+                }
+                
+
+            } else {
+
+                echo '<script>
+                        Swal.fire({
+                            title: "Error",
+                            text: "No has introducido tu cedula",
+                            icon: "error",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            confirmButtonText: "Insertar",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'login/restablecer";
+                            }
+                        });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+            }
+
+        }
+        
+    }
     
+
+    public function restablecerclave(){
+
+        if(isset($_SESSION['pregunta1'])){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                
+                $nueva_clave = $_POST['nueva_clave'];
+                $confirmacion_clave = $_POST['confirmacion_clave'];
+                $id = $_SESSION['id_usuario'];
+
+                if(!empty($nueva_clave) || !empty($confirmacion_clave)){
+
+                    if($nueva_clave == $confirmacion_clave){
+
+                        $claveEncriptada = $this->encriptar($nueva_clave);
+
+                        $this->usuario->set('id_user', $id);
+                        $this->usuario->set('clave', $claveEncriptada);
+
+                        $this->usuario->restablecerClave();
+
+                        session_unset();
+                        session_destroy();
+                        
+                        echo '<script>
+                        Swal.fire({
+                            title: "Exito",
+                            text: "Clave restablecida exitosamente, inicia sesion",
+                            icon: "success",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            confirmButtonText: "Insertar",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'login/index";
+                            }
+                        });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+
+
+                    } else {
+
+                    }
+
+                } else {
+
+                }
+
+            }
+
+        }
+
+    }
+
+    private function encriptar($clave){
+
+        $claveHasheada = password_hash($clave, PASSWORD_DEFAULT);
+
+        return $claveHasheada;
+    }
 
     //VERIFICANDO CLAVE
     public function verificar($clavedb, $claveform){
@@ -325,6 +552,29 @@ class loginController{
         $flag = false;
 
         if(password_verify($claveform, $clavedb)){
+
+            $flag = true;
+
+        } else {
+
+            $flag = false;
+
+        }
+
+        return $flag;
+
+    }
+
+    public function verificarPregunta1($id_user, $id_pregunta, $respuestaform){
+
+        $flag = false;
+
+        $this->usuario->set('id_user', $id_user);
+        $this->usuario->set('id_pregunta', $id_pregunta);
+
+        $respuestadb = $this->usuario->getRespuestaPregunta();
+
+        if(password_verify($respuestaform, $respuestadb)){
 
             $flag = true;
 

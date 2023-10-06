@@ -9,8 +9,7 @@ class Usuario{
     private $cedula;
     private $usuario;
     private $clave;
-    private $pregunta1;
-    private $pregunta2
+    private $id_pregunta;
     private $con;
     private $resultado;
 
@@ -164,6 +163,18 @@ class Usuario{
         $this->con->consultaSimple($sql);
     }
 
+    public function restablecerClave(){
+
+        $sql = "UPDATE
+                usuarios
+                SET
+                clave = {$this->clave}'
+                WHERE
+                id_user = '{$this->id_user}'";
+
+        $this->con->consultaSimple($sql);
+    }
+
     public function view(){
 
         $sql = "SELECT 
@@ -186,19 +197,41 @@ class Usuario{
     }
     
     //EN CASO DE RESTABLECER CLAVE
-    public function getPreguntas(){
+
+    public function getPreguntasSeguridad(){
 
         $sql = "SELECT 
-                    t1.id_relacion,
-                    t1.id_usuario,
-                    t2.pregunta,
-                    t1.respuesta 
+                    preguntas_seguridad.id_pregunta AS id_pregunta,
+                    preguntas_seguridad.pregunta AS pregunta
                 FROM 
-                    usuarios_preguntas t1
-                INNER JOIN
-                    preguntas_seguridad t2 ON t2.id_pregunta = t1.id_pregunta 
+                    usuarios_preguntas
+                JOIN 
+                    preguntas_seguridad ON usuarios_preguntas.id_pregunta = preguntas_seguridad.id_pregunta
                 WHERE 
-                    t1.id_usuario = 1 AND t1.";
+                    usuarios_preguntas.id_usuario = '{$this->id_user}'";
+        
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+    }
+
+    public function getRespuestaPregunta(){
+
+        $sql = "SELECT
+                    respuesta
+                FROM
+                    usuarios_preguntas
+                WHERE id_usuario = '{$this->id_user}' AND id_pregunta = '{$this->id_pregunta}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
 
     }
 

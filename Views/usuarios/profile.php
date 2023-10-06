@@ -51,7 +51,12 @@
                                         </h1>
                                         <h1 class="h5 text-gray-900 mb-4">
                                             <i class="fa-solid fa-key" style="color: #04225d;"></i> 
-                                            Rol: <?php echo $data['user']['rol'] ?>  
+                                            Rol:
+                                            <?php if($data['user']['rol'] == 1){ ?> 
+                                                    Administrador
+                                            <?php } else { ?>
+                                                    Operador
+                                            <?php }  ?>
                                         </h1>
                                         <div class="btn-group btn-user btn-block">
                                             <a href="<?php echo URL; ?>equipos/registrados" class="btn btn-primary" aria-current="page">Volver</a>
