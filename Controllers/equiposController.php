@@ -422,60 +422,86 @@ use Repository\Procesos1 as Repository1;
         //EDITAR EQUIPO REGISTRADO
         public function editregistro($id){
 
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            if($_SESSION['rol'] == 1){
 
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                    $this->equipo->set('id_equipo',$id);
+                    $numero_bien = $_POST['numero_bien'];
+                    $departamento = $_POST['departamento'];
+                    $usuario = $_POST['usuario'];
+                    $direccion_mac = $_POST['direccion_mac'];
+                    $cpu = $_POST['cpu'];
+                    $almacenamiento = $_POST['almacenamiento'];
+                    $memoria_ram = $_POST['memoria_ram'];
+                    $sistema_operativo = $_POST['sistema'];
+    
+                    $this->equipo->set('numero_bien', $numero_bien);
+                    $this->equipo->set('departamento', $departamento);
+                    $this->equipo->set('usuario', $usuario);
+                    $this->equipo->set('direccion_mac', $direccion_mac);
+                    $this->equipo->set('cpu', $cpu);
+                    $this->equipo->set('almacenamiento', $almacenamiento);
+                    $this->equipo->set('memoria_ram', $memoria_ram);
+                    $this->equipo->set('sistema_operativo', $sistema_operativo);
+    
+    
+                    $this->equipo->edit();
+    
+                    echo '<script>
+                            Swal.fire({
+                                title: "Exito!",
+                                text: "Editado Exitosamente.",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/registrados";
+                                }
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+    
+                }  
+                
                 $this->equipo->set('id_equipo',$id);
-                $numero_bien = $_POST['numero_bien'];
-                $departamento = $_POST['departamento'];
-                $usuario = $_POST['usuario'];
-                $direccion_mac = $_POST['direccion_mac'];
-                $cpu = $_POST['cpu'];
-                $almacenamiento = $_POST['almacenamiento'];
-                $memoria_ram = $_POST['memoria_ram'];
-                $sistema_operativo = $_POST['sistema'];
+                $data['titulo'] = "Editando Datos del Equipo";
+                $data['equipo'] = $this->equipo->getDataEdit();
+                $data['departamentos'] = $this->departamento->getDepartamentos();
+                $data['sistemas'] = $this->sistema_operativo->getSistemas();
+    
+                //var_dump($data['operador']);
+                //die(); 
+    
+                return $data;
 
-                $this->equipo->set('numero_bien', $numero_bien);
-                $this->equipo->set('departamento', $departamento);
-                $this->equipo->set('usuario', $usuario);
-                $this->equipo->set('direccion_mac', $direccion_mac);
-                $this->equipo->set('cpu', $cpu);
-                $this->equipo->set('almacenamiento', $almacenamiento);
-                $this->equipo->set('memoria_ram', $memoria_ram);
-                $this->equipo->set('sistema_operativo', $sistema_operativo);
+            } else {
+                 // El usuario no es administrador, redirige al index
+                 echo '<script>
+                 Swal.fire({
+                     title: "Error",
+                     text: "No tienes autoridad de administrador para hacer esto",
+                     icon: "warning",
+                     showConfirmButton: true,
+                     confirmButtonColor: "#3464eb",
+                     confirmButtonText: "Aceptar",
+                     customClass: {
+                         confirmButton: "rounded-button" // Identificador personalizado
+                     }
+                 }).then((result) => {
+                     if (result.isConfirmed) {
+                         window.location.href = "' . URL . 'equipos/registrados";
+                     }
+                 });
+                 </script>';
+                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+            }
 
 
-                $this->equipo->edit();
-
-                echo '<script>
-                        Swal.fire({
-                            title: "Exito!",
-                            text: "Editado Exitosamente.",
-                            icon: "success",
-                            showConfirmButton: true,
-                            confirmButtonColor: "#3464eb",
-                            customClass: {
-                                confirmButton: "rounded-button" // Identificador personalizado
-                            }
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "' . URL . 'equipos/registrados";
-                            }
-                        });
-                    </script>';
-            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-
-            }  
-            
-            $this->equipo->set('id_equipo',$id);
-            $data['titulo'] = "Editando Datos del Equipo";
-            $data['equipo'] = $this->equipo->getDataEdit();
-            $data['departamentos'] = $this->departamento->getDepartamentos();
-            $data['sistemas'] = $this->sistema_operativo->getSistemas();
-
-            //var_dump($data['operador']);
-            //die(); 
-
-            return $data;
 
         }
 

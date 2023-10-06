@@ -32,6 +32,30 @@ use Repository\Procesos1 as Repository1;
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
             }
+
+            if($_SESSION['rol'] != 1){
+
+                // El usuario no es administrador, redirige al inicio
+                echo '<script>
+                Swal.fire({
+                    title: "Error",
+                    text: "No tienes autoridad de administrador para acceder a esto",
+                    icon: "warning",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'inicio/index";
+                    }
+                });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+            }
         }
 
         public function index(){

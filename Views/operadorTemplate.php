@@ -113,11 +113,7 @@ class Template{
             <span>Operadores</span></a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="<?php echo URL; ?>direcciones/index">
-            <i class="fa-solid fa-globe"></i>
-            <span>Direcciones</span></a>
-    </li>
+    
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo URL; ?>soportes/index">
@@ -139,17 +135,12 @@ class Template{
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Extras: </h6>
-                        <a class="collapse-item" href="<?php echo URL; ?>departamentos/index">
-                            <i class="fa-solid fa-building"></i>    
-                            Departamentos</a>
                         <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
                             <i class="fa-solid fa-print"></i>
                             Dispositivos</a>
                         <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
                             <i class="fa-brands fa-ubuntu"></i>    
                             Sistemas</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>auditoria/index">
-                            Auditoria</a>
                 </div>
             </li>
 
@@ -223,20 +214,16 @@ class Template{
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="<?php echo URL; ?>usuarios/profile/<?php echo $_SESSION['usuario'] ?>">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
+                    Perfil
                 </a>
                 <a class="dropdown-item" href="#">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
+                    Ajustes
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="<?php echo URL; ?>login/logout" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="<?php echo URL; ?>login/logout">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>

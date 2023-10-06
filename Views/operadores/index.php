@@ -51,16 +51,19 @@
                                     Ver Informacion
                                 </a>
                                 
+                                <?php if($_SESSION['rol'] == 1) { ?>
                                 <a class="btn btn-primary btn-icon-split" href='edit/<?php echo $data['id_operador'] ?>'>
                                     <i class="fa-solid fa-user-pen"></i>
                                     Editar
                                 </a>
-                                
+                                <?php } ?>
 
+                                <?php if($_SESSION['rol'] == 1) { ?>
                                 <a id="eliminando" class="btn btn-danger btn-icon-split" href='delete/<?php echo $data['id_operador'] ?>'>
                                     <i class="fa-solid fa-user-minus"></i>
                                     Eliminar
                                 </a> 
+                                <?php } ?>
                                                     
                             </td>
                         </tr>

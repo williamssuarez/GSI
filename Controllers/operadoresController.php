@@ -243,96 +243,121 @@ use Repository\Procesos1 as Repository1;
 
         public function edit($id){
 
-                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if($_SESSION['rol'] == 1){
+                    if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    //OBTENIENDO DATA PARA AUDITORIA
-                    $this->operador->set('id_operador', $id);
-                    $data = $this->operador->getOperadorforAuditoria();
-
-                    //RECIBIENDO DATA DEL FORMULARIO
-                    $nombre = $_POST['nombre'];
-                    $apellido = $_POST['apellido'];
-                    $cedula = $_POST['cedula_identidad'];
-                    $correo = $_POST['correo'];
-
-                    //PREPARANDO AUDITORIA
-                    $tipo_cambio = 'edicion completada';
-                    $tabla_afectada = 'operadores';
-                    $registro_afectado = $data['id_operador'];
-                    
-                    //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
-                    $valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
-                    $valorDespuesarray = array($nombre, $apellido, $cedula, $correo);
-                    
-                    //CONVIRITENDOLO A JSON PARA GUARDARLO
-                    $valor_antes = json_encode($valorAntesarray);
-                    $valor_despues = json_encode($valorDespuesarray);;
-                    $usuario  = $_SESSION['usuario'];
-
-                    //EJECUTANDO LA AUDITORIA
-                    $this->auditoria->auditar($tipo_cambio, 
-                                            $tabla_afectada, 
-                                            $registro_afectado, 
-                                            $valor_antes, 
-                                            $valor_despues, 
-                                            $usuario);
-                    
-
-                    //PREPARANDO LA EDICION
-                    $this->operador->set('nombre', $nombre);
-                    $this->operador->set('apellido', $apellido);
-                    $this->operador->set('cedula_identidad', $cedula);
-                    $this->operador->set('correo', $correo);
+                        //OBTENIENDO DATA PARA AUDITORIA
+                        $this->operador->set('id_operador', $id);
+                        $data = $this->operador->getOperadorforAuditoria();
     
-                    //EJECUTANDO LA EDICION
-                    $this->operador->edit();
+                        //RECIBIENDO DATA DEL FORMULARIO
+                        $nombre = $_POST['nombre'];
+                        $apellido = $_POST['apellido'];
+                        $cedula = $_POST['cedula_identidad'];
+                        $correo = $_POST['correo'];
     
+                        //PREPARANDO AUDITORIA
+                        $tipo_cambio = 'edicion completada';
+                        $tabla_afectada = 'operadores';
+                        $registro_afectado = $data['id_operador'];
+                        
+                        //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                        $valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
+                        $valorDespuesarray = array($nombre, $apellido, $cedula, $correo);
+                        
+                        //CONVIRITENDOLO A JSON PARA GUARDARLO
+                        $valor_antes = json_encode($valorAntesarray);
+                        $valor_despues = json_encode($valorDespuesarray);;
+                        $usuario  = $_SESSION['usuario'];
+    
+                        //EJECUTANDO LA AUDITORIA
+                        $this->auditoria->auditar($tipo_cambio, 
+                                                $tabla_afectada, 
+                                                $registro_afectado, 
+                                                $valor_antes, 
+                                                $valor_despues, 
+                                                $usuario);
+                        
+    
+                        //PREPARANDO LA EDICION
+                        $this->operador->set('nombre', $nombre);
+                        $this->operador->set('apellido', $apellido);
+                        $this->operador->set('cedula_identidad', $cedula);
+                        $this->operador->set('correo', $correo);
+        
+                        //EJECUTANDO LA EDICION
+                        $this->operador->edit();
+        
+                        echo '<script>
+                                Swal.fire({
+                                    title: "Exito!",
+                                    text: "Editado Exitosamente.",
+                                    icon: "success",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'operadores/index";
+                                    }
+                                });
+                            </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+            
+                        }  
+        
+                        //OBTENIENDO DATA PARA AUDITORIA
+                        $this->operador->set('id_operador', $id);
+                        $data = $this->operador->getOperadorforAuditoria();
+        
+                        //PREPARANDO AUDITORIA
+                        $tipo_cambio = 'edicion iniciada';
+                        $tabla_afectada = 'operadores';
+                        $registro_afectado = $data['id_operador'];
+                        $valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
+                        $valor_antes = json_encode($valorAntesarray);
+                        $valor_despues = 'en proceso';
+                        $usuario  = $_SESSION['usuario'];
+        
+                        //EJECUTANDO LA AUDITORIA
+                        $this->auditoria->auditar($tipo_cambio, 
+                                                $tabla_afectada, 
+                                                $registro_afectado, 
+                                                $valor_antes, 
+                                                $valor_despues, 
+                                                $usuario);
+                        $data['titulo'] = "Editando Operador";
+                        $data['operador'] = $this->operador->getDataEdit();
+        
+                        //var_dump($data['operador']);
+                        //die(); 
+                        return $data;
+                } else {
+
+                     // El usuario no es administrador, redirige al index
                     echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Editado Exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
-                                }
-                            });
-                        </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-    
-                }  
+                    Swal.fire({
+                        title: "Error",
+                        text: "No tienes autoridad de administrador para hacer esto",
+                        icon: "warning",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3464eb",
+                        confirmButtonText: "Aceptar",
+                        customClass: {
+                            confirmButton: "rounded-button" // Identificador personalizado
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "' . URL . 'operadores/index";
+                        }
+                    });
+                    </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-                //OBTENIENDO DATA PARA AUDITORIA
-                $this->operador->set('id_operador', $id);
-                $data = $this->operador->getOperadorforAuditoria();
 
-                //PREPARANDO AUDITORIA
-                $tipo_cambio = 'edicion iniciada';
-                $tabla_afectada = 'operadores';
-                $registro_afectado = $data['id_operador'];
-                $valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
-                $valor_antes = json_encode($valorAntesarray);
-                $valor_despues = 'en proceso';
-                $usuario  = $_SESSION['usuario'];
-
-                //EJECUTANDO LA AUDITORIA
-                $this->auditoria->auditar($tipo_cambio, 
-                                        $tabla_afectada, 
-                                        $registro_afectado, 
-                                        $valor_antes, 
-                                        $valor_despues, 
-                                        $usuario);
-                $data['titulo'] = "Editando Operador";
-                $data['operador'] = $this->operador->getDataEdit();
-
-                //var_dump($data['operador']);
-                //die(); 
-                return $data;
+                }
         }
 
         public function getDataForEdit($id){
@@ -387,49 +412,75 @@ use Repository\Procesos1 as Repository1;
 
         public function delete($id){
 
-            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            if($_SESSION['rol'] == 1){
 
-                //OBTENIENDO DATA PARA AUDITORIA
-                $this->operador->set('id_operador', $id);
-                $data = $this->operador->getOperadorforAuditoria();
+                        if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
-                //PREPARANDO AUDITORIA
-                $tipo_cambio = 'delete';
-                $tabla_afectada = 'operadores';
-                $registro_afectado = $data['id_operador'];
-                $valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad']);
-                $valor_antes = json_encode($valorAntesarray);
-                $valor_despues = 'eliminado';
-                $usuario  = $_SESSION['usuario'];
+                        //OBTENIENDO DATA PARA AUDITORIA
+                        $this->operador->set('id_operador', $id);
+                        $data = $this->operador->getOperadorforAuditoria();
 
-                //EJECUTANDO AUDITORIA
-                $this->auditoria->auditar($tipo_cambio, 
-                                        $tabla_afectada, 
-                                        $registro_afectado, 
-                                        $valor_antes, 
-                                        $valor_despues, 
-                                        $usuario);
+                        //PREPARANDO AUDITORIA
+                        $tipo_cambio = 'delete';
+                        $tabla_afectada = 'operadores';
+                        $registro_afectado = $data['id_operador'];
+                        $valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad']);
+                        $valor_antes = json_encode($valorAntesarray);
+                        $valor_despues = 'eliminado';
+                        $usuario  = $_SESSION['usuario'];
 
-                //ELIMINANDO
-                $this->operador->delete();
+                        //EJECUTANDO AUDITORIA
+                        $this->auditoria->auditar($tipo_cambio, 
+                                                $tabla_afectada, 
+                                                $registro_afectado, 
+                                                $valor_antes, 
+                                                $valor_despues, 
+                                                $usuario);
 
+                        //ELIMINANDO
+                        $this->operador->delete();
+
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Exito!",
+                                        text: "Eliminado Exitosamente.",
+                                        icon: "success",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'operadores/index";
+                                        }
+                                    });
+                            </script>';
+                        exit;
+                    }
+
+            } else {
+
+                // El usuario no es administrador, redirige al index
                 echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Eliminado Exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
-                                }
-                            });
-                        </script>';
-                exit;
+                Swal.fire({
+                    title: "Error",
+                    text: "No tienes autoridad de administrador para hacer esto",
+                    icon: "warning",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'operadores/index";
+                    }
+                });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
             }
         }
 

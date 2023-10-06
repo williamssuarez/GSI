@@ -24,6 +24,10 @@
                                         </button>  
                                     </form>
                                     <hr>
+                                    <a href="<?php echo URL; ?>login/restablecer" class="btn btn-danger btn-user btn-block">
+                                             
+                                            Olvide Mi Clave
+                                    </a>
                                 </div>
                             </div>
                         </div>

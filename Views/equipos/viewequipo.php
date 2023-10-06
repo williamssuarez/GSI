@@ -60,20 +60,24 @@
                                         <div class="btn-group btn-user btn-block">
                                             <a href="<?php echo URL; ?>equipos/registrados" class="btn btn-primary" aria-current="page">Volver</a>
 
-                                            <a href="<?php echo URL; ?>equipos/editregistro/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-warning">Editar</a>
-                                            <?php if($data['equipo']['estado'] == 0) { ?>
 
-                                                <a id="desactivandoequipo" href="<?php echo URL; ?>equipos/desactivar/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-danger">Desactivar</a>
+                                            <?php if($_SESSION['rol'] == 1){ ?>    
+                                                <a href="<?php echo URL; ?>equipos/editregistro/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-warning">Editar</a>
+                                                <?php if($data['equipo']['estado'] == 0) { ?>
 
-                                            <?php } elseif($data['equipo']['estado'] == 1) { ?>
+                                                    <a id="desactivandoequipo" href="<?php echo URL; ?>equipos/desactivar/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-danger">Desactivar</a>
 
-                                                <a id="reactivandoequipo" href="<?php echo URL; ?>equipos/reactivar/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-success">Reactivar</a>
+                                                <?php } elseif($data['equipo']['estado'] == 1) { ?>
 
-                                            <?php } else { ?>
+                                                    <a id="reactivandoequipo" href="<?php echo URL; ?>equipos/reactivar/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-success">Reactivar</a>
 
-                                                <a href="<?php echo URL; ?>equipos/index" class="btn btn-warning">Ir a equipos ingresados</a>
+                                                <?php } else { ?>
 
+                                                    <a href="<?php echo URL; ?>equipos/index" class="btn btn-warning">Ir a equipos ingresados</a>
+
+                                                <?php } ?>
                                             <?php } ?>
+                                            
                                         </div>
                                     <hr>
                                 </div>
