@@ -59,8 +59,16 @@
                                             <?php }  ?>
                                         </h1>
                                         <div class="btn-group btn-user btn-block">
-                                            <a href="<?php echo URL; ?>equipos/registrados" class="btn btn-primary" aria-current="page">Volver</a>
-                                            
+                                            <a href="<?php echo URL; ?>usuarios/index" class="btn btn-primary" aria-current="page">Volver</a>
+                                            <?php if($_SESSION['rol'] == 1){ ?>
+                                                <a href="<?php echo URL; ?>usuarios/editarperfilAdmin/<?php echo $_SESSION['usuario'] ?>" class="btn btn-warning" aria-current="page">
+                                                    Editar Perfil
+                                                </a>
+                                            <?php } else {  ?>
+                                                <a href="<?php echo URL; ?>usuarios/editarperfilOperador/<?php echo $_SESSION['usuario'] ?>" class="btn btn-warning" aria-current="page">
+                                                    Editar Perfil
+                                                </a>
+                                            <?php }?>
                                         </div>
                                     <hr>
                                 </div>

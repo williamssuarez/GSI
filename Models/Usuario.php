@@ -163,14 +163,36 @@ class Usuario{
         $this->con->consultaSimple($sql);
     }
 
-    public function restablecerClave(){
+    //EDITAR PERFIL
+    public function getDataEdit(){
+
+        $sql = "SELECT
+                id_user,
+                nombres,
+                apellidos,
+                cedula,
+                usuario,
+                rol
+                FROM
+                usuarios
+                WHERE
+                usuario = '{$this->usuario}' ";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+    }
+
+    public function edit(){
 
         $sql = "UPDATE
                 usuarios
                 SET
-                clave = {$this->clave}'
+                nombres = '{$this->nombres}',
+                apellidos = '{$this->apellidos}',
+                cedula = '{$this->cedula}'
                 WHERE
-                id_user = '{$this->id_user}'";
+                usuario = '{$this->usuario}'";
 
         $this->con->consultaSimple($sql);
     }
@@ -234,6 +256,20 @@ class Usuario{
         return $result->fetch_assoc();
 
     }
+
+    public function restablecerClaveyUsuario(){
+
+        $sql = "UPDATE
+                usuarios
+                SET
+                usuario = '{$this->usuario}', 
+                clave = '{$this->clave}'
+                WHERE
+                id_user = '{$this->id_user}'";
+
+        $this->con->consultaSimple($sql);
+    }
+
 
 }
 

@@ -102,9 +102,10 @@ use Repository\Procesos1 as Repository1;
                     $nombres = $_POST['nombres'];
                     $apellidos = $_POST['apellidos'];
                     $cedula = $_POST['cedula'];
-                    $usuario = $_POST['usuario'];
-                    $clave = $_POST['clave'];
-                    $clave_confirmacion = $_POST['clave_confirmacion'];
+                    //Pasando el usuario y clave a minusculas
+                    $usuario = strtolower($_POST['usuario']);
+                    $clave = strtolower($_POST['clave']);
+                    $clave_confirmacion = strtolower($_POST['clave_confirmacion']);
                     $rol = $_POST['rol'];
     
                     //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
@@ -278,51 +279,48 @@ use Repository\Procesos1 as Repository1;
             return $claveHasheada;
         }
 
-        public function delete($id){
+        public function editarperfilOperador($usuario){
 
-            if($_SERVER['REQUEST_METHOD'] == 'GET'){
-
-                $this->sistemas->set('id_os', $id);
-
-                $this->sistemas->delete();
+            if($usuario != $_SESSION['usuario']){
 
                 echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Eliminado Exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'sistemas/index";
-                                }
-                            });
-                        </script>';
-                exit;
-            }
-        }
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "No eres administrdor para hacer esto",
+                                    icon: "warning",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'inicio/index";
+                                    }
+                                });
+                            </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-        public function edit($id){
+            } else {
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    $this->sistemas->set('id_os',$id);
-                    $nombre = $_POST['nombre'];
-                    $tipo = $_POST['tipo'];
+                    $usuario = $_SESSION['usuario'];
+                    $nombres = $_POST['nombres'];
+                    $apellidos = $_POST['apellidos'];
+                    $cedula = $_POST['cedula'];
 
-                    $this->sistemas->set('nombre', $nombre);
-                    $this->sistemas->set('tipo', $tipo);
+                    $this->usuario->set('usuario',$usuario);
+                    $this->usuario->set('nombres', $nombres);
+                    $this->usuario->set('apellidos', $apellidos);
+                    $this->usuario->set('cedula', $cedula);
     
-                    $this->sistemas->edit();
+                    $this->usuario->edit();
     
                     echo '<script>
                             Swal.fire({
-                                title: "Exito!",
-                                text: "Editado Exitosamente.",
+                                title: "Exito",
+                                text: "Datos editados",
                                 icon: "success",
                                 showConfirmButton: true,
                                 confirmButtonColor: "#3464eb",
@@ -331,7 +329,7 @@ use Repository\Procesos1 as Repository1;
                                 }
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'sistemas/index";
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                 }
                             });
                         </script>';
@@ -339,15 +337,99 @@ use Repository\Procesos1 as Repository1;
     
                 }  
                 
-                $this->sistemas->set('id_os',$id);
-                $data['titulo'] = "Editando Nombre del Sistema Operativo";
-                $data['sistemas'] = $this->sistemas->getDataEdit();
+                $this->usuario->set('usuario',$usuario);
+                $data['titulo'] = "Editando Datos del operador";
+                $data['operador'] = $this->usuario->getDataEdit();
 
                 //var_dump($data['operador']);
                 //die(); 
 
                 return $data;
+
+
+            }
+
         }
+
+        public function editarperfilAdmin($usuario){
+
+                if($_SESSION['rol'] == 1){
+
+                    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                        $usuario = $_SESSION['usuario'];
+                        $nombres = $_POST['nombres'];
+                        $apellidos = $_POST['apellidos'];
+                        $cedula = $_POST['cedula'];
+    
+                        $this->usuario->set('usuario',$usuario);
+                        $this->usuario->set('nombres', $nombres);
+                        $this->usuario->set('apellidos', $apellidos);
+                        $this->usuario->set('cedula', $cedula);
+        
+                        $this->usuario->edit();
+        
+                        echo '<script>
+                                Swal.fire({
+                                    title: "Exito",
+                                    text: "Datos del usuario editados",
+                                    icon: "success",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'usuarios/index";
+                                    }
+                                });
+                            </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+        
+                    }  
+                    
+                    $this->usuario->set('usuario',$usuario);
+                    $data['titulo'] = "Editando Datos del operador";
+                    $data['operador'] = $this->usuario->getDataEdit();
+    
+                    //var_dump($data['operador']);
+                    //die(); 
+    
+                    return $data;
+
+                } else {
+
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "No eres administrador",
+                                    icon: "warning",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'inico/index";
+                                    }
+                                });
+                            </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                }
+        }
+
+        public function cambiarcredencialesAdmin($usuario){
+
+        }
+
+        public function cambiarcredencialesOperador($usuario){
+            
+        }
+
+        
 
         public function profile($usuario){
 

@@ -9,9 +9,19 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Restablecer clave</h1>
                                     </div>
+                                    <p class="mb-4">Introduce el nuevo usuario y clave, algo simple como tu cedula o tu numero de telefono                                         
+                                                    para que sea mas facil de recordar, igual recuerda que puedes cambiar tus credenciales
+                                                    de inicio de sesion una vez dentro del sistema</p>
                                     <form class="user" method="post" action="">
-                                        <hr>
 
+                                    <label class="h5 form-label mt-4">Introduzca el nuevo usuario</label>
+
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="nuevo_usuario" name="nuevo_usuario"
+                                                placeholder="Usuario..." required>
+                                        </div>
+                                        <hr>
                                         <label class="h5 form-label mt-4">Introduzca la nueva clave</label>
 
                                         <div class="form-group">
