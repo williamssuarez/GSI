@@ -5,6 +5,7 @@ namespace Models;
 class Direcciones{
 
     private $id_asignacion;
+    private $id_administrador;
     private $id_direccion;
     private $tipo_dispositivo;
     private $numero_bien;
@@ -71,9 +72,9 @@ class Direcciones{
     public function add(){
         
         $sql = "INSERT INTO
-                direcciones_asignadas(id_direccion, tipo_dispositivo, numero_bien, equipo)
+                direcciones_asignadas(id_administrador, id_direccion, tipo_dispositivo, numero_bien, equipo)
                 VALUES 
-                ('{$this->id_direccion}', '{$this->tipo_dispositivo}', '{$this->numero_bien}', '{$this->equipo}')";
+                ('{$this->id_administrador}', '{$this->id_direccion}', '{$this->tipo_dispositivo}', '{$this->numero_bien}', '{$this->equipo}')";
         
         $this->con->consultaSimple($sql);
     }
@@ -83,7 +84,8 @@ class Direcciones{
         $sql = "SELECT
                 id_asignacion,
                 id_direccion,
-                tipo_dispositivo
+                tipo_dispositivo,
+                equipo
                 FROM
                 direcciones_asignadas
                 WHERE

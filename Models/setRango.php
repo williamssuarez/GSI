@@ -37,6 +37,18 @@ class setRango{
         return $datos->fetch_assoc();
     }
 
+    public function getRangoIdDepartamento(){
+
+        $sql = "SELECT
+                id_departamento 
+                FROM
+                setrango";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+    }
+
     public function validarRango(){
 
         $sql = "SELECT

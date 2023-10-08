@@ -33,6 +33,8 @@ class loginController{
                     if (result.isConfirmed) {
                         window.location.href = "' . URL . 'login/index";
                     }
+                }).then(() => {
+                    window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
             </script>';
         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -76,6 +78,32 @@ class loginController{
                     //SI ES CORRECTA, CONTINUAR
                     if($flag == true){
 
+                        //SI LA CUENTA ESTA DESACTIVADA, DENEGAR EL ACCESO
+                        if($user['estado'] == 1){
+
+                            echo '<script>
+                                            Swal.fire({
+                                                title: "Vaya...",
+                                                text: "Parece que tu cuenta esta desactivada, solicitele al administrador una reactivacion",
+                                                icon: "warning",
+                                                showConfirmButton: true,
+                                                confirmButtonColor: "#3464eb",
+                                                confirmButtonText: "Aceptar",
+                                                customClass: {
+                                                    confirmButton: "rounded-button" // Identificador personalizado
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = "' . URL . 'login/index";
+                                                }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                            });
+                                        </script>';
+                                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                        }
+
                         //SI EL ROL ES ADMINISTRADOR, INICIAR SESION CON ROL 1
                         $rol = $user['rol'];
                         $cedula = $user['cedula'];
@@ -103,6 +131,8 @@ class loginController{
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'inicio/index";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -129,6 +159,8 @@ class loginController{
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'inicio/index";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -156,6 +188,8 @@ class loginController{
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'login/index";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -185,6 +219,8 @@ class loginController{
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'login/index";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -209,6 +245,8 @@ class loginController{
                 if (result.isConfirmed) {
                     window.location.href = "' . URL . 'inicio/index";
                 }
+            }).then(() => {
+                window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
             });
             </script>';
             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -234,6 +272,8 @@ class loginController{
                 if (result.isConfirmed) {
                     window.location.href = "' . URL . 'inicio/index";
                 }
+            }).then(() => {
+                window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
             });
             </script>';
             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -264,6 +304,8 @@ class loginController{
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'login/restablecer";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'login/restablecer"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -327,6 +369,8 @@ class loginController{
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'login/preguntas";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'login/preguntas"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -349,6 +393,8 @@ class loginController{
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'login/restablecer";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'login/restablecer"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -377,6 +423,8 @@ class loginController{
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'inicio/index";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -420,6 +468,8 @@ class loginController{
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'login/restablecerclave";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'login/restablecerclave"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -443,6 +493,8 @@ class loginController{
                                 if (result.isConfirmed) {
                                     window.location.href = "' . URL . 'login/restablecer";
                                 }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'login/restablecer"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                             </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -470,6 +522,8 @@ class loginController{
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'login/restablecer";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'login/restablecer"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -522,6 +576,8 @@ class loginController{
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'login/index";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -543,6 +599,8 @@ class loginController{
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'login/restablecerclave";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'login/restablecerclave"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -567,6 +625,8 @@ class loginController{
                         if (result.isConfirmed) {
                             window.location.href = "' . URL . 'login/restablecerclave";
                         }
+                    }).then(() => {
+                        window.location.href = "' . URL . 'login/restablecerclave"; // Esta línea se ejecutará cuando se cierre la alerta.
                     });
                     </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -593,6 +653,8 @@ class loginController{
                 if (result.isConfirmed) {
                     window.location.href = "' . URL . 'inicio/index";
                 }
+            }).then(() => {
+                window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
             });
             </script>';
         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional

@@ -11,15 +11,15 @@ use Repository\Procesos1 as Repository1;
         {
             $this->usuario = new Usuario();
             if (!isset($_SESSION['usuario'])) {
-                // El usuario no está autenticado, redirige al formulario de inicio de sesión.
+                // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
                 Swal.fire({
                     title: "Error",
-                    text: "Tienes que inicar sesion primero!",
+                    text: "Tienes que iniciar sesión primero!",
                     icon: "warning",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
-                    confirmButtonText: "Iniciar Sesion",
+                    confirmButtonText: "Iniciar Sesión",
                     customClass: {
                         confirmButton: "rounded-button" // Identificador personalizado
                     }
@@ -27,6 +27,8 @@ use Repository\Procesos1 as Repository1;
                     if (result.isConfirmed) {
                         window.location.href = "' . URL . 'login/index";
                     }
+                }).then(() => {
+                    window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -42,7 +44,7 @@ use Repository\Procesos1 as Repository1;
                 echo '<script>
                 Swal.fire({
                     title: "Error",
-                    text: "No tienes autoridad de administrador para hacer esto",
+                    text: "No tienes autoridad de administrador para acceder a esto",
                     icon: "warning",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
@@ -54,6 +56,8 @@ use Repository\Procesos1 as Repository1;
                     if (result.isConfirmed) {
                         window.location.href = "' . URL . 'inicio/index";
                     }
+                }).then(() => {
+                    window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -79,7 +83,7 @@ use Repository\Procesos1 as Repository1;
                 echo '<script>
                 Swal.fire({
                     title: "Error",
-                    text: "No tienes autoridad de administrador para hacer esto",
+                    text: "No tienes autoridad de administrador para acceder a esto",
                     icon: "warning",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
@@ -91,6 +95,8 @@ use Repository\Procesos1 as Repository1;
                     if (result.isConfirmed) {
                         window.location.href = "' . URL . 'inicio/index";
                     }
+                }).then(() => {
+                    window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -135,6 +141,8 @@ use Repository\Procesos1 as Repository1;
                                         if (result.isConfirmed) {
                                             window.location.href = "' . URL . 'usuarios/newuser";
                                         }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/newuser"; // Esta línea se ejecutará cuando se cierre la alerta.
                                     });
                                 </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -191,6 +199,8 @@ use Repository\Procesos1 as Repository1;
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'usuarios/newuser";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'usuarios/newuser"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -212,6 +222,8 @@ use Repository\Procesos1 as Repository1;
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'usuarios/newuser";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'usuarios/newuser"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -233,6 +245,8 @@ use Repository\Procesos1 as Repository1;
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'usuarios/newuser";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'usuarios/newuser"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -254,6 +268,8 @@ use Repository\Procesos1 as Repository1;
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'usuarios/newuser";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'usuarios/newuser"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -291,6 +307,8 @@ use Repository\Procesos1 as Repository1;
                                                         if (result.isConfirmed) {
                                                             window.location.href = "' . URL . 'usuarios/index";
                                                         }
+                                                    }).then(() => {
+                                                        window.location.href = "' . URL . 'usuarios/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                                     });
                                                 </script>';
                                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -311,6 +329,8 @@ use Repository\Procesos1 as Repository1;
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'usuarios/newuser";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'usuarios/newuser"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -339,23 +359,27 @@ use Repository\Procesos1 as Repository1;
 
             if($usuario != $_SESSION['usuario']){
 
+                // El usuario no es administrador, redirige al inicio
                 echo '<script>
-                                Swal.fire({
-                                    title: "Error",
-                                    text: "No eres administrdor para hacer esto",
-                                    icon: "warning",
-                                    showConfirmButton: true,
-                                    confirmButtonColor: "#3464eb",
-                                    customClass: {
-                                        confirmButton: "rounded-button" // Identificador personalizado
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'inicio/index";
-                                    }
-                                });
-                            </script>';
-                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                Swal.fire({
+                    title: "Error",
+                    text: "No tienes autoridad de administrador para acceder a esto",
+                    icon: "warning",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'inicio/index";
+                    }
+                }).then(() => {
+                    window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             } else {
 
@@ -391,6 +415,8 @@ use Repository\Procesos1 as Repository1;
                                 if (result.isConfirmed) {
                                     window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                 }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                         </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -447,6 +473,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/index";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -464,23 +492,27 @@ use Repository\Procesos1 as Repository1;
 
                 } else {
 
+                    // El usuario no es administrador, redirige al inicio
                     echo '<script>
-                                Swal.fire({
-                                    title: "Error",
-                                    text: "No eres administrador",
-                                    icon: "warning",
-                                    showConfirmButton: true,
-                                    confirmButtonColor: "#3464eb",
-                                    customClass: {
-                                        confirmButton: "rounded-button" // Identificador personalizado
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'inicio/index";
-                                    }
-                                });
-                            </script>';
-                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                    Swal.fire({
+                        title: "Error",
+                        text: "No tienes autoridad de administrador para acceder a esto",
+                        icon: "warning",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3464eb",
+                        confirmButtonText: "Aceptar",
+                        customClass: {
+                            confirmButton: "rounded-button" // Identificador personalizado
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "' . URL . 'inicio/index";
+                        }
+                    }).then(() => {
+                        window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                    });
+                    </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
                 }
         }
@@ -567,6 +599,8 @@ use Repository\Procesos1 as Repository1;
                                                     if (result.isConfirmed) {
                                                         window.location.href = "' . URL . 'usuarios/index";
                                                     }
+                                                }).then(() => {
+                                                    window.location.href = "' . URL . 'usuarios/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                                 });
                                             </script>';
                                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -591,6 +625,8 @@ use Repository\Procesos1 as Repository1;
                                             if (result.isConfirmed) {
                                                 window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                             }
+                                        }).then(() => {
+                                            window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                         });
                                         </script>';
                                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -612,6 +648,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                                 </script>';
                              exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -649,6 +687,8 @@ use Repository\Procesos1 as Repository1;
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'login/index";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -680,6 +720,8 @@ use Repository\Procesos1 as Repository1;
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'login/index";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -702,6 +744,8 @@ use Repository\Procesos1 as Repository1;
                                         if (result.isConfirmed) {
                                             window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                         }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                     });
                                     </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -728,6 +772,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -747,23 +793,27 @@ use Repository\Procesos1 as Repository1;
 
             } else {
 
-                echo '<script>
-                            Swal.fire({
-                                title: "Error",
-                                text: "No eres administrador",
-                                icon: "warning",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'inicio/index";
-                                }
-                            });
-                        </script>';
-                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+               // El usuario no es administrador, redirige al inicio
+               echo '<script>
+               Swal.fire({
+                   title: "Error",
+                   text: "No tienes autoridad de administrador para acceder a esto",
+                   icon: "warning",
+                   showConfirmButton: true,
+                   confirmButtonColor: "#3464eb",
+                   confirmButtonText: "Aceptar",
+                   customClass: {
+                       confirmButton: "rounded-button" // Identificador personalizado
+                   }
+               }).then((result) => {
+                   if (result.isConfirmed) {
+                       window.location.href = "' . URL . 'inicio/index";
+                   }
+               }).then(() => {
+                   window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+               });
+               </script>';
+               exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
 
@@ -773,23 +823,27 @@ use Repository\Procesos1 as Repository1;
             
             if($usuario != $_SESSION['usuario']){
 
+                // El usuario no es administrador, redirige al inicio
                 echo '<script>
-                            Swal.fire({
-                                title: "Error",
-                                text: "No eres administrador",
-                                icon: "warning",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
-                                }
-                            });
-                        </script>';
-                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                Swal.fire({
+                    title: "Error",
+                    text: "No tienes autoridad de administrador para acceder a esto",
+                    icon: "warning",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'inicio/index";
+                    }
+                }).then(() => {
+                    window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             } else {
 
@@ -839,6 +893,8 @@ use Repository\Procesos1 as Repository1;
                                                 if (result.isConfirmed) {
                                                     window.location.href = "' . URL . 'login/index";
                                                 }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
                                         </script>';
                                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -859,6 +915,8 @@ use Repository\Procesos1 as Repository1;
                                         if (result.isConfirmed) {
                                             window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                         }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                     });
                                 </script>';
                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -881,6 +939,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                                 </script>';
                              exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -915,6 +975,8 @@ use Repository\Procesos1 as Repository1;
                                             if (result.isConfirmed) {
                                                 window.location.href = "' . URL . 'login/index";
                                             }
+                                        }).then(() => {
+                                            window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                         });
                                     </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -935,6 +997,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -961,6 +1025,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -1004,22 +1070,26 @@ use Repository\Procesos1 as Repository1;
     
                 } else {
     
+                    // El usuario no es administrador, redirige al inicio
                     echo '<script>
-                                Swal.fire({
-                                    title: "Error",
-                                    text: "No eres administrador para acceder",
-                                    icon: "warning",
-                                    showConfirmButton: true,
-                                    confirmButtonColor: "#3464eb",
-                                    customClass: {
-                                        confirmButton: "rounded-button" // Identificador personalizado
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'inicio/index";
-                                    }
-                                });
-                            </script>';
+                    Swal.fire({
+                        title: "Error",
+                        text: "No tienes autoridad de administrador para acceder a esto",
+                        icon: "warning",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3464eb",
+                        confirmButtonText: "Aceptar",
+                        customClass: {
+                            confirmButton: "rounded-button" // Identificador personalizado
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "' . URL . 'inicio/index";
+                        }
+                    }).then(() => {
+                        window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                    });
+                    </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
@@ -1083,6 +1153,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/editarpreguntasSeguridad/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/editarpreguntasSeguridad/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -1134,6 +1206,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -1157,6 +1231,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                                 </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -1208,6 +1284,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/editarpreguntasSeguridad/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/editarpreguntasSeguridad/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -1259,6 +1337,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -1282,6 +1362,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                                 </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -1300,23 +1382,28 @@ use Repository\Procesos1 as Repository1;
 
         } else {
 
-            echo '<script>
-                    Swal.fire({
-                        title: "Error",
-                        text: "Solo puedes editar tus propias preguntas de seguridad",
-                        icon: "error",
-                        showConfirmButton: true,
-                        confirmButtonColor: "#3464eb",
-                        customClass: {
-                            confirmButton: "rounded-button" // Identificador personalizado
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
-                        }
-                    });
-                    </script>';
-            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+            
+                // El usuario no es administrador, redirige al inicio
+                echo '<script>
+                Swal.fire({
+                    title: "Error",
+                    text: "Solo puedes editar tus propias preguntas de seguridad",
+                    icon: "warning",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
+                    }
+                }).then(() => {
+                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
         }
 
@@ -1339,6 +1426,371 @@ use Repository\Procesos1 as Repository1;
         $this->usuario->set('respuesta', $respuesta);
 
         $this->usuario->insertarPreguntas();
+
+    }
+
+    public function verificarClaveAdmin($usuario_admin, $claveform){
+
+        $this->usuario->set('id_user', $usuario_admin);
+        $user = $this->usuario->getUserbyId();
+        $clavedb = $user['clave'];
+
+        $flag = false;
+
+        if(password_verify($claveform, $clavedb)){
+
+            $flag = true;
+
+        } else {
+
+            $flag = false;
+
+        }
+
+        return $flag;
+
+    }
+
+
+    public function desactivarusuario($usuario){
+
+        if($_SESSION['rol'] == 1 && $usuario != $_SESSION['usuario']){
+
+            $this->usuario->set('usuario', $usuario);
+            $id = $this->usuario->getIdUserbyUsuario();
+            $this->usuario->set('usuario', $_SESSION['usuario']);
+            $id_admin = $this->usuario->getIdUserbyUsuario();
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                //RECIBIENDO LA DATA NECESARIA PARA LA DESACTIVACION
+                $razon = $_POST['razon'];
+                $clave_admin = $_POST['clave_admin'];
+                $clave_confirmacion = $_POST['clave_confirmacion'];
+                
+                if(!empty($razon) || !empty($clave_admin) || !empty($clave_confirmacion)){
+
+                    //VERIFICANDO QUE COINCIDAN LAS CLAVES DE ADMINISTRADOR
+                    if($clave_admin == $clave_confirmacion){
+
+                        $flag = $this->verificarClaveAdmin($id_admin['id_user'], $clave_admin);
+
+                        //VALIDANDO CLAVE DE ADMINISTRADOR
+                        if($flag == true){
+                            
+                            $accion = 1;
+
+                            //PREPARANDO LA DATA PARA EL HISTORIAL
+                            $this->usuario->set('usuario_administrador', $id_admin['id_user']);
+                            $this->usuario->set('id_user', $id['id_user']);
+                            $this->usuario->set('accion', $accion);
+                            $this->usuario->set('razon', $razon);
+
+                            //INSERTANDO EN EL HISTORIAL
+                            $this->usuario->desactivarUsuarioHistorial();
+
+                            //DESACTIVANDO USUARIO
+                            $this->usuario->set('id_user', $id['id_user']);
+                            $this->usuario->desactivarUsuario();
+
+                            //PROCESO TERMINADO, REDIRECCIONANDO
+                            echo '<script>
+                                    Swal.fire({
+                                        title: "Exito",
+                                        text: "Cuenta desactivada exitosamente",
+                                        icon: "success",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'usuarios/index";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+                        } else {
+                            //CLAVE INVALIDA
+                            echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Clave de administrador invalida",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'usuarios/desactivarusuario/' . $usuario . '";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/desactivarusuario/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+                        }
+
+                    } else {
+                        //NO COINCIDEN
+                        echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "Las claves no coinciden",
+                                icon: "error",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'usuarios/desactivarusuario/' . $usuario . '";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'usuarios/desactivarusuario/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+                    }
+                    
+                    
+                } else {
+
+                    echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "Debes introducir una razon",
+                                icon: "error",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'usuarios/desactivarusuario/' . $usuario . '";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'usuarios/desactivarusuario/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+                }
+
+            }
+
+            $this->usuario->set('usuario', $usuario);
+            $data['titulo'] = "Desactivando cuenta de usuario";
+            $data['nombre_usuario'] = $usuario;
+            $data['id_cuenta'] = $this->usuario->getIdUserbyUsuario();
+
+            return $data;
+            
+
+        } else {
+
+                // El usuario no es administrador, redirige al inicio
+                echo '<script>
+                Swal.fire({
+                    title: "Error",
+                    text: "No puedes hacer esta accion",
+                    icon: "error",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'inicio/index";
+                    }
+                }).then(() => {
+                    window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+            
+
+        }
+
+    }
+
+    public function reactivarusuario($usuario){
+
+        if($_SESSION['rol'] == 1 && $usuario != $_SESSION['usuario']){
+
+            $this->usuario->set('usuario', $usuario);
+            $id = $this->usuario->getIdUserbyUsuario();
+            $this->usuario->set('usuario', $_SESSION['usuario']);
+            $id_admin = $this->usuario->getIdUserbyUsuario();
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                //RECIBIENDO LA DATA NECESARIA PARA LA REACTIVACION
+                $razon = $_POST['razon'];
+                $clave_admin = $_POST['clave_admin'];
+                $clave_confirmacion = $_POST['clave_confirmacion'];
+                
+                if(!empty($razon) || !empty($clave_admin) || !empty($clave_confirmacion)){
+
+                    //VERIFICANDO QUE COINCIDAN LAS CLAVES DE ADMINISTRADOR
+                    if($clave_admin == $clave_confirmacion){
+
+                        $flag = $this->verificarClaveAdmin($id_admin['id_user'], $clave_admin);
+
+                        //VALIDANDO CLAVE DE ADMINISTRADOR
+                        if($flag == true){
+                            
+                            $accion = 2;
+
+                            //PREPARANDO LA DATA PARA EL HISTORIAL
+                            $this->usuario->set('usuario_administrador', $id_admin['id_user']);
+                            $this->usuario->set('id_user', $id['id_user']);
+                            $this->usuario->set('accion', $accion);
+                            $this->usuario->set('razon', $razon);
+
+                            //INSERTANDO EN EL HISTORIAL
+                            $this->usuario->reactivarUsuarioHistorial();
+
+                            //REACTIVANDO USUARIO
+                            $this->usuario->set('id_user', $id['id_user']);
+                            $this->usuario->reactivarUsuario();
+
+                            //PROCESO TERMINADO, REDIRECCIONANDO
+                            echo '<script>
+                                    Swal.fire({
+                                        title: "Exito",
+                                        text: "Cuenta reactivada exitosamente",
+                                        icon: "success",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'usuarios/index";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+                        } else {
+                            //CLAVE INVALIDA
+                            echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Clave de administrador invalida",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'usuarios/reactivarusuario/' . $usuario . '";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/reactivarusuario/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+                        }
+
+                    } else {
+                        //NO COINCIDEN
+                        echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "Las claves no coinciden",
+                                icon: "error",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'usuarios/reactivarusuario/' . $usuario . '";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'usuarios/reactivarusuario/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+                    }
+                    
+                    
+                } else {
+
+                    echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "Debes introducir una razon",
+                                icon: "error",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'usuarios/reactivarusuario/' . $usuario . '";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'usuarios/reactivarusuario/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+                }
+
+            }
+
+            $this->usuario->set('usuario', $usuario);
+            $data['titulo'] = "Reactivando cuenta de usuario";
+            $data['nombre_usuario'] = $usuario;
+            $data['id_cuenta'] = $this->usuario->getIdUserbyUsuario();
+
+            return $data;
+            
+
+        } else {
+
+            // El usuario no es administrador, redirige al inicio
+                echo '<script>
+                Swal.fire({
+                    title: "Error",
+                    text: "No puedes hacer esta accion",
+                    icon: "error",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'inicio/index";
+                    }
+                }).then(() => {
+                    window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+        }
 
     }
 

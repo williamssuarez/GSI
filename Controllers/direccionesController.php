@@ -6,6 +6,7 @@ use Models\Dispositivos;
 use Models\Direcciones_ip;
 use Models\setRango;
 use Models\Equipos;
+use Models\Usuario;
 use Repository\Procesos1 as Repository1;
 
     class direccionesController{
@@ -16,6 +17,7 @@ use Repository\Procesos1 as Repository1;
         private $direccion_ip;
         private $setRangoIp;
         private $equipo;
+        private $usuario;
 
         public function __construct()
         {
@@ -25,16 +27,17 @@ use Repository\Procesos1 as Repository1;
             $this->direccion_ip = new Direcciones_ip();
             $this->setRangoIp = new setRango();
             $this->equipo = new Equipos();
+            $this->usuario = new Usuario();
             if (!isset($_SESSION['usuario'])) {
-                // El usuario no está autenticado, redirige al formulario de inicio de sesión.
+                // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
                 Swal.fire({
                     title: "Error",
-                    text: "Tienes que inicar sesion primero!",
+                    text: "Tienes que iniciar sesión primero!",
                     icon: "warning",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
-                    confirmButtonText: "Iniciar Sesion",
+                    confirmButtonText: "Iniciar Sesión",
                     customClass: {
                         confirmButton: "rounded-button" // Identificador personalizado
                     }
@@ -42,6 +45,8 @@ use Repository\Procesos1 as Repository1;
                     if (result.isConfirmed) {
                         window.location.href = "' . URL . 'login/index";
                     }
+                }).then(() => {
+                    window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -52,7 +57,7 @@ use Repository\Procesos1 as Repository1;
                 echo '<script>
                 Swal.fire({
                     title: "Error",
-                    text: "No tienes autoridad de administrador para hacer esto",
+                    text: "No tienes autoridad de administrador para acceder a esto",
                     icon: "warning",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
@@ -64,6 +69,8 @@ use Repository\Procesos1 as Repository1;
                     if (result.isConfirmed) {
                         window.location.href = "' . URL . 'inicio/index";
                     }
+                }).then(() => {
+                    window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -127,6 +134,8 @@ use Repository\Procesos1 as Repository1;
                                     if (result.isConfirmed) {
                                         window.location.href = "' . URL . 'direcciones/new";
                                     }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'direcciones/new"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -157,55 +166,97 @@ use Repository\Procesos1 as Repository1;
 
                         //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
                         $id_equipo = $this->equipo->getEquipobyNumerodeBien();
-                        //UNA VEZ OBTENIDO LO SETEAMOS
-                        $this->direccion->set('equipo', $id_equipo['id_equipo']);
-                        $this->direccion->set('tipo_dispositivo', $dispositivo);
-                        $this->direccion->set('id_direccion', $direccion);
-                        $this->direccion->set('numero_bien', $numero_bien);
 
-                        //Agregando la nueva direccion a la base de datos
-                        $this->direccion->add();
+                        //VERIFICANDO SI EL RANGO DE IP OBTENIDO COINCIDE CON EL DEPARTAMENTO DEL EQUIPO
+                        $flag = $this->verificarEquipoyRango($id_equipo['departamento']);
 
-                        //OBTENIENDO LA ID DE ASIGNACION PARA INSERTARLA EN LA TABLA EQUIPOS
-                        $this->direccion->set('numero_bien', $numero_bien);
-                        $id_asignacion = $this->direccion->getAsignacionIDbyNumeroBien();
+                        if($flag == true){
 
-                        //INSERTANDO EL ID DE ASIGNACION AL EQUIPO CORRESPONDIENTE
-                        $this->equipo->set('id_equipo', $id_equipo['id_equipo']);
-                        $this->equipo->set('direccion_ip', $id_asignacion['id_asignacion']);
-                        $this->equipo->AsignarDireccionEquipo();
+                            //OBTENIENDO EL ID DEL ADMINISTRADOR
+                            $this->usuario->set('usuario', $_SESSION['usuario']);
+                            $id_admin = $this->usuario->getIdUserbyUsuario();
 
-                        //Cambiando estado de 0 libre a 1 ocupado
-                        $this->changeEstado($direccion);
+                            //UNA VEZ OBTENIDO LO SETEAMOS        
+                            $this->direccion->set('id_administrador', $id_admin['id_user']);                
+                            $this->direccion->set('equipo', $id_equipo['id_equipo']);
+                            $this->direccion->set('tipo_dispositivo', $dispositivo);
+                            $this->direccion->set('id_direccion', $direccion);
+                            $this->direccion->set('numero_bien', $numero_bien);
 
-                        //Sumando el numero de direcciones asignadas al departamento
-                        //El departamento no requiere pasar ninguna variable porque se usa el especificado en el rango
-                        $this->actualizarDireccionesenDepartamento();
+                            //Agregando la nueva direccion a la base de datos
+                            $this->direccion->add();
 
-                        //Sumando el numero de direcciones asignadas al dispositivo
-                        $this->actualizarDireccionesenDispositivos($dispositivo);
+                            //OBTENIENDO LA ID DE ASIGNACION PARA INSERTARLA EN LA TABLA EQUIPOS
+                            $this->direccion->set('numero_bien', $numero_bien);
+                            $id_asignacion = $this->direccion->getAsignacionIDbyNumeroBien();
 
-                        //Liberando el rango en la tabla setrango en la base de datos
-                        $this->liberarRango();
+                            //INSERTANDO EL ID DE ASIGNACION AL EQUIPO CORRESPONDIENTE
+                            $this->equipo->set('id_equipo', $id_equipo['id_equipo']);
+                            $this->equipo->set('direccion_ip', $id_asignacion['id_asignacion']);
+                            $this->equipo->AsignarDireccionEquipo();
 
-                        //PROCESO TERMINADO, REDIRECCIONANDO
-                        echo '<script>
-                                    Swal.fire({
-                                        title: "Redireccionando...",
-                                        text: "Asignacion a equipo exitosa",
-                                        icon: "success",
-                                        showConfirmButton: true,
-                                        confirmButtonColor: "#3464eb",
-                                        customClass: {
-                                            confirmButton: "rounded-button" // Identificador personalizado
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'direcciones/index";
-                                        }
-                                    });
-                                </script>';
-                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                            //Cambiando estado de 0 libre a 1 ocupado
+                            $this->changeEstado($direccion);
+
+                            //Sumando el numero de direcciones asignadas al departamento
+                            //El departamento no requiere pasar ninguna variable porque se usa el especificado en el rango
+                            $this->actualizarDireccionesenDepartamento();
+
+                            //Sumando el numero de direcciones asignadas al dispositivo
+                            $this->actualizarDireccionesenDispositivos($dispositivo);
+
+                            //Liberando el rango en la tabla setrango en la base de datos
+                            $this->liberarRango();
+
+                            //PROCESO TERMINADO, REDIRECCIONANDO
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Redireccionando...",
+                                            text: "Asignacion a equipo exitosa",
+                                            icon: "success",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'direcciones/index";
+                                            }
+                                        }).then(() => {
+                                            window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                        } else {
+
+                                //Liberando el rango en la tabla setrango en la base de datos
+                                $this->liberarRango();
+                                //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                                echo '<script>
+                                Swal.fire({
+                                    title: "Equipo invalido",
+                                    text: "El rango de ip que solicitaste y el departamento al que pertenece el equipo no coinciden",
+                                    icon: "warning",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    confirmButtonText: "Aceptar",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'direcciones/index";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                            </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                        }
+                        
                     } 
                     //SI LA CUENTA ES INFERIOR A 0 ENTONCES NO ESTA REGISTRADO
                     else {
@@ -226,6 +277,8 @@ use Repository\Procesos1 as Repository1;
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'equipos/newregistro";
                             }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
                     </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -266,11 +319,32 @@ use Repository\Procesos1 as Repository1;
                                 if (result.isConfirmed) {
                                     window.location.href = "' . URL . 'direcciones/index";
                                 }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
+
+        }
+
+        private function verificarEquipoyRango($id_departamento_equipo){
+
+            $rango = $this->setRangoIp->getRangoIdDepartamento();
+
+            $flag = false;
+
+            if($rango['id_departamento'] == $id_departamento_equipo){
+
+                $flag = true;
+
+            } else {
+
+                $flag = false;
+            }
+
+            return $flag;
 
         }
 
@@ -314,9 +388,6 @@ use Repository\Procesos1 as Repository1;
                 //Obteniendo la data necesaria antes de eliminar
                 $data = $this->direccion->getDataForLiberation();
 
-                //Eliminando de la DB
-                $this->direccion->delete();
-
                 //guardando la direccion
                 $id_direccion = $data['id_direccion'];
 
@@ -325,9 +396,17 @@ use Repository\Procesos1 as Repository1;
 
                 //guardando el equipo
                 $id_equipo = $data['equipo'];
-                
-                //funcion que cambia el estado de la ip, y reduce el total en el departamento y el dispositivo
-                $this->liberar($id_direccion, $id_dispositivo, $id_equipo);
+
+                if(empty($id_equipo)){
+
+                    $this->liberarSinEquipo($id_direccion, $id_dispositivo);
+
+                } else {
+
+                    //funcion que cambia el estado de la ip, y reduce el total en el departamento y el dispositivo
+                    $this->liberar($id_direccion, $id_dispositivo, $id_equipo);
+
+                }
 
                 echo '<script>
                             Swal.fire({
@@ -343,6 +422,8 @@ use Repository\Procesos1 as Repository1;
                                 if (result.isConfirmed) {
                                     window.location.href = "' . URL . 'operadores/index";
                                 }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'operadores/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                         </script>';
                 exit;
@@ -372,6 +453,9 @@ use Repository\Procesos1 as Repository1;
                 //Eliminando la id de asignacion del equipo
                 $this->equipo->liberarDireccionEquipo();
 
+                //Eliminando de la DB
+                $this->direccion->delete();
+
                 echo '<script>
                             Swal.fire({
                                 title: "Redireccionando...",
@@ -386,11 +470,53 @@ use Repository\Procesos1 as Repository1;
                                 if (result.isConfirmed) {
                                     window.location.href = "' . URL . 'direcciones/index";
                                 }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
         }
+
+        //funcion que cambia el estado de la ip, y reduce el total en el departamento y el dispositivo
+        public function liberarSinEquipo($id_direccion, $id_dispositivo){
+
+            //Fijando el dispositivo
+            $this->dispositivo->set('id_dispositivos', $id_dispositivo);
+
+            //Fijando la direccion ip
+            $this->direccion_ip->set('id_ip', $id_direccion);
+
+            //Reduciendole uno en asignaciones totales
+            $this->dispositivo->reducirDireccionesenAsignadas();
+
+            //Cambiandole el estado de ocupado a libre y reduciendole 1 al departamento correspondiente
+            $this->direccion_ip->release();
+
+            //Eliminando de la DB
+            $this->direccion->delete();
+
+            echo '<script>
+                        Swal.fire({
+                            title: "Redireccionando...",
+                            text: "Direccion Liberada Exitosamente.",
+                            icon: "success",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'direcciones/index";
+                            }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                        });
+                    </script>';
+            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+    }
 
         public function edit($id){
 
@@ -409,6 +535,11 @@ use Repository\Procesos1 as Repository1;
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                 }            
+            
+        }
+
+        public function liberarDireccionHistorial(){
+
             
         }
       

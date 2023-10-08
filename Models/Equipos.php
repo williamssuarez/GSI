@@ -129,7 +129,8 @@ class Equipos{
     public function getEquipobyNumerodeBien(){
 
         $sql = "SELECT
-                id_equipo
+                id_equipo,
+                departamento
                 FROM
                 equipos
                 WHERE
@@ -328,6 +329,8 @@ class Equipos{
                 direccion_ip = NULL
                 WHERE
                 id_equipo = '{$this->id_equipo}'";
+
+        $this->con->consultaSimple($sql);
     }
 
 }

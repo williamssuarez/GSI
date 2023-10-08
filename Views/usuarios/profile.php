@@ -119,17 +119,21 @@
 
                                             <?php if($_SESSION['rol'] == 1) { ?>
 
-                                                <?php if($data['user']['estado'] == 0) { ?>
+                                                <?php if( $data['user']['usuario'] != $_SESSION['usuario'] ){  ?>
 
-                                                    <a id="desactivar" href="<?php echo URL; ?>usuarios/desactivarusuario/<?php echo $_SESSION['usuario'] ?>" class="btn btn-danger" aria-current="page">
+                                                    <?php if($data['user']['estado'] == 0) { ?>
+
+                                                    <a id="desactivar" href="<?php echo URL; ?>usuarios/desactivarusuario/<?php echo $data['user']['usuario'] ?>" class="btn btn-danger" aria-current="page">
                                                         Desactivar Operador
                                                     </a>
 
-                                                <?php } else { ?>
+                                                    <?php } else { ?>
 
-                                                    <a id="reactivar" href="<?php echo URL; ?>usuarios/reactivarusuario/<?php echo $_SESSION['usuario'] ?>" class="btn btn-success" aria-current="page">
+                                                    <a id="reactivar" href="<?php echo URL; ?>usuarios/reactivarusuario/<?php echo $data['user']['usuario'] ?>" class="btn btn-success" aria-current="page">
                                                         Reactivar Operador
                                                     </a>
+
+                                                    <?php } ?>
 
                                                 <?php } ?>
 

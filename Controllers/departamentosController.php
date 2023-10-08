@@ -11,15 +11,15 @@ use Repository\Procesos1 as Repository1;
         {
             $this->departamento = new Departamentos();
             if (!isset($_SESSION['usuario'])) {
-                // El usuario no está autenticado, redirige al formulario de inicio de sesión.
+                // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
                 Swal.fire({
                     title: "Error",
-                    text: "Tienes que inicar sesion primero!",
+                    text: "Tienes que iniciar sesión primero!",
                     icon: "warning",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
-                    confirmButtonText: "Iniciar Sesion",
+                    confirmButtonText: "Iniciar Sesión",
                     customClass: {
                         confirmButton: "rounded-button" // Identificador personalizado
                     }
@@ -27,17 +27,18 @@ use Repository\Procesos1 as Repository1;
                     if (result.isConfirmed) {
                         window.location.href = "' . URL . 'login/index";
                     }
+                }).then(() => {
+                    window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
             }
             if($_SESSION['rol'] != 1){
 
-                // El usuario no es administrador, redirige al inicio
                 echo '<script>
                 Swal.fire({
                     title: "Error",
-                    text: "No tienes autoridad de administrador para hacer esto",
+                    text: "No tienes autoridad de administrador para acceder a esto",
                     icon: "warning",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
@@ -49,6 +50,8 @@ use Repository\Procesos1 as Repository1;
                     if (result.isConfirmed) {
                         window.location.href = "' . URL . 'inicio/index";
                     }
+                }).then(() => {
+                    window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -64,74 +67,6 @@ use Repository\Procesos1 as Repository1;
 
         public function num($number){
             echo "El numero que elegiste es ".$number;
-        }
-
-        public function new(){
-           
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-
-                $nombre = $_POST['nombre'];
-                $apellido = $_POST['apellido'];
-                $cedula = $_POST['cedula_identidad'];
-                $correo = $_POST['correo'];
-
-                $this->departamento->set('nombre', $nombre);
-                $this->departamento->set('apellido', $apellido);
-                $this->departamento->set('cedula_identidad', $cedula);
-                $this->departamento->set('correo', $correo);
-
-                $this->departamento->add();
-
-                echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Agregado Exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
-                                }
-                            });
-                        </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-
-            }                        
-
-        }
-
-        public function delete($id){
-
-            if($_SERVER['REQUEST_METHOD'] == 'GET'){
-
-                $this->departamento->set('id_operador', $id);
-
-                $this->departamento->delete();
-
-                echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Eliminado Exitosamente.",
-                                icon: "warning",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
-                                }
-                            });
-                        </script>';
-                exit;
-
-            }
-
         }
 
         public function edit($id){
@@ -161,6 +96,8 @@ use Repository\Procesos1 as Repository1;
                                 if (result.isConfirmed) {
                                     window.location.href = "' . URL . 'departamentos/index";
                                 }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'departamentos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.

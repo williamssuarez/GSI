@@ -16,8 +16,13 @@ class Usuario{
     //PREGUNTAS DE SEGURIDAD
     private $id_pregunta;
     private $respuesta;
+    //HISTORIAL DEL USUARIO
+    private $usuario_administrador;
+    private $accion;
+    private $razon;
     private $con;
     private $resultado;
+
 
     public function __construct()
     {
@@ -61,7 +66,8 @@ class Usuario{
                 apellidos, 
                 cedula, 
                 usuario, 
-                clave 
+                clave,
+                estado 
                 FROM 
                 usuarios 
                 WHERE usuario = ?";
@@ -76,7 +82,34 @@ class Usuario{
         }
 
         return null; // Maneja el error de consulta preparada
-    }
+    } 
+
+    public function getUserById(){
+        
+        $sql = "SELECT 
+                id_user,
+                rol,
+                nombres,
+                apellidos, 
+                cedula, 
+                usuario, 
+                clave,
+                estado 
+                FROM 
+                usuarios 
+                WHERE id_user = ?";
+
+        $param_types = "s"; // Tipo de parámetro (en este caso, una cadena)
+        $params = array($this->id_user); // Parámetros
+
+        $result = $this->con->consultaPreparada($sql, $param_types, $params);
+
+        if ($result !== false) {
+            return $result->fetch_assoc();
+        }
+
+        return null; // Maneja el error de consulta preparada
+    } 
 
     public function obtenerUserByCedula(){
 
@@ -397,6 +430,56 @@ class Usuario{
             
         $this->con->consultaSimple($sql);
 
+    }
+
+    //INSERTAR RAZON DE DESACTIVACION EN HISTORIAL ANTES DE DESACTIVAR
+    public function desactivarUsuarioHistorial(){
+
+        $sql = "INSERT INTO
+                historial_usuarios(usuario_administrador, id_usuario, accion, razon)
+                VALUES 
+                ('{$this->usuario_administrador}', '{$this->id_user}', '{$this->accion}', '{$this->razon}')";
+            
+        $this->con->consultaSimple($sql);
+
+    }
+
+    //CAMBIAR UNA VEZ INSERTADO EN EL HISTORIAL
+    public function desactivarUsuario(){
+
+        $sql = "UPDATE
+                usuarios
+                SET
+                estado = 1
+                WHERE
+                id_user = '{$this->id_user}'";
+
+        $this->con->consultaSimple($sql);
+    }
+
+    //INSERTAR RAZON DE REACTIVACION EN HISTORIAL ANTES DE REACTIVAR
+    public function reactivarUsuarioHistorial(){
+
+        $sql = "INSERT INTO
+                historial_usuarios(usuario_administrador, id_usuario, accion, razon)
+                VALUES 
+                ('{$this->usuario_administrador}', '{$this->id_user}', '{$this->accion}', '{$this->razon}')";
+            
+        $this->con->consultaSimple($sql);
+
+    }
+
+    //REACTIVAR UNA VEZ INSERTADO EN EL HISTORIAL
+    public function reactivarUsuario(){
+
+        $sql = "UPDATE
+                usuarios
+                SET
+                estado = 0
+                WHERE
+                id_user = '{$this->id_user}'";
+
+        $this->con->consultaSimple($sql);
     }
 
 
