@@ -7,9 +7,15 @@ class Usuario{
     private $nombres;
     private $apellidos;
     private $cedula;
+    private $correo;
+    private $telefono;
     private $usuario;
+    //Para la edicion de credenciales del usuario
+    private $current_user;
     private $clave;
+    //PREGUNTAS DE SEGURIDAD
     private $id_pregunta;
+    private $respuesta;
     private $con;
     private $resultado;
 
@@ -128,6 +134,34 @@ class Usuario{
         return $result->fetch_assoc();
     }
 
+    public function verificarCorreo(){
+
+        $sql = "SELECT
+                COUNT(*) as cuenta
+                FROM
+                usuarios
+                WHERE
+                correo = '{$this->correo}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
+    public function verificarTelefono(){
+
+        $sql = "SELECT
+                COUNT(*) as cuenta
+                FROM
+                usuarios
+                WHERE
+                telefono = '{$this->telefono}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function lista(){
 
         $sql = "SELECT 
@@ -135,10 +169,13 @@ class Usuario{
                 rol,
                 nombres,
                 apellidos, 
-                cedula, 
+                cedula,
+                correo,
+                telefono, 
                 usuario, 
                 clave,
-                estado 
+                estado,
+                fecha_agregado 
                 FROM 
                 usuarios";
 
@@ -156,9 +193,9 @@ class Usuario{
     public function add(){
         
         $sql = "INSERT INTO
-                usuarios(rol, nombres, apellidos, cedula, usuario, clave)
+                usuarios(rol, nombres, apellidos, cedula, correo, telefono, usuario, clave)
                 VALUES 
-                ('{$this->rol}', '{$this->nombres}', '{$this->apellidos}', '{$this->cedula}', '{$this->usuario}','{$this->clave}')";
+                ('{$this->rol}', '{$this->nombres}', '{$this->apellidos}', '{$this->cedula}', '{$this->correo}', '{$this->telefono}', '{$this->usuario}','{$this->clave}')";
         
         $this->con->consultaSimple($sql);
     }
@@ -171,6 +208,8 @@ class Usuario{
                 nombres,
                 apellidos,
                 cedula,
+                correo,
+                telefono,
                 usuario,
                 rol
                 FROM
@@ -190,31 +229,65 @@ class Usuario{
                 SET
                 nombres = '{$this->nombres}',
                 apellidos = '{$this->apellidos}',
-                cedula = '{$this->cedula}'
+                cedula = '{$this->cedula}',
+                correo = '{$this->correo}'
+                telefono = '{$this->telefono}'
                 WHERE
                 usuario = '{$this->usuario}'";
 
         $this->con->consultaSimple($sql);
     }
 
+    public function editCredencialesAdmin(){
+
+        $sql = "UPDATE
+                usuarios
+                SET
+                usuario = '{$this->usuario}',
+                clave = '{$this->clave}',
+                rol = '{$this->rol}'
+                WHERE
+                usuario = '{$this->current_user}'";
+
+        $this->con->consultaSimple($sql);
+
+    }
+
+    public function editCredencialesOperador(){
+
+        $sql = "UPDATE
+                usuarios
+                SET
+                usuario = '{$this->usuario}',
+                clave = '{$this->clave}'
+                WHERE
+                usuario = '{$this->current_user}'";
+
+        $this->con->consultaSimple($sql);
+
+    }
+
     public function view(){
 
         $sql = "SELECT 
-        id_user,
-        rol,
-        nombres,
-        apellidos, 
-        cedula, 
-        usuario, 
-        clave,
-        estado 
-        FROM 
-        usuarios
-        WHERE usuario = '{$this->usuario}'";
+                id_user,
+                rol,
+                nombres,
+                apellidos, 
+                cedula,
+                correo,
+                telefono, 
+                usuario, 
+                clave,
+                estado,
+                fecha_agregado 
+                FROM 
+                usuarios
+                WHERE usuario = '{$this->usuario}'";
 
-        $result = $this->con->consultaRetorno($sql);
+                $result = $this->con->consultaRetorno($sql);
 
-        return $result->fetch_assoc();
+                return $result->fetch_assoc();
 
     }
     
@@ -269,6 +342,63 @@ class Usuario{
 
         $this->con->consultaSimple($sql);
     }
+
+
+    //PREGUNTAS DE SEGURIDAD
+    public function verificarPreguntasExistencia(){
+
+        $sql = "SELECT
+                COUNT(*) as cuenta
+                FROM
+                usuarios_preguntas
+                WHERE
+                id_usuario = '{$this->id_user}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+
+    }
+
+    public function getIdUserbyUsuario(){
+
+        $sql = "SELECT
+                id_user
+                FROM
+                usuarios
+                WHERE
+                usuario = '{$this->usuario}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+
+    }
+
+    public function editarPreguntas(){
+
+        $sql = "UPDATE
+                usuarios_preguntas
+                SET
+                respuesta = '{$this->respuesta}'
+                WHERE
+                id_usuario = '{$this->id_user}' AND id_pregunta = '{$this->id_pregunta}'";
+            
+        $this->con->consultaSimple($sql);
+
+    }
+
+    public function insertarPreguntas(){
+
+        $sql = "INSERT INTO
+                usuarios_preguntas(id_usuario, id_pregunta, respuesta)
+                VALUES 
+                ('{$this->id_user}', '{$this->id_pregunta}', '{$this->respuesta}')";
+            
+        $this->con->consultaSimple($sql);
+
+    }
+
 
 
 }

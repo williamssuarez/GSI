@@ -303,6 +303,7 @@ class Template{
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/operadores.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/departamentos.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/auditoria.js"></script>
+    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/usuarios.js"></script>
     
 
     </body>

@@ -2,7 +2,9 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>
+                            <div class="col-lg-5 d-none d-lg-block bg-register">
+                                <img class="gsi-preguntas-imagen" src="<?php echo URL; ?>Views/template/img/reiniciar.png" alt="">
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
@@ -13,7 +15,7 @@
                                     </div>
                                     <form class="user" method="post" action="" >
                                         <div class="form-group">
-                                            <input type="number" class="form-control form-control-user"
+                                            <input required type="number" class="form-control form-control-user"
                                                 id="cedula_restablecer" name="cedula_restablecer"
                                                 placeholder="Introduzca su Cedula Aqui...">
                                         </div>

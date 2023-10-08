@@ -8,7 +8,9 @@
     <div class="card-body p-0">
 
             <div class="row">
-                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                <div class="col-lg-5 d-none d-lg-block bg-register">
+                    <img class="gsi-preguntas-imagen" src="<?php echo URL; ?>Views/template/img/perfil.png" alt="">
+                </div>
                     <div class="col-lg-7">
                         <div class="p-5">
                         <div class="text-center">
@@ -46,11 +48,33 @@
                                             name="cedula" id="cedula" placeholder="Introduzca Cedula" required
                                             value="<?php echo $data['operador']['cedula'] ?>">
                                     </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label mt-4">
+                                            <i class="fa-solid fa-envelope" style="color: #0043b8;"></i> 
+                                            Correo
+                                        </label>
+                                        <input type="text" class="form-control form-control-user" name="correo" id="correo" 
+                                            placeholder="Introduzca Correo" required
+                                            value="<?php echo $data['operador']['correo'] ?>">
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label class="form-label mt-4">
+                                            <i class="fa-solid fa-mobile-screen-button" style="color: #6e6e6e;"></i> 
+                                            Telefono                                     
+                                        </label>
+                                        <input type="text" class="form-control form-control-user" 
+                                            name="telefono" id="telefono" placeholder="Introduzca Telefono" required
+                                            value="<?php echo $data['operador']['telefono'] ?>">
+                                    </div>                                    
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
                                     <i class="fa-solid fa-user-plus"></i>
                                     Actualizar Usuario
                                 </button>
+                                <a href="<?php echo URL; ?>usuarios/index" class="btn btn-danger btn-user btn-block">
+                                    Cancelar
+                                </a>
                             </form>
                         </div>
                     </div>

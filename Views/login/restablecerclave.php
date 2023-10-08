@@ -3,7 +3,9 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-5 d-none d-lg-block bg-register">
+                                <img class="gsi-preguntas-imagen" src="<?php echo URL; ?>Views/template/img/reiniciar2.png" alt="">
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
@@ -37,7 +39,7 @@
                                                 placeholder="Clave..." required>
                                         </div>
                                         <hr>
-                                        <button class="btn btn-primary btn-user btn-block" type="submit" name="submit" id="submit">
+                                        <button class="btn btn-danger btn-user btn-block" type="submit" name="submit" id="submit">
                                             Restablecer
                                         </button>
                                     </form>

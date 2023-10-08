@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.4.28-MariaDB, for Win64 (AMD64)
+-- MariaDB dump 10.19  Distrib 10.4.25-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: gsi
 -- ------------------------------------------------------
--- Server version	10.4.28-MariaDB
+-- Server version	10.4.25-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -19,7 +19,7 @@
 -- Current Database: `gsi`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `gsi` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `gsi` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `gsi`;
 
@@ -40,7 +40,7 @@ CREATE TABLE `auditoria` (
   `usuario` varchar(70) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_auditoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `departamentos` (
   `ingresos` int(11) NOT NULL DEFAULT 0,
   `direcciones_asignadas` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +95,7 @@ CREATE TABLE `direccion_ip` (
   PRIMARY KEY (`id_ip`),
   KEY `id_departamento` (`id_departamento`),
   CONSTRAINT `direccion_ip_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id_departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=66050 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66050 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +130,7 @@ CREATE TABLE `direcciones_asignadas` (
   CONSTRAINT `direcciones_asignadas_ibfk_1` FOREIGN KEY (`id_direccion`) REFERENCES `direccion_ip` (`id_ip`),
   CONSTRAINT `direcciones_asignadas_ibfk_2` FOREIGN KEY (`tipo_dispositivo`) REFERENCES `dispositivos` (`id_dispositivos`),
   CONSTRAINT `direcciones_asignadas_ibfk_3` FOREIGN KEY (`equipo`) REFERENCES `equipos` (`id_equipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +155,7 @@ CREATE TABLE `dispositivos` (
   `nombre_dispositivo` varchar(70) DEFAULT NULL,
   `total_asignaciones` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_dispositivos`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,7 +196,7 @@ CREATE TABLE `equipos` (
   CONSTRAINT `equipos_ibfk_1` FOREIGN KEY (`departamento`) REFERENCES `departamentos` (`id_departamento`),
   CONSTRAINT `equipos_ibfk_2` FOREIGN KEY (`direccion_ip`) REFERENCES `direcciones_asignadas` (`id_asignacion`),
   CONSTRAINT `equipos_ibfk_3` FOREIGN KEY (`sistema_operativo`) REFERENCES `sistemas_operativos` (`id_os`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +228,7 @@ CREATE TABLE `equipos_ingresados` (
   KEY `id_equipo` (`id_equipo`),
   CONSTRAINT `equipos_ingresados_ibfk_2` FOREIGN KEY (`recibido_por`) REFERENCES `operadores` (`id_operador`),
   CONSTRAINT `equipos_ingresados_ibfk_3` FOREIGN KEY (`id_equipo`) REFERENCES `equipos` (`id_equipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,7 +259,7 @@ CREATE TABLE `equipos_salida` (
   KEY `entregado_por` (`entregado_por`),
   CONSTRAINT `equipos_salida_ibfk_2` FOREIGN KEY (`ingreso`) REFERENCES `equipos_ingresados` (`id_ingreso`),
   CONSTRAINT `equipos_salida_ibfk_3` FOREIGN KEY (`entregado_por`) REFERENCES `operadores` (`id_operador`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +285,7 @@ CREATE TABLE `historial_ip` (
   `fecha_liberacion` timestamp NOT NULL DEFAULT current_timestamp(),
   `usuario` int(11) NOT NULL,
   PRIMARY KEY (`id_historial`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,6 +295,32 @@ CREATE TABLE `historial_ip` (
 LOCK TABLES `historial_ip` WRITE;
 /*!40000 ALTER TABLE `historial_ip` DISABLE KEYS */;
 /*!40000 ALTER TABLE `historial_ip` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `historial_usuarios`
+--
+
+DROP TABLE IF EXISTS `historial_usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `historial_usuarios` (
+  `id_historial` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `accion` int(11) NOT NULL,
+  `razon` varchar(70) NOT NULL,
+  `fecha_historial` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_historial`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `historial_usuarios`
+--
+
+LOCK TABLES `historial_usuarios` WRITE;
+/*!40000 ALTER TABLE `historial_usuarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `historial_usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -315,7 +341,7 @@ CREATE TABLE `operadores` (
   `equipos_ingresados` int(11) NOT NULL DEFAULT 0,
   `estado` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id_operador`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,7 +365,7 @@ CREATE TABLE `preguntas_seguridad` (
   `id_pregunta` int(11) NOT NULL AUTO_INCREMENT,
   `pregunta` varchar(70) NOT NULL,
   PRIMARY KEY (`id_pregunta`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -364,7 +390,7 @@ CREATE TABLE `roles` (
   `nombre` varchar(70) NOT NULL,
   `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -388,7 +414,7 @@ CREATE TABLE `setrango` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_departamento` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -413,7 +439,7 @@ CREATE TABLE `sistemas_operativos` (
   `tipo` int(11) DEFAULT 0,
   `fecha_agregado` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_os`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -439,14 +465,19 @@ CREATE TABLE `usuarios` (
   `nombres` varchar(70) NOT NULL,
   `apellidos` varchar(70) NOT NULL,
   `cedula` int(11) NOT NULL,
+  `correo` varchar(70) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `equipos_ingresados` int(11) DEFAULT NULL,
+  `equipos_entregados` int(11) DEFAULT NULL,
   `usuario` varchar(70) DEFAULT NULL,
   `clave` varchar(70) DEFAULT NULL,
   `clave_sin_hash` varchar(70) DEFAULT NULL,
   `estado` int(11) NOT NULL DEFAULT 0,
+  `fecha_agregado` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_user`),
   KEY `rol` (`rol`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `roles` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -455,7 +486,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,1,'Williams Andres','Suarez Parra',30525051,'admin','$2y$10$N5m2wBjUSXHrpSG11h6d6.6.ZMoOi.YbQMpyb7fbYGgmgM76cSLem','30525051',0),(2,2,'Leonardo ','Gonzales',21026062,'leonardo','$2y$10$/1rWqanBdL8PBvdwhxoyX.6XLVFwOw6FyZxbvKZ2IF8sawgynLLr6','21026062',0),(3,2,'Rodolfo Esperanza','Banderas Nagi',9874698,'rudolf','$2y$10$px3/7hg6avUd8g8z3DTx.e3L7S4iwbsRqUCbznCCopCiekMkvWyF.','9874698',0);
+INSERT INTO `usuarios` VALUES (1,1,'Williams Andres','Suarez Parra',30525051,NULL,NULL,NULL,NULL,'admin','$2y$10$6.IyB6n.3WQC6lb9pSkLzelWUtTXDRdoyZ.1.cGxdhrH8TOhOIDTm','30525051',0,'2023-10-07 23:36:44'),(2,2,'Leonardo ','Gonzales',21026062,NULL,NULL,NULL,NULL,'leonardo','$2y$10$/1rWqanBdL8PBvdwhxoyX.6XLVFwOw6FyZxbvKZ2IF8sawgynLLr6','21026062',0,'2023-10-07 23:36:44'),(3,2,'Rodolfo Esperanza','Banderas Nagi',9874698,NULL,NULL,NULL,NULL,'rudolf','$2y$10$PAjGYiYDtp.7jz.fnb/8Wuhaovzoi6/ESgblJdfpV6qqQjS9ffALG','9874698',0,'2023-10-07 23:36:44');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,7 +508,7 @@ CREATE TABLE `usuarios_preguntas` (
   KEY `id_pregunta` (`id_pregunta`),
   CONSTRAINT `usuarios_preguntas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_user`),
   CONSTRAINT `usuarios_preguntas_ibfk_2` FOREIGN KEY (`id_pregunta`) REFERENCES `preguntas_seguridad` (`id_pregunta`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,7 +517,7 @@ CREATE TABLE `usuarios_preguntas` (
 
 LOCK TABLES `usuarios_preguntas` WRITE;
 /*!40000 ALTER TABLE `usuarios_preguntas` DISABLE KEYS */;
-INSERT INTO `usuarios_preguntas` VALUES (1,1,1,'$2y$10$f8XA3ROH2/eY2bcTN0Bv1erQ02HBzwDc5g1SKNOlPuZ2UKZxHkRQG','Rojo'),(2,1,4,'$2y$10$VtinTlhAqIUmxXHtROlleeCIccdlzkeIoGRUlBk7126oTlODh/clW','Blue Lock'),(3,1,3,'$2y$10$aebWKjs/kopKztGMlNhFxesCAxrlYpxszNm.OmHiJaGsd6dTnCoVe','Maracay'),(4,1,2,'$2y$10$GrxdHxfXdfn/U0ZR13.eauhM12AgreZn6t9Spn6VIS2ct0eHjW7IW','Zeus'),(5,1,6,'$2y$10$DQ1nT.Jp/MRQZSoG2GfJsOsWD8HOXBw836ItzGNRJq4LWshIrCHcC','Maria Leon'),(6,1,5,'$2y$10$yww.10KOolCFCcQ64UTC0uhf2iv5JhH3G1OIRvOzFiw92uuTQPvNC','Andres Suarez'),(7,2,1,'$2y$10$VcDY1vLwgGj03dxqCk4cXeEAaiJhvIJDBoBvJeQArCUQm2lFT8Wc2','Azul'),(8,2,4,'$2y$10$bb3Dne8h8V3tNHhFrKQgcuWKWP1VUEu2RdAjYUz/4szb8ZWZjoWQG','New Game!'),(9,2,3,'$2y$10$Gf9KXMyww7RInA8rdIpzouW7ZsQv7IYkEZwSoj0hIrXtWtx9rOoHq','Caracas'),(10,2,2,'$2y$10$7/x5NrCSOQR679I7t4k2gO.T.uY3tpTobJbJxMOuQsQkZ.47Jre/6','Spike'),(11,2,5,'$2y$10$C/XCHP3yrI1Z156THoUId.QWInJSk54Ghow8.92W0z.OFO/3uRUx.','Natalia Parra'),(12,2,6,'$2y$10$xV0ap5aKK.JGnhQhQVyzdeKNUvhIdUFNMg8ROw15J0140/DNFIKHy','Rafael Parra');
+INSERT INTO `usuarios_preguntas` VALUES (1,1,1,'$2y$10$V3bXzu87iRcsdyaRg/xD/ueyD535PYDJl/guileBw46oRARg8G8sK','Rojo'),(2,1,4,'$2y$10$7frGrt6TJIkjojcLQpHTxe1znSYrvmHsSOZEprNt3s.PPJj0THFsK','Blue Lock'),(3,1,3,'$2y$10$UbFLNOk9qy7ZLH928ZFzfu1rSbLN/uY6XZK1OaYPQCRJ0XGsxoPlG','Maracay'),(4,1,2,'$2y$10$7aAInlPvYrFzPCUicneyau0oUBg4a5Rx8hLkKABL9h9bwf4Ct3EnG','Zeus'),(5,1,6,'$2y$10$AKCJOUrE4j0qqDsidb23O.Oa2mmj6vDyVP4j7owjLtpx2oO4w3iwi','Maria Leon'),(6,1,5,'$2y$10$zWlKskxnl2DTGKJBf.NHSOZVOaLf/k7w7M3hcrVlwh8l3XuNfnlbm','Andres Suarez'),(7,2,1,'$2y$10$VcDY1vLwgGj03dxqCk4cXeEAaiJhvIJDBoBvJeQArCUQm2lFT8Wc2','Azul'),(8,2,4,'$2y$10$bb3Dne8h8V3tNHhFrKQgcuWKWP1VUEu2RdAjYUz/4szb8ZWZjoWQG','New Game!'),(9,2,3,'$2y$10$Gf9KXMyww7RInA8rdIpzouW7ZsQv7IYkEZwSoj0hIrXtWtx9rOoHq','Caracas'),(10,2,2,'$2y$10$7/x5NrCSOQR679I7t4k2gO.T.uY3tpTobJbJxMOuQsQkZ.47Jre/6','Spike'),(11,2,5,'$2y$10$C/XCHP3yrI1Z156THoUId.QWInJSk54Ghow8.92W0z.OFO/3uRUx.','Natalia Parra'),(12,2,6,'$2y$10$xV0ap5aKK.JGnhQhQVyzdeKNUvhIdUFNMg8ROw15J0140/DNFIKHy','Rafael Parra'),(13,3,1,'$2y$10$teilK9GdVYgbAtAymw6eROEIUjXKaQJHAfuwLKJuesDfluwH4ckci',NULL),(14,3,2,'$2y$10$gdgVyLKcGkESq1tSotrLJeYRYtrGDfBBl8E.sdTc.UhT6gcCa3LoW',NULL),(15,3,3,'$2y$10$44Uti06Zc7PJ4ylOpN1dDO9R9G9gKSxTuhJZHKJJtcjdZk112hbEi',NULL),(16,3,4,'$2y$10$SGj7OjBh1arYMhDsFYG0TusTziOrNmtDBz3PVeKQ0sAnSAA27m3Iy',NULL),(17,3,5,'$2y$10$O5qG5NjDlrw7KccZjykfvufSGWjWJurBKL97875G0hRHPa4o9HvVa',NULL),(18,3,6,'$2y$10$5TJ/i8YBCZz2vYw0mebIiudAzIulJrkKI2E9UGTLlhFe6vkQkXx8y',NULL);
 /*!40000 ALTER TABLE `usuarios_preguntas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -507,4 +538,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-07  7:05:13
+-- Dump completed on 2023-10-07 21:03:49

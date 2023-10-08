@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover responsive nowrap" id="tabla_departamentos" width="100%" cellspacing="0">
+                    <table class="table table-striped table-hover responsive nowrap" id="tablausuarios" width="100%" cellspacing="0">
                         <thead>
                             <tr>                                
                                 <th>ID User <i class="fa-solid fa-person" style="color: #bb840c;"></i></th>
@@ -22,6 +22,7 @@
                                 <th>Cedula <i class="fa-solid fa-id-card" style="color: #e7820d;"></i></th>
                                 <th>Rol <i class="fa-solid fa-key" style="color: #04225d;"></i></th>
                                 <th>Estado</th>
+                                <th>Fecha Ingresado</th>
                                 <th>Acciones <i class="fa-solid fa-gears"></i></th>
                             </tr>
                         </thead>
@@ -65,12 +66,16 @@
 
                                     <?php }  ?>
                                 </td>
-                                    <td>                         
-                                        <a class="btn btn-primary" href='edit/<?php echo $data['id_user'] ?>'>                                        
+                                <td> <?php echo $data['fecha_agregado'] ?> </td>
+                                    <td>                     
+                                        <a class="btn btn-primary" href='editarperfilAdmin/<?php echo $data['usuario'] ?>'>                                        
                                             Editar
                                         </a>
-                                        <a class="btn btn-danger" href='delete/<?php echo $data['id_user'] ?>'>                                        
-                                            Eliminar
+                                        <a class="btn btn-danger" href='profile/<?php echo $data['usuario'] ?>'>                                        
+                                            Ver usuario
+                                        </a>
+                                        <a class="btn btn-secondary" href='cambiarcredencialesAdmin/<?php echo $data['usuario'] ?>'>                                        
+                                            Editar Credenciales
                                         </a>                    
                                     </td>
                                 </tr>

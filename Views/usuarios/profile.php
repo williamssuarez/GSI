@@ -12,7 +12,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Usuarios <i class="fa-solid fa-users"></i></h6>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
+        <div>
 
         <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
@@ -37,8 +37,20 @@
                                             Cedula: <?php echo $data['user']['cedula'] ?>  
                                         </h1>
                                         <h1 class="h5 text-gray-900 mb-4">
+                                            <i class="fa-solid fa-envelope" style="color: #0043b8;"></i>
+                                            Correo: <?php echo $data['user']['correo'] ?>  
+                                        </h1>
+                                        <h1 class="h5 text-gray-900 mb-4">
+                                            <i class="fa-solid fa-mobile-screen-button" style="color: #6e6e6e;"></i>
+                                            Telefono: <?php echo $data['user']['telefono'] ?>  
+                                        </h1>
+                                        <h1 class="h5 text-gray-900 mb-4">
                                             <i class="fa-solid fa-person" style="color: #00040a;"></i> 
                                             Usuario: <?php echo $data['user']['usuario'] ?> 
+                                        </h1>
+                                        <h1 class="h5 text-gray-900 mb-4">
+                                             
+                                            Fecha Agregado: <?php echo $data['user']['fecha_agregado'] ?> 
                                         </h1>
                                         <h1 class="h5 text-gray-900 mb-4">
                                             
@@ -59,16 +71,70 @@
                                             <?php }  ?>
                                         </h1>
                                         <div class="btn-group btn-user btn-block">
-                                            <a href="<?php echo URL; ?>usuarios/index" class="btn btn-primary" aria-current="page">Volver</a>
+
                                             <?php if($_SESSION['rol'] == 1){ ?>
+
+                                                <a href="<?php echo URL; ?>usuarios/index" class="btn btn-primary" aria-current="page">
+                                                    Volver
+                                                </a>
+
+                                            <?php } else {  ?>
+
+                                                <a href="<?php echo URL; ?>inicio/index" class="btn btn-primary" aria-current="page">
+                                                    Volver
+                                                </a>
+
+                                            <?php } ?>
+
+                                            <?php if($_SESSION['rol'] == 1){ ?>
+
                                                 <a href="<?php echo URL; ?>usuarios/editarperfilAdmin/<?php echo $_SESSION['usuario'] ?>" class="btn btn-warning" aria-current="page">
                                                     Editar Perfil
                                                 </a>
+
                                             <?php } else {  ?>
+
                                                 <a href="<?php echo URL; ?>usuarios/editarperfilOperador/<?php echo $_SESSION['usuario'] ?>" class="btn btn-warning" aria-current="page">
                                                     Editar Perfil
                                                 </a>
+
                                             <?php }?>
+
+                                            <?php if($_SESSION['rol'] == 1){ ?>
+
+                                                <a id="editarcredenciales" href="<?php echo URL; ?>usuarios/cambiarcredencialesAdmin/<?php echo $_SESSION['usuario'] ?>" class="btn btn-secondary" aria-current="page">
+                                                    Editar Credenciales
+                                                </a>
+
+                                            <?php } else {  ?>
+
+                                                <a id="editarcredenciales" href="<?php echo URL; ?>usuarios/cambiarcredencialesOperador/<?php echo $_SESSION['usuario'] ?>" class="btn btn-secondary" aria-current="page">
+                                                    Editar Credenciales
+                                                </a>
+                                            <?php }?>
+
+                                                <a id="editarpreguntasseguridad" href="<?php echo URL; ?>usuarios/editarpreguntasSeguridad/<?php echo $_SESSION['usuario'] ?>" class="btn btn-info" aria-current="page">
+                                                    Editar Preguntas de seguridad
+                                                </a>
+
+                                            <?php if($_SESSION['rol'] == 1) { ?>
+
+                                                <?php if($data['user']['estado'] == 0) { ?>
+
+                                                    <a id="desactivar" href="<?php echo URL; ?>usuarios/desactivarusuario/<?php echo $_SESSION['usuario'] ?>" class="btn btn-danger" aria-current="page">
+                                                        Desactivar Operador
+                                                    </a>
+
+                                                <?php } else { ?>
+
+                                                    <a id="reactivar" href="<?php echo URL; ?>usuarios/reactivarusuario/<?php echo $_SESSION['usuario'] ?>" class="btn btn-success" aria-current="page">
+                                                        Reactivar Operador
+                                                    </a>
+
+                                                <?php } ?>
+
+                                            <?php } ?>
+
                                         </div>
                                     <hr>
                                 </div>
