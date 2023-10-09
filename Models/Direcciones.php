@@ -11,6 +11,8 @@ class Direcciones{
     private $numero_bien;
     private $equipo;
     private $fecha_asignada;
+    //DATA PARA EL HISTORIAL
+
     private $con;
     private $resultado;
 
@@ -85,6 +87,7 @@ class Direcciones{
                 id_asignacion,
                 id_direccion,
                 tipo_dispositivo,
+                numero_bien,
                 equipo
                 FROM
                 direcciones_asignadas
@@ -94,6 +97,22 @@ class Direcciones{
         $datos = $this->con->consultaRetorno($sql);
 
         return $datos->fetch_assoc();
+    }
+
+    public function getIdDireccionByIdAsignacion(){
+
+        $sql = "SELECT
+                id_asignacion,
+                id_direccion
+                FROM
+                direcciones_asignadas
+                WHERE
+                id_asignacion = {$this->id_asignacion}";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+
     }
 
     public function delete(){
@@ -117,6 +136,8 @@ class Direcciones{
         
         $this->con->consultaSimple($sql);
     }
+
+    
 }
 
 

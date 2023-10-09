@@ -70,6 +70,7 @@
                                                     Operador
                                             <?php }  ?>
                                         </h1>
+                                        <hr>
                                         <div class="btn-group btn-user btn-block">
 
                                             <?php if($_SESSION['rol'] == 1){ ?>
@@ -111,11 +112,15 @@
                                                 <a id="editarcredenciales" href="<?php echo URL; ?>usuarios/cambiarcredencialesOperador/<?php echo $_SESSION['usuario'] ?>" class="btn btn-secondary" aria-current="page">
                                                     Editar Credenciales
                                                 </a>
-                                            <?php }?>
+                                            <?php } ?>
+
+                                            <?php if($_SESSION['usuario'] == $data['user']['usuario']) { ?>
 
                                                 <a id="editarpreguntasseguridad" href="<?php echo URL; ?>usuarios/editarpreguntasSeguridad/<?php echo $_SESSION['usuario'] ?>" class="btn btn-info" aria-current="page">
                                                     Editar Preguntas de seguridad
                                                 </a>
+
+                                            <?php } ?>
 
                                             <?php if($_SESSION['rol'] == 1) { ?>
 
@@ -140,7 +145,6 @@
                                             <?php } ?>
 
                                         </div>
-                                    <hr>
                                 </div>
                             </div>
                         </div>

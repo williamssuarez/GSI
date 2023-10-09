@@ -378,58 +378,203 @@ use Repository\Procesos1 as Repository1;
             $this->dispositivo->actualizarDireccionesAsignadas();
         }
 
-        public function delete($id){
+        private function verificarClaveAdminLiberation($usuario_admin, $claveform){
 
-            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            $this->usuario->set('id_user', $usuario_admin);
+            $user = $this->usuario->getUserbyId();
+            $clavedb = $user['clave'];
+    
+            $flag = false;
+    
+            if(password_verify($claveform, $clavedb)){
+    
+                $flag = true;
+    
+            } else {
+    
+                $flag = false;
+    
+            }
+    
+            return $flag;
+    
+        }
 
-                //Fijando la asignacion
+        public function liberarDireccion($id){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                //OBTENIENDO LA DATA PARA INSERTAR EN EL HISTORIAL
                 $this->direccion->set('id_asignacion', $id);
-
-                //Obteniendo la data necesaria antes de eliminar
+                $id_ip = $this->direccion->getIdDireccionByIdAsignacion();
+                $this->usuario->set('usuario', $_SESSION['usuario']);
+                $id_user = $this->usuario->getIdUserbyUsuario();                
                 $data = $this->direccion->getDataForLiberation();
+                
 
-                //guardando la direccion
-                $id_direccion = $data['id_direccion'];
+                //PREPARANDO LA DATA A INSERTAR EN EL HISTORIAL
+                $usuario_administrador = $id_user['id_user'];
+                $id_direccionIP = $id_ip['id_direccion'];
+                $tipo_dispositivo = $data['tipo_dispositivo'];
+                //SI EL DISPOSITIVO TIENE UN NUMERO DE BIEN SE ASIGNA ESE
+                if($data['numero_bien'] > 0){
 
-                //guardando el dispositivo
-                $id_dispositivo = $data['tipo_dispositivo'];
+                    $numero_bien_dispositivo = $data['numero_bien'];
 
-                //guardando el equipo
-                $id_equipo = $data['equipo'];
+                } else {
+                    //CASO CONTRARIO, SE INSERTA, SIN NUMERO DE BIEN
+                    $numero_bien_dispositivo = "Dispositivo sin numero de bien";
+                }
+                
+                $accion = 1;
+                $razon = $_POST['razon'];
+                $clave_admin = $_POST['clave_admin'];
+                $clave_confirmacion = $_POST['clave_confirmacion'];
 
-                if(empty($id_equipo)){
+                if(!empty($razon)){
 
-                    $this->liberarSinEquipo($id_direccion, $id_dispositivo);
+                    if($clave_admin == $clave_confirmacion){
+                        //VALIDANDO CLAVES
+
+                        $flag = $this->verificarClaveAdminLiberation($usuario_administrador, $clave_admin);
+
+                        if($flag == true){
+
+                            $this->direccion_ip->set('usuario_administrador', $usuario_administrador);
+                            $this->direccion_ip->set('id_ip', $id_direccionIP);
+                            $this->direccion_ip->set('tipo_dispositivo', $tipo_dispositivo);
+                            $this->direccion_ip->set('numero_bien_dispositivo', $numero_bien_dispositivo);
+                            $this->direccion_ip->set('accion', $accion);
+                            $this->direccion_ip->set('razon', $razon);
+
+                            //INSERTANDO EN EL HISTORIAL
+                            $this->direccion_ip->liberarDireccionHistorial();
+
+                            //Obteniendo la data necesaria antes de eliminar
+                            $data = $this->direccion->getDataForLiberation();
+
+                            //guardando la direccion
+                            $id_direccion = $data['id_direccion'];
+
+                            //guardando el dispositivo
+                            $id_dispositivo = $data['tipo_dispositivo'];
+
+                            //guardando el equipo
+                            $id_equipo = $data['equipo'];
+
+                            if(empty($id_equipo)){
+
+                                $this->liberarSinEquipo($id_direccion, $id_dispositivo);
+
+                            } else {
+
+                                //funcion que cambia el estado de la ip, y reduce el total en el departamento y el dispositivo
+                                $this->liberar($id_direccion, $id_dispositivo, $id_equipo);
+
+                            }
+
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Exito",
+                                            text: "Eliminado Exitosamente.",
+                                            icon: "warning",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'direcciones/index";
+                                            }
+                                        }).then(() => {
+                                            window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                        });
+                                    </script>';
+                            exit;
+
+                        } else {
+                            //CLAVE INVALIDA
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Error",
+                                            text: "Clave invalida",
+                                            icon: "error",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'direcciones/liberarDireccion/' . $id . '";
+                                            }
+                                        }).then(() => {
+                                            window.location.href = "' . URL . 'direcciones/liberarDireccion/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                        });
+                                    </script>';
+                            exit;
+                        }
+
+
+                    } else {
+                        //CLAVES NO COINCIDEN
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Las claves no coinciden, vuelve a intentar",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'direcciones/liberarDireccion/' . $id . '";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'direcciones/liberarDireccion/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit;
+                    }
 
                 } else {
 
-                    //funcion que cambia el estado de la ip, y reduce el total en el departamento y el dispositivo
-                    $this->liberar($id_direccion, $id_dispositivo, $id_equipo);
+                    //FORMULARIO VACIO
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Debes ingresar la razon de liberacion",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'direcciones/liberarDireccion/' . $id . '";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'direcciones/liberarDireccion/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                            </script>';
+                    exit;
+
 
                 }
 
-                echo '<script>
-                            Swal.fire({
-                                title: "Exito!",
-                                text: "Eliminado Exitosamente.",
-                                icon: "warning",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'operadores/index";
-                                }
-                            }).then(() => {
-                                window.location.href = "' . URL . 'operadores/index"; // Esta línea se ejecutará cuando se cierre la alerta.
-                            });
-                        </script>';
-                exit;
-
             }
 
+            $this->direccion->set('id_asignacion', $id);
+            $id_ip = $this->direccion->getIdDireccionByIdAsignacion();
+            $this->direccion_ip->set('id_ip', $id_ip['id_direccion']);
+            $data['direccion'] = $this->direccion_ip->getDireccionIpById();
+            $data['titulo'] = "Liberando direccion";
+
+            return $data;
         }
 
         //funcion que cambia el estado de la ip, y reduce el total en el departamento y el dispositivo

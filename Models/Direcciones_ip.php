@@ -8,6 +8,13 @@ class Direcciones_ip{
     private $direccion;
     private $id_departamento;
     private $estado;
+    //DATA PARA EL HISTORIAL
+    private $usuario_administrador;
+    private $accion;
+    private $razon;
+    private $tipo_dispositivo;
+    private $numero_bien_dispositivo;
+    //CONEXION A LA DATABASE
     private $con;
     private $resultado;
 
@@ -51,6 +58,20 @@ class Direcciones_ip{
         return $this->resultado;
     }
 
+    public function getDireccionIpById(){
+
+        $sql = "SELECT
+                direccion
+                FROM
+                direccion_ip
+                WHERE
+                id_ip = '{$this->id_ip}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function ocupar(){
 
         $sql = "UPDATE
@@ -87,6 +108,18 @@ class Direcciones_ip{
                 AND t1.id_departamento = t2.id_departamento
                 ";
         $this->con->consultaSimple($sql);
+    }
+
+    //INSERTAR RAZON DE REACTIVACION EN HISTORIAL ANTES DE REACTIVAR
+    public function liberarDireccionHistorial(){
+
+        $sql = "INSERT INTO
+                historial_ip(usuario_administrador, id_ip, tipo_dispositivo, numero_bien_dispositivo, accion, razon)
+                VALUES 
+                ('{$this->usuario_administrador}', '{$this->id_ip}', '{$this->tipo_dispositivo}', '{$this->numero_bien_dispositivo}', '{$this->accion}', '{$this->razon}')";
+            
+        $this->con->consultaSimple($sql);
+
     }
 
 }
