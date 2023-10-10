@@ -83,10 +83,23 @@
                             </td>
                             <td>                            
                                 <?php if(isset($data['estado']) && $data['estado'] == 0) { ?>    
-                                <a class="btn btn-success btn-icon-split" href='entregar/<?php echo $data['id_ingreso'] ?>'>                                
-                                    <i class="fa-solid fa-truck-fast"></i>                                
-                                    Entregar    
-                                </a>
+                                
+                                    <?php if($_SESSION['rol'] == 1){ ?>
+
+                                        <a class="btn btn-success btn-icon-split" href='entregarAdmin/<?php echo $data['id_ingreso'] ?>'>                                
+                                            <i class="fa-solid fa-truck-fast"></i>                                
+                                            Entregar    
+                                        </a>
+
+                                    <?php } else { ?>
+
+                                        <a class="btn btn-success btn-icon-split" href='entregarOperador/<?php echo $data['id_ingreso'] ?>'>                                
+                                            <i class="fa-solid fa-truck-fast"></i>                                
+                                            Entregar    
+                                        </a>
+
+                                    <?php } ?>
+
                                 <?php } else { ?>
 
                                 <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
@@ -104,9 +117,19 @@
         </div>
     </div>
 
+    <?php if ($_SESSION['rol'] == 1) { ?>
+
     <a class="btn btn-success" href="new">
         <i class="fa-solid fa-truck-arrow-right"></i>
         Ingresar
     </a>
 
+    <?php } else { ?>
+
+    <a class="btn btn-success" href="newOperador">
+        <i class="fa-solid fa-truck-arrow-right"></i>
+        Ingresar
+    </a>
+
+    <?php } ?>   
 

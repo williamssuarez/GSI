@@ -1,22 +1,15 @@
-<?php $datos = $auditoria->index(); ?>
 
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?></h1>
+<h1 class="h3 mb-2 text-gray-800"><?php echo $_SESSION['filtrocambios']['titulo']; ?></h1>
  <p class="mb-4">Una tabla para consultar la auditoria</p>
 
 <h1 class="h3 mb-2 text-gray-800">Tabla</h1>
 
-<a class="btn btn-primary btn-icon-split" href="filtroporFecha">
-    Filtar por Fecha
+<br></br>
+<a class="btn btn-danger" href="<?php echo URL; ?>/auditoria/salirFiltroCambio">
+    Deshacer
 </a>
 <br></br>
-<a class="btn btn-primary btn-icon-split" href="filtrarporUsuario">
-    Filtrar por Usuario
-</a>
-<br></br>
-<a class="btn btn-primary btn-icon-split" href="filtrarporTipoCambio">
-    Filtrar por Tipo Cambio
-</a>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -38,7 +31,7 @@
                         </thead>
                         <tbody>
                         
-                        <?php foreach($datos['auditoria'] as $data){ ?>
+                        <?php foreach($_SESSION['filtrocambios']['auditoria'] as $data){ ?>
                             <tr class="table">
                                 <td> <?php echo $data['tipo_cambio'] ?> </td>
                                 <td> <?php echo $data['tabla_afectada'] ?> </td>

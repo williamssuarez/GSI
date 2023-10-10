@@ -31,12 +31,10 @@
 
                 </select>
 
-                <label class="form-label mt-4"><i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i> Conclusion</label>
-                <br>
-                <label for=""><i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i> Problema por el que ingreso el equipo: <?php echo $data['problem']['problema'] ?></label>
-                <div class="form-floating">
-                    <input required class="form-control" type="text" name="conclusion" id="conclusion" placeholder="Cual fue la solucion que se le dio al equipo">                    
-                    <label for="conclusion">Cual fue la solucion que se le dio al equipo</label>
+                <div class="form-group">
+                    <label class="form-label mt-4"><i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i> Conclusion</label>
+                        <textarea required class="form-control" type="text" name="conclusion" id="conclusion" placeholder="Cual fue la solucion que se le dio al equipo" rows="3"></textarea>
+                        <div id="mensajeValidacion2" class="form-text"></div>
                 </div>
                 
 
@@ -57,3 +55,34 @@
 
 
 <script src="<?php echo URL; ?>Views/template/js/scripts/getFechaActualEntrega.js" ></script>
+<script>
+
+    // Obtén el elemento del textarea y el botón submit
+    const inputTexto = document.getElementById('conclusion');
+    const btnSubmit = document.getElementById('btnSubmit2');
+    const mensajeValidacion = document.getElementById('mensajeValidacion2');
+
+    // Agrega un evento de entrada al textarea para validar en tiempo real
+    inputTexto.addEventListener('input', function () {
+        // Obtiene el valor del textarea y cuenta la longitud
+        const valor = conclusion.value.trim();
+        const longitud = valor.length;
+        
+        // Validación: no más de 200 caracteres
+        if (longitud <= 200) {
+            // Cambia el estilo y habilita el botón submit
+            inputTexto.classList.remove('is-invalid');
+            inputTexto.classList.add('is-valid');
+            mensajeValidacion.textContent = '';
+            btnSubmit.disabled = false;
+        } else {
+            // Cambia el estilo y deshabilita el botón submit
+            inputTexto.classList.remove('is-valid');
+            inputTexto.classList.add('is-invalid');
+            mensajeValidacion.textContent = 'El texto no debe exceder los 200 caracteres.';
+            btnSubmit.disabled = true;
+        }
+    });
+
+
+</script>

@@ -195,6 +195,27 @@ class Usuario{
         return $result->fetch_assoc();
     }
 
+    public function getUsuarios(){
+
+
+        $sql= "SELECT
+                id_user,
+                nombres,
+                apellidos
+                FROM
+                usuarios";
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+    
+        return $this->resultado;  
+
+    }
+
     public function lista(){
 
         $sql = "SELECT 

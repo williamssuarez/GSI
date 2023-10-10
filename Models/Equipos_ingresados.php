@@ -10,6 +10,10 @@ class Equipos_ingresados{
     private $recibido_por;
     private $problema;
     private $estado;
+    //PARA EL HISTORIAL
+    private $usuario;
+    private $accion;
+    private $razon;
     private $con;
     private $resultado;
 
@@ -101,6 +105,21 @@ class Equipos_ingresados{
 
     }
 
+    public function verificarExistencia(){
+
+        $sql = "SELECT
+                COUNT(id_equipo) as existencia
+                FROM
+                equipos_ingresados
+                WHERE
+                id_equipo = '{$this->id_equipo}' AND estado = 0";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+
+    }
+
     public function lista(){
 
         $sql = "SELECT
@@ -109,14 +128,14 @@ class Equipos_ingresados{
                 t4.numero_bien, 
                 t2.nombre_departamento AS departamento, 
                 t1.fecha_recibido, 
-                t3.nombre as nombre_operador,
+                t3.nombres as nombre_operador,
                 t1.problema,
                 t1.estado
                 FROM
                 equipos_ingresados t1 
                 INNER JOIN equipos t4 ON t1.id_equipo = t4.id_equipo
                 INNER JOIN departamentos t2 ON t4.departamento = t2.id_departamento
-                INNER JOIN operadores t3 ON t1.recibido_por = t3.id_operador";
+                INNER JOIN usuarios t3 ON t1.recibido_por = t3.id_user";
         $datos = $this->con->consultaRetorno($sql);
 
         while($row = $datos->fetch_assoc()){
@@ -186,6 +205,19 @@ class Equipos_ingresados{
         $row = mysqli_fetch_assoc($datos);
 
         return $row;
+    }
+
+    //INSERTANDO EN HISTORIAL DEL EQUIPO
+    public function ingresarEquipoHistorial(){
+
+
+            $sql = "INSERT INTO
+                    historial_equipos(usuario, id_equipo, accion, razon)
+                    VALUES 
+                    ('{$this->usuario}', '{$this->id_equipo}', '{$this->accion}', '{$this->razon}')";
+                
+            $this->con->consultaSimple($sql);
+
     }
 
 }

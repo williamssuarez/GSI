@@ -34,6 +34,11 @@ class Auditoria{
     private $json_valor7;
     private $json_valor8;
 
+    //PARA LOS FILTROS
+    private $fecha_inicio;
+
+    private $fecha_final;
+
     //Para la conexion y devolver un resultado
     private $con;
     private $resultado;
@@ -55,15 +60,36 @@ class Auditoria{
     public function lista(){
 
         $sql= "SELECT 
-                id_auditoria,
-                tipo_cambio,
-                tabla_afectada,
-                registro_afectado,
-                valor_antes,
-                valor_despues,
-                usuario,
-                fecha
-                FROM auditoria";
+                t1.id_auditoria,
+                t3.cambio as tipo_cambio,
+                t1.tabla_afectada,
+                t1.registro_afectado,
+                t1.valor_antes,
+                t1.valor_despues,
+                t2.usuario,
+                t1.fecha
+                FROM auditoria t1
+                INNER JOIN usuarios t2 ON t1.usuario = t2.id_user
+                INNER JOIN tipo_cambio_auditoria t3 ON t1.tipo_cambio = t3.id_cambio";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+    }
+
+    public function listaCambios(){
+
+        $sql = "SELECT
+                id_cambio,
+                cambio
+                FROM
+                tipo_cambio_auditoria";
 
         $datos = $this->con->consultaRetorno($sql);
 
@@ -187,6 +213,110 @@ class Auditoria{
         $result = $this->con->consultaRetorno($sql);
 
         return $result->fetch_assoc();
+
+    }
+
+    public function auditarFiltrosRangoFecha(){
+
+        $sql = "SELECT
+                id_auditoria,
+                tipo_cambio,
+                tabla_afectada,
+                registro_afectado,
+                valor_antes,
+                valor_despues,
+                usuario,
+                fecha 
+                FROM auditoria WHERE fecha BETWEEN '{$this->fecha_inicio}' AND '{$this->fecha_final}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+    }
+
+    public function auditarFiltrosAccion(){
+
+        $sql = "SELECT
+                id_auditoria,
+                tipo_cambio,
+                tabla_afectada,
+                registro_afectado,
+                valor_antes,
+                valor_despues,
+                usuario,
+                fecha 
+                FROM auditoria WHERE tipo_cambio = '{$this->tipo_cambio}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+
+    }
+
+    public function auditarFiltrosCambios(){
+
+        $sql = "SELECT 
+                t1.id_auditoria,
+                t3.cambio as tipo_cambio,
+                t1.tabla_afectada,
+                t1.registro_afectado,
+                t1.valor_antes,
+                t1.valor_despues,
+                t2.usuario,
+                t1.fecha
+                FROM auditoria t1
+                INNER JOIN usuarios t2 ON t1.usuario = t2.id_user
+                INNER JOIN tipo_cambio_auditoria t3 ON t1.tipo_cambio = t3.id_cambio
+                WHERE t1.tipo_cambio = '{$this->tipo_cambio}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+    }
+
+    public function auditarFiltrosUsuario(){
+
+        $sql = "SELECT 
+                t1.id_auditoria,
+                t3.cambio as tipo_cambio,
+                t1.tabla_afectada,
+                t1.registro_afectado,
+                t1.valor_antes,
+                t1.valor_despues,
+                t2.usuario,
+                t1.fecha
+                FROM auditoria t1
+                INNER JOIN usuarios t2 ON t1.usuario = t2.id_user
+                INNER JOIN tipo_cambio_auditoria t3 ON t1.tipo_cambio = t3.id_cambio
+                WHERE t1.usuario = '{$this->usuario}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
 
     }
 }

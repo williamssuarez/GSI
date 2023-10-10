@@ -6,6 +6,7 @@ use Models\Equipos_salida;
 use Models\Departamentos;
 use Models\Operadores;
 use Models\Sistemas_operativos;
+use Models\Usuario;
 use Repository\Procesos1 as Repository1;
 
     class equiposController{
@@ -16,6 +17,7 @@ use Repository\Procesos1 as Repository1;
         private $departamento;
         private $operadores;
         private $sistema_operativo;
+        private $usuarios;
 
         public function __construct()
         {
@@ -25,6 +27,7 @@ use Repository\Procesos1 as Repository1;
             $this->departamento = new Departamentos();
             $this->operadores = new Operadores();
             $this->sistema_operativo = new Sistemas_operativos();
+            $this->usuarios = new Usuario();
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -89,7 +92,7 @@ use Repository\Procesos1 as Repository1;
 
             $datos['titulo'] = "Equipos Ingresados";
             $datos['departamentos'] = $this->departamento->lista();
-            $datos['operadores'] = $this->operadores->getOperador();
+            $datos['operadores'] = $this->usuarios->getUsuarios();
 
             return $datos;
         }
@@ -103,87 +106,172 @@ use Repository\Procesos1 as Repository1;
             return $datos;
         }
 
-        //INGRESANDO EQUIPO NUEVO
+        //INGRESANDO EQUIPO NUEVO ADMIN
         public function new(){
            
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            if($_SESSION['rol'] == 1){
 
-                $numero_bien = $_POST['numero_bien'];
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                if(isset($_POST['fecha_recibido']) > 0){
-                    $fecha_recibido = $_POST['fecha_recibido'];
-                } else {
-                    $fecha_recibido = "now()";                    
-                }
-                
-                $recibido_por = $_POST['recibido_por'];
-                $problema = $_POST['problema'];
-
-                //VERIFICANDO SI EL EQUIPO ESTA REGISTRADO
-                $this->equipo->set('numero_bien', $numero_bien);
-                $cuenta = $this->equipo->verificarEquipoBien();
-
-                //SI LA CUENTA ES MENOR A UNO ES QUE EL EQUIPO NO ESTA REGISTRADO
-                if($cuenta['cuenta'] < 1){ 
+                    $numero_bien = $_POST['numero_bien'];
+    
+                    if(isset($_POST['fecha_recibido']) > 0){
+                        $fecha_recibido = $_POST['fecha_recibido'];
+                    } else {
+                        $fecha_recibido = "now()";                    
+                    }
                     
-                    //REDIRECCIONANDO CON UN MENSAJE DE ERROR
-                    echo '<script>
-                                Swal.fire({
-                                    title: "Equipo no registrado!",
-                                    text: "Este equipo no esta registrado, registrelo antes de ingresarlo.",
-                                    icon: "warning",
-                                    showConfirmButton: true,
-                                    confirmButtonColor: "#3464eb",
-                                    confirmButtonText: "Registrar",
-                                    customClass: {
-                                        confirmButton: "rounded-button" // Identificador personalizado
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'equipos/newregistro";
-                                    }
-                                }).then(() => {
-                                    window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                });
+                    //OBTENIENDO EL ID DEL USUARIO
+                    $recibido_por = $_POST['recibido_por'];
+                    
+                    $problema = $_POST['problema'];
+    
+                    //VERIFICANDO SI EL EQUIPO ESTA REGISTRADO
+                    $this->equipo->set('numero_bien', $numero_bien);
+                    $cuenta = $this->equipo->verificarEquipoBien();
+    
+                    //SI LA CUENTA ES MENOR A UNO ES QUE EL EQUIPO NO ESTA REGISTRADO
+                    if($cuenta['cuenta'] < 1){ 
+                        
+                        //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Equipo no registrado!",
+                                        text: "Este equipo no esta registrado, registrelo antes de ingresarlo.",
+                                        icon: "warning",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        confirmButtonText: "Registrar",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/newregistro";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+    
+                    } else {
+    
+                        //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
+                        $id_equipo = $this->equipo->getEquipobyNumerodeBien();
+
+                        //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
+                        $id_equipo = $this->equipo->getEquipobyNumerodeBien();
+
+                        //VERIFICANDO SI ESE EQUIPO SE ENCUENTRA INGRESADO
+                        $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
+
+                        $existencia = $this->equipo_ingresado->verificarExistencia();
+
+                        if($existencia['existencia'] > 0){
+
+                             //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                            echo '<script>
+                            Swal.fire({
+                                title: "Equipo ya en soporte",
+                                text: "Este equipo se encuentra todavia ingresado en soporte, cierre el caso para poder ingresar de nuevo",
+                                icon: "warning",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                confirmButtonText: "Registrar",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/index";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
                             </script>';
-                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.   
 
-                } else {
 
-                    //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
-                    $id_equipo = $this->equipo->getEquipobyNumerodeBien();
-                    //UNA VEZ OBTENIDO LO SETEAMOS PARA CAMBIARLE EL ESTADO, OBTENER EL DEPARTAMENTO E INCREMENTARLE EL INGRESO
-                    $this->equipo->set('id_equipo', $id_equipo['id_equipo']);
+                        }
 
-                    //PREPARANDO DATOS A INSERTAR
-                    $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
-                    $this->equipo_ingresado->set('fecha_recibido', $fecha_recibido);
-                    $this->equipo_ingresado->set('recibido_por', $recibido_por);
-                    $this->equipo_ingresado->set('problema', $problema);
+                        //UNA VEZ OBTENIDO LO SETEAMOS PARA CAMBIARLE EL ESTADO, OBTENER EL DEPARTAMENTO E INCREMENTARLE EL INGRESO
+                        $this->equipo->set('id_equipo', $id_equipo['id_equipo']);
+    
+                        //PREPARANDO DATOS A INSERTAR
+                        $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
+                        $this->equipo_ingresado->set('fecha_recibido', $fecha_recibido);
+                        $this->equipo_ingresado->set('recibido_por', $recibido_por);
+                        $this->equipo_ingresado->set('problema', $problema);
+    
+                        //INGRESANDO EQUIPO
+                        $this->equipo_ingresado->add();
+    
+                        //OBTENIENDO EL TOTAL DE INGRESOS DE DEPARTAMENTO Y SUMANDOLE 1
+                        $datos = $this->equipo->actualizarIngresosdeEquipoDepartamento();
+                        $departamento = $datos['departamento'];
+                        $this->totalDepartamentos($departamento);
+    
+                        //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
+                        $this->totalOperador($recibido_por);
+    
+                        //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE ACTIVO A EN PROCESO, DE 0 A 2
+                        $this->equipo->cambiarEstadoAenProceso();
+    
+                        //CAMBIANDO EL NUMERO DE INGRESOS DEL EQUIPO REGISTRADO A +1
+                        $this->equipo->incrementarIngresosdeEquipo();
+    
+                        //PREPARANDO HISTORIAL
+                        $usuario = $_SESSION['usuario'];
+                        $this->usuarios->set('usuario', $usuario);
+                        $id_user = $this->usuarios->getIdUserbyUsuario();
+    
+                        //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
+                        $this->equipo->set('numero_bien', $numero_bien);
+                        $id_equipo = $this->equipo->getEquipobyNumerodeBien();
+    
+                        $accion = "Ingreso";
+                        $razon = $problema;
+    
+                        $this->equipo_ingresado->set('usuario', $id_user['id_user']);
+                        $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
+                        $this->equipo_ingresado->set('accion', $accion);
+                        $this->equipo_ingresado->set('razon', $razon);
+    
+                        //PROCESO TERMINADO, REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Exito",
+                                        text: "Equipo Ingresado Exitosamente.",
+                                        icon: "success",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/index";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                }
+    
 
-                    //INGRESANDO EQUIPO
-                    $this->equipo_ingresado->add();
+        }
+                
 
-                    //OBTENIENDO EL TOTAL DE INGRESOS DE DEPARTAMENTO Y SUMANDOLE 1
-                    $datos = $this->equipo->actualizarIngresosdeEquipoDepartamento();
-                    $departamento = $datos['departamento'];
-                    $this->totalDepartamentos($departamento);
 
-                    //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
-                    $this->totalOperador($recibido_por);
+            } else {
 
-                    //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE ACTIVO A EN PROCESO, DE 0 A 2
-                    $this->equipo->cambiarEstadoAenProceso();
-
-                    //CAMBIANDO EL NUMERO DE INGRESOS DEL EQUIPO REGISTRADO A +1
-                    $this->equipo->incrementarIngresosdeEquipo();
-
-                    //PROCESO TERMINADO, REDIRECCIONANDO CON UN MENSAJE DE EXITO
-                    echo '<script>
+                echo '<script>
                                 Swal.fire({
-                                    title: "Exito!",
-                                    text: "Equipo Ingresado Exitosamente.",
-                                    icon: "success",
+                                    title: "Error",
+                                    text: "No eres administrador",
+                                    icon: "error",
                                     showConfirmButton: true,
                                     confirmButtonColor: "#3464eb",
                                     customClass: {
@@ -197,12 +285,173 @@ use Repository\Procesos1 as Repository1;
                                     window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
-                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-                }
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
 
-            }
+            
+        }
+
+    } 
+
+
+        public function newOperador(){
+
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                    $numero_bien = $_POST['numero_bien'];
+    
+                    if(isset($_POST['fecha_recibido']) > 0){
+                        $fecha_recibido = $_POST['fecha_recibido'];
+                    } else {
+                        $fecha_recibido = "now()";                    
+                    }
+                    
+                    //OBTENIENDO EL ID DEL USUARIO
+                    $user = $_SESSION['usuario'];
+                    $this->usuarios->set('usuario', $user);
+                    $id_user = $this->usuarios->getIdUserbyUsuario();
+                    $recibido_por = $id_user['id_user'];
+                    
+                    $problema = $_POST['problema'];
+    
+                    //VERIFICANDO SI EL EQUIPO ESTA REGISTRADO
+                    $this->equipo->set('numero_bien', $numero_bien);
+                    $cuenta = $this->equipo->verificarEquipoBien();
+    
+                    //SI LA CUENTA ES MENOR A UNO ES QUE EL EQUIPO NO ESTA REGISTRADO
+                    if($cuenta['cuenta'] < 1){ 
+                        
+                        //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Equipo no registrado!",
+                                        text: "Este equipo no esta registrado, registrelo antes de ingresarlo.",
+                                        icon: "warning",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        confirmButtonText: "Registrar",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/index";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+    
+                    } else {
+    
+                        //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
+                        $id_equipo = $this->equipo->getEquipobyNumerodeBien();
+
+                        //VERIFICANDO SI ESE EQUIPO SE ENCUENTRA INGRESADO
+                        $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
+
+                        $existencia = $this->equipo_ingresado->verificarExistencia();
+
+                        if($existencia['existencia'] > 0){
+
+                             //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                            echo '<script>
+                            Swal.fire({
+                                title: "Equipo ya en soporte",
+                                text: "Este equipo se encuentra todavia ingresado en soporte, cierre el caso para poder ingresar de nuevo",
+                                icon: "warning",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                confirmButtonText: "Registrar",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/index";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                            </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.   
+
+
+                        }
+
+                        //UNA VEZ OBTENIDO LO SETEAMOS PARA CAMBIARLE EL ESTADO, OBTENER EL DEPARTAMENTO E INCREMENTARLE EL INGRESO
+                        $this->equipo->set('id_equipo', $id_equipo['id_equipo']);
+    
+                        //PREPARANDO DATOS A INSERTAR
+                        $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
+                        $this->equipo_ingresado->set('fecha_recibido', $fecha_recibido);
+                        $this->equipo_ingresado->set('recibido_por', $recibido_por);
+                        $this->equipo_ingresado->set('problema', $problema);
+    
+                        //INGRESANDO EQUIPO
+                        $this->equipo_ingresado->add();
+    
+                        //OBTENIENDO EL TOTAL DE INGRESOS DE DEPARTAMENTO Y SUMANDOLE 1
+                        $datos = $this->equipo->actualizarIngresosdeEquipoDepartamento();
+                        $departamento = $datos['departamento'];
+                        $this->totalDepartamentos($departamento);
+    
+                        //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
+                        $this->totalOperador($recibido_por);
+    
+                        //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE ACTIVO A EN PROCESO, DE 0 A 2
+                        $this->equipo->cambiarEstadoAenProceso();
+    
+                        //CAMBIANDO EL NUMERO DE INGRESOS DEL EQUIPO REGISTRADO A +1
+                        $this->equipo->incrementarIngresosdeEquipo();
+    
+                        //PREPARANDO HISTORIAL
+                        $usuario = $_SESSION['usuario'];
+                        $this->usuarios->set('usuario', $usuario);
+                        $id_user = $this->usuarios->getIdUserbyUsuario();
+    
+                        //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
+                        $this->equipo->set('numero_bien', $numero_bien);
+                        $id_equipo = $this->equipo->getEquipobyNumerodeBien();
+    
+                        $accion = "Ingreso";
+                        $razon = $problema;
+    
+                        $this->equipo_ingresado->set('usuario', $id_user['id_user']);
+                        $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
+                        $this->equipo_ingresado->set('accion', $accion);
+                        $this->equipo_ingresado->set('razon', $razon);
+    
+                        //INSERTANDO EN EL HISTORIAL
+                        $this->equipo_ingresado->ingresarEquipoHistorial();
+    
+                        //PROCESO TERMINADO, REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Exito",
+                                        text: "Equipo Ingresado Exitosamente.",
+                                        icon: "success",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/index";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                }
+    
 
         }
+                
+
+    }
 
         //REGISTRANDO NUEVO EQUIPO
         public function newregistro(){
@@ -371,9 +620,10 @@ use Repository\Procesos1 as Repository1;
                     }
                 }
 
-            }                        
+    }     
+    
+}
 
-        }
          
 
         //OBTENIENDO EL TOTAL DE EQUIPOS INGRESADOS POR EL OPERADOR Y SUMANDOLE 1
@@ -569,7 +819,100 @@ use Repository\Procesos1 as Repository1;
             
         }
 
-        public function entregar($id){
+        public function entregarAdmin($id){
+
+            if($_SESSION['rol'] == 1){
+
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                    //OBTENIENDO DATA NECESARIA PARA INSERTAR
+                    $data = $this->DataForEntrega($id);
+                    /*var_dump($data['id_equipo']);
+                    die();*/
+                    $id_equipo = $data['id_equipo'];
+    
+                    //OBTENIENDO DATA NECESARIA DEL EQUIPO PARA ENTREGARLO, DESDE EL FORMULARIO
+                    $ingreso = $id;
+                    $fecha_entrega = $_POST['fecha_entrega'];
+                    $entregado_por = $_POST['entregado_por'];
+                    $conclusion = $_POST['conclusion'];
+    
+                    //AGRUPANDO LOS DATOS
+                    $this->equipo_salida->set('ingreso', $ingreso);
+                    $this->equipo_salida->set('fecha_entrega', $fecha_entrega);
+                    $this->equipo_salida->set('entregado_por', $entregado_por);
+                    $this->equipo_salida->set('conclusion', $conclusion);
+    
+                    //INSERTANDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
+                    $this->equipo_salida->add();
+    
+                    //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
+                    $this->totalEntregaOperador($entregado_por);
+     
+                    //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
+                    $this->cambiarEstadoEquipoIngresado($ingreso);
+    
+                    //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
+                    $this->cambiarEstadoEquipoRegistrado($id_equipo);
+    
+                    //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Exito!",
+                                    text: "Equipo Entregado Exitosamente.",
+                                    icon: "success",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/salida";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'equipos/salida"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+    
+                }
+    
+                    $this->equipo_ingresado->set('id_ingreso',$id);
+                    $data['title'] = "Entregando Equipo";
+                    $data['problem'] = $this->equipo_ingresado->getProblema();
+    
+                    //var_dump($data['operador']);
+                    //die(); 
+                    return $data;
+
+            } else {
+                //NO ES ADMIN
+                //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                echo '<script>
+                    Swal.fire({
+                        title: "Error",
+                        text: "No eres administrador.",
+                        icon: "error",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3464eb",
+                        customClass: {
+                            confirmButton: "rounded-button" // Identificador personalizado
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "' . URL . 'equipos/index";
+                        }
+                    }).then(() => {
+                        window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                    });
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+            }
+
+        }
+
+        public function entregarOperador($id){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -582,7 +925,13 @@ use Repository\Procesos1 as Repository1;
                 //OBTENIENDO DATA NECESARIA DEL EQUIPO PARA ENTREGARLO, DESDE EL FORMULARIO
                 $ingreso = $id;
                 $fecha_entrega = $_POST['fecha_entrega'];
-                $entregado_por = $_POST['entregado_por'];
+
+                //OBTENIENDO ID DE USUARIO
+                $user = $_SESSION['usuario'];
+                $this->usuarios->set('usuario', $user);
+                $id_user = $this->usuarios->getIdUserbyUsuario();
+                $entregado_por = $id_user['id_user'];
+
                 $conclusion = $_POST['conclusion'];
 
                 //AGRUPANDO LOS DATOS
@@ -602,6 +951,28 @@ use Repository\Procesos1 as Repository1;
 
                 //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
                 $this->cambiarEstadoEquipoRegistrado($id_equipo);
+
+                //PREPARANDO HISTORIAL
+                //USUARIO
+                $usuario = $_SESSION['usuario'];
+                $this->usuarios->set('usuario', $usuario);
+                $id_user = $this->usuarios->getIdUserbyUsuario();
+                
+                //EQUIPO
+                $id_equipo_registrado = $id_equipo;
+                
+                //ACCION Y RAZON
+                $accion = "Entrega";
+                $razon = $conclusion;
+
+                //PREPARANDO LOS DATOS
+                $this->equipo_ingresado->set('usuario', $id_user['id_user']);
+                $this->equipo_ingresado->set('id_equipo', $id_equipo_registrado);
+                $this->equipo_ingresado->set('accion', $accion);
+                $this->equipo_ingresado->set('razon', $razon);
+
+                //INSERTANDO EN EL HISTORIAL
+                $this->equipo_ingresado->ingresarEquipoHistorial();
 
                 //REDIRECCIONANDO CON UN MENSAJE DE EXITO
                 echo '<script>

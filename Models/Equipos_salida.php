@@ -34,12 +34,12 @@ class Equipos_salida{
                 t4.usuario,
                 t5.nombre_departamento as departamento,
                 t1.fecha_entrega,
-                t2.nombre as entregado_por,
+                t2.nombres as entregado_por,
                 t3.problema,
                 t1.conclusion
                 FROM
                 equipos_salida t1 
-                INNER JOIN operadores t2 ON t2.id_operador = t1.entregado_por
+                INNER JOIN usuarios t2 ON t2.id_user = t1.entregado_por
                 INNER JOIN equipos_ingresados t3 ON t3.id_ingreso = t1.ingreso 
                 INNER JOIN equipos t4 ON t4.id_equipo = t3.id_equipo
                 INNER JOIN departamentos t5 ON t5.id_departamento = t4.departamento";

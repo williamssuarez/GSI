@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.4.28-MariaDB, for Win64 (AMD64)
+-- MariaDB dump 10.19  Distrib 10.4.25-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: gsi
 -- ------------------------------------------------------
--- Server version	10.4.28-MariaDB
+-- Server version	10.4.25-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -19,7 +19,7 @@
 -- Current Database: `gsi`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `gsi` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `gsi` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `gsi`;
 
@@ -32,15 +32,19 @@ DROP TABLE IF EXISTS `auditoria`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auditoria` (
   `id_auditoria` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo_cambio` varchar(70) NOT NULL,
+  `tipo_cambio` int(11) NOT NULL,
   `tabla_afectada` varchar(70) NOT NULL,
   `registro_afectado` int(11) NOT NULL,
   `valor_antes` text NOT NULL,
   `valor_despues` text NOT NULL,
-  `usuario` varchar(70) NOT NULL,
+  `usuario` int(70) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_auditoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`id_auditoria`),
+  KEY `usuario` (`usuario`),
+  KEY `tipo_cambio` (`tipo_cambio`),
+  CONSTRAINT `auditoria_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`id_user`),
+  CONSTRAINT `auditoria_ibfk_2` FOREIGN KEY (`tipo_cambio`) REFERENCES `tipo_cambio_auditoria` (`id_cambio`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +53,7 @@ CREATE TABLE `auditoria` (
 
 LOCK TABLES `auditoria` WRITE;
 /*!40000 ALTER TABLE `auditoria` DISABLE KEYS */;
-INSERT INTO `auditoria` VALUES (1,'delete','operadores',14,'[\"Antonio\",\"Banderas\",\"21991225\"]','eliminado','admin','2023-10-02 06:11:14'),(2,'edicion completada','operadores',7,'[\"juancho as\",\"caste\\u00f1eda\",\"21026062\",\"mail@gmail.com\"]','[\"juancho as\",\"caste\\u00f1eda\",\"21026062\",\"mail@gmail.com\"]','admin','2023-10-02 06:21:36'),(3,'edicion completada','operadores',7,'[\"juancho as\",\"caste\\u00f1eda\",\"21026062\",\"mail@gmail.com\"]','[\"juancho\",\"casteneda\",\"21026062\",\"mail5@gmail.com\"]','admin','2023-10-02 06:22:38'),(4,'edicion iniciada','operadores',7,'[\"juancho\",\"casteneda\",\"21026062\",\"mail5@gmail.com\"]','en proceso','admin','2023-10-02 06:30:02'),(5,'edicion completada','operadores',7,'[\"juancho\",\"casteneda\",\"21026062\",\"mail5@gmail.com\"]','[\"Juancho\",\"Casteneda\",\"21026062\",\"mail6@gmail.com\"]','admin','2023-10-02 06:30:24'),(6,'Nuevo registro','operadores',0,'Ninguno','[\"Sonny \",\"pantoja\",\"22333222\",\"mail7@gmail.com\"]','admin','2023-10-02 06:42:33'),(7,'Agregando nuevo operador','operadores',0,'Ninguno','en proceso','admin','2023-10-02 06:47:15'),(8,'Nuevo operador agregado','operadores',0,'Nuevo registro','[\"Sonny Brisko\",\"Brisko\",\"11444111\",\"mail11@gmail.com\"]','admin','2023-10-02 06:47:46'),(9,'edicion iniciada','operadores',12,'[\"Javier\",\"Castaneda\",\"31001220\",\"mail@gmail.com\"]','en proceso','admin','2023-10-02 06:49:00'),(10,'edicion iniciada','operadores',20,'[\"Sonny Brisko\",\"Brisko\",\"11444111\",\"mail11@gmail.com\"]','en proceso','leonardo','2023-10-06 12:39:36'),(11,'edicion iniciada','operadores',20,'[\"Sonny Brisko\",\"Brisko\",\"11444111\",\"mail11@gmail.com\"]','en proceso','leonardo','2023-10-06 12:45:33'),(12,'edicion iniciada','operadores',15,'[\"Lionel\",\"Messi\",\"13131313\",\"mail@gmail.com\"]','en proceso','admin','2023-10-10 07:19:41');
+INSERT INTO `auditoria` VALUES (1,1,'operadores',14,'[\"Antonio\",\"Banderas\",\"21991225\"]','eliminado',1,'2023-10-02 06:11:14'),(2,3,'operadores',7,'[\"juancho as\",\"caste\\u00f1eda\",\"21026062\",\"mail@gmail.com\"]','[\"juancho as\",\"caste\\u00f1eda\",\"21026062\",\"mail@gmail.com\"]',1,'2023-10-02 06:21:36'),(3,3,'operadores',7,'[\"juancho as\",\"caste\\u00f1eda\",\"21026062\",\"mail@gmail.com\"]','[\"juancho\",\"casteneda\",\"21026062\",\"mail5@gmail.com\"]',1,'2023-10-02 06:22:38'),(4,2,'operadores',7,'[\"juancho\",\"casteneda\",\"21026062\",\"mail5@gmail.com\"]','en proceso',1,'2023-10-02 06:30:02'),(5,3,'operadores',7,'[\"juancho\",\"casteneda\",\"21026062\",\"mail5@gmail.com\"]','[\"Juancho\",\"Casteneda\",\"21026062\",\"mail6@gmail.com\"]',1,'2023-10-02 06:30:24'),(6,4,'operadores',0,'Ninguno','[\"Sonny \",\"pantoja\",\"22333222\",\"mail7@gmail.com\"]',1,'2023-10-02 06:42:33'),(7,5,'operadores',0,'Ninguno','en proceso',1,'2023-10-02 06:47:15'),(8,4,'operadores',0,'Nuevo registro','[\"Sonny Brisko\",\"Brisko\",\"11444111\",\"mail11@gmail.com\"]',1,'2023-10-02 06:47:46'),(9,2,'operadores',12,'[\"Javier\",\"Castaneda\",\"31001220\",\"mail@gmail.com\"]','en proceso',1,'2023-10-02 06:49:00'),(10,2,'operadores',20,'[\"Sonny Brisko\",\"Brisko\",\"11444111\",\"mail11@gmail.com\"]','en proceso',2,'2023-10-06 12:39:36'),(11,2,'operadores',20,'[\"Sonny Brisko\",\"Brisko\",\"11444111\",\"mail11@gmail.com\"]','en proceso',2,'2023-10-06 12:45:33'),(12,2,'operadores',15,'[\"Lionel\",\"Messi\",\"13131313\",\"mail@gmail.com\"]','en proceso',1,'2023-10-10 07:19:41');
 /*!40000 ALTER TABLE `auditoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,7 +71,7 @@ CREATE TABLE `departamentos` (
   `ingresos` int(11) NOT NULL DEFAULT 0,
   `direcciones_asignadas` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +80,7 @@ CREATE TABLE `departamentos` (
 
 LOCK TABLES `departamentos` WRITE;
 /*!40000 ALTER TABLE `departamentos` DISABLE KEYS */;
-INSERT INTO `departamentos` VALUES (1,'Bienes','6',5,0),(3,'Radio Municipal','7',0,0),(4,'Auditoria Interna','6',0,0),(5,'Presupuesto','6',0,1),(6,'Tesoreria','6',0,0),(8,'Catastro Direccion','6',0,0),(9,'Catastro Juridico','6',0,0),(10,'Catastro Economico','6',0,0),(11,'Catastro Atencion','6',0,0),(12,'Catastro Fisico','6',0,0),(13,'Sala Politica','5',0,0),(14,'Sindicato Empleados','5',0,0),(15,'Gestion Social','5',0,1),(16,'Rh Direccion','5',0,0),(17,'Rh Fondo de Proteccion','5',0,1),(18,'Rh Administracion','5',0,0),(19,'Rh Nomina','5',0,1),(20,'Rh Juridico','5',0,0),(21,'Rh Seguridad Laboral','5',0,0),(22,'Rh Biometrico','5',0,0),(23,'Ingenieria Municipal','4',0,0),(24,'Construgirardot','4',0,0),(25,'Ingenieria Ambientes','4',0,0),(26,'Tecnologia y Sistemas','3',0,0),(27,'Satrim','3',0,0),(29,'Despacho','2',0,0),(30,'Sindicatura','2',0,0),(31,'Relaciones Publicas','2',0,0),(32,'Prensa','2',1,0),(33,'Atencion Ciudadana','PB',0,0),(34,'Administracion ','PB',0,0),(35,'Compra','Sotano',0,0),(36,'Catastro Archivo','Sotano',0,0),(37,'Servicios Generales','Sotano',0,0);
+INSERT INTO `departamentos` VALUES (1,'Bienes','6',5,0),(3,'Radio Municipal','7',0,0),(4,'Auditoria Interna','6',0,0),(5,'Presupuesto','6',1,1),(6,'Tesoreria','6',0,0),(8,'Catastro Direccion','6',0,0),(9,'Catastro Juridico','6',0,0),(10,'Catastro Economico','6',0,0),(11,'Catastro Atencion','6',0,0),(12,'Catastro Fisico','6',0,0),(13,'Sala Politica','5',0,0),(14,'Sindicato Empleados','5',0,0),(15,'Gestion Social','5',0,1),(16,'Rh Direccion','5',1,0),(17,'Rh Fondo de Proteccion','5',0,1),(18,'Rh Administracion','5',0,0),(19,'Rh Nomina','5',0,1),(20,'Rh Juridico','5',0,0),(21,'Rh Seguridad Laboral','5',0,0),(22,'Rh Biometrico','5',0,0),(23,'Ingenieria Municipal','4',0,0),(24,'Construgirardot','4',0,0),(25,'Ingenieria Ambientes','4',0,0),(26,'Tecnologia y Sistemas','3',0,0),(27,'Satrim','3',0,0),(29,'Despacho','2',0,0),(30,'Sindicatura','2',0,0),(31,'Relaciones Publicas','2',0,0),(32,'Prensa','2',2,0),(33,'Atencion Ciudadana','PB',0,0),(34,'Administracion ','PB',0,0),(35,'Compra','Sotano',0,0),(36,'Catastro Archivo','Sotano',0,0),(37,'Servicios Generales','Sotano',0,0);
 /*!40000 ALTER TABLE `departamentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +99,7 @@ CREATE TABLE `direccion_ip` (
   PRIMARY KEY (`id_ip`),
   KEY `id_departamento` (`id_departamento`),
   CONSTRAINT `direccion_ip_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id_departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=66050 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66050 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +137,7 @@ CREATE TABLE `direcciones_asignadas` (
   CONSTRAINT `direcciones_asignadas_ibfk_2` FOREIGN KEY (`tipo_dispositivo`) REFERENCES `dispositivos` (`id_dispositivos`),
   CONSTRAINT `direcciones_asignadas_ibfk_3` FOREIGN KEY (`equipo`) REFERENCES `equipos` (`id_equipo`),
   CONSTRAINT `direcciones_asignadas_ibfk_4` FOREIGN KEY (`id_administrador`) REFERENCES `usuarios` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +162,7 @@ CREATE TABLE `dispositivos` (
   `nombre_dispositivo` varchar(70) DEFAULT NULL,
   `total_asignaciones` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_dispositivos`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,7 +206,7 @@ CREATE TABLE `equipos` (
   CONSTRAINT `equipos_ibfk_2` FOREIGN KEY (`direccion_ip`) REFERENCES `direcciones_asignadas` (`id_asignacion`),
   CONSTRAINT `equipos_ibfk_3` FOREIGN KEY (`sistema_operativo`) REFERENCES `sistemas_operativos` (`id_os`),
   CONSTRAINT `equipos_ibfk_4` FOREIGN KEY (`registrado_por`) REFERENCES `usuarios` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,7 +215,7 @@ CREATE TABLE `equipos` (
 
 LOCK TABLES `equipos` WRITE;
 /*!40000 ALTER TABLE `equipos` DISABLE KEYS */;
-INSERT INTO `equipos` VALUES (2,30525,5,'Cristiano Ronaldo','00-11-22-33-44-55',13,'2023-09-28 00:06:27',0,'Pentium 4',250,1,12,0,1),(3,21026,16,'Sonny Brisko','11-00-33-22-33-66',NULL,'2023-09-28 00:06:27',0,'Dual Core',320,2,12,0,1),(5,225,1,'Enna Alouette','11-22-33-44-55-66',NULL,'2023-09-28 00:06:27',0,'Intel i3',500,4,2,0,1),(6,20555,32,'qeqw','33-44-55-44-55-11',NULL,'2023-10-02 07:30:08',1,'Dual Core',1000,4,2,0,1);
+INSERT INTO `equipos` VALUES (2,30525,5,'Cristiano Ronaldo','00-11-22-33-44-55',13,'2023-09-28 00:06:27',1,'Pentium 4',250,1,12,2,1),(3,21026,16,'Sonny Brisko','11-00-33-22-33-66',NULL,'2023-09-28 00:06:27',1,'Dual Core',320,2,12,2,1),(5,225,1,'Enna Alouette','11-22-33-44-55-66',NULL,'2023-09-28 00:06:27',0,'Intel i3',500,4,2,0,1),(6,20555,32,'qeqw','33-44-55-44-55-11',NULL,'2023-10-02 07:30:08',2,'Dual Core',1000,4,2,2,1);
 /*!40000 ALTER TABLE `equipos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,14 +231,14 @@ CREATE TABLE `equipos_ingresados` (
   `id_equipo` int(11) DEFAULT NULL,
   `fecha_recibido` timestamp NOT NULL DEFAULT current_timestamp(),
   `recibido_por` int(11) DEFAULT NULL,
-  `problema` varchar(70) DEFAULT NULL,
+  `problema` varchar(200) DEFAULT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_ingreso`),
   KEY `recibido_por` (`recibido_por`),
   KEY `id_equipo` (`id_equipo`),
-  CONSTRAINT `equipos_ingresados_ibfk_2` FOREIGN KEY (`recibido_por`) REFERENCES `operadores` (`id_operador`),
-  CONSTRAINT `equipos_ingresados_ibfk_3` FOREIGN KEY (`id_equipo`) REFERENCES `equipos` (`id_equipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `equipos_ingresados_ibfk_3` FOREIGN KEY (`id_equipo`) REFERENCES `equipos` (`id_equipo`),
+  CONSTRAINT `equipos_ingresados_ibfk_4` FOREIGN KEY (`recibido_por`) REFERENCES `usuarios` (`id_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,37 +247,8 @@ CREATE TABLE `equipos_ingresados` (
 
 LOCK TABLES `equipos_ingresados` WRITE;
 /*!40000 ALTER TABLE `equipos_ingresados` DISABLE KEYS */;
-INSERT INTO `equipos_ingresados` VALUES (1,5,'2023-09-11 22:45:03',1,'No arranca',1),(2,3,'2023-09-11 22:45:03',8,'Fuente Quemada',1),(3,3,'2023-09-18 03:33:00',1,'Actualizacion S.O',1),(4,3,'2023-09-18 03:33:00',1,'Actualizacion S.O',1),(5,5,'2023-09-18 03:40:00',8,'Respaldo',1),(6,3,'2023-09-18 03:59:00',8,'Respaldo Zorin',1),(7,3,'2023-09-18 03:59:00',8,'Respaldo Zorin',1),(8,5,'2023-09-18 04:05:00',1,'No video',1),(9,5,'2023-09-18 04:10:00',1,'Actualizacion S.O',1),(10,5,'2023-09-18 04:11:00',1,'Respaldo Zorin',1),(11,3,'2023-09-18 04:13:00',8,'Respaldo Zorin',1),(12,3,'2023-09-18 04:13:00',8,'Respaldo Zorin',1),(13,3,'2023-09-18 04:13:00',8,'Respaldo Zorin',1),(14,3,'2023-09-18 04:13:00',8,'Respaldo Zorin',1),(15,3,'2023-09-20 23:31:00',7,'No enciende',1),(19,6,'2023-10-02 08:39:00',1,'Actualizar',1),(20,6,'2023-10-02 08:39:00',1,'Actualizar',1);
+INSERT INTO `equipos_ingresados` VALUES (1,5,'2023-09-11 22:45:03',1,'No arranca',1),(2,3,'2023-09-11 22:45:03',1,'Fuente Quemada',1),(3,3,'2023-09-18 03:33:00',1,'Actualizacion S.O',1),(4,3,'2023-09-18 03:33:00',1,'Actualizacion S.O',1),(5,5,'2023-09-18 03:40:00',1,'Respaldo',1),(6,3,'2023-09-18 03:59:00',1,'Respaldo Zorin',1),(7,3,'2023-09-18 03:59:00',1,'Respaldo Zorin',1),(8,5,'2023-09-18 04:05:00',1,'No video',1),(9,5,'2023-09-18 04:10:00',1,'Actualizacion S.O',1),(10,5,'2023-09-18 04:11:00',1,'Respaldo Zorin',1),(11,3,'2023-09-18 04:13:00',1,'Respaldo Zorin',1),(12,3,'2023-09-18 04:13:00',1,'Respaldo Zorin',1),(13,3,'2023-09-18 04:13:00',1,'Respaldo Zorin',1),(14,3,'2023-09-18 04:13:00',1,'Respaldo Zorin',1),(15,3,'2023-09-20 23:31:00',1,'No enciende',1),(19,6,'2023-10-02 08:39:00',1,'Actualizar',1),(20,6,'2023-10-02 08:39:00',1,'Actualizar',1),(21,6,'2023-10-10 11:46:00',1,'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem',0),(23,2,'2023-10-10 12:29:00',2,'No enciende',0),(25,3,'2023-10-10 12:35:00',3,'Respaldo',0);
 /*!40000 ALTER TABLE `equipos_ingresados` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `equipos_pendientes`
---
-
-DROP TABLE IF EXISTS `equipos_pendientes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `equipos_pendientes` (
-  `id_equipo_pendiente` int(11) NOT NULL AUTO_INCREMENT,
-  `id_ingreso` int(11) NOT NULL,
-  `id_equipo` int(11) NOT NULL,
-  `problema` varchar(70) NOT NULL,
-  PRIMARY KEY (`id_equipo_pendiente`),
-  KEY `id_ingreso` (`id_ingreso`),
-  KEY `id_equipo` (`id_equipo`),
-  CONSTRAINT `equipos_pendientes_ibfk_1` FOREIGN KEY (`id_ingreso`) REFERENCES `equipos_ingresados` (`id_ingreso`),
-  CONSTRAINT `equipos_pendientes_ibfk_2` FOREIGN KEY (`id_equipo`) REFERENCES `equipos` (`id_equipo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `equipos_pendientes`
---
-
-LOCK TABLES `equipos_pendientes` WRITE;
-/*!40000 ALTER TABLE `equipos_pendientes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `equipos_pendientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -288,13 +263,14 @@ CREATE TABLE `equipos_salida` (
   `ingreso` int(11) DEFAULT NULL,
   `fecha_entrega` timestamp NOT NULL DEFAULT current_timestamp(),
   `entregado_por` int(11) DEFAULT NULL,
-  `conclusion` varchar(70) DEFAULT NULL,
+  `conclusion` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id_entrega`),
   KEY `equipo` (`ingreso`),
   KEY `entregado_por` (`entregado_por`),
   CONSTRAINT `equipos_salida_ibfk_2` FOREIGN KEY (`ingreso`) REFERENCES `equipos_ingresados` (`id_ingreso`),
-  CONSTRAINT `equipos_salida_ibfk_3` FOREIGN KEY (`entregado_por`) REFERENCES `operadores` (`id_operador`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `equipos_salida_ibfk_3` FOREIGN KEY (`entregado_por`) REFERENCES `operadores` (`id_operador`),
+  CONSTRAINT `equipos_salida_ibfk_4` FOREIGN KEY (`entregado_por`) REFERENCES `usuarios` (`id_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +279,7 @@ CREATE TABLE `equipos_salida` (
 
 LOCK TABLES `equipos_salida` WRITE;
 /*!40000 ALTER TABLE `equipos_salida` DISABLE KEYS */;
-INSERT INTO `equipos_salida` VALUES (3,1,'2023-09-20 02:12:00',1,'cambio de fuente'),(4,3,'2023-09-21 03:50:00',11,'Actualizacion'),(5,4,'2023-09-21 03:52:00',12,'Actualizacion'),(6,2,'2023-09-21 03:53:00',12,'cambio de fuente'),(7,8,'2023-09-21 03:53:00',11,'Cambio de Ram'),(8,5,'2023-09-21 03:54:00',1,'Respaldo Terminado'),(9,6,'2023-09-21 04:13:00',1,'Respaldo Terminado'),(10,7,'2023-09-21 04:40:00',1,'Respaldo Terminado'),(11,14,'2023-09-22 01:43:00',1,'Respaldo Terminado'),(12,10,'2023-09-22 01:43:00',12,'Respaldo Terminado'),(13,12,'2023-09-22 21:54:00',8,'Respaldo Terminado'),(14,15,'2023-09-25 01:25:00',1,'cambio de fuente'),(15,19,'2023-10-04 08:10:00',12,'Actualizacion'),(16,20,'2023-10-04 08:10:00',1,'Actualizacion'),(17,11,'2023-10-04 08:11:00',12,'Actualizacion'),(18,13,'2023-10-04 08:11:00',1,'Actualizacion'),(19,9,'2023-10-04 08:11:00',1,'Actualizacion');
+INSERT INTO `equipos_salida` VALUES (3,1,'2023-09-20 02:12:00',1,'cambio de fuente'),(4,3,'2023-09-21 03:50:00',1,'Actualizacion'),(5,4,'2023-09-21 03:52:00',1,'Actualizacion'),(6,2,'2023-09-21 03:53:00',1,'cambio de fuente'),(7,8,'2023-09-21 03:53:00',1,'Cambio de Ram'),(8,5,'2023-09-21 03:54:00',1,'Respaldo Terminado'),(9,6,'2023-09-21 04:13:00',1,'Respaldo Terminado'),(10,7,'2023-09-21 04:40:00',1,'Respaldo Terminado'),(11,14,'2023-09-22 01:43:00',1,'Respaldo Terminado'),(12,10,'2023-09-22 01:43:00',1,'Respaldo Terminado'),(13,12,'2023-09-22 21:54:00',1,'Respaldo Terminado'),(14,15,'2023-09-25 01:25:00',1,'cambio de fuente'),(15,19,'2023-10-04 08:10:00',1,'Actualizacion'),(16,20,'2023-10-04 08:10:00',1,'Actualizacion'),(17,11,'2023-10-04 08:11:00',1,'Actualizacion'),(18,13,'2023-10-04 08:11:00',1,'Actualizacion'),(19,9,'2023-10-04 08:11:00',1,'Actualizacion');
 /*!40000 ALTER TABLE `equipos_salida` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -318,7 +294,7 @@ CREATE TABLE `historial_equipos` (
   `id_historial` int(11) NOT NULL AUTO_INCREMENT,
   `usuario` int(11) NOT NULL,
   `id_equipo` int(11) NOT NULL,
-  `accion` int(11) NOT NULL,
+  `accion` varchar(70) NOT NULL,
   `razon` text NOT NULL,
   `fecha_historial` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_historial`),
@@ -326,7 +302,7 @@ CREATE TABLE `historial_equipos` (
   KEY `usuario` (`usuario`),
   CONSTRAINT `historial_equipos_ibfk_1` FOREIGN KEY (`id_equipo`) REFERENCES `equipos` (`id_equipo`),
   CONSTRAINT `historial_equipos_ibfk_2` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -335,6 +311,7 @@ CREATE TABLE `historial_equipos` (
 
 LOCK TABLES `historial_equipos` WRITE;
 /*!40000 ALTER TABLE `historial_equipos` DISABLE KEYS */;
+INSERT INTO `historial_equipos` VALUES (1,2,2,'Ingreso','No enciende','2023-10-10 12:29:17'),(2,1,3,'Ingreso','Respaldo','2023-10-10 12:42:18');
 /*!40000 ALTER TABLE `historial_equipos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,7 +338,7 @@ CREATE TABLE `historial_ip` (
   CONSTRAINT `historial_ip_ibfk_1` FOREIGN KEY (`usuario_administrador`) REFERENCES `usuarios` (`id_user`),
   CONSTRAINT `historial_ip_ibfk_2` FOREIGN KEY (`id_ip`) REFERENCES `direccion_ip` (`id_ip`),
   CONSTRAINT `historial_ip_ibfk_3` FOREIGN KEY (`tipo_dispositivo`) REFERENCES `dispositivos` (`id_dispositivos`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -393,7 +370,7 @@ CREATE TABLE `historial_usuarios` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `historial_usuarios_ibfk_1` FOREIGN KEY (`usuario_administrador`) REFERENCES `usuarios` (`id_user`),
   CONSTRAINT `historial_usuarios_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -424,7 +401,7 @@ CREATE TABLE `operadores` (
   `equipos_ingresados` int(11) NOT NULL DEFAULT 0,
   `estado` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id_operador`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -433,7 +410,7 @@ CREATE TABLE `operadores` (
 
 LOCK TABLES `operadores` WRITE;
 /*!40000 ALTER TABLE `operadores` DISABLE KEYS */;
-INSERT INTO `operadores` VALUES (1,'Williams','Suarez',30525051,'williamssuarez@gmail.com','04120401290',9,6,0),(7,'Juancho','Casteneda',21026062,'mail6@gmail.com','04248225441',0,4,1),(8,'Luis','Monserrat',25025021,'mail@gmail.com','04243185145',1,7,0),(11,'Leonardo','Gonzales',21001220,'mail@gmail.com','04243402313',2,0,0),(12,'Javier','Castaneda',31001220,'mail@gmail.com','04243084640',5,0,0),(15,'Lionel','Messi',13131313,'mail@gmail.com','041211232412',0,0,0),(19,'Sonny ','pantoja',22333222,'mail7@gmail.com','',0,0,0),(20,'Sonny Brisko','Brisko',11444111,'mail11@gmail.com','',0,0,0);
+INSERT INTO `operadores` VALUES (1,'Williams','Suarez',30525051,'williamssuarez@gmail.com','04120401290',9,7,0),(7,'Juancho','Casteneda',21026062,'mail6@gmail.com','04248225441',0,4,1),(8,'Luis','Monserrat',25025021,'mail@gmail.com','04243185145',1,7,0),(11,'Leonardo','Gonzales',21001220,'mail@gmail.com','04243402313',2,0,0),(12,'Javier','Castaneda',31001220,'mail@gmail.com','04243084640',5,0,0),(15,'Lionel','Messi',13131313,'mail@gmail.com','041211232412',0,0,0),(19,'Sonny ','pantoja',22333222,'mail7@gmail.com','',0,0,0),(20,'Sonny Brisko','Brisko',11444111,'mail11@gmail.com','',0,0,0);
 /*!40000 ALTER TABLE `operadores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -448,7 +425,7 @@ CREATE TABLE `preguntas_seguridad` (
   `id_pregunta` int(11) NOT NULL AUTO_INCREMENT,
   `pregunta` varchar(70) NOT NULL,
   PRIMARY KEY (`id_pregunta`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -473,7 +450,7 @@ CREATE TABLE `roles` (
   `nombre` varchar(70) NOT NULL,
   `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -497,7 +474,7 @@ CREATE TABLE `setrango` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_departamento` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -522,7 +499,7 @@ CREATE TABLE `sistemas_operativos` (
   `tipo` int(11) DEFAULT 0,
   `fecha_agregado` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_os`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -533,6 +510,30 @@ LOCK TABLES `sistemas_operativos` WRITE;
 /*!40000 ALTER TABLE `sistemas_operativos` DISABLE KEYS */;
 INSERT INTO `sistemas_operativos` VALUES (1,'Windows 10 Home',0,'2023-09-28 05:26:13'),(2,'Windows 10 Pro',0,'2023-09-28 05:26:13'),(3,'Windows 10 MiniOS',0,'2023-09-28 05:29:48'),(4,'Windows 10 Enterprise LTSC',0,'2023-09-28 05:29:48'),(5,'Windows 7',0,'2023-09-28 05:29:48'),(6,'Windows 8',0,'2023-09-28 05:29:48'),(7,'Windows 8.1',0,'2023-09-28 05:29:48'),(8,'Windows XP',0,'2023-09-28 05:29:48'),(9,'Windows Vista',0,'2023-09-28 05:29:48'),(10,'Windows 11',0,'2023-09-28 05:29:48'),(11,'Ubuntu',1,'2023-09-28 05:30:51'),(12,'Zorin',1,'2023-09-28 05:30:51'),(13,'Fedora',1,'2023-09-28 05:30:51'),(17,'Uwuntu',1,'2023-09-28 06:12:49'),(18,'Uwuntu2',1,'2023-09-28 06:14:01');
 /*!40000 ALTER TABLE `sistemas_operativos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipo_cambio_auditoria`
+--
+
+DROP TABLE IF EXISTS `tipo_cambio_auditoria`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipo_cambio_auditoria` (
+  `id_cambio` int(11) NOT NULL AUTO_INCREMENT,
+  `cambio` varchar(70) NOT NULL,
+  PRIMARY KEY (`id_cambio`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_cambio_auditoria`
+--
+
+LOCK TABLES `tipo_cambio_auditoria` WRITE;
+/*!40000 ALTER TABLE `tipo_cambio_auditoria` DISABLE KEYS */;
+INSERT INTO `tipo_cambio_auditoria` VALUES (1,'delete'),(2,'edicion iniciada'),(3,'edicion completada'),(4,'nuevo registro'),(5,'nuevo registro iniciado');
+/*!40000 ALTER TABLE `tipo_cambio_auditoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -560,7 +561,7 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`id_user`),
   KEY `rol` (`rol`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `roles` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -591,7 +592,7 @@ CREATE TABLE `usuarios_preguntas` (
   KEY `id_pregunta` (`id_pregunta`),
   CONSTRAINT `usuarios_preguntas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_user`),
   CONSTRAINT `usuarios_preguntas_ibfk_2` FOREIGN KEY (`id_pregunta`) REFERENCES `preguntas_seguridad` (`id_pregunta`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -621,4 +622,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-10  6:51:46
+-- Dump completed on 2023-10-10 12:05:43

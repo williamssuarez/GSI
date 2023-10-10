@@ -24,17 +24,7 @@
                 <label class="form-label mt-4"><i class="fa-solid fa-calendar-days"></i> Fecha Recibido</label>
                 <input class="form-control" required type="datetime-local" name="fecha_recibido" id="fecha_recibido" value="" max="" min="2020-01-01T00:00"> 
 
-                    <label class="form-label mt-4"><i class="fa-solid fa-user-gear" style="color: #005af5;"></i> Recibido Por</label>
-                    <select required class="form-select" name="recibido_por" id="recibido_por">
-                            
-                            <?php foreach($datos['operadores'] as $operadores) {  ?>
-                                <option value="<?php echo $operadores['id_user']; ?>"> <?php echo $operadores['nombres'] ?> <?php echo $operadores['apellidos']?> </option>
-                            <?php } ?>
-
-                    </select>
-
-        
-                
+                   
                 <div class="form-group">
                     <label class="form-label mt-4"><i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i> Problema</label>
                         <textarea required type="text" class="form-control" name="problema" id="problema" placeholder="Cual es el problema del equipo" rows="3"></textarea>
