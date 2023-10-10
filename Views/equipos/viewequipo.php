@@ -44,6 +44,7 @@
                                         <h1 class="h5 text-gray-900 mb-4"><i class="fa-solid fa-receipt" style="color: #545454;"></i> Direccion MAC: <?php echo $data['equipo']['direccion_mac'] ?>  </h1>
                                         <h1 class="h5 text-gray-900 mb-4"><i class="fa-solid fa-globe" style="color: #1049ad;"></i> Direccion IP: <?php echo $data['equipo']['direccion_ip'] ?>  </h1>
                                         <h1 class="h5 text-gray-900 mb-4"><i class="fa-solid fa-calendar-days"></i> Fecha Registro: <?php echo $data['equipo']['fecha_registro'] ?>  </h1>
+                                        <h1 class="h5 text-gray-900 mb-4"><i class="fa-solid fa-user" style="color: #054cc7;"></i> Registrado Por: <?php echo $data['equipo']['nombres'] ?> <?php echo $data['equipo']['apellidos'] ?>  </h1>
                                         <h1 class="h5 text-gray-900 mb-4"><i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i> Ingresos: <?php echo $data['equipo']['ingresos'] ?>  </h1>
                                         <hr>
                                         <h1 class="h5 text-gray-900 mb-4"><i class="fa-solid fa-microchip" style="color: #701ab7;"></i> CPU: <?php echo $data['equipo']['cpu'] ?>  </h1>

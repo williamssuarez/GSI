@@ -115,6 +115,22 @@ class Direcciones{
 
     }
 
+    public function getIdAsignacionByDireccion(){
+
+        $sql = "SELECT
+                id_asignacion,
+                id_direccion
+                FROM
+                direcciones_asignadas
+                WHERE
+                id_direccion = {$this->id_direccion}";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+
+    }
+
     public function delete(){
 
         $sql = "DELETE FROM

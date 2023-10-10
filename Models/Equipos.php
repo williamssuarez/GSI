@@ -254,13 +254,16 @@ class Equipos{
                     t1.memoria_ram,
                     t4.nombre as sistema_operativo,
                     t4.tipo as tipo,
-                    t1.estado
+                    t1.estado,
+                    t7.nombres,
+                    t7.apellidos
                 FROM
                     equipos t1
                 INNER JOIN departamentos t3 ON t1.departamento = t3.id_departamento
                 INNER JOIN sistemas_operativos t4 ON t1.sistema_operativo = t4.id_os
                 LEFT JOIN direcciones_asignadas t5 ON t1.direccion_ip = t5.id_asignacion
                 LEFT JOIN direccion_ip t6 ON t5.id_direccion = t6.id_ip
+                INNER JOIN usuarios t7 ON t7.id_user = t1.registrado_por
                 WHERE
                     t1.id_equipo = '{$this->id_equipo}' ";
 

@@ -159,7 +159,7 @@ use Repository\Procesos1 as Repository1;
                     
                     //VERIFICANDO SI EL EQUIPO ESTA REGISTRADO
                     $this->equipo->set('numero_bien', $numero_bien);
-                    $cuenta = $this->equipo->verificarEquipoBien();
+                    $cuenta = $this->equipo->verificarEquipoBien(); 
 
                     //SI LA CUENTA ES MAYOR A 0 ENTONCES ESTA REGISTRADO
                     if($cuenta['cuenta'] > 0){
@@ -207,6 +207,44 @@ use Repository\Procesos1 as Repository1;
 
                             //Liberando el rango en la tabla setrango en la base de datos
                             $this->liberarRango();
+
+                            //OBTENIENDO LA DATA PARA INSERTAR EN EL HISTORIAL
+                            $this->direccion->set('id_direccion', $direccion);
+                            $id_asignacion = $this->direccion->getIdAsignacionByDireccion();
+                            $this->direccion->set('id_asignacion', $id_asignacion['id_asignacion']);
+                            $id_ip = $direccion;
+                            $this->usuario->set('usuario', $_SESSION['usuario']);
+                            $id_user = $this->usuario->getIdUserbyUsuario(); 
+                            $data = $this->direccion->getDataForLiberation();
+                            
+
+                            //PREPARANDO LA DATA A INSERTAR EN EL HISTORIAL
+                            $usuario_administrador = $id_user['id_user'];
+                            $id_direccionIP = $id_ip;
+                            $tipo_dispositivo = $data['tipo_dispositivo'];
+                            //SI EL DISPOSITIVO TIENE UN NUMERO DE BIEN SE ASIGNA ESE
+                            if($data['numero_bien'] > 0){
+
+                                $numero_bien_dispositivo = $data['numero_bien'];
+
+                            } else {
+                                //CASO CONTRARIO, SE INSERTA, SIN NUMERO DE BIEN
+                                $numero_bien_dispositivo = "Dispositivo sin numero de bien";
+                            }
+                            
+                            $accion = 0;
+                            $razon = "Asignacion de direccion";
+                        
+
+                            $this->direccion_ip->set('usuario_administrador', $usuario_administrador);
+                            $this->direccion_ip->set('id_ip', $id_direccionIP);
+                            $this->direccion_ip->set('tipo_dispositivo', $tipo_dispositivo);
+                            $this->direccion_ip->set('numero_bien_dispositivo', $numero_bien_dispositivo);
+                            $this->direccion_ip->set('accion', $accion);
+                            $this->direccion_ip->set('razon', $razon);
+
+                            //INSERTANDO EN EL HISTORIAL
+                            $this->direccion_ip->asignarDireccionHistorial();
 
                             //PROCESO TERMINADO, REDIRECCIONANDO
                             echo '<script>

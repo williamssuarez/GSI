@@ -110,8 +110,19 @@ class Direcciones_ip{
         $this->con->consultaSimple($sql);
     }
 
-    //INSERTAR RAZON DE REACTIVACION EN HISTORIAL ANTES DE REACTIVAR
+    //INSERTAR RAZON DE LIBERACION EN HISTORIAL ANTES DE LIBERAR
     public function liberarDireccionHistorial(){
+
+        $sql = "INSERT INTO
+                historial_ip(usuario_administrador, id_ip, tipo_dispositivo, numero_bien_dispositivo, accion, razon)
+                VALUES 
+                ('{$this->usuario_administrador}', '{$this->id_ip}', '{$this->tipo_dispositivo}', '{$this->numero_bien_dispositivo}', '{$this->accion}', '{$this->razon}')";
+            
+        $this->con->consultaSimple($sql);
+
+    }
+
+    public function asignarDireccionHistorial(){
 
         $sql = "INSERT INTO
                 historial_ip(usuario_administrador, id_ip, tipo_dispositivo, numero_bien_dispositivo, accion, razon)

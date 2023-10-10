@@ -4,7 +4,7 @@ namespace Controllers;
 
 use Mpdf\Mpdf as mPDF;
 
-class reportesController{
+class pdfController{
 
     private $mpdf;
 

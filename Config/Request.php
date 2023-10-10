@@ -42,6 +42,10 @@ class Request{
         
     }
 
+    public function esPdf(){
+        return (isset($_REQUEST['pdf']) && $_REQUEST['pdf'] == 'true');
+    }
+
     public function getControlador(){
         return $this->controlador;
     }
@@ -53,6 +57,7 @@ class Request{
     public function getArgumento(){
         return $this->argumento;
     }
+    
 }
 
 ?>
