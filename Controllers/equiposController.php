@@ -1067,7 +1067,7 @@ use Repository\Procesos1 as Repository1;
             $fecha_entrega = $equipo['fecha_entrega'];
             $conclusion = $equipo['conclusion'];
 
-            //AGRUPANDO LOS DATOS
+            //AGRUPANDO LOS DATOS PARA ELIMINAR
             $this->equipo_ingresado->set('ingreso', $ingreso);
             $this->equipo_ingresado->set('id_equipo', $id_equipo);
             $this->equipo_ingresado->set('fecha_entrega', $fecha_entrega);
