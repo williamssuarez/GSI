@@ -237,27 +237,110 @@ use Repository\Procesos1 as Repository1;
 
         }
 
-        public function filtroCambio(){
+        public function filtroCambio(){ 
 
-            $data['title'] = "Filtro por Cambios";
+            if(!isset($_SESSION['filtrocambios'])){
 
-            return $data;
+                // El usuario no es administrador, redirige al inicio
+                echo '<script>
+                Swal.fire({
+                    title: "Error",
+                    text: "No se ha aplicado ningun filtro",
+                    icon: "error",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'auditoria/filtrarporTipoCambio";
+                    }
+                }).then(() => {
+                    window.location.href = "' . URL . 'auditoria/filtrarporTipoCambio"; // Esta línea se ejecutará cuando se cierre la alerta.
+                });
+                </script>';
+                exit;
+
+            } else {
+                //SI NO SE HA APLICADO EL FILTRO
+                $data['title'] = "Filtro por Cambios";
+
+                return $data;
+            }
 
         }
 
         public function filtrarRangoFecha(){
 
-            $data['title'] = "Filtro por fecha";
+            if(!isset($_SESSION['filtrofecha'])){
 
-            return $data;
+                // El usuario no es administrador, redirige al inicio
+                echo '<script>
+                Swal.fire({
+                    title: "Error",
+                    text: "No se ha aplicado ningun filtro",
+                    icon: "error",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'auditoria/filtroporFecha";
+                    }
+                }).then(() => {
+                    window.location.href = "' . URL . 'auditoria/filtroporFecha"; // Esta línea se ejecutará cuando se cierre la alerta.
+                });
+                </script>';
+                exit;
+
+            } else {
+                //SI NO SE HA APLICADO EL FILTRO
+                $data['title'] = "Filtro por fecha";
+
+                return $data;
+            }
 
         }
 
         public function filtroUsuario(){
 
-            $data['title'] = "Filtro por Usuarios";
+            if(!isset($_SESSION['filtrousuario'])){
 
-            return $data;
+                // El usuario no es administrador, redirige al inicio
+                echo '<script>
+                Swal.fire({
+                    title: "Error",
+                    text: "No se ha aplicado ningun filtro",
+                    icon: "error",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3464eb",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        confirmButton: "rounded-button" // Identificador personalizado
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "' . URL . 'auditoria/filtrarporUsuario";
+                    }
+                }).then(() => {
+                    window.location.href = "' . URL . 'auditoria/filtrarporUsuario"; // Esta línea se ejecutará cuando se cierre la alerta.
+                });
+                </script>';
+                exit;
+
+            } else {
+                //SI NO SE HA APLICADO EL FILTRO
+                $data['title'] = "Filtro por Usuarios";
+
+                return $data;
+            }
+
+            
 
         }
 

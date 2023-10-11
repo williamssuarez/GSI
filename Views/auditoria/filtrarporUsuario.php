@@ -5,6 +5,9 @@
 
          <h1 class="h3 mb-2 text-gray-800">Formulario</h1>
 
+         <br>
+            <a href="<?php echo URL; ?>auditoria/index" class="btn btn-danger" type="submit">Cancelar</a>
+         <br></br>
 
 <div class="card border-left-primary shadow h-100 mb-4">
     <div class="card-header py-3">
@@ -24,6 +27,8 @@
                         <?php } ?>
 
                 </select>
+
+                <br></br>
 
                 <button class="btn btn-primary" type="submit">Filtrar</button>
             </div>
