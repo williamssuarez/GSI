@@ -23,9 +23,11 @@
                         <th>Fecha Registro <i class="fa-solid fa-calendar-days"></i></th>
                         <th>Ingresos  <i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i></th>
                         <th>Estado <i class="fa-solid fa-question" style="color: #5b0d9b;"></i></th>
+
                         <?php if($_SESSION['rol'] == 1){ ?>
                         <th>Acciones <i class="fa-solid fa-gears"></i></th>
                         <?php } ?>
+                        
                     </tr>
                 </thead>
                 <tbody>

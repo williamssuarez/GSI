@@ -2,7 +2,8 @@
 
 <!-- Page Heading -->
 <h1 class="h3 mb-2 text-gray-800"><?php echo $data['title']; ?> Entrega!</h1>
- <p class="mb-4">Ingrese los datos del equipo a entregar en el formulario</p>
+ <p class="mb-4">Ingrese los datos del equipo a entregar en el formulario, una vez presiones presiones el boton, estara en espera de aprobacion del 
+                administrador</p>
 
          <h1 class="h3 mb-2 text-gray-800">Formulario</h1>
 
@@ -31,9 +32,9 @@
 
                 <br>
             
-                <button id="btnSubmit2" class="btn btn-success" type="submit">
+                <button id="btnSubmit2" class="btn btn-primary" type="submit">
                     <i class="fa-solid fa-truck-ramp-box"></i>
-                    Entregar
+                    Enviar solicitud de entrega
                 </button>
 
             </div>

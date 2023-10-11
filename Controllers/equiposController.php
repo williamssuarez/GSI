@@ -67,6 +67,13 @@ use Repository\Procesos1 as Repository1;
             $datos['titulo'] = "Equipos Ingresados";
             $datos['total'] = $this->equipo_ingresado->getIngresosTotalesEquipos();
             $datos['equipos'] = $this->equipo_ingresado->lista();
+
+            //OBTENIENDO EL ID POR EL USUARIO
+            $this->usuarios->set('usuario', $_SESSION['usuario']);
+            $id_user = $this->usuarios->getIdUserbyUsuario();
+
+            $datos['id_user'] = $id_user['id_user'];
+            
             return $datos;
         }
         
@@ -233,10 +240,13 @@ use Repository\Procesos1 as Repository1;
                         $accion = "Ingreso";
                         $razon = $problema;
     
+                        $this->equipo_ingresado->set('id_admin', $id_user['id_user']);
                         $this->equipo_ingresado->set('usuario', $id_user['id_user']);
                         $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
                         $this->equipo_ingresado->set('accion', $accion);
                         $this->equipo_ingresado->set('razon', $razon);
+
+                        $this->equipo_ingresado->ingresarEquipoHistorial();
     
                         //PROCESO TERMINADO, REDIRECCIONANDO CON UN MENSAJE DE EXITO
                         echo '<script>
@@ -466,6 +476,12 @@ use Repository\Procesos1 as Repository1;
                 $almacenamiento = $_POST['almacenamiento'];
                 $memoria_ram = $_POST['memoria_ram'];
                 $sistema_operativo = $_POST['sistema'];
+                //ENCONTRANDO EL ID DEL USUARIO POR EL NOMBRE DE USUARIO
+                $user = $_SESSION['usuario'];
+                $this->usuarios->set('usuario', $user);
+                $id_user = $this->usuarios->getIdUserbyUsuario();
+                $registrado_por = $id_user['id_user'];
+
 
                 //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
                 if(empty($numero_bien) || empty($usuario) || empty($direccion_mac)){
@@ -516,7 +532,7 @@ use Repository\Procesos1 as Repository1;
                         $this->equipo->set('almacenamiento', $almacenamiento);
                         $this->equipo->set('memoria_ram', $memoria_ram);
                         $this->equipo->set('sistema_operativo', $sistema_operativo);
-
+                        $this->equipo->set('registrado_por', $registrado_por);
                         
 
                         //VERIFICANDO SI EL NUMERO DE BIEN Y LA MAC YA EXISTEN
@@ -839,12 +855,13 @@ use Repository\Procesos1 as Repository1;
     
                     //AGRUPANDO LOS DATOS
                     $this->equipo_salida->set('ingreso', $ingreso);
+                    $this->equipo_salida->set('id_equipo', $id_equipo);
                     $this->equipo_salida->set('fecha_entrega', $fecha_entrega);
                     $this->equipo_salida->set('entregado_por', $entregado_por);
                     $this->equipo_salida->set('conclusion', $conclusion);
     
                     //INSERTANDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
-                    $this->equipo_salida->add();
+                    $this->equipo_salida->addAdmin();
     
                     //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
                     $this->totalEntregaOperador($entregado_por);
@@ -854,6 +871,31 @@ use Repository\Procesos1 as Repository1;
     
                     //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
                     $this->cambiarEstadoEquipoRegistrado($id_equipo);
+
+                    //PREPARANDO HISTORIAL
+                    //USUARIO ADMIN
+                    
+                    //USUARIO
+                    $usuario = $_SESSION['usuario'];
+                    $this->usuarios->set('usuario', $usuario);
+                    $id_user = $this->usuarios->getIdUserbyUsuario();
+                    
+                    //EQUIPO
+                    $id_equipo_registrado = $id_equipo;
+                    
+                    //ACCION Y RAZON
+                    $accion = "Entrega";
+                    $razon = $conclusion;
+
+                    //PREPARANDO LOS DATOS
+                    $this->equipo_salida->set('id_admin', $id_user['id_user']);
+                    $this->equipo_salida->set('usuario', $id_user['id_user']);
+                    $this->equipo_salida->set('id_equipo', $id_equipo_registrado);
+                    $this->equipo_salida->set('accion', $accion);
+                    $this->equipo_salida->set('razon', $razon);
+
+                    //INSERTANDO EN EL HISTORIAL
+                    $this->equipo_salida->entregarEquipoHistorial();
     
                     //REDIRECCIONANDO CON UN MENSAJE DE EXITO
                     echo '<script>
@@ -941,44 +983,17 @@ use Repository\Procesos1 as Repository1;
                 $this->equipo_salida->set('conclusion', $conclusion);
 
                 //INSERTANDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
-                $this->equipo_salida->add();
+                $this->equipo_salida->addEsperandoAprobacion();
 
-                //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
-                $this->totalEntregaOperador($entregado_por);
- 
-                //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
-                $this->cambiarEstadoEquipoIngresado($ingreso);
-
-                //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
-                $this->cambiarEstadoEquipoRegistrado($id_equipo);
-
-                //PREPARANDO HISTORIAL
-                //USUARIO
-                $usuario = $_SESSION['usuario'];
-                $this->usuarios->set('usuario', $usuario);
-                $id_user = $this->usuarios->getIdUserbyUsuario();
-                
-                //EQUIPO
-                $id_equipo_registrado = $id_equipo;
-                
-                //ACCION Y RAZON
-                $accion = "Entrega";
-                $razon = $conclusion;
-
-                //PREPARANDO LOS DATOS
-                $this->equipo_ingresado->set('usuario', $id_user['id_user']);
-                $this->equipo_ingresado->set('id_equipo', $id_equipo_registrado);
-                $this->equipo_ingresado->set('accion', $accion);
-                $this->equipo_ingresado->set('razon', $razon);
-
-                //INSERTANDO EN EL HISTORIAL
-                $this->equipo_ingresado->ingresarEquipoHistorial();
+                //CAMBIANDO EL ESTADO DE PENDIENTE A EN ESPERA DE APROBACION
+                $this->equipo_ingresado->set('id_ingreso', $ingreso);
+                $this->equipo_ingresado->cambiarEstadoEquipoAprobacion();
 
                 //REDIRECCIONANDO CON UN MENSAJE DE EXITO
                 echo '<script>
                             Swal.fire({
-                                title: "Exito!",
-                                text: "Equipo Entregado Exitosamente.",
+                                title: "Exito",
+                                text: "Esperando aprobacion del administrador",
                                 icon: "success",
                                 showConfirmButton: true,
                                 confirmButtonColor: "#3464eb",
@@ -1004,6 +1019,218 @@ use Repository\Procesos1 as Repository1;
                 //var_dump($data['operador']);
                 //die(); 
                 return $data;
+
+        }
+
+        public function esperandoAprobacion(){
+
+            $datos['titulo'] = "Equipos Esperando Aprobacion";
+            $datos['equipos_salida'] = $this->equipo_salida->listaAprobacion();
+            return $datos;
+
+        }
+
+        //RECHAZADO POR ADMIN
+        public function rechazarEntrega($id){
+
+            if($_SESSION['rol'] != 1){
+
+                //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "No tienes privilegios de administrador",
+                                icon: "error",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/index";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+            }
+
+            //OBTENIENDO LA DATA DEL EQUIPO PARA REVERTIRLO
+            $this->equipo_salida->set('id_aprobacion', $id);
+            $equipo = $this->equipo_salida->getDataAprobacion();
+            $entregado_por = $equipo['entregado_por'];
+            $ingreso = $equipo['ingreso'];
+            $id_equipo = $equipo['id_equipo'];
+            $fecha_entrega = $equipo['fecha_entrega'];
+            $conclusion = $equipo['conclusion'];
+
+            //AGRUPANDO LOS DATOS
+            $this->equipo_ingresado->set('ingreso', $ingreso);
+            $this->equipo_ingresado->set('id_equipo', $id_equipo);
+            $this->equipo_ingresado->set('fecha_entrega', $fecha_entrega);
+            $this->equipo_ingresado->set('entregado_por', $entregado_por);
+            $this->equipo_ingresado->set('conclusion', $conclusion);
+
+            //REVIRTIENDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
+            $this->equipo_ingresado->rechazarAdmin();
+
+            //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
+            $this->totalEntregaOperador($entregado_por);
+
+            //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
+            $this->cambiarEstadoEquipoIngresado($ingreso);
+
+            //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
+            $this->cambiarEstadoEquipoIngresado($id_equipo);
+
+            //PREPARANDO HISTORIAL
+            //USUARIO ADMIN
+            $usuario = $_SESSION['usuario'];
+            $this->usuarios->set('usuario', $usuario);
+            $id_admin = $this->usuarios->getIdUserbyUsuario();
+            
+            //EQUIPO
+            $id_equipo_registrado = $id_equipo;
+            
+            //ACCION Y RAZON
+            $accion = "Entrega";
+            $razon = $conclusion;
+
+            //PREPARANDO LOS DATOS
+            $this->equipo_salida->set('id_admin', $id_admin['id_user']);
+            $this->equipo_salida->set('usuario', $entregado_por);
+            $this->equipo_salida->set('id_equipo', $id_equipo_registrado);
+            $this->equipo_salida->set('accion', $accion);
+            $this->equipo_salida->set('razon', $razon);
+
+            //INSERTANDO EN EL HISTORIAL
+            $this->equipo_salida->entregarEquipoHistorial();
+
+             //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+             echo '<script>
+                        Swal.fire({
+                            title: "Exito",
+                            text: "Entrega aprobada",
+                            icon: "success",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'equipos/salida";
+                            }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'equipos/salida"; // Esta línea se ejecutará cuando se cierre la alerta.
+                        });
+                    </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+        }
+
+        //APROBADO POR ADMIN
+        public function aprobarEntrega($id){
+
+            if($_SESSION['rol'] != 1){
+
+                //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "No tienes privilegios de administrador",
+                                icon: "error",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/index";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+            }
+
+            //OBTENIENDO LA DATA DEL EQUIPO PARA ENTREGARLO
+            $this->equipo_salida->set('id_aprobacion', $id);
+            $equipo = $this->equipo_salida->getDataAprobacion();
+            $entregado_por = $equipo['entregado_por'];
+            $ingreso = $equipo['ingreso'];
+            $id_equipo = $equipo['id_equipo'];
+            $fecha_entrega = $equipo['fecha_entrega'];
+            $conclusion = $equipo['conclusion'];
+
+            //AGRUPANDO LOS DATOS
+            $this->equipo_salida->set('ingreso', $ingreso);
+            $this->equipo_salida->set('id_equipo', $id_equipo);
+            $this->equipo_salida->set('fecha_entrega', $fecha_entrega);
+            $this->equipo_salida->set('entregado_por', $entregado_por);
+            $this->equipo_salida->set('conclusion', $conclusion);
+
+            //INSERTANDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
+            $this->equipo_salida->addAdmin();
+
+            //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
+            $this->totalEntregaOperador($entregado_por);
+
+            //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
+            $this->cambiarEstadoEquipoIngresado($ingreso);
+
+            //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
+            $this->cambiarEstadoEquipoRegistrado($id_equipo);
+
+            //PREPARANDO HISTORIAL
+            //USUARIO ADMIN
+            $usuario = $_SESSION['usuario'];
+            $this->usuarios->set('usuario', $usuario);
+            $id_admin = $this->usuarios->getIdUserbyUsuario();
+            
+            //EQUIPO
+            $id_equipo_registrado = $id_equipo;
+            
+            //ACCION Y RAZON
+            $accion = "Entrega";
+            $razon = $conclusion;
+
+            //PREPARANDO LOS DATOS
+            $this->equipo_salida->set('id_admin', $id_admin['id_user']);
+            $this->equipo_salida->set('usuario', $entregado_por);
+            $this->equipo_salida->set('id_equipo', $id_equipo_registrado);
+            $this->equipo_salida->set('accion', $accion);
+            $this->equipo_salida->set('razon', $razon);
+
+            //INSERTANDO EN EL HISTORIAL
+            $this->equipo_salida->entregarEquipoHistorial();
+
+             //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+             echo '<script>
+                        Swal.fire({
+                            title: "Exito",
+                            text: "Entrega aprobada",
+                            icon: "success",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'equipos/salida";
+                            }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'equipos/salida"; // Esta línea se ejecutará cuando se cierre la alerta.
+                        });
+                    </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
         }
 
@@ -1035,6 +1262,14 @@ use Repository\Procesos1 as Repository1;
 
             $this->equipo->set('id_equipo', $id);
             $this->equipo->cambiarEstadoaActivo();
+        }
+
+        //EN CASO DE ENTREGA RECHAZADA
+        private function revertirEquipo($id){
+
+            $this->equipo_ingresado->set('ingreso', $id);
+            $this->equipo_ingresado->rechazarAprobacionyCambiarestado();
+
         }
 
         public function desactivar($id){

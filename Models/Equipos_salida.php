@@ -9,6 +9,15 @@ class Equipos_salida{
     private $fecha_entrega;
     private $entregado_por;
     private $conclusion;
+    //ESPERANDO LA APROBACION DEL ADMIN
+    private $id_aprobacion;
+    private $fecha_aprobacion;
+    private $id_equipo;
+    //HISTORIAL DEL EQUIPO
+    private $id_admin;
+    private $usuario;
+    private $razon;
+    private $accion;
     private $con;
     private $resultado;
 
@@ -55,7 +64,36 @@ class Equipos_salida{
         return $this->resultado;
     }
 
-    public function add(){
+    public function listaAprobacion(){
+
+        $sql = "SELECT
+                t1.id_aprobacion,
+                t4.numero_bien as equipo,
+                t4.usuario,
+                t5.nombre_departamento as departamento,
+                t1.fecha_entrega,
+                t2.nombres as entregado_por,
+                t3.problema,
+                t1.conclusion
+                FROM
+                equipos_aprobacion t1 
+                INNER JOIN usuarios t2 ON t2.id_user = t1.entregado_por
+                INNER JOIN equipos_ingresados t3 ON t3.id_ingreso = t1.ingreso 
+                INNER JOIN equipos t4 ON t4.id_equipo = t3.id_equipo
+                INNER JOIN departamentos t5 ON t5.id_departamento = t4.departamento";
+                
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
+    }
+
+    public function addAdmin(){
         
         $sql = "INSERT INTO
                 equipos_salida(ingreso, 
@@ -70,6 +108,48 @@ class Equipos_salida{
         
         $this->con->consultaSimple($sql);
     }
+
+    public function addEsperandoAprobacion(){
+
+        $sql = "INSERT INTO
+                equipos_aprobacion(ingreso,
+                                id_equipo, 
+                                fecha_entrega, 
+                                entregado_por, 
+                                conclusion)
+                VALUES 
+                ('{$this->ingreso}', 
+                '{$this->id_equipo}',
+                '{$this->fecha_entrega}', 
+                '{$this->entregado_por}', 
+                '{$this->conclusion}')";
+        
+        $this->con->consultaSimple($sql);
+
+
+    }
+
+    public function getDataAprobacion(){
+
+        $sql = "SELECT
+                id_aprobacion,
+                ingreso,
+                id_equipo,
+                fecha_entrega,
+                entregado_por,
+                conclusion
+                FROM
+                equipos_aprobacion
+                WHERE 
+                id_aprobacion =  '{$this->id_aprobacion}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+
+    }
+
+
 
     public function delete(){
         
@@ -114,6 +194,19 @@ class Equipos_salida{
 
         return $row;
     }
+
+    //INSERTANDO EN HISTORIAL DEL EQUIPO
+    public function entregarEquipoHistorial(){
+
+
+        $sql = "INSERT INTO
+                historial_equipos(id_admin, usuario, id_equipo, accion, razon)
+                VALUES 
+                ('{$this->id_admin}', '{$this->usuario}', '{$this->id_equipo}', '{$this->accion}', '{$this->razon}')";
+            
+        $this->con->consultaSimple($sql);
+
+}
 
 }
 

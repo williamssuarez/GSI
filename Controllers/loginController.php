@@ -21,7 +21,7 @@ class loginController{
         echo '<script>
                 Swal.fire({
                     title: "Sesion Cerrada",
-                    text: "Hasta luego!",
+                    text: "Hasta luego",
                     icon: "success",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
@@ -118,7 +118,7 @@ class loginController{
     
                             echo '<script>
                                             Swal.fire({
-                                                title: "Exito!",
+                                                title: "Exito",
                                                 text: "Bienvenido Administrador",
                                                 icon: "success",
                                                 showConfirmButton: true,
@@ -146,7 +146,7 @@ class loginController{
     
                             echo '<script>
                                             Swal.fire({
-                                                title: "Exito!",
+                                                title: "Exito",
                                                 text: "Bienvenido Operador",
                                                 icon: "success",
                                                 showConfirmButton: true,

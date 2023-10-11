@@ -48,9 +48,14 @@
                                     <a class="btn btn-primary" href='edit/<?php echo $data['id_os'] ?>'>                                        
                                         Editar
                                     </a>
+
+                                    <?php if($_SESSION['rol'] == 1){  ?>
+
                                     <a class="btn btn-danger" href='delete/<?php echo $data['id_os'] ?>'>                                        
                                         Eliminar
-                                    </a>                    
+                                    </a>
+                                    
+                                    <?php } ?>    
                                 </td>
                             </tr>
                         <?php } ?>    

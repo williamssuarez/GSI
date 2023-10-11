@@ -49,7 +49,12 @@
                         <th>Recibido Por <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
                         <th>Problema <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i></th>
                         <th>Estado <i class="fa-solid fa-question" style="color: #5b0d9b;"></i></th>
+                        
+                        <?php if($ingreso['total']['totalIngreso'] > 0) { ?>
+                        
                         <th>Acciones <i class="fa-solid fa-gears"></i></th>
+
+                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,39 +78,61 @@
                                         Pendiente <i class="fa-solid fa-circle-exclamation" style="color: #d4ac40;"></i>
                                     </span>
 
+                                <?php } elseif($data['estado'] == 2) { ?>
+
+                                    <span class=" font-weight-bold" >
+                                        En revision <i class="fa-solid fa-circle-info" style="color: #0045bd;"></i>
+                                    </span>
+
                                 <?php } else { ?>
 
                                     <span class=" font-weight-bold" >
                                         Entregado <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
                                     </span>
 
-                                <?php }  ?>
+                                <?php } ?>
                             </td>
                             <td>                            
-                                <?php if(isset($data['estado']) && $data['estado'] == 0) { ?>    
-                                
-                                    <?php if($_SESSION['rol'] == 1){ ?>
+                                <?php if($_SESSION['rol'] == 1) { ?>
+
+                                    <?php if(isset($data['estado']) && $data['estado'] == 0) { ?> 
 
                                         <a class="btn btn-success btn-icon-split" href='entregarAdmin/<?php echo $data['id_ingreso'] ?>'>                                
                                             <i class="fa-solid fa-truck-fast"></i>                                
                                             Entregar    
                                         </a>
 
-                                    <?php } else { ?>
+                                        <?php } elseif($data['estado'] == 2) { ?>
 
-                                        <a class="btn btn-success btn-icon-split" href='entregarOperador/<?php echo $data['id_ingreso'] ?>'>                                
-                                            <i class="fa-solid fa-truck-fast"></i>                                
-                                            Entregar    
-                                        </a>
+                                        <a class="btn btn-primary btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                            Revisar
+                                        </a> 
 
-                                    <?php } ?>
+                                        <?php } else { ?>
+
+                                        <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            Editar
+                                        </a> 
+
+                                        <?php } ?>
 
                                 <?php } else { ?>
 
-                                <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
-                                <i class="fa-solid fa-pen-to-square"></i>
-                                Editar
-                                </a> 
+                                    <!-- SI NO ERES ADMIN SOLO PUEDES ENTREGAR TUS PROPIOS EQUIPO -->
+                                    <?php if($data['recibido_por'] == $ingreso['id_user'] ){ ?>
+
+                                        <?php if(isset($data['estado']) && $data['estado'] == 0) { ?> 
+
+                                            <a id="EntregarOperador" class="btn btn-primary btn-icon-split" href='entregarOperador/<?php echo $data['id_ingreso'] ?>'>                                
+                                                <i class="fa-solid fa-truck-fast"></i>                                
+                                                Entregar    
+                                            </a>
+
+                                        <?php } ?>
+
+                                    <?php } ?>
 
                                 <?php } ?>
                             </td>
@@ -124,12 +151,5 @@
         Ingresar
     </a>
 
-    <?php } else { ?>
-
-    <a class="btn btn-success" href="newOperador">
-        <i class="fa-solid fa-truck-arrow-right"></i>
-        Ingresar
-    </a>
-
-    <?php } ?>   
+    <?php }
 

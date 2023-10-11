@@ -16,5 +16,24 @@ $(document).ready( function () {
                 previous: "Anterior"
             }
         }
-    })
+    });
+    $("#EntregarOperador").on("click", function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
+    
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "Solo puedes entregar cuando el equipo este completamente listo",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, esta listo",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirmó, redirige al enlace del botón.
+                window.location.href = $(this).attr("href");
+            }
+        });
+    });
 } );

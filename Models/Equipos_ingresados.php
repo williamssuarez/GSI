@@ -11,6 +11,7 @@ class Equipos_ingresados{
     private $problema;
     private $estado;
     //PARA EL HISTORIAL
+    private $id_admin;
     private $usuario;
     private $accion;
     private $razon;
@@ -72,6 +73,34 @@ class Equipos_ingresados{
         $this->con->consultaSimple($sql);
     }
 
+    //CAMBIAR EL ESTADO A 2
+    public function cambiarEstadoEquipoAprobacion(){
+
+        $sql = "UPDATE
+                equipos_ingresados
+                SET
+                estado = 2             
+                WHERE
+                id_ingreso = '{$this->id_ingreso}' ";
+        
+        $this->con->consultaSimple($sql);
+
+    }
+
+    //CAMBIAR EL ESTADO A 0
+    public function rechazarAprobacionyCambiarestado(){
+
+        $sql = "UPDATE
+                equipos_ingresados
+                SET
+                estado = 0             
+                WHERE
+                id_ingreso = '{$this->id_ingreso}' ";
+        
+        $this->con->consultaSimple($sql);
+
+    }
+
     public function getIngresosTotalesEquipos(){
 
         $sql = "SELECT COUNT(estado) AS totalIngreso FROM equipos_ingresados WHERE estado = 0";
@@ -82,6 +111,12 @@ class Equipos_ingresados{
     public function getIngresosTotalesEntregados(){
 
         $sql = "SELECT COUNT(estado) AS totalEntrega FROM equipos_ingresados WHERE estado != 0";
+        $datos = $this->con->consultaRetorno($sql);
+        return $datos->fetch_assoc();
+    }
+
+    public function getAsignacionesTotalesaUsuario(){
+        $sql = "SELECT COUNT(estado) AS totalAsignaciones FROM equipos_ingresados WHERE estado = 0 AND recibido_por = '{$this->recibido_por}'";
         $datos = $this->con->consultaRetorno($sql);
         return $datos->fetch_assoc();
     }
@@ -129,6 +164,7 @@ class Equipos_ingresados{
                 t2.nombre_departamento AS departamento, 
                 t1.fecha_recibido, 
                 t3.nombres as nombre_operador,
+                t1.recibido_por,
                 t1.problema,
                 t1.estado
                 FROM
@@ -212,9 +248,9 @@ class Equipos_ingresados{
 
 
             $sql = "INSERT INTO
-                    historial_equipos(usuario, id_equipo, accion, razon)
+                    historial_equipos(id_admin, usuario, id_equipo, accion, razon)
                     VALUES 
-                    ('{$this->usuario}', '{$this->id_equipo}', '{$this->accion}', '{$this->razon}')";
+                    ('{$this->id_admin}','{$this->usuario}', '{$this->id_equipo}', '{$this->accion}', '{$this->razon}')";
                 
             $this->con->consultaSimple($sql);
 

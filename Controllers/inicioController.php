@@ -2,16 +2,19 @@
 
 use Repository\Procesos1;
 use Models\Equipos_ingresados;
+use Models\Usuario;
 
 class inicioController{
 
     private $proceso1;
     private $equipos_ingresados;
+    private $usuarios;
 
     public function __construct()
     {
         $this->proceso1 = new Procesos1();
         $this->equipos_ingresados = new Equipos_ingresados();
+        $this->usuarios = new Usuario();
 
         if (!isset($_SESSION['usuario'])) {
             // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
@@ -44,6 +47,17 @@ class inicioController{
 
         $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
         $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
+
+        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA OBTENER LOS EQUIPOS ASIGNADOS A EL
+
+        //OBTENIENDO EL ID
+        $this->usuarios->set('usuario', $_SESSION['usuario']);
+        $id_user = $this->usuarios->getIdUserbyUsuario();
+        $user = $id_user['id_user'];
+
+        //CONSULTANDO
+        $this->equipos_ingresados->set('recibido_por', $user);
+        $datos['asignados'] = $this->equipos_ingresados->getAsignacionesTotalesaUsuario();
 
         return $datos;
     }

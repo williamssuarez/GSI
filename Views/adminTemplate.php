@@ -94,9 +94,12 @@ class Template{
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/index">
                             <i class="fa-solid fa-truck-arrow-right fa-flip-horizontal"></i>
                             Equipos Ingresados</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>equipos/esperandoAprobacion">
+                            <i class="fa-solid fa-question"></i>
+                            Equipos por Aprobar</a>                            
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/salida">
                             <i class="fa-solid fa-truck-fast"></i>
-                            Equipos Entregados</a>
+                            Equipos Entregados</a>                            
                     </div>
                 </div>
             </li>
@@ -154,6 +157,12 @@ class Template{
                         <a class="collapse-item" href="<?php echo URL; ?>usuarios/index">
                             <i class="fa-solid fa-users"></i>
                             Usuarios</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
+                            <i class="fa-regular fa-clipboard"></i>
+                            Notas</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
+                            <i class="fa-solid fa-circle-info"></i> 
+                            Ayuda</a>
                 </div>
             </li>
 

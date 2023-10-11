@@ -1,4 +1,4 @@
-<?php $salida = $equipos->salida(); ?>
+<?php $salida = $equipos->esperandoAprobacion(); ?>
 
 <!-- Page Heading -->
 <h1 class="h3 mb-2 text-gray-800"><?php echo $salida['titulo']; ?></h1>
@@ -21,12 +21,7 @@
                         <th>Entregado Por <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
                         <th>Problema <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i></th>
                         <th>Conclusion <i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i></th>
-
-                        <?php if($_SESSION['rol'] == 1){ ?>
-
                         <th>Acciones <i class="fa-solid fa-gears"></i></th>
-
-                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,13 +35,12 @@
                             <td> <?php echo $data['problema'] ?> </td>
                             <td> <?php echo $data['conclusion'] ?> </td>
 
-                            <?php if($_SESSION['rol'] == 1){ ?>
-
                             <td>                             
-                                <a class="btn btn-info" href='edit/<?php echo $data['id_entrega'] ?>'>Editar</a>
+                                <a class="btn btn-primary" href='evaluarEntrega/<?php echo $data['id_aprobacion'] ?>'>Aprobar</a>
+
+                                <a class="btn btn-danger" href='rechazarEntrega/<?php echo $data['id_aprobacion'] ?>'>Rechazar</a>
                             </td>
 
-                            <?php } ?>
                         </tr>
                     <?php } ?>
 

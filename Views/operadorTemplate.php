@@ -135,12 +135,16 @@ class Template{
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Extras: </h6>
-                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
-                            <i class="fa-solid fa-print"></i>
-                            Dispositivos</a>
                         <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
                             <i class="fa-brands fa-ubuntu"></i>    
                             Sistemas</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
+                            <i class="fa-regular fa-clipboard"></i>
+                            Notas</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
+                            <i class="fa-solid fa-circle-info"></i> 
+                            Ayuda</a>
+                            
                 </div>
             </li>
 

@@ -16,6 +16,7 @@ class Equipos{
     private $almacenamiento;
     private $memoria_ram;
     private $sistema_operativo;
+    private $registrado_por;
     private $estado;
     private $con;
     private $resultado;
@@ -182,7 +183,8 @@ class Equipos{
                 cpu, 
                 almacenamiento, 
                 memoria_ram, 
-                sistema_operativo)
+                sistema_operativo,
+                registrado_por)
                 VALUES 
                 ('{$this->numero_bien}', 
                 '{$this->departamento}', 
@@ -191,7 +193,8 @@ class Equipos{
                 '{$this->cpu}', 
                 '{$this->almacenamiento}', 
                 '{$this->memoria_ram}', 
-                '{$this->sistema_operativo}')";
+                '{$this->sistema_operativo}',
+                '{$this->registrado_por}')";
         
         $this->con->consultaSimple($sql);
 

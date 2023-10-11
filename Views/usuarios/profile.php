@@ -93,13 +93,7 @@
                                                     Editar Perfil
                                                 </a>
 
-                                            <?php } else {  ?>
-
-                                                <a href="<?php echo URL; ?>usuarios/editarperfilOperador/<?php echo $_SESSION['usuario'] ?>" class="btn btn-warning" aria-current="page">
-                                                    Editar Perfil
-                                                </a>
-
-                                            <?php }?>
+                                            <?php } ?>
 
                                             <?php if($_SESSION['rol'] == 1){ ?>
 
