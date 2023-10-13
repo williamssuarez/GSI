@@ -1077,6 +1077,10 @@ use Repository\Procesos1 as Repository1;
             //REVIRTIENDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
             $this->equipo_ingresado->rechazarAdmin();
 
+            //ELIMINANDO DE LA TABLA EQUIPOS APROBACION, CAMBIANDO EL ESTADO DE EN REVISION A PENDIENTE
+            //PREFERIBLEMENTE CON RAZON DE RECHAZO, LA CUAL SERA NOTIFICADA AL OPERADOR ASIGNADO
+            //
+
             //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
             $this->totalEntregaOperador($entregado_por);
 
