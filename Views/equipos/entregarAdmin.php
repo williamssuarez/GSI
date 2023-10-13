@@ -75,6 +75,14 @@
             inputTexto.classList.add('is-valid');
             mensajeValidacion.textContent = '';
             btnSubmit.disabled = false;
+        } else if(longitud == 0){
+
+            // Cambia el estilo y deshabilita el botón submit
+            inputTexto.classList.remove('is-valid');
+            inputTexto.classList.add('is-invalid');
+            mensajeValidacion.textContent = 'El texto no puede estar vacio.';
+            btnSubmit.disabled = true;
+
         } else {
             // Cambia el estilo y deshabilita el botón submit
             inputTexto.classList.remove('is-valid');

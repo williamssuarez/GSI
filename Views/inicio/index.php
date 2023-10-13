@@ -141,6 +141,31 @@
 
 <?php } ?>
 
+<div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                Entregas Rechazadas</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+
+                                                <?php echo $ingresos['rechazos']['cuenta'] ?>
+
+                                            </div>
+                                            <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/index">
+                                                <i class="fa-solid fa-arrow-left"></i>
+                                                    Ver rechazos
+                                            </a>
+                                        </div>
+                                        <div class="col-auto">
+                                        <i class="fa-solid fa-triangle-exclamation fa-2x" style="color: #ca1c1c;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h1 class="hola-inicio">Sistema GSI </h1>

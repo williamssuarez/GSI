@@ -4,6 +4,7 @@ namespace Models;
 
 class Equipos_ingresados{
 
+    //VARIABLES PARA EL MODELO
     private $id_ingreso;
     private $id_equipo;
     private $fecha_recibido;
@@ -15,6 +16,9 @@ class Equipos_ingresados{
     private $usuario;
     private $accion;
     private $razon;
+    //PARA RECHAZAR LA SALIDA DEL EQUIPO
+    private $id_aprobacion;
+    //PARA LA CONEXION A LA DB
     private $con;
     private $resultado;
 
@@ -253,6 +257,67 @@ class Equipos_ingresados{
                     ('{$this->id_admin}','{$this->usuario}', '{$this->id_equipo}', '{$this->accion}', '{$this->razon}')";
                 
             $this->con->consultaSimple($sql);
+
+    }
+
+    //ADMINISTRANDO LOS RECHAZOS DE SALIDA DE LOS EQUIPOS
+    //REVIRTIENDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
+    public function rechazarAdmin(){
+
+        $sql = "UPDATE
+                equipos_ingresados
+                SET
+                estado = 0
+                WHERE
+                id_ingreso = '{$this->id_ingreso}'";
+
+        $this->con->consultaSimple($sql);       
+
+    }
+
+    //ELIMINANDO DE LA TABLA EQUIPOS APROBACION
+    public function eliminarDeEsperandoAprobacion(){
+
+        $sql = "DELETE FROM
+                equipos_aprobacion
+                WHERE
+                id_aprobacion = '{$this->id_aprobacion}'";
+
+        $this->con->consultaSimple($sql);
+    }
+
+    //VERIFICAR RECHAZOS DEL OPERADOR
+    public function verificarRechazosTotales(){
+
+        $sql = "SELECT
+                COUNT(*) as cuenta
+                FROM
+                historial_equipos t1, equipos_ingresados t2
+                WHERE
+                t1.usuario = '{$this->usuario}' AND t1.usuario = t2.recibido_por AND t2.estado = 0 AND t2.id_equipo = t1.id_equipo";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+
+    }
+
+
+    public function verificarRechazos(){
+
+        $sql = "SELECT
+                    t1.id_historial,
+                    t1.id_admin,
+                    t1.usuario, 
+                    t1.id_equipo,
+                    t1.accion,
+                    t1.razon,
+                    t2.problema,
+                    t1.fecha_historial
+                FROM
+                    historial_equipos t1, equipos_ingresados t2
+                WHERE
+                        t1.usuario = t2.recibido_por AND t2.estado = 0 AND t1.usuario = 3 AND  t2.id_equipo = t1.id_equipo";
 
     }
 

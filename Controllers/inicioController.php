@@ -48,14 +48,16 @@ class inicioController{
         $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
         $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
 
-        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA OBTENER LOS EQUIPOS ASIGNADOS A EL
-
-        //OBTENIENDO EL ID
+        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
         $this->usuarios->set('usuario', $_SESSION['usuario']);
         $id_user = $this->usuarios->getIdUserbyUsuario();
         $user = $id_user['id_user'];
 
-        //CONSULTANDO
+        //OBTENIENDO LOS EQUIPOS RECHAZADOS DEL OPERADOR
+        $this->equipos_ingresados->set('usuario', $id_user['id_user']);
+        $datos['rechazos'] = $this->equipos_ingresados->verificarRechazosTotales();
+
+        // PARA OBTENER LOS EQUIPOS ASIGNADOS A EL
         $this->equipos_ingresados->set('recibido_por', $user);
         $datos['asignados'] = $this->equipos_ingresados->getAsignacionesTotalesaUsuario();
 

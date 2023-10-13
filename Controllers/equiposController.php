@@ -978,6 +978,7 @@ use Repository\Procesos1 as Repository1;
 
                 //AGRUPANDO LOS DATOS
                 $this->equipo_salida->set('ingreso', $ingreso);
+                $this->equipo_salida->set('id_equipo', $id_equipo);
                 $this->equipo_salida->set('fecha_entrega', $fecha_entrega);
                 $this->equipo_salida->set('entregado_por', $entregado_por);
                 $this->equipo_salida->set('conclusion', $conclusion);
@@ -1022,6 +1023,7 @@ use Repository\Procesos1 as Repository1;
 
         }
 
+        //LA TABLA DE EQUIPOS ESPERANDO APROBACION POR EL ADMIN
         public function esperandoAprobacion(){
 
             $datos['titulo'] = "Equipos Esperando Aprobacion";
@@ -1058,81 +1060,187 @@ use Repository\Procesos1 as Repository1;
 
             }
 
-            //OBTENIENDO LA DATA DEL EQUIPO PARA REVERTIRLO
-            $this->equipo_salida->set('id_aprobacion', $id);
-            $equipo = $this->equipo_salida->getDataAprobacion();
-            $entregado_por = $equipo['entregado_por'];
-            $ingreso = $equipo['ingreso'];
-            $id_equipo = $equipo['id_equipo'];
-            $fecha_entrega = $equipo['fecha_entrega'];
-            $conclusion = $equipo['conclusion'];
+            //SI ES POST
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-            //AGRUPANDO LOS DATOS PARA ELIMINAR
-            $this->equipo_ingresado->set('ingreso', $ingreso);
-            $this->equipo_ingresado->set('id_equipo', $id_equipo);
-            $this->equipo_ingresado->set('fecha_entrega', $fecha_entrega);
-            $this->equipo_ingresado->set('entregado_por', $entregado_por);
-            $this->equipo_ingresado->set('conclusion', $conclusion);
+            //OBTENIENDO LA RAZON DEL FORMULARIO DE RECHAZO
+            $razon_rechazo = $_POST['razon_rechazo'];
+            $clave_admin = $_POST['clave_admin'];
+            $clave_confirmacion = $_POST['clave_confirmacion'];
 
-            //REVIRTIENDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
-            $this->equipo_ingresado->rechazarAdmin();
+                //CASO DE QUE LA RAZON ESTE VACIA
+                if(empty($razon_rechazo)){
 
-            //ELIMINANDO DE LA TABLA EQUIPOS APROBACION, CAMBIANDO EL ESTADO DE EN REVISION A PENDIENTE
-            //PREFERIBLEMENTE CON RAZON DE RECHAZO, LA CUAL SERA NOTIFICADA AL OPERADOR ASIGNADO
-            //
+                    //REDIRECCIONAR CON MENSAJE DE ERROR
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Debes introducir una razon para procesar el rechazo",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/rechazarEntrega/' . $id . '";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'equipos/equipos/rechazarEntrega/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                        </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-            //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
-            $this->totalEntregaOperador($entregado_por);
 
-            //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
-            $this->cambiarEstadoEquipoIngresado($ingreso);
+                } else {
 
-            //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
-            $this->cambiarEstadoEquipoIngresado($id_equipo);
+                    //EL CAMPO NO ESTA VACIO, PROSEGUIR
+                    //EVALUAR SI LAS CLAVES COINCIDEN
+                    if($clave_admin != $clave_confirmacion){
+                        //NO COINCIDEN, REDIRECCIONAR CON MENSAJE DE ERROR
+                        echo '<script>
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Las claves no coinciden",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/rechazarEntrega/' . $id . '";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'equipos/rechazarEntrega/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                        </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.   
 
-            //PREPARANDO HISTORIAL
-            //USUARIO ADMIN
-            $usuario = $_SESSION['usuario'];
-            $this->usuarios->set('usuario', $usuario);
-            $id_admin = $this->usuarios->getIdUserbyUsuario();
-            
-            //EQUIPO
-            $id_equipo_registrado = $id_equipo;
-            
-            //ACCION Y RAZON
-            $accion = "Entrega";
-            $razon = $conclusion;
+                    } else {
+                        //COINCIDEN, PROSEGUIR
 
-            //PREPARANDO LOS DATOS
-            $this->equipo_salida->set('id_admin', $id_admin['id_user']);
-            $this->equipo_salida->set('usuario', $entregado_por);
-            $this->equipo_salida->set('id_equipo', $id_equipo_registrado);
-            $this->equipo_salida->set('accion', $accion);
-            $this->equipo_salida->set('razon', $razon);
+                        //VERIFICAR CLAVE ADMINISTRADOR
+                        $this->usuarios->set('usuario', $_SESSION['usuario']);
+                        $id_user = $this->usuarios->getIdUserbyUsuario();
 
-            //INSERTANDO EN EL HISTORIAL
-            $this->equipo_salida->entregarEquipoHistorial();
+                        $flag = $this->verificarClaveAdminRechazo($id_user['id_user'], $clave_admin);
 
-             //REDIRECCIONANDO CON UN MENSAJE DE EXITO
-             echo '<script>
-                        Swal.fire({
-                            title: "Exito",
-                            text: "Entrega aprobada",
-                            icon: "success",
-                            showConfirmButton: true,
-                            confirmButtonColor: "#3464eb",
-                            customClass: {
-                                confirmButton: "rounded-button" // Identificador personalizado
-                            }
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "' . URL . 'equipos/salida";
-                            }
-                        }).then(() => {
-                            window.location.href = "' . URL . 'equipos/salida"; // Esta línea se ejecutará cuando se cierre la alerta.
-                        });
-                    </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                        if($flag == false){
+
+                            //LAS CLAVES NO COINCIDEN CON LAS DE LA BASE DE DATOS, REDIRECCIONAR CON MENSAJE DE ERROR
+                            echo '<script>
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Clave invalida",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/rechazarEntrega/' . $id . '";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'equipos/rechazarEntrega/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                        </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional. 
+
+                        } else {
+                            //LA CLAVE ES VALIDA, PROSEGUIR
+                            //OBTENIENDO LA DATA DEL EQUIPO PARA REVERTIRLO
+                            $this->equipo_salida->set('id_aprobacion', $id);
+                            $equipo = $this->equipo_salida->getDataAprobacion();
+                            $entregado_por = $equipo['entregado_por'];
+                            $ingreso = $equipo['ingreso'];
+                            $id_equipo = $equipo['id_equipo'];
+                            $fecha_entrega = $equipo['fecha_entrega'];
+                            $conclusion = $equipo['conclusion'];
+
+                            //AGRUPANDO LOS DATOS PARA ELIMINAR (SOLO NECESITAMOS EL ID DEL INGRESO)
+                            $this->equipo_ingresado->set('id_ingreso', $ingreso);
+
+                            //REVIRTIENDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
+                            $this->equipo_ingresado->rechazarAdmin();
+
+                            //PREFERIBLEMENTE CON RAZON DE RECHAZO, LA CUAL SERA NOTIFICADA AL OPERADOR ASIGNADO
+
+                            //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
+                        /*
+                            $this->totalEntregaOperador($entregado_por);
+
+                            //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
+                            $this->cambiarEstadoEquipoIngresado($ingreso);
+
+                            //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
+                            $this->cambiarEstadoEquipoIngresado($id_equipo);*/
+
+
+                            //PREPARANDO HISTORIAL
+                            //USUARIO ADMIN
+                            $usuario = $_SESSION['usuario'];
+                            $this->usuarios->set('usuario', $usuario);
+                            $id_admin = $this->usuarios->getIdUserbyUsuario();
+                            
+                            //EQUIPO
+                            $id_equipo_registrado = $id_equipo;
+                            
+                            //ACCION Y RAZON
+                            $accion = "Rechazo entrega";
+                            $razon = $razon_rechazo;
+
+                            //PREPARANDO LOS DATOS
+                            $this->equipo_salida->set('id_admin', $id_admin['id_user']);
+                            $this->equipo_salida->set('usuario', $entregado_por);
+                            $this->equipo_salida->set('id_equipo', $id_equipo_registrado);
+                            $this->equipo_salida->set('accion', $accion);
+                            $this->equipo_salida->set('razon', $razon);
+
+                            //INSERTANDO EN EL HISTORIAL
+                            $this->equipo_salida->entregarEquipoHistorial();
+
+                            ////ELIMINANDO DE LA TABLA EQUIPOS APROBACION (SOLO SE NECESITA LA ID DE APROBACION)
+                            $id_aprobacion = $id;
+                            $this->equipo_ingresado->set('id_aprobacion', $id_aprobacion);
+                            //PODEMOS ELIMINAR AL YA HABER OBTENIDO LA DATA NECESARIA MAS ARRIBA
+                            $this->equipo_ingresado->eliminarDeEsperandoAprobacion();
+
+                            //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                            echo '<script>
+                                        Swal.fire({
+                                            title: "Exito",
+                                            text: "Entrega rechazada exitosamente, notifiquele al operador asignado",
+                                            icon: "success",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'equipos/index";
+                                            }
+                                        }).then(() => {
+                                            window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                        });
+                                    </script>';
+                                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                        }
+                    }
+
+                }
+
+            }
+
+            $data['titulo'] = "Rechazando entrega";
+
+            return $data;
 
         }
 
@@ -1330,6 +1438,29 @@ use Repository\Procesos1 as Repository1;
             </script>';
             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
+        }
+
+        //VALIDAR CLAVES DE ADMINISTRADOR
+        private function verificarClaveAdminRechazo($usuario_admin, $claveform){
+
+            $this->usuarios->set('id_user', $usuario_admin);
+            $user = $this->usuarios->getUserbyId();
+            $clavedb = $user['clave'];
+    
+            $flag = false;
+    
+            if(password_verify($claveform, $clavedb)){
+    
+                $flag = true;
+    
+            } else {
+    
+                $flag = false;
+    
+            }
+    
+            return $flag;
+    
         }
 
       

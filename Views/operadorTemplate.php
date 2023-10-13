@@ -285,10 +285,10 @@ class Template{
     <!-- INICIANDO TABLAS DATATABLE -->
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_registrados.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_ingresados.js"></script>
+    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_aprobacion.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_salida.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/direcciones.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/operadores.js"></script>
-    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/departamentos.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/auditoria.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/usuarios.js"></script>
     
