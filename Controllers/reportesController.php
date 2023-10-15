@@ -2,15 +2,18 @@
 
 namespace Controllers;
 
+use Models\Equipos_ingresados;
 use Mpdf\Mpdf as mPDF;
 
 class reportesController{
 
     private $mpdf;
+    private $equipo_ingresado;
 
     public function __construct() {
 
         $this->mpdf = new mPDF();
+        $this->equipo_ingresado = new Equipos_ingresados();
 
     }
 
@@ -20,20 +23,23 @@ class reportesController{
 
         $_SESSION['pdfContent'] = $pdfContent;
 
+        echo '<script>window.location = "' . URL . 'reportes/generarPdf"</script>';
+
     }
 
     public function generarReporte(){
-    $html = '<h1>Ejemplo de PDF generado con mPDF</h1>
-        <table border="1">
-            <tr>
-                <th>Columna 1</th>
-                <th>Columna 2</th>
-            </tr>
-            <tr>
-                <td>Dato 1</td>
-                <td>Dato 2</td>
-            </tr>
-        </table>';
+
+    $datos['titulo'] = "Equipos Ingresados";
+    $datos['equipos'] = $this->equipo_ingresado->reporteIngresosdeEquipo();
+
+    $html = file_get_contents(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla.php');
+    
+    ob_start();
+    foreach($datos['equipos'] as $data){
+        include(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla.php');
+    }
+    
+    $html = ob_get_clean();
 
     // Establecer el contenido HTML
     $this->mpdf->WriteHTML($html);

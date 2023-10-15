@@ -36,13 +36,22 @@ class Enrutador{
         //print "<br>".$ruta."<br>";
         //Cargar Vista
         
-        $ruta = ROOT . "Views" . DS . $request->getControlador() . DS . $metodo . ".php";
+        $controllerView = $request->getControlador();
+
+        $ruta = ROOT . "Views" . DS . $controllerView . DS . $metodo . ".php";
         //print "<br>".$ruta."<br>";
-        if(is_readable($ruta)){
-            require_once $ruta;
+        if($controllerView == "reportes"){
+            //NO CARGAR NINGUNA VISTA SI EL CONTROLADOR ES DE REPORTES
+
         } else {
-            $ruta = ROOT . "Views" . DS . "error" . DS . "404" . ".php";
-            require_once $ruta;
+
+            //CASO CONTRARIO, CARGAR VISTA
+            if(is_readable($ruta)){
+                require_once $ruta;
+            } else {
+                $ruta = ROOT . "Views" . DS . "error" . DS . "404" . ".php";
+                require_once $ruta;
+            }
         }
     }
 }
