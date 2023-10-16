@@ -75,7 +75,7 @@
 
                                             </div>
                                             <a class="btn btn-outline-success" href="<?php echo URL; ?>equipos/salida"> 
-                                                    <i class="fa-solid fa-truck-arrow-right fa-flip-horizontal" style="color: #3aa413;"></i>                                               
+                                                <i class="fa-solid fa-arrow-left"></i>                                               
                                                     Ir a Equipos Entregados
                                             </a>
                                         </div>
@@ -141,61 +141,108 @@
 
 <?php } ?>
 
-<div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                Entregas Rechazadas</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+<?php if($_SESSION['rol'] == 1){ //es admin ?>
 
-                                                <?php echo $ingresos['rechazos']['cuenta'] ?>
+    <?php if($ingresos['aprobacion']['totalAprobacion'] > 0){ ?>
+    <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                    Entregas esperando aprobacion de salida</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
 
+                                                    <?php echo $ingresos['aprobacion']['totalAprobacion'] ?>
+
+                                                </div>
+                                                <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/esperandoAprobacion">
+                                                    <i class="fa-solid fa-arrow-left"></i>
+                                                        Ir a entregas en revision
+                                                </a>
                                             </div>
-                                            <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/index">
-                                                <i class="fa-solid fa-arrow-left"></i>
-                                                    Ver rechazos
-                                            </a>
-                                        </div>
-                                        <div class="col-auto">
-                                        <i class="fa-solid fa-triangle-exclamation fa-2x" style="color: #ca1c1c;"></i>
+                                            <div class="col-auto">
+                                            <i class="fa-solid fa-triangle-exclamation fa-2x" style="color: #ca1c1c;"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+    <?php } else {  ?>
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h1 class="hola-inicio">Sistema GSI </h1>
+        <!-- CASO CONTRARIO, NO HAY ENTREGAS POR REVISAR -->
+        <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    Entregas esperando aprobacion de salida</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    No tienes entregas por revisar
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                            <i class="fa-solid fa-circle-check fa-3x" style="color: #3aa413;"></i>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="card card-body">
+    <?php } ?>
 
+<?php } else { //no es admin?>
 
-            <img class="gsi-imagen-inicio" src="<?php echo URL; ?>Views/template/img/1.png" alt="">
-        
+    <?php if($ingresos['rechazos']['cuenta'] > 0){ ?>
+    <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                    Entregas Rechazadas</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
 
-            <div class="flex-container">
+                                                    <?php echo $ingresos['rechazos']['cuenta'] ?>
 
-                <div class="flex-child magenta">
-                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="<?php echo URL; ?>operadores/index">Pulsa aca para ir a los operadores</a>
-                </div>
+                                                </div>
+                                                <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/index">
+                                                    <i class="fa-solid fa-arrow-left"></i>
+                                                        Ir a mis rechazos
+                                                </a>
+                                            </div>
+                                            <div class="col-auto">
+                                            <i class="fa-solid fa-triangle-exclamation fa-2x" style="color: #ca1c1c;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    <?php } else {  ?>
 
-                <div class="flex-child green">
-                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="<?php echo URL; ?>equipos/index">Pulsa aca para ir a los Equipos</a>
-                </div>
+        <!-- CASO CONTRARIO, NO HAY ENTREGAS RECHAZADAS -->
+        <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    Entregas Rechazadas</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    No tienes entregas rechazadas
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                            <i class="fa-solid fa-circle-check fa-3x" style="color: #3aa413;"></i>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <div class="flex-child blue">
-                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="<?php echo URL; ?>direcciones/index">Pulsa aca para administrar las direcciones IP</a>
-                </div>
+    <?php } ?>
 
-                <div class="flex-child red">
-                    <a class="btn btn-lg btn-outline-primary boton-inicio" href="<?php echo URL; ?>soportes/index">Pulsa aca para administrar los soportes</a>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-</div>
+<?php } ?>

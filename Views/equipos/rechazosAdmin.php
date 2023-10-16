@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-striped table-hover responsive nowrap" id="tablaequipos_aprobacion" width="100%" cellspacing="0">
+            <table class="table table-striped table-hover responsive nowrap" id="tablaequipos_rechazados" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Equipo <i class="fa-solid fa-tag" style="color: #279608;"></i></th>
@@ -20,7 +20,6 @@
                         <th>Operador <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
                         <th>Razon <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i></th>
                         <th>Fecha Rechazo <i class="fa-solid fa-calendar-days"></i></th>
-                        <th>Acciones <i class="fa-solid fa-gears"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,12 +31,6 @@
                             <td> <?php echo $data['operador'] ?> </td>
                             <td> <?php echo $data['razon'] ?> </td>
                             <td> <?php echo $data['fecha_rechazo'] ?> </td>
-
-                            <td>                             
-                                <a id="aprobar_entrega" class="btn btn-primary" href='evaluarEntrega/<?php echo $data['id_rechazo'] ?>'>Aprobar</a>
-
-                                <a id="rechazar_entrega" class="btn btn-danger" href='rechazarEntrega/<?php echo $data['id_rechazo'] ?>'>Rechazar</a>
-                            </td>
 
                         </tr>
                     <?php } ?>

@@ -18,6 +18,8 @@
                         <th>Equipo <i class="fa-solid fa-tag" style="color: #279608;"></i></th>
                         <th>Departamento <i class="fa-solid fa-building" style="color: #913080;"></i></th>
                         <th>Fecha Entrega <i class="fa-solid fa-calendar-days"></i></th>
+                        <th>Fecha Aprobacion <i class="fa-solid fa-calendar-days"></i></th>
+                        <th>Autorizado Por <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
                         <th>Entregado Por <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
                         <th>Problema <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i></th>
                         <th>Conclusion <i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i></th>
@@ -36,6 +38,8 @@
                             <td> <?php echo $data['equipo'] ?> </td>
                             <td> <?php echo $data['departamento'] ?> </td>
                             <td> <?php echo $data['fecha_entrega'] ?> </td>
+                            <td> <?php echo $data['fecha_aprobacion'] ?> </td>
+                            <td> <?php echo $data['administrador'] ?> </td>
                             <td> <?php echo $data['entregado_por'] ?> </td>
                             <td> <?php echo $data['problema'] ?> </td>
                             <td> <?php echo $data['conclusion'] ?> </td>

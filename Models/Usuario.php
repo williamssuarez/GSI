@@ -200,8 +200,8 @@ class Usuario{
 
         $sql= "SELECT
                 id_user,
-                nombres,
-                apellidos
+                nombres as nombre,
+                apellidos as apellido
                 FROM
                 usuarios";
         $datos = $this->con->consultaRetorno($sql);

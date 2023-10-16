@@ -36,7 +36,7 @@ use Repository\Procesos1 as Repository1;
                 echo '<script>
                 Swal.fire({
                     title: "Error",
-                    text: "Tienes que iniciar sesión primero!",
+                    text: "Tienes que iniciar sesión primero",
                     icon: "warning",
                     showConfirmButton: true,
                     confirmButtonColor: "#3464eb",
@@ -159,7 +159,7 @@ use Repository\Procesos1 as Repository1;
         public function getDataSalida(){
 
             $datos['titulo'] = "Entregando Equipo...";
-            $datos['operadores'] = $this->operadores->getOperador();
+            $datos['operadores'] = $this->usuarios->getUsuarios();
 
             return $datos;
         }
@@ -194,7 +194,7 @@ use Repository\Procesos1 as Repository1;
                         //REDIRECCIONANDO CON UN MENSAJE DE ERROR
                         echo '<script>
                                     Swal.fire({
-                                        title: "Equipo no registrado!",
+                                        title: "Equipo no registrado",
                                         text: "Este equipo no esta registrado, registrelo antes de ingresarlo.",
                                         icon: "warning",
                                         showConfirmButton: true,
@@ -384,7 +384,7 @@ use Repository\Procesos1 as Repository1;
                         //REDIRECCIONANDO CON UN MENSAJE DE ERROR
                         echo '<script>
                                     Swal.fire({
-                                        title: "Equipo no registrado!",
+                                        title: "Equipo no registrado",
                                         text: "Este equipo no esta registrado, registrelo antes de ingresarlo.",
                                         icon: "warning",
                                         showConfirmButton: true,
@@ -539,7 +539,7 @@ use Repository\Procesos1 as Repository1;
 
                     echo '<script>
                                 Swal.fire({
-                                    title: "Error!",
+                                    title: "Error",
                                     text: "Parece que uno de los campos quedo vacio",
                                     icon: "error",
                                     showConfirmButton: true,
@@ -595,7 +595,7 @@ use Repository\Procesos1 as Repository1;
 
                             echo '<script>
                                         Swal.fire({
-                                            title: "Error!",
+                                            title: "Error",
                                             text: "Esta Numero de bien ya existe",
                                             icon: "error",
                                             showConfirmButton: true,
@@ -618,7 +618,7 @@ use Repository\Procesos1 as Repository1;
                             
                             echo '<script>
                                         Swal.fire({
-                                            title: "Error!",
+                                            title: "Error",
                                             text: "Esta direccion ya existe",
                                             icon: "error",
                                             showConfirmButton: true,
@@ -644,7 +644,7 @@ use Repository\Procesos1 as Repository1;
 
                             echo '<script>
                                         Swal.fire({
-                                            title: "Exito!",
+                                            title: "Exito",
                                             text: "Equipo registrado exitosamente",
                                             icon: "success",
                                             showConfirmButton: true,
@@ -720,7 +720,7 @@ use Repository\Procesos1 as Repository1;
                 //REDIRECCIONANDO CON UN MENSAJE DE EXITO
                 echo '<script>
                             Swal.fire({
-                                title: "Exito!",
+                                title: "Exito",
                                 text: "Equipo Eliminado Exitosamente.",
                                 icon: "warning",
                                 showConfirmButton: true,
@@ -785,7 +785,7 @@ use Repository\Procesos1 as Repository1;
     
                     echo '<script>
                             Swal.fire({
-                                title: "Exito!",
+                                title: "Exito",
                                 text: "Editado Exitosamente.",
                                 icon: "success",
                                 showConfirmButton: true,
@@ -864,7 +864,7 @@ use Repository\Procesos1 as Repository1;
                     //REDIRECCIONANDO CON UN MENSAJE DE EXITO
                     echo '<script>
                     Swal.fire({
-                        title: "Exito!",
+                        title: "Exito",
                         text: "Equipo Editado Exitosamente.",
                         icon: "info",
                         showConfirmButton: true,
@@ -903,10 +903,15 @@ use Repository\Procesos1 as Repository1;
                     $fecha_entrega = $_POST['fecha_entrega'];
                     $entregado_por = $_POST['entregado_por'];
                     $conclusion = $_POST['conclusion'];
+
+                    //USUARIO
+                    $usuario = $_SESSION['usuario'];
+                    $this->usuarios->set('usuario', $usuario);
+                    $id_user = $this->usuarios->getIdUserbyUsuario();
     
                     //AGRUPANDO LOS DATOS
                     $this->equipo_salida->set('ingreso', $ingreso);
-                    $this->equipo_salida->set('id_equipo', $id_equipo);
+                    $this->equipo_salida->set('id_administrador', $id_user['id_user']);
                     $this->equipo_salida->set('fecha_entrega', $fecha_entrega);
                     $this->equipo_salida->set('entregado_por', $entregado_por);
                     $this->equipo_salida->set('conclusion', $conclusion);
@@ -914,18 +919,16 @@ use Repository\Procesos1 as Repository1;
                     //INSERTANDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
                     $this->equipo_salida->addAdmin();
     
+                    //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
+                    $this->cambiarEstadoEquipoIngresado($id);
+
                     //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
                     $this->totalEntregaOperador($entregado_por);
-     
-                    //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
-                    $this->cambiarEstadoEquipoIngresado($ingreso);
     
                     //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
                     $this->cambiarEstadoEquipoRegistrado($id_equipo);
 
                     //PREPARANDO HISTORIAL
-                    //USUARIO ADMIN
-                    
                     //USUARIO
                     $usuario = $_SESSION['usuario'];
                     $this->usuarios->set('usuario', $usuario);
@@ -948,14 +951,14 @@ use Repository\Procesos1 as Repository1;
                     //INSERTANDO EN EL HISTORIAL
                     $this->equipo_salida->entregarEquipoHistorial();
 
-                    //ELIMINANDO LOS RECHAZOS DEL EQUIPO
+                    //ELIMINAR ENTREGAS RECHAZADOS CON ESE INGRESO
                     $this->equipos_rechazados->set('ingreso', $ingreso);
-
+                    $this->equipos_rechazados->delete();
     
                     //REDIRECCIONANDO CON UN MENSAJE DE EXITO
                     echo '<script>
                                 Swal.fire({
-                                    title: "Exito!",
+                                    title: "Exito",
                                     text: "Equipo Entregado Exitosamente.",
                                     icon: "success",
                                     showConfirmButton: true,
@@ -1058,10 +1061,10 @@ use Repository\Procesos1 as Repository1;
                                 }
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'equipos/salida";
+                                    window.location.href = "' . URL . 'equipos/index";
                                 }
                             }).then(() => {
-                                window.location.href = "' . URL . 'equipos/salida"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -1229,14 +1232,14 @@ use Repository\Procesos1 as Repository1;
                             $id_admin = $this->usuarios->getIdUserbyUsuario();
 
                             //RAZON PARA EL RECHAZO
-                            $razon = $razon_rechazo;
+                            $razon_rechazo;
 
                             //INSERTAR EN ENTREGAS EQUIPOS RECHAZADOS
                             $this->equipos_rechazados->set('ingreso', $ingreso);
                             $this->equipos_rechazados->set('id_equipo', $id_equipo);
-                            $this->equipos_rechazados->set('id_administrador', $id_admin);
+                            $this->equipos_rechazados->set('id_administrador', $id_admin['id_user']);
                             $this->equipos_rechazados->set('id_usuario', $entregado_por);
-                            $this->equipos_rechazados->set('razon_rechazo', $razon);
+                            $this->equipos_rechazados->set('razon_rechazo', $razon_rechazo);
                             $this->equipos_rechazados->add();
 
 

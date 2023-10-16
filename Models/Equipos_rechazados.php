@@ -156,48 +156,7 @@ class Equipos_rechazados{
     }
 
     //INSERTANDO EN HISTORIAL DEL EQUIPO
-    public function ingresarEquipoHistorial(){
-
-
-            $sql = "INSERT INTO
-                    historial_equipos(id_admin, usuario, id_equipo, accion, razon)
-                    VALUES 
-                    ('{$this->id_admin}','{$this->usuario}', '{$this->id_equipo}', '{$this->accion}', '{$this->razon}')";
-                
-            $this->con->consultaSimple($sql);
-
-    }
-
-    public function reporteIngresosdeEquipo(){
-
-        $sql = "SELECT
-                t1.id_ingreso,
-                t4.id_equipo, 
-                t4.numero_bien, 
-                t2.nombre_departamento AS departamento, 
-                t1.fecha_recibido, 
-                t3.nombres as nombre_operador,
-                t1.recibido_por,
-                t1.problema,
-                t1.estado
-                FROM
-                equipos_ingresados t1 
-                INNER JOIN equipos t4 ON t1.id_equipo = t4.id_equipo
-                INNER JOIN departamentos t2 ON t4.departamento = t2.id_departamento
-                INNER JOIN usuarios t3 ON t1.recibido_por = t3.id_user
-                WHERE t1.id_equipo = 5";
-
-        $datos = $this->con->consultaRetorno($sql);
-
-        while($row = $datos->fetch_assoc()){
-
-            $this->resultado[] = $row;
-
-        }
-
-        return $this->resultado;
-
-    }
+    
 
 }
 

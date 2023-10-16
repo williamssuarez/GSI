@@ -44,6 +44,8 @@ class Equipos_salida{
                 t4.usuario,
                 t5.nombre_departamento as departamento,
                 t1.fecha_entrega,
+                t6.nombres as administrador,
+                t1.fecha_aprobacion,
                 t2.nombres as entregado_por,
                 t3.problema,
                 t1.conclusion
@@ -52,7 +54,8 @@ class Equipos_salida{
                 INNER JOIN usuarios t2 ON t2.id_user = t1.entregado_por
                 INNER JOIN equipos_ingresados t3 ON t3.id_ingreso = t1.ingreso 
                 INNER JOIN equipos t4 ON t4.id_equipo = t3.id_equipo
-                INNER JOIN departamentos t5 ON t5.id_departamento = t4.departamento";
+                INNER JOIN departamentos t5 ON t5.id_departamento = t4.departamento
+                INNER JOIN usuarios t6 ON t6.id_user = t1.id_administrador";
                 
         $datos = $this->con->consultaRetorno($sql);
 

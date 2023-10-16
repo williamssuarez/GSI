@@ -28,7 +28,7 @@
                     <select required class="form-select" name="recibido_por" id="recibido_por">
                             
                             <?php foreach($datos['operadores'] as $operadores) {  ?>
-                                <option value="<?php echo $operadores['id_user']; ?>"> <?php echo $operadores['nombres'] ?> <?php echo $operadores['apellidos']?> </option>
+                                <option value="<?php echo $operadores['id_user']; ?>"> <?php echo $operadores['nombre'] ?> <?php echo $operadores['apellido']?> </option>
                             <?php } ?>
 
                     </select>

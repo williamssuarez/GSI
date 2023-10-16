@@ -47,6 +47,7 @@ class inicioController{
 
         $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
         $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
+        $datos['aprobacion'] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
 
         //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
         $this->usuarios->set('usuario', $_SESSION['usuario']);

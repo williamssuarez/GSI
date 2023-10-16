@@ -65,6 +65,7 @@ class Equipos_ingresados{
         
     }
 
+    //CAMBIAR ESTADO A 1 (ENTREGADO)
     public function actualizarEstadodeEquipo(){
 
         $sql = "UPDATE
@@ -75,9 +76,10 @@ class Equipos_ingresados{
                 id_ingreso = '{$this->id_ingreso}' ";
         
         $this->con->consultaSimple($sql);
+
     }
 
-    //CAMBIAR EL ESTADO A 2
+    //CAMBIAR EL ESTADO A 2 (EN REVISION)
     public function cambiarEstadoEquipoAprobacion(){
 
         $sql = "UPDATE
@@ -91,7 +93,7 @@ class Equipos_ingresados{
 
     }
 
-    //CAMBIAR EL ESTADO A 0
+    //CAMBIAR EL ESTADO A 0 (ENTREGA RECHAZADA)
     public function rechazarAprobacionyCambiarestado(){
 
         $sql = "UPDATE
@@ -123,6 +125,14 @@ class Equipos_ingresados{
         $sql = "SELECT COUNT(estado) AS totalAsignaciones FROM equipos_ingresados WHERE estado = 0 AND recibido_por = '{$this->recibido_por}'";
         $datos = $this->con->consultaRetorno($sql);
         return $datos->fetch_assoc();
+    }
+
+    public function getIngresosTotalesAprobacion(){
+
+        $sql = "SELECT COUNT(*) AS totalAprobacion FROM equipos_aprobacion";
+        $datos = $this->con->consultaRetorno($sql);
+        return $datos->fetch_assoc();
+
     }
 
     public function getEquipos(){
@@ -292,9 +302,9 @@ class Equipos_ingresados{
         $sql = "SELECT
                 COUNT(*) as cuenta
                 FROM
-                historial_equipos t1, equipos_ingresados t2
+                equipos_rechazados t1, equipos_ingresados t2
                 WHERE
-                t1.usuario = '{$this->usuario}' AND t1.usuario = t2.recibido_por AND t2.estado = 0 AND t2.id_equipo = t1.id_equipo";
+                t1.id_usuario = '{$this->usuario}' AND t1.id_usuario = t2.recibido_por AND t2.estado = 0 AND t2.id_equipo = t1.id_equipo";
 
         $result = $this->con->consultaRetorno($sql);
 
