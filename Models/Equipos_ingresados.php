@@ -333,9 +333,10 @@ class Equipos_ingresados{
                 t3.nombres as nombre_operador,
                 t1.recibido_por,
                 t1.problema,
+                t6.conclusion
                 t1.estado
                 FROM
-                equipos_ingresados t1 
+                equipos_ingresados t1, equipos_salida t6 
                 INNER JOIN equipos t4 ON t1.id_equipo = t4.id_equipo
                 INNER JOIN departamentos t2 ON t4.departamento = t2.id_departamento
                 INNER JOIN usuarios t3 ON t1.recibido_por = t3.id_user

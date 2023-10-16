@@ -5,6 +5,7 @@ namespace Models;
 class Equipos_salida{
 
     private $id_entrega;
+    private $id_administrador;
     private $ingreso;
     private $fecha_entrega;
     private $entregado_por;
@@ -96,12 +97,14 @@ class Equipos_salida{
     public function addAdmin(){
         
         $sql = "INSERT INTO
-                equipos_salida(ingreso, 
+                equipos_salida(ingreso,
+                                id_administrador, 
                                 fecha_entrega, 
                                 entregado_por, 
                                 conclusion)
                 VALUES 
-                ('{$this->ingreso}', 
+                ('{$this->ingreso}',
+                '{$this->id_administrador}', 
                 '{$this->fecha_entrega}', 
                 '{$this->entregado_por}', 
                 '{$this->conclusion}')";
@@ -149,7 +152,29 @@ class Equipos_salida{
 
     }
 
+    public function eliminarAprobacion(){
 
+        $sql = "UPDATE
+                equipos_aprobacion
+                SET
+                entregado_por = NULL
+                WHERE id_aprobacion = '{$this->id_aprobacion}'";
+
+        $this->con->consultaSimple($sql);
+        
+        $this->deleteAprobacion();
+
+    }
+
+    public function deleteAprobacion(){
+
+        $sql = "DELETE FROM
+                equipos_aprobacion
+                WHERE
+                id_aprobacion = '{$this->id_aprobacion}'";
+
+        $this->con->consultaSimple($sql);
+    }
 
     public function delete(){
         

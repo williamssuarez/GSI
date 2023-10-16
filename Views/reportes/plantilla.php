@@ -60,6 +60,7 @@
                         <th>Fecha Recibido</th>
                         <th>Recibido Por</th>
                         <th>Problema </th>
+                        <th>Conclusion </th>
                         <th>Estado</th>
                         <!-- Agrega más encabezados según tus campos de base de datos -->
                     </tr>
@@ -72,6 +73,7 @@
                             <td> <?php echo $data['fecha_recibido']; ?> </td>
                             <td> <?php echo $data['nombre_operador']; ?> </td>
                             <td> <?php echo $data['problema']; ?> </td>
+                            <td> <?php echo $data['conclusion']; ?> </td>
                             <td>
                                 <?php
                                 if ($data['estado'] == 0) { ?>

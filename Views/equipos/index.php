@@ -104,7 +104,7 @@
 
                                         <?php } elseif($data['estado'] == 2) { ?>
 
-                                        <a class="btn btn-primary btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
+                                        <a class="btn btn-primary btn-icon-split" href='esperandoAprobacion'>
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                             Revisar
                                         </a> 

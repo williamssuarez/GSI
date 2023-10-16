@@ -94,6 +94,9 @@ class Template{
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/index">
                             <i class="fa-solid fa-truck-arrow-right fa-flip-horizontal"></i>
                             Equipos Ingresados</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>equipos/rechazosOperador">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            Mis entregas rechazadas</a>
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/salida">
                             <i class="fa-solid fa-truck-fast"></i>
                             Equipos Entregados</a>

@@ -36,7 +36,7 @@
                             <td> <?php echo $data['conclusion'] ?> </td>
 
                             <td>                             
-                                <a id="aprobar_entrega" class="btn btn-primary" href='evaluarEntrega/<?php echo $data['id_aprobacion'] ?>'>Aprobar</a>
+                                <a id="aprobar_entrega" class="btn btn-primary" href='aprobarEntrega/<?php echo $data['id_aprobacion'] ?>'>Aprobar</a>
 
                                 <a id="rechazar_entrega" class="btn btn-danger" href='rechazarEntrega/<?php echo $data['id_aprobacion'] ?>'>Rechazar</a>
                             </td>

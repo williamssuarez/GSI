@@ -89,6 +89,31 @@ use Repository\Procesos1 as Repository1;
 
         public function rechazosAdmin(){
 
+            if($_SESSION['rol'] != 1){
+
+                //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "No tienes privilegios de administrador",
+                                icon: "error",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/index";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+            }
+
             $datos['titulo'] = "Entregas Rechazadas";
             $datos['equipos_rechazados'] = $this->equipos_rechazados->listaAdmin();
             return $datos;
@@ -922,6 +947,10 @@ use Repository\Procesos1 as Repository1;
 
                     //INSERTANDO EN EL HISTORIAL
                     $this->equipo_salida->entregarEquipoHistorial();
+
+                    //ELIMINANDO LOS RECHAZOS DEL EQUIPO
+                    $this->equipos_rechazados->set('ingreso', $ingreso);
+
     
                     //REDIRECCIONANDO CON UN MENSAJE DE EXITO
                     echo '<script>
@@ -1203,6 +1232,7 @@ use Repository\Procesos1 as Repository1;
                             $razon = $razon_rechazo;
 
                             //INSERTAR EN ENTREGAS EQUIPOS RECHAZADOS
+                            $this->equipos_rechazados->set('ingreso', $ingreso);
                             $this->equipos_rechazados->set('id_equipo', $id_equipo);
                             $this->equipos_rechazados->set('id_administrador', $id_admin);
                             $this->equipos_rechazados->set('id_usuario', $entregado_por);
@@ -1310,21 +1340,25 @@ use Repository\Procesos1 as Repository1;
             $fecha_entrega = $equipo['fecha_entrega'];
             $conclusion = $equipo['conclusion'];
 
+            //USUARIO ADMIN
+            $usuario = $_SESSION['usuario'];
+            $this->usuarios->set('usuario', $usuario);
+            $id_admin = $this->usuarios->getIdUserbyUsuario();
+
             //AGRUPANDO LOS DATOS
             $this->equipo_salida->set('ingreso', $ingreso);
-            $this->equipo_salida->set('id_equipo', $id_equipo);
             $this->equipo_salida->set('fecha_entrega', $fecha_entrega);
+            $this->equipo_salida->set('id_administrador', $id_admin['id_user']);
             $this->equipo_salida->set('entregado_por', $entregado_por);
             $this->equipo_salida->set('conclusion', $conclusion);
 
             //INSERTANDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
             $this->equipo_salida->addAdmin();
 
-            //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
-            $this->totalEntregaOperador($entregado_por);
-
             //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
-            $this->cambiarEstadoEquipoIngresado($ingreso);
+            $this->equipo_ingresado->set('id_ingreso', $ingreso);
+            $this->equipo_ingresado->actualizarEstadodeEquipo();
+
 
             //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
             $this->cambiarEstadoEquipoRegistrado($id_equipo);
@@ -1351,6 +1385,14 @@ use Repository\Procesos1 as Repository1;
 
             //INSERTANDO EN EL HISTORIAL
             $this->equipo_salida->entregarEquipoHistorial();
+
+            //ELIMINAR DE LA APROBACION
+            $this->equipo_salida->set('id_aprobacion', $id);
+            $this->equipo_salida->eliminarAprobacion();
+
+            //ELIMINAR ENTREGAS RECHAZADOS CON ESE INGRESO
+            $this->equipos_rechazados->set('ingreso', $ingreso);
+            $this->equipos_rechazados->delete();
 
              //REDIRECCIONANDO CON UN MENSAJE DE EXITO
              echo '<script>

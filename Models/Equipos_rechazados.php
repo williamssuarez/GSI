@@ -6,6 +6,7 @@ class Equipos_rechazados{
 
     //VARIABLES PARA EL MODELO
     private $id_rechazo;
+    private $ingreso;
     private $id_equipo;
     private $id_administrador;
     private $id_usuario;
@@ -95,12 +96,14 @@ class Equipos_rechazados{
     public function add(){
         
         $sql = "INSERT INTO
-                equipos_rechazados(id_equipo,
+                equipos_rechazados(ingreso,
+                                    id_equipo,
                                     id_administrador,
                                     id_usuario,
                                     razon)
                 VALUES 
-                ('{$this->id_equipo}',
+                ('{$this->ingreso}',
+                '{$this->id_equipo}',
                 '{$this->id_administrador}', 
                 '{$this->id_usuario}', 
                 '{$this->razon}')";
@@ -111,9 +114,9 @@ class Equipos_rechazados{
     public function delete(){
         
         $sql = "DELETE FROM
-                equipos_ingresados
+                equipos_rechazados
                 WHERE
-                id_ingreso = '{$this->id_ingreso}'";
+                ingreso = '{$this->ingreso}'";
         
         $this->con->consultaSimple($sql);
     }
