@@ -9,10 +9,22 @@
                 font-family: Arial, sans-serif;
                 margin: 20px;
             }
+            .contenedor{
+                display: flex;   
+                align-items: center;
+            }
+            .contenedor img {
+                width: 20%;
+                height: 20%;
+                margin-left: auto;
+                margin-right: auto; /* Espaciado entre la imagen y el texto, ajusta según sea necesario */
+                display: block;
+            }/*
             .header {
                 text-align: center;
                 margin-bottom: 20px;
-            }
+                color: red;
+            }*/
             .table-container {
                 width: 100%;
             }
@@ -32,8 +44,11 @@
         </style>
     </head>
     <body>
-        <div class="header">
-            <h1>Informe de Base de Datos</h1>
+        <div class="contenedor">
+            <div class="header">
+                <img src="<?php echo URL; ?>Views/template/img/2.png" alt="">
+                <h1>Informe de Base de Datos</h1>
+            </div>
         </div>
         
         <div class="table-container">
