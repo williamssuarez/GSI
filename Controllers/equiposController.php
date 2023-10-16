@@ -3,6 +3,7 @@
 use Models\Equipos;
 use Models\Equipos_ingresados;
 use Models\Equipos_salida;
+use Models\Equipos_rechazados;
 use Models\Departamentos;
 use Models\Operadores;
 use Models\Sistemas_operativos;
@@ -14,6 +15,7 @@ use Repository\Procesos1 as Repository1;
         private $equipo;
         private $equipo_ingresado;
         private $equipo_salida;
+        private $equipos_rechazados;
         private $departamento;
         private $operadores;
         private $sistema_operativo;
@@ -24,6 +26,7 @@ use Repository\Procesos1 as Repository1;
             $this->equipo = new Equipos();
             $this->equipo_ingresado = new Equipos_ingresados();
             $this->equipo_salida = new Equipos_salida();
+            $this->equipos_rechazados = new Equipos_rechazados();
             $this->departamento = new Departamentos();
             $this->operadores = new Operadores();
             $this->sistema_operativo = new Sistemas_operativos();
@@ -82,6 +85,29 @@ use Repository\Procesos1 as Repository1;
             $datos['titulo'] = "Equipos Salida";
             $datos['equipos_salida'] = $this->equipo_salida->lista();
             return $datos;
+        }
+
+        public function rechazosAdmin(){
+
+            $datos['titulo'] = "Entregas Rechazadas";
+            $datos['equipos_rechazados'] = $this->equipos_rechazados->listaAdmin();
+            return $datos;
+
+        }
+
+        public function rechazosOperador(){
+
+            //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
+            $this->usuarios->set('usuario', $_SESSION['usuario']);
+            $user = $this->usuarios->getIdUserbyUsuario();
+            $id_user = $user['id_user'];
+
+            $datos['titulo'] = "Entregas Rechazadas";
+
+            $this->equipos_rechazados->set('id_usuario', $id_user);
+            $datos['equipos_rechazados'] = $this->equipos_rechazados->listaOperador();
+            return $datos;
+
         }
 
         //OBTENIENDO DATA NECESARIA PARA EL REGISTRO
@@ -1168,17 +1194,20 @@ use Repository\Procesos1 as Repository1;
                             //REVIRTIENDO LA INFORMACION EN TABLA EQUIPOS_ENTREGADOS
                             $this->equipo_ingresado->rechazarAdmin();
 
-                            //PREFERIBLEMENTE CON RAZON DE RECHAZO, LA CUAL SERA NOTIFICADA AL OPERADOR ASIGNADO
+                            //USUARIO ADMIN
+                            $usuario = $_SESSION['usuario'];
+                            $this->usuarios->set('usuario', $usuario);
+                            $id_admin = $this->usuarios->getIdUserbyUsuario();
 
-                            //SUMANDOLE +1 A EQUIPOS ENTREGADOS AL OPERADOR CORRESPONDIENTE
-                        /*
-                            $this->totalEntregaOperador($entregado_por);
+                            //RAZON PARA EL RECHAZO
+                            $razon = $razon_rechazo;
 
-                            //CAMBIANDO EL ESTADO DEL EQUIPO EN EQUIPOS_INGRESADOS DE 0 A 1, 0 PENDIENTE, 1 ENTREGADO
-                            $this->cambiarEstadoEquipoIngresado($ingreso);
-
-                            //CAMBIANDO EL ESTADO DEL EQUIPO REGISTRADO DE EN PROCESO A ACTIVO
-                            $this->cambiarEstadoEquipoIngresado($id_equipo);*/
+                            //INSERTAR EN ENTREGAS EQUIPOS RECHAZADOS
+                            $this->equipos_rechazados->set('id_equipo', $id_equipo);
+                            $this->equipos_rechazados->set('id_administrador', $id_admin);
+                            $this->equipos_rechazados->set('id_usuario', $entregado_por);
+                            $this->equipos_rechazados->set('razon_rechazo', $razon);
+                            $this->equipos_rechazados->add();
 
 
                             //PREPARANDO HISTORIAL

@@ -96,7 +96,10 @@ class Template{
                             Equipos Ingresados</a>
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/esperandoAprobacion">
                             <i class="fa-solid fa-question"></i>
-                            Equipos por Aprobar</a>                            
+                            Equipos por Aprobar</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>equipos/rechazosAdmin">
+                            <i class="fa-solid fa-question"></i>
+                            Entregas Rechazadas</a>                            
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/salida">
                             <i class="fa-solid fa-truck-fast"></i>
                             Equipos Entregados</a>                            
