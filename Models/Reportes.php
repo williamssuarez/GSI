@@ -5,6 +5,9 @@ namespace Models;
 class Reportes{
 
 
+    //PARA REPORTES POR OPERADOR
+    private $id_usuario;
+    //PARA REPORTES POR EQUIPO
     private $id_equipo;
     //PARA LA CONEXION Y LAS CONSULTAS
     private $con;

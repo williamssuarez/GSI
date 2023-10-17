@@ -6,7 +6,7 @@
 <div class="row">
 
 
-<a href="<?php echo URL; ?>reportes/generarPdf" class="btn btn-success">Generar PDF</a>
+<a href="<?php echo URL; ?>Views/template/resources/pdf/manual.pdf" class="btn btn-success" download>Manual PDF</a>
 
     <!-- TOTAL EQUIPO PENDIENTES, SI ES MAYOR A 0 SIGNIFICA QUE HAY PENDIENTES -->
 <?php if($ingresos['pendiente']['totalIngreso'] > 0) { ?>
