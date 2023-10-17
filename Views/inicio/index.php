@@ -208,7 +208,7 @@
                                                     <?php echo $ingresos['rechazos']['cuenta'] ?>
 
                                                 </div>
-                                                <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/index">
+                                                <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/rechazosOperador">
                                                     <i class="fa-solid fa-arrow-left"></i>
                                                         Ir a mis rechazos
                                                 </a>

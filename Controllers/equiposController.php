@@ -1126,6 +1126,8 @@ use Repository\Procesos1 as Repository1;
             $clave_admin = $_POST['clave_admin'];
             $clave_confirmacion = $_POST['clave_confirmacion'];
 
+            
+
                 //CASO DE QUE LA RAZON ESTE VACIA
                 if(empty($razon_rechazo)){
 
@@ -1285,10 +1287,10 @@ use Repository\Procesos1 as Repository1;
                                             }
                                         }).then((result) => {
                                             if (result.isConfirmed) {
-                                                window.location.href = "' . URL . 'equipos/index";
+                                                window.location.href = "' . URL . 'equipos/rechazosAdmin";
                                             }
                                         }).then(() => {
-                                            window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                            window.location.href = "' . URL . 'equipos/rechazosAdmin"; // Esta línea se ejecutará cuando se cierre la alerta.
                                         });
                                     </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.

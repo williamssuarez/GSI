@@ -62,6 +62,8 @@
                                             <a href="<?php echo URL; ?>equipos/registrados" class="btn btn-primary" aria-current="page">Volver</a>
 
 
+                                            <a href="<?php echo URL; ?>reportes/generarPdfEquipo/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-info" aria-current="page">Reporte</a>
+
                                             <?php if($_SESSION['rol'] == 1){ ?>    
                                                 <a href="<?php echo URL; ?>equipos/editregistro/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-warning">Editar</a>
                                                 <?php if($data['equipo']['estado'] == 0) { ?>

@@ -106,7 +106,7 @@ class Equipos_rechazados{
                 '{$this->id_equipo}',
                 '{$this->id_administrador}', 
                 '{$this->id_usuario}', 
-                '{$this->razon}')";
+                '{$this->razon_rechazo}')";
         
         $this->con->consultaSimple($sql);
     }

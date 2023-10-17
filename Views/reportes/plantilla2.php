@@ -52,15 +52,32 @@
         
         <div class="contenedor">
             <div class="header">
-                <h1>Informacion de Equipo</h1>
-                <h5>Numero de bien: <?php echo $data['equipo'] ?></h5>
-                <h5>Usuario: <?php echo $data['usuario'] ?></h5>
-                <h5>Departamento: <?php echo $data['departamento'] ?></h5>
-                <h5>Fecha Registrado: <?php echo $data['fecha_registro'] ?></h5>
-                <h5>CPU: <?php echo $data['cpu'] ?></h5>
-                <h5>RAM: <?php echo $data['memoria_ram'] ?> GB</h5>
-                <h5>Almacenamiento: <?php echo $data['almacenamiento'] ?> GB</h5>
-                <h5>O.S: <?php echo $data['nombre'] ?></h5>
+                <h1>Informacion de Operador</h1>
+                <h5>Nombres: <?php echo $data['equipo'] ?></h5>
+                <h5>Apellidos: <?php echo $data['usuario'] ?></h5>
+                <h5>Correo: <?php echo $data['departamento'] ?></h5>
+                <h5>Telefono: <?php echo $data['fecha_registro'] ?></h5>
+                <h5>Usuario: <?php echo $data['cpu'] ?></h5>
+                <h5>Fecha Agregado: <?php echo $data['memoria_ram'] ?></h5>
+                <h5>Estado: 
+                    <?php if($data['estado'] == 0){ ?>
+                        Activo
+                    <?php } else { ?>
+                        Inactivo
+                    <?php } ?>
+                </h5>
+                <h5>Rol: 
+                    
+                    <?php if($data['rol'] == 1){ ?>
+
+                        Administrador
+
+                    <?php } else { ?>
+
+                        Operador
+
+                    <?php } ?>
+                </h5>
             </div>
         </div>
 
