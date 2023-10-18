@@ -48,16 +48,18 @@ class reportesController{
 
     public function generarReporteUsuario($id){
 
-        $datos['titulo'] = "Equipos Ingresados";
+        $this->usuario->set('id_user', $id);
+        $datos['usuario']['user'] = $this->usuario->ViewById();
 
         $this->reporte->set('id_usuario', $id);
         $datos['usuario']['ingresos'] = $this->reporte->getIngresosOperador();
 
-        $this->reporte->set('id_usuario', $id);
         $datos['usuario']['entregas'] = $this->reporte->getEntregasOperador();
 
-        $this->reporte->set('id_usuario', $id);
-        $datos['usuario']['historial'] = $this->reporte->getHistorialOperador();
+        $history['historial'] = $this->reporte->getHistorialOperador();
+
+        var_dump($datos['usuario']['entregas']);
+        die();
 
         $html = file_get_contents(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla2.php');
         

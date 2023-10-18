@@ -92,6 +92,8 @@ class Usuario{
                 nombres,
                 apellidos, 
                 cedula, 
+                correo,
+                telefono,
                 usuario, 
                 clave,
                 estado 
@@ -342,6 +344,35 @@ class Usuario{
                 $result = $this->con->consultaRetorno($sql);
 
                 return $result->fetch_assoc();
+
+    }
+
+    public function ViewById(){
+
+        $sql = "SELECT 
+                id_user,
+                rol,
+                nombres,
+                apellidos, 
+                cedula,
+                correo,
+                telefono, 
+                usuario,
+                estado,
+                fecha_agregado 
+                FROM 
+                usuarios
+                WHERE id_user = '{$this->id_user}'";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+
+        return $this->resultado;
 
     }
     

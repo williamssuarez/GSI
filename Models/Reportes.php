@@ -61,7 +61,12 @@ class Reportes{
 
     public function getHistorialOperador(){
 
-        $sql = "SELECT * FROM historial_usuarios where id_usuario = '{$this->id_usuario}'";
+        $sql = "SELECT 
+                *
+                FROM 
+                historial_usuarios
+                where 
+                id_usuario = '{$this->id_usuario}'";
 
         $datos = $this->con->consultaRetorno($sql);
 
