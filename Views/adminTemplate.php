@@ -119,9 +119,27 @@ class Template{
             <span>Operadores</span></a>
     </li>
 
+    <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="<?php echo URL; ?>direcciones/index">
-            <i class="fa-solid fa-globe"></i>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Direcciones</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Administrar Direcciones:</h6>
+                        <a class="collapse-item" href="<?php echo URL; ?>direcciones/index">
+                            <i class="fa-solid fa-globe"></i>
+                            Direcciones Asignadas</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>direcciones/index">Todas las Direcciones</a
+                    </div>
+                </div>
+            </li>
+
+    <li class="nav-item">
+        <a class="nav-link" >
+            
             <span>Direcciones</span></a>
     </li>
 

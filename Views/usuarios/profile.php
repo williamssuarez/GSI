@@ -136,7 +136,9 @@
 
                                                 <?php } ?>
 
-                                                <a href="<?php echo URL; ?>reportes/generarPdfUsuario/<?php echo $data['user']['usuario'] ?>" class="btn btn-info" aria-current="page">Reporte</a>
+                                                <a href="<?php echo URL; ?>reportes/generarPdfUsuario/<?php echo $data['user']['usuario'] ?>" class="btn btn-info" aria-current="page">
+                                                    Reporte
+                                                </a>
 
                                             <?php } ?>
 

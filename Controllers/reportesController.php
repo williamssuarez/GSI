@@ -50,14 +50,20 @@ class reportesController{
 
         $datos['titulo'] = "Equipos Ingresados";
 
-        $this->reporte->set('id_equipo', $id);
-        $datos['equipos'] = $this->reporte->reporteIngresoySalidasporEquipo();
+        $this->reporte->set('id_usuario', $id);
+        $datos['usuario']['ingresos'] = $this->reporte->getIngresosOperador();
 
-        $html = file_get_contents(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla.php');
+        $this->reporte->set('id_usuario', $id);
+        $datos['usuario']['entregas'] = $this->reporte->getEntregasOperador();
+
+        $this->reporte->set('id_usuario', $id);
+        $datos['usuario']['historial'] = $this->reporte->getHistorialOperador();
+
+        $html = file_get_contents(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla2.php');
         
         ob_start();
-        foreach($datos['equipos'] as $data){
-            include(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla.php');
+        foreach($datos['usuario'] as $data){
+            include(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla2.php');
         }
         
         $html = ob_get_clean();

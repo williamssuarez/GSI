@@ -86,26 +86,74 @@
                 <thead>
                     <tr>
                        
+                        <th>Numero Bien</th>
+                        <th>Departamento</th>
                         <th>Fecha Recibido</th>
-                        <th>Recibido Por</th>
-                        <th>Fecha Aprobacion</th>
-                        <th>Autorizado Por</th>
-                        <th>Entregado Por</th>
-                        <th>Problema </th>
-                        <th>Conclusion </th>
+                        <th>Problema</th>
+                        <th>Estado</th>
                         <!-- Agrega más encabezados según tus campos de base de datos -->
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach($datos['equipos'] as $data) { ?>
+                <?php foreach($datos['usuario']['ingresos'] as $data) { ?>
                         <tr>
+                            <td> <?php echo $data['numero_bien']; ?> </td>
+                            <td> <?php echo $data['departamento']; ?> </td>
                             <td> <?php echo $data['fecha_recibido']; ?> </td>
-                            <td> <?php echo $data['nombres']; ?> </td>
-                            <td> <?php echo $data['fecha_aprobacion']; ?> </td>
-                            <td> <?php echo $data['administrador']; ?> </td>
-                            <td> <?php echo $data['entregado_por']; ?> </td>
                             <td> <?php echo $data['problema']; ?> </td>
-                            <td> <?php echo $data['conclusion']; ?> </td>
+                            <td> <?php echo $data['estado']; ?> </td>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                       
+                        <th>Numero Bien</th>
+                        <th>Departamento</th>
+                        <th>Fecha Recibido</th>
+                        <th>Problema</th>
+                        <th>Estado</th>
+                        <!-- Agrega más encabezados según tus campos de base de datos -->
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($datos['usuario']['entregas'] as $data) { ?>
+                        <tr>
+                            <td> <?php echo $data['numero_bien']; ?> </td>
+                            <td> <?php echo $data['departamento']; ?> </td>
+                            <td> <?php echo $data['fecha_recibido']; ?> </td>
+                            <td> <?php echo $data['problema']; ?> </td>
+                            <td> <?php echo $data['estado']; ?> </td>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                       
+                        <th>Numero Bien</th>
+                        <th>Departamento</th>
+                        <th>Fecha Recibido</th>
+                        <th>Problema</th>
+                        <th>Estado</th>
+                        <!-- Agrega más encabezados según tus campos de base de datos -->
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($datos['usuario']['historial'] as $data) { ?>
+                        <tr>
+                            <td> <?php echo $data['numero_bien']; ?> </td>
+                            <td> <?php echo $data['departamento']; ?> </td>
+                            <td> <?php echo $data['fecha_recibido']; ?> </td>
+                            <td> <?php echo $data['problema']; ?> </td>
+                            <td> <?php echo $data['estado']; ?> </td>
                     <?php } ?>
                 </tbody>
             </table>
