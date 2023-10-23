@@ -49,12 +49,7 @@
                         <th>Recibido Por <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
                         <th>Problema <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i></th>
                         <th>Estado <i class="fa-solid fa-question" style="color: #5b0d9b;"></i></th>
-                        
-                        <?php if($ingreso['total']['totalIngreso'] > 0) { ?>
-                        
                         <th>Acciones <i class="fa-solid fa-gears"></i></th>
-
-                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>

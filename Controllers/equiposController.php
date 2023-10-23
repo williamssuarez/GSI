@@ -150,7 +150,7 @@ use Repository\Procesos1 as Repository1;
 
             $datos['titulo'] = "Equipos Ingresados";
             $datos['departamentos'] = $this->departamento->lista();
-            $datos['operadores'] = $this->usuarios->getUsuarios();
+            $datos['operadores'] = $this->usuarios->getUsuariosActivos();
 
             return $datos;
         }
@@ -159,7 +159,7 @@ use Repository\Procesos1 as Repository1;
         public function getDataSalida(){
 
             $datos['titulo'] = "Entregando Equipo...";
-            $datos['operadores'] = $this->usuarios->getUsuarios();
+            $datos['operadores'] = $this->usuarios->getUsuariosActivos();
 
             return $datos;
         }
@@ -1419,6 +1419,37 @@ use Repository\Procesos1 as Repository1;
                         });
                     </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+        }
+
+        public function DeterminarCambiosdeEquipo(){
+
+            echo '<script>
+                    Swal.fire({
+                        title: "Defina la solucion",
+                        text: "¿La solucion que se le dio al equipo involucra un cambio de O.S o hardware?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Sí, se tuvieron que hacer cambios",
+                        cancelButtonText: "No, esta igual como ingreso",
+                        customClass: {
+                            confirmButton: "rounded-button",
+                            cancelButton: "rounded-button"
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Redirigir si se hace clic en "Sí"
+                            window.location.href = "' . URL . 'equipos/new";
+                        } else {
+                            // Redirigir a otra ruta si se hace clic en "No"
+                            window.location.href = "' . URL . 'equipos/index";
+                        }
+                    });
+                </script>';
+        exit;
+
 
         }
 

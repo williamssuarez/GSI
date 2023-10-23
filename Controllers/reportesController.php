@@ -27,7 +27,19 @@ class reportesController{
 
         $_SESSION['pdfContent'] = $pdfContent;
 
-        echo '<script>window.location = "' . URL . 'reportes/generarPdfEquipo/' . $id . '"</script>';
+        $contador = 0;
+
+        if($contador == 0){ 
+
+            $contador = 1;
+            echo '<script>window.location = "' . URL . 'reportes/generarPdfEquipo/' . $id . '"</script>';
+
+        }else{  
+
+            $contador = 0;
+            echo '<script>window.location = "' . URL . 'equipos/viewequipo/' . $id . '"</script>';
+        }
+
 
     }
 

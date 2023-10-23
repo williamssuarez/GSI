@@ -218,6 +218,29 @@ class Usuario{
 
     }
 
+    public function getUsuariosActivos(){
+
+        $sql= "SELECT
+                id_user,
+                nombres as nombre,
+                apellidos as apellido
+                FROM
+                usuarios
+                WHERE
+                estado = 0";
+        $datos = $this->con->consultaRetorno($sql);
+
+        while($row = $datos->fetch_assoc()){
+
+            $this->resultado[] = $row;
+
+        }
+    
+        return $this->resultado;  
+
+
+    }
+
     public function lista(){
 
         $sql = "SELECT 

@@ -4,7 +4,6 @@
 <h1 class="h3 mb-2 text-gray-800"><?php echo $data['titulo']; ?> </h1>
  <p class="mb-4">Ingrese los datos del nuevo usuario en el formulario</p>
 
-         <h1 class="h3 mb-2 text-gray-800">Formulario</h1>
 
 
 <div class="card border-left-primary shadow h-100 mb-4">

@@ -98,7 +98,7 @@ class Template{
                             <i class="fa-solid fa-question"></i>
                             Equipos por Aprobar</a>
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/rechazosAdmin">
-                            <i class="fa-solid fa-question"></i>
+                            <i class="fa-solid fa-triangle-exclamation"></i>
                             Entregas Rechazadas</a>                            
                         <a class="collapse-item" href="<?php echo URL; ?>equipos/salida">
                             <i class="fa-solid fa-truck-fast"></i>
@@ -136,12 +136,6 @@ class Template{
                     </div>
                 </div>
             </li>
-
-    <li class="nav-item">
-        <a class="nav-link" >
-            
-            <span>Direcciones</span></a>
-    </li>
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo URL; ?>soportes/index">
@@ -261,9 +255,9 @@ class Template{
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Perfil
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="<?php echo URL; ?>usuarios/index">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Ajustes
+                    Cuentas de Usuarios
                 </a>
                 <a class="dropdown-item" href="<?php echo URL; ?>auditoria/index">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
