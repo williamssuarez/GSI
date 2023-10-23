@@ -2,7 +2,7 @@
 ?>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1>Dashboard</h1>
+    <h1>Bienvenido</h1>
 
     <a href="<?php echo URL; ?>Views/template/pdf/manualsito.pdf" 
         class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" 
