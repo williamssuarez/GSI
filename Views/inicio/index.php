@@ -6,7 +6,7 @@
 
     <a href="<?php echo URL; ?>Views/template/pdf/manualsito.pdf" 
         class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" 
-        download>
+        download >
         <i class="fas fa-download fa-sm text-white-50"></i>
         Manual PDF</a>
 </div>
@@ -333,4 +333,3 @@
     </div>
 </div>
 </div> 
-

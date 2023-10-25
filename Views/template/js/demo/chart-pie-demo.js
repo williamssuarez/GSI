@@ -33,3 +33,23 @@ var myPieChart = new Chart(ctx, {
     cutoutPercentage: 80,
   },
 });
+
+// En algún evento, por ejemplo, cuando la página se carga
+document.addEventListener("DOMContentLoaded", function() {
+  // Realiza una solicitud AJAX para obtener los datos del servidor
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "http://localhost/GSI/inicio/pieChart", true);
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          // Parsea los datos JSON obtenidos del servidor
+          var data = JSON.parse(xhr.responseText);
+
+          // Actualiza los datos del gráfico con los datos obtenidos del servidor
+          myPieChart.data.datasets[0].data = data;
+          // Actualiza el gráfico
+          myPieChart.update();
+      }
+  };
+  xhr.send();
+});
+

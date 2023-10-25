@@ -32,7 +32,10 @@
                                 <td>                         
                                     <a class="btn btn-primary" href='edit/<?php echo $data['id_departamento'] ?>'>                                        
                                         Editar Nombre
-                                    </a>                    
+                                    </a>
+                                    <a class="btn btn-primary" href='<?php echo URL; ?>reportes/EquiposByDepartamento/<?php echo $data['id_departamento'] ?>'>                                        
+                                        Equipos
+                                    </a>                      
                                 </td>
                             </tr>
                         <?php } ?>    

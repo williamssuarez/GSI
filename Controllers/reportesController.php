@@ -117,8 +117,53 @@ class reportesController{
     return $pdfContent;
 }
 
+    //REPORTE DE EQUIPOS POR DEPARTAMENTO
+    public function EquiposByDepartamento($id){
+
+        $pdfContent = $this->generarReporteEquipoByDepartamento($id);
+
+        $_SESSION['pdfContent'] = $pdfContent;
+
+        $contador = 0;
+
+        if($contador == 0){ 
+
+            $contador = 1;
+            echo '<script>window.location = "' . URL . 'reportes/generarPdfEquipo/' . $id . '"</script>';
+
+        }else{  
+
+            $contador = 0;
+            echo '<script>window.location = "' . URL . 'equipos/viewequipo/' . $id . '"</script>';
+        }
+
+    }
+
+    public function generarReporteEquipoByDepartamento($id){
+
+        $datos['titulo'] = "Equipos Ingresados";
+
+        $this->reporte->set('id_equipo', $id);
+        $datos['equipos'] = $this->reporte->reporteIngresoySalidasporEquipo();
+
+        $html = file_get_contents(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla.php');
+        
+        ob_start();
+        foreach($datos['equipos'] as $data){
+            include(ROOT . 'Views' . DS . 'reportes' . DS . 'plantilla.php');
+        }
+        
+        $html = ob_get_clean();
+
+        // Establecer el contenido HTML
+        $this->mpdf->WriteHTML($html);
+
+        // Obtener el contenido del PDF como una cadena
+        $pdfContent = $this->mpdf->Output('', 'S');
+        return $pdfContent;
+
     
-    
+    }
 
 }
 

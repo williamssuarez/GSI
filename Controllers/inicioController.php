@@ -65,6 +65,33 @@ class inicioController{
         return $datos;
     }
 
+    public function pieChart(){
+
+        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
+        $this->usuarios->set('usuario', $_SESSION['usuario']);
+        $id_user = $this->usuarios->getIdUserbyUsuario();
+        $user = $id_user['id_user'];
+
+        //OBTENIENDO LOS EQUIPOS RECHAZADOS DEL OPERADOR
+        $this->equipos_ingresados->set('usuario', $id_user['id_user']);
+        $datos['rechazos'] = $this->equipos_ingresados->verificarRechazosTotales();
+        $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
+        $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
+        $datos['aprobacion'] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
+        
+
+        // Simulación de datos para propósitos de ejemplo
+        $data = array(
+            "labels" => ["Ingresados", "Entregados", "En Revision", "Entregas Rechazadas"],
+            "data" => [$datos['pendiente'], $datos['entregado'], $datos['aprobacion'], $datos['rechazos']]
+        );
+
+        // Convierte los datos a formato JSON y envíalos de vuelta
+        echo json_encode($data);
+
+
+    }
+
 }
 
 $inicio = new inicioController();
