@@ -29,10 +29,10 @@
                             <tr>                                
                                 <th>Cambio </th>
                                 <th>Tabla Afectada </th>
+                                <th>Usuario </th>
                                 <th>Registro Afectado </th>
                                 <th>Valor Antes </th>
                                 <th>Valor Despues </th>
-                                <th>Usuario </th>
                                 <th>Fecha </th>
                             </tr>
                         </thead>
@@ -42,10 +42,10 @@
                             <tr class="table">
                                 <td> <?php echo $data['tipo_cambio'] ?> </td>
                                 <td> <?php echo $data['tabla_afectada'] ?> </td>
+                                <td> <?php echo $data['usuario'] ?> </td>
                                 <td> <?php echo $data['registro_afectado'] ?> </td>
                                 <td> <?php echo $data['valor_antes'] ?> </td>
-                                <td> <?php echo $data['valor_despues'] ?> </td>
-                                <td> <?php echo $data['usuario'] ?> </td>
+                                <td> <?php echo $data['valor_despues'] ?> </td>                                
                                 <td> <?php echo $data['fecha'] ?> </td>
                             </tr>
                         <?php } ?>    

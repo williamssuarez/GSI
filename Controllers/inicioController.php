@@ -3,18 +3,21 @@
 use Repository\Procesos1;
 use Models\Equipos_ingresados;
 use Models\Usuario;
+use Models\Auditoria;
 
 class inicioController{
 
     private $proceso1;
     private $equipos_ingresados;
     private $usuarios;
+    private $auditoria;
 
     public function __construct()
     {
         $this->proceso1 = new Procesos1();
         $this->equipos_ingresados = new Equipos_ingresados();
         $this->usuarios = new Usuario();
+        $this->auditoria = new Auditoria();
 
         if (!isset($_SESSION['usuario'])) {
             // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
@@ -45,14 +48,25 @@ class inicioController{
 
     public function index(){
 
-        $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
-        $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
-        $datos['aprobacion'] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
-
         //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
         $this->usuarios->set('usuario', $_SESSION['usuario']);
         $id_user = $this->usuarios->getIdUserbyUsuario();
         $user = $id_user['id_user'];
+
+
+        $tipo_cambio = 10;
+        $tabla_afectada = "Inicio";
+        $registro_afectado = "Ninguno";
+        $valor_antes = "Ninguno";
+        $valor_despues = "Ninguno";
+        $usuario = $user;
+
+        //EJECUTANDO LA AUDITORIA
+        $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
+        $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
+        $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
+        $datos['aprobacion'] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
 
         //OBTENIENDO LOS EQUIPOS RECHAZADOS DEL OPERADOR
         $this->equipos_ingresados->set('usuario', $id_user['id_user']);

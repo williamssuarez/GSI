@@ -2,14 +2,20 @@
 
 use Models\Departamentos;
 use Repository\Procesos1 as Repository1;
+use Models\Usuario;
+use Models\Auditoria;
 
     class departamentosController{
 
         private $departamento;
+        private $usuarios;
+        private $auditoria;
 
         public function __construct()
         {
             $this->departamento = new Departamentos();
+            $this->usuarios = new Usuario();
+            $this->auditoria = new Auditoria();
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -35,6 +41,22 @@ use Repository\Procesos1 as Repository1;
             }
             if($_SESSION['rol'] != 1){
 
+                //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                $this->usuarios->set('usuario', $_SESSION['usuario']);
+                $id_user = $this->usuarios->getIdUserbyUsuario();
+                $user = $id_user['id_user'];
+
+
+                $tipo_cambio = 12; //TIPO DE CAMBIO 12 = ACCESO NO AUTORIZADO
+                $tabla_afectada = "Departamentos";
+                $registro_afectado = "Ninguno";
+                $valor_antes = "Ninguno";
+                $valor_despues = "Ninguno";
+                $usuario = $user;
+
+                //EJECUTANDO LA AUDITORIA
+                $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
                 echo '<script>
                 Swal.fire({
                     title: "Error",
@@ -57,6 +79,23 @@ use Repository\Procesos1 as Repository1;
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             }
+
+            //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+            $this->usuarios->set('usuario', $_SESSION['usuario']);
+            $id_user = $this->usuarios->getIdUserbyUsuario();
+            $user = $id_user['id_user'];
+
+
+            $tipo_cambio = 10; //TIPO DE CAMBIO 10 = Accedio a
+            $tabla_afectada = "Departamentos";
+            $registro_afectado = "Ninguno";
+            $valor_antes = "Ninguno";
+            $valor_despues = "Ninguno";
+            $usuario = $user;
+
+            //EJECUTANDO LA AUDITORIA
+            $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
         }
 
         public function index(){
