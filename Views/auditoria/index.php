@@ -1,7 +1,7 @@
-<?php $datos = $auditoria->index(); ?>
+
 
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?></h1>
+<h1 class="h3 mb-2 text-gray-800"><?php echo $data['titulo']; ?></h1>
  <p class="mb-4">Una tabla para consultar la auditoria</p>
 
 <h1 class="h3 mb-2 text-gray-800">Tabla</h1>
@@ -38,7 +38,7 @@
                         </thead>
                         <tbody>
                         
-                        <?php foreach($datos['auditoria'] as $data){ ?>
+                        <?php foreach($data['auditoria'] as $data){ ?>
                             <tr class="table">
                                 <td> <?php echo $data['tipo_cambio'] ?> </td>
                                 <td> <?php echo $data['tabla_afectada'] ?> </td>

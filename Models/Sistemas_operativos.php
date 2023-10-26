@@ -25,30 +25,22 @@ class Sistemas_operativos{
         return $this->$atributo;
     }
 
-    /*public function actualizarDireccionesAsignadas(){
+   public function getSistemaforAuditoria(){
 
-        $sql = "UPDATE
-                dispositivos
-                SET
-                total_asignaciones = total_asignaciones + 1
+        $sql= "SELECT
+                id_os,
+                nombre,
+                tipo
+                FROM
+                sistemas_operativos
                 WHERE
-                id_dispositivos = '{$this->id_dispositivos}'";
+                id_os = '{$this->id_os}'";
 
-        $this->con->consultaSimple($sql);
-    }
+        $result = $this->con->consultaRetorno($sql);
 
-    public function reducirDireccionesenAsignadas(){
+        return $result->fetch_assoc();
 
-        $sql = "UPDATE
-                dispositivos
-                SET
-                total_asignaciones = total_asignaciones - 1
-                WHERE
-                id_dispositivos = '{$this->id_dispositivos}'";
-
-        $this->con->consultaSimple($sql);
-
-    }*/
+   }
 
     public function getSistemas(){
 

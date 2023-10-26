@@ -53,17 +53,6 @@ class inicioController{
         $id_user = $this->usuarios->getIdUserbyUsuario();
         $user = $id_user['id_user'];
 
-
-        $tipo_cambio = 10;
-        $tabla_afectada = "Inicio";
-        $registro_afectado = "Ninguno";
-        $valor_antes = "Ninguno";
-        $valor_despues = "Ninguno";
-        $usuario = $user;
-
-        //EJECUTANDO LA AUDITORIA
-        $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
-
         $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
         $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
         $datos['aprobacion'] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
@@ -75,6 +64,17 @@ class inicioController{
         // PARA OBTENER LOS EQUIPOS ASIGNADOS A EL
         $this->equipos_ingresados->set('recibido_por', $user);
         $datos['asignados'] = $this->equipos_ingresados->getAsignacionesTotalesaUsuario();
+
+
+        $tipo_cambio = 10;
+        $tabla_afectada = "Inicio";
+        $registro_afectado = "Ninguno";
+        $valor_antes = "Ninguno";
+        $valor_despues = "Ninguno";
+        $usuario = $user;
+
+        //EJECUTANDO LA AUDITORIA
+        $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
 
         return $datos;
     }

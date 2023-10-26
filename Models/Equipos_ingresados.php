@@ -313,7 +313,7 @@ class Equipos_ingresados{
     }
 
 
-    public function verificarRechazos(){
+    /*public function verificarRechazos(){
 
         $sql = "SELECT
                     t1.id_historial,
@@ -329,7 +329,7 @@ class Equipos_ingresados{
                 WHERE
                         t1.usuario = t2.recibido_por AND t2.estado = 0 AND t1.usuario = 3 AND  t2.id_equipo = t1.id_equipo";
 
-    }
+    }*/
 
 
     public function reporteIngresosdeEquipo(){

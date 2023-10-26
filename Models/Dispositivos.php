@@ -24,6 +24,22 @@ class Dispositivos{
         return $this->$atributo;
     }
 
+    public function getDispositivoforAuditoria(){
+
+        $sql= "SELECT
+                id_dispositivos,
+                nombre_dispositivo
+                FROM
+                dispositivos
+                WHERE
+                id_dispositivos = '{$this->id_dispositivos}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+
+    }
+
     public function actualizarDireccionesAsignadas(){
 
         $sql = "UPDATE

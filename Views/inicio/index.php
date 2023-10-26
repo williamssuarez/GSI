@@ -1,5 +1,4 @@
-<?php $ingresos = $inicio->index();
-?>
+
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1>Bienvenido</h1>
@@ -15,7 +14,7 @@
 <div class="row">
 
     <!-- TOTAL EQUIPO PENDIENTES, SI ES MAYOR A 0 SIGNIFICA QUE HAY PENDIENTES -->
-<?php if($ingresos['pendiente']['totalIngreso'] > 0) { ?>
+<?php if($data['pendiente']['totalIngreso'] > 0) { ?>
 
 <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">                            
@@ -26,7 +25,7 @@
                                                 Equipos Pendientes</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 
-                                                <?php echo $ingresos['pendiente']['totalIngreso']; ?>
+                                                <?php echo $data['pendiente']['totalIngreso']; ?>
 
                                             </div>
                                             <a class="btn btn-outline-warning" href="<?php echo URL; ?>equipos/index">
@@ -77,7 +76,7 @@
                                                 Equipos Entregados</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
 
-                                                <?php echo $ingresos['entregado']['totalEntrega'] ?>
+                                                <?php echo $data['entregado']['totalEntrega'] ?>
 
                                             </div>
                                             <a class="btn btn-outline-success" href="<?php echo URL; ?>equipos/salida"> 
@@ -95,7 +94,7 @@
 
 
 <!-- EQUIPOS ASIGNADOS AL USUARIO -->
-<?php if($ingresos['asignados']['totalAsignaciones'] > 0)  { ?>
+<?php if($data['asignados']['totalAsignaciones'] > 0)  { ?>
 
     <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
@@ -106,7 +105,7 @@
                                                 Equipos Asignados a ti</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
 
-                                                <?php echo $ingresos['asignados']['totalAsignaciones'] ?>
+                                                <?php echo $data['asignados']['totalAsignaciones'] ?>
 
                                             </div>
                                             <a class="btn btn-outline-primary" href="<?php echo URL; ?>equipos/index">
@@ -149,7 +148,7 @@
 
 <?php if($_SESSION['rol'] == 1){ //es admin ?>
 
-    <?php if($ingresos['aprobacion']['totalAprobacion'] > 0){ ?>
+    <?php if($data['aprobacion']['totalAprobacion'] > 0){ ?>
     <div class="col-xl-3 col-md-6 mb-4">
                                 <div class="card border-left-danger shadow h-100 py-2">
                                     <div class="card-body">
@@ -159,7 +158,7 @@
                                                     Entregas esperando aprobacion de salida</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
 
-                                                    <?php echo $ingresos['aprobacion']['totalAprobacion'] ?>
+                                                    <?php echo $data['aprobacion']['totalAprobacion'] ?>
 
                                                 </div>
                                                 <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/esperandoAprobacion">
@@ -201,7 +200,7 @@
 
 <?php } else { //no es admin?>
 
-    <?php if($ingresos['rechazos']['cuenta'] > 0){ ?>
+    <?php if($data['rechazos']['cuenta'] > 0){ ?>
     <div class="col-xl-3 col-md-6 mb-4">
                                 <div class="card border-left-danger shadow h-100 py-2">
                                     <div class="card-body">
@@ -211,7 +210,7 @@
                                                     Entregas Rechazadas</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
 
-                                                    <?php echo $ingresos['rechazos']['cuenta'] ?>
+                                                    <?php echo $data['rechazos']['cuenta'] ?>
 
                                                 </div>
                                                 <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/rechazosOperador">

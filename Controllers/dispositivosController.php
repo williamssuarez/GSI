@@ -1,15 +1,21 @@
 <?php namespace Controllers;
 
 use Models\Dispositivos;
-use Repository\Procesos1 as Repository1;
+use Models\Auditoria;
+use Models\Usuario;
 
     class dispositivosController{
 
         private $dispositivos;
+        private $auditoria;
+        private $usuarios;
 
         public function __construct()
         {
             $this->dispositivos = new Dispositivos();
+            $this->auditoria = new Auditoria();
+            $this->usuarios = new Usuario();
+
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -61,6 +67,23 @@ use Repository\Procesos1 as Repository1;
         }
 
         public function index(){
+
+            //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+            $this->usuarios->set('usuario', $_SESSION['usuario']);
+            $id_user = $this->usuarios->getIdUserbyUsuario();
+            $user = $id_user['id_user'];
+
+
+            $tipo_cambio = 10; //TIPO DE CAMBIO 10 = Accedio a
+            $tabla_afectada = "Dispositivos";
+            $registro_afectado = "Ninguno";
+            $valor_antes = "Ninguno";
+            $valor_despues = "Ninguno";
+            $usuario = $user;
+
+            //EJECUTANDO LA AUDITORIA
+            $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
             $datos['titulo'] = "Dispositivos";
             $datos['dispositivos'] = $this->dispositivos->lista();
             return $datos;
@@ -114,6 +137,33 @@ use Repository\Procesos1 as Repository1;
                         // No hay errores de validación, procesa los datos
                         $this->dispositivos->set('nombre_dispositivo', $nombre);
 
+                        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                        $this->usuarios->set('usuario', $_SESSION['usuario']);
+                        $id_user = $this->usuarios->getIdUserbyUsuario();
+                        $user = $id_user['id_user'];
+
+                            //PREPARANDO AUDITORIA
+                            $tipo_cambio = 4;
+                            $tabla_afectada = 'dispositivos';
+                            $registro_afectado = 0;
+                            
+                            //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                            //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
+                            $valorDespuesarray = array($nombre);
+                            
+                            //CONVIRITENDOLO A JSON PARA GUARDARLO
+                            $valor_antes = 'Nuevo registro';
+                            $valor_despues = json_encode($valorDespuesarray);;
+                            $usuario  = $user;
+
+                            //EJECUTANDO LA AUDITORIA
+                            $this->auditoria->auditar($tipo_cambio, 
+                                                    $tabla_afectada, 
+                                                    $registro_afectado, 
+                                                    $valor_antes, 
+                                                    $valor_despues, 
+                                                    $usuario);
+
                             $this->dispositivos->add();
 
                             echo '<script>
@@ -161,7 +211,30 @@ use Repository\Procesos1 as Repository1;
                     }
                 }
 
-            }                        
+            } 
+            
+            //PREPARANDO AUDITORIA
+            
+            //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+            $this->usuarios->set('usuario', $_SESSION['usuario']);
+            $id_user = $this->usuarios->getIdUserbyUsuario();
+            $user = $id_user['id_user'];
+
+            $tipo_cambio = 5;
+            $tabla_afectada = 'dispositivos';
+            $registro_afectado = 0;
+            //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
+            $valor_antes = 'Ninguno';
+            $valor_despues = 'en proceso';
+            $usuario  = $user;
+
+            //EJECUTANDO LA AUDITORIA
+            $this->auditoria->auditar($tipo_cambio, 
+                                    $tabla_afectada, 
+                                    $registro_afectado, 
+                                    $valor_antes, 
+                                    $valor_despues, 
+                                    $usuario);
 
         }
 
@@ -172,7 +245,62 @@ use Repository\Procesos1 as Repository1;
                     $this->dispositivos->set('id_dispositivos',$id);
                     $nombre_dispositivo = $_POST['nombre'];
 
+                    if(empty($nombre_dispositivo)){
+
+                        echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "El nombre no puede estar vacio",
+                                icon: "warning",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'dispositivos/edit' . $id . '";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'dispositivos/edit' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                    }
+
                     $this->dispositivos->set('nombre_dispositivo', $nombre_dispositivo);
+
+                    //OBTENIENDO DATA PARA AUDITORIA
+                    $this->dispositivos->set('id_dispositivos',$id);
+                    $data = $this->dispositivos->getDispositivoforAuditoria();
+
+                    //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                    $this->usuarios->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuarios->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 3;
+                    $tabla_afectada = 'dispositivos';
+                    $registro_afectado = $data['id_dispositivos'];
+                    
+                    //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                    $valorAntesarray = array($data['nombre_dispositivo']);
+                    $valorDespuesarray = array($nombre_dispositivo);
+                    
+                    //CONVIRITENDOLO A JSON PARA GUARDARLO
+                    $valor_antes = json_encode($valorAntesarray);
+                    $valor_despues = json_encode($valorDespuesarray);;
+                    $usuario  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $usuario);
     
                     $this->dispositivos->edit();
     
@@ -197,6 +325,33 @@ use Repository\Procesos1 as Repository1;
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                 }  
+
+                //OBTENIENDO DATA PARA AUDITORIA
+                $this->dispositivos->set('id_dispositivos',$id);
+                $data = $this->dispositivos->getDispositivoforAuditoria();
+
+                //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                $this->usuarios->set('usuario', $_SESSION['usuario']);
+                $id_user = $this->usuarios->getIdUserbyUsuario();
+                $user = $id_user['id_user'];
+
+                //PREPARANDO AUDITORIA
+                $tipo_cambio = 2;
+                $tabla_afectada = 'dispositivos';
+
+                $registro_afectado = $data['id_dispositivos'];
+                $valorAntesarray = array($data['nombre_dispositivo']);
+                $valor_antes = json_encode($valorAntesarray);
+                $valor_despues = 'en proceso';
+                $usuario  = $user;
+
+                //EJECUTANDO LA AUDITORIA
+                $this->auditoria->auditar($tipo_cambio, 
+                                        $tabla_afectada, 
+                                        $registro_afectado, 
+                                        $valor_antes, 
+                                        $valor_despues, 
+                                        $usuario);
                 
                 $this->dispositivos->set('id_dispositivos',$id);
                 $data['titulo'] = "Editando Nombre del Dispositivo";

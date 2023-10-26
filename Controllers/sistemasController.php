@@ -1,15 +1,22 @@
 <?php namespace Controllers;
 
 use Models\Sistemas_operativos;
-use Repository\Procesos1 as Repository1;
+use Models\Usuario;
+use Models\Auditoria;
 
     class sistemasController{
 
         private $sistemas;
+        private $usuarios;
+        private $auditoria;
 
         public function __construct()
         {
             $this->sistemas = new Sistemas_operativos();
+            $this->auditoria = new Auditoria();
+            $this->usuarios = new Usuario();
+
+
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -36,6 +43,24 @@ use Repository\Procesos1 as Repository1;
         }
 
         public function index(){
+
+            //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+            $this->usuarios->set('usuario', $_SESSION['usuario']);
+            $id_user = $this->usuarios->getIdUserbyUsuario();
+            $user = $id_user['id_user'];
+
+
+            $tipo_cambio = 10; //TIPO DE CAMBIO 10 = Accedio a
+            $tabla_afectada = "sistemas";
+            $registro_afectado = "Ninguno";
+            $valor_antes = "Ninguno";
+            $valor_despues = "Ninguno";
+            $usuario = $user;
+
+            //EJECUTANDO LA AUDITORIA
+            $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
+
             $datos['titulo'] = "Sistemas Operativos";
             $datos['sistemas'] = $this->sistemas->lista();
             return $datos;
@@ -84,6 +109,33 @@ use Repository\Procesos1 as Repository1;
                         $this->sistemas->set('nombre', $nombre);
                         $this->sistemas->set('tipo', $tipo);
 
+                        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                        $this->usuarios->set('usuario', $_SESSION['usuario']);
+                        $id_user = $this->usuarios->getIdUserbyUsuario();
+                        $user = $id_user['id_user'];
+
+                            //PREPARANDO AUDITORIA
+                            $tipo_cambio = 4;
+                            $tabla_afectada = 'sistemas';
+                            $registro_afectado = 0;
+                            
+                            //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                            //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
+                            $valorDespuesarray = array($nombre, $tipo);
+                            
+                            //CONVIRITENDOLO A JSON PARA GUARDARLO
+                            $valor_antes = 'Nuevo registro';
+                            $valor_despues = json_encode($valorDespuesarray);;
+                            $usuario  = $user;
+
+                            //EJECUTANDO LA AUDITORIA
+                            $this->auditoria->auditar($tipo_cambio, 
+                                                    $tabla_afectada, 
+                                                    $registro_afectado, 
+                                                    $valor_antes, 
+                                                    $valor_despues, 
+                                                    $usuario);
+
                             $this->sistemas->add();
 
                             echo '<script>
@@ -110,7 +162,30 @@ use Repository\Procesos1 as Repository1;
                     
                 }
 
-            }                        
+            }     
+            
+            //PREPARANDO AUDITORIA
+            
+            //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+            $this->usuarios->set('usuario', $_SESSION['usuario']);
+            $id_user = $this->usuarios->getIdUserbyUsuario();
+            $user = $id_user['id_user'];
+
+            $tipo_cambio = 5;
+            $tabla_afectada = 'sistemas';
+            $registro_afectado = 0;
+            //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
+            $valor_antes = 'Ninguno';
+            $valor_despues = 'en proceso';
+            $usuario  = $user;
+
+            //EJECUTANDO LA AUDITORIA
+            $this->auditoria->auditar($tipo_cambio, 
+                                    $tabla_afectada, 
+                                    $registro_afectado, 
+                                    $valor_antes, 
+                                    $valor_despues, 
+                                    $usuario);
 
         }
 
@@ -154,6 +229,37 @@ use Repository\Procesos1 as Repository1;
 
                     $this->sistemas->set('nombre', $nombre);
                     $this->sistemas->set('tipo', $tipo);
+
+                    //OBTENIENDO DATA PARA AUDITORIA
+                    $this->sistemas->set('id_os',$id);
+                    $data = $this->sistemas->getSistemaforAuditoria();
+
+                    //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                    $this->usuarios->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuarios->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 3;
+                    $tabla_afectada = 'sistemas';
+                    $registro_afectado = $data['id_os'];
+                    
+                    //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                    $valorAntesarray = array($data['nombre'], $data['tipo']);
+                    $valorDespuesarray = array($nombre, $tipo);
+                    
+                    //CONVIRITENDOLO A JSON PARA GUARDARLO
+                    $valor_antes = json_encode($valorAntesarray);
+                    $valor_despues = json_encode($valorDespuesarray);;
+                    $usuario  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $usuario);
     
                     $this->sistemas->edit();
     
@@ -178,6 +284,33 @@ use Repository\Procesos1 as Repository1;
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                 }  
+
+                //OBTENIENDO DATA PARA AUDITORIA
+                $this->sistemas->set('id_os',$id);
+                $data = $this->sistemas->getSistemaforAuditoria();
+
+                //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                $this->usuarios->set('usuario', $_SESSION['usuario']);
+                $id_user = $this->usuarios->getIdUserbyUsuario();
+                $user = $id_user['id_user'];
+
+                //PREPARANDO AUDITORIA
+                $tipo_cambio = 2;
+                $tabla_afectada = 'sistemas';
+
+                $registro_afectado = $data['id_os'];
+                $valorAntesarray = array($data['nombre'], $data['tipo']);
+                $valor_antes = json_encode($valorAntesarray);
+                $valor_despues = 'en proceso';
+                $usuario  = $user;
+
+                //EJECUTANDO LA AUDITORIA
+                $this->auditoria->auditar($tipo_cambio, 
+                                        $tabla_afectada, 
+                                        $registro_afectado, 
+                                        $valor_antes, 
+                                        $valor_despues, 
+                                        $usuario);
                 
                 $this->sistemas->set('id_os',$id);
                 $data['titulo'] = "Editando Nombre del Sistema Operativo";

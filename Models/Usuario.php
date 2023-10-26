@@ -37,6 +37,29 @@ class Usuario{
     public function get($atributo){
         return $this->$atributo;
     }
+    
+    public function getUsuarioforAuditoria(){
+
+        $sql= "SELECT
+                id_user,
+                nombres,
+                apellidos, 
+                cedula, 
+                telefono,
+                correo,
+                usuario, 
+                clave, 
+                estado
+                FROM
+                usuarios
+                WHERE
+                id_user = '{$this->id_user}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+
+    }
 
 
     /*public function getUser(){
@@ -309,7 +332,7 @@ class Usuario{
                 nombres = '{$this->nombres}',
                 apellidos = '{$this->apellidos}',
                 cedula = '{$this->cedula}',
-                correo = '{$this->correo}'
+                correo = '{$this->correo}',
                 telefono = '{$this->telefono}'
                 WHERE
                 usuario = '{$this->usuario}'";

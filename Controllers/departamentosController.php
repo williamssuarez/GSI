@@ -80,6 +80,10 @@ use Models\Auditoria;
 
             }
 
+        }
+
+        public function index(){
+
             //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
             $this->usuarios->set('usuario', $_SESSION['usuario']);
             $id_user = $this->usuarios->getIdUserbyUsuario();
@@ -96,16 +100,9 @@ use Models\Auditoria;
             //EJECUTANDO LA AUDITORIA
             $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
 
-        }
-
-        public function index(){
             $datos['titulo'] = "Departamentos";
             $datos['departamentos'] = $this->departamento->lista();
             return $datos;
-        }
-
-        public function num($number){
-            echo "El numero que elegiste es ".$number;
         }
 
         public function edit($id){
@@ -116,10 +113,42 @@ use Models\Auditoria;
                     $nombre_departamento = $_POST['nombre'];
                     $piso = $_POST['piso'];
 
+                    //OBTENIENDO DATA PARA AUDITORIA
+                    $this->departamento->set('id_departamento', $id);
+                    $data = $this->departamento->getDepartamentoforAuditoria();
+
+                    //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                    $this->usuarios->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuarios->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 3;
+                    $tabla_afectada = 'departamentos';
+                    $registro_afectado = $data['id_departamento'];
+                    
+                    //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                    $valorAntesarray = array($data['nombre_departamento'], $data['piso']);
+                    $valorDespuesarray = array($nombre_departamento, $piso);
+                    
+                    //CONVIRITENDOLO A JSON PARA GUARDARLO
+                    $valor_antes = json_encode($valorAntesarray);
+                    $valor_despues = json_encode($valorDespuesarray);;
+                    $usuario  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $usuario);
+
                     $this->departamento->set('nombre_departamento', $nombre_departamento);
                     $this->departamento->set('piso', $piso);
     
                     $this->departamento->edit();
+
     
                     echo '<script>
                             Swal.fire({
@@ -142,8 +171,34 @@ use Models\Auditoria;
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                 }  
-                
+
+                //OBTENIENDO DATA PARA AUDITORIA
                 $this->departamento->set('id_departamento',$id);
+                $data = $this->departamento->getDepartamentoforAuditoria();
+
+                //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                $this->usuarios->set('usuario', $_SESSION['usuario']);
+                $id_user = $this->usuarios->getIdUserbyUsuario();
+                $user = $id_user['id_user'];
+
+                //PREPARANDO AUDITORIA
+                $tipo_cambio = 2;
+                $tabla_afectada = 'departamentos';
+
+                $registro_afectado = $data['id_departamento'];
+                $valorAntesarray = array($data['nombre_departamento'], $data['piso']);
+                $valor_antes = json_encode($valorAntesarray);
+                $valor_despues = 'en proceso';
+                $usuario  = $user;
+
+                //EJECUTANDO LA AUDITORIA
+                $this->auditoria->auditar($tipo_cambio, 
+                                        $tabla_afectada, 
+                                        $registro_afectado, 
+                                        $valor_antes, 
+                                        $valor_despues, 
+                                        $usuario);
+                
                 $data['titulo'] = "Editando Nombre de Departamento";
                 $data['departamento'] = $this->departamento->getDataEdit();
 

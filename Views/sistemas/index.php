@@ -1,7 +1,7 @@
-<?php $datos = $sistemas->index(); ?>
+
 
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?></h1>
+<h1 class="h3 mb-2 text-gray-800"><?php echo $data['titulo']; ?></h1>
  <p class="mb-4">Una tabla para los sistemas operativos</p>
 
 <h1 class="h3 mb-2 text-gray-800">Tabla</h1>
@@ -24,7 +24,7 @@
                         </thead>
                         <tbody>
                         
-                        <?php foreach($datos['sistemas'] as $data){ ?>
+                        <?php foreach($data['sistemas'] as $data){ ?>
                             <tr class="table">
                                 <td> <?php echo $data['nombre'] ?> </td>
                                 <td>
@@ -47,15 +47,7 @@
                                 <td>                         
                                     <a class="btn btn-primary" href='edit/<?php echo $data['id_os'] ?>'>                                        
                                         Editar
-                                    </a>
-
-                                    <?php if($_SESSION['rol'] == 1){  ?>
-
-                                    <a class="btn btn-danger" href='delete/<?php echo $data['id_os'] ?>'>                                        
-                                        Eliminar
-                                    </a>
-                                    
-                                    <?php } ?>    
+                                    </a> 
                                 </td>
                             </tr>
                         <?php } ?>    

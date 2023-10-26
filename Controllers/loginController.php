@@ -1,18 +1,37 @@
 <?php namespace Controllers;
 
 use Models\Usuario;
+use Models\Auditoria;
 
 class loginController{
 
     private $usuario;
+    private $auditoria;
 
     public function __construct(){
 
         $this->usuario = new Usuario();
+        $this->auditoria = new Auditoria();
 
     }
 
     public function logout(){
+
+        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+        $this->usuario->set('usuario', $_SESSION['usuario']);
+        $id_user = $this->usuario->getIdUserbyUsuario();
+        $user = $id_user['id_user'];
+
+        $tipo_cambio = 7; //TIPO DE CAMBIO 7 = CIERRE DE SESION
+        $tabla_afectada = "Ninguna";
+        $registro_afectado = "Ninguno";
+        $valor_antes = "Ninguno";
+        $valor_despues = "Ninguno";
+        $usuario = $user;
+
+        //EJECUTANDO LA AUDITORIA
+        $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
 
         session_unset(); // Limpia todas las variables de sesión.
         session_destroy(); // Destruye la sesión.
@@ -108,6 +127,17 @@ class loginController{
                         $rol = $user['rol'];
                         $cedula = $user['cedula'];
                         $id_user = $user['id_user'];
+
+                            $tipo_cambio = 6; //TIPO DE CAMBIO 6 = INICIO DE SESION
+                            $tabla_afectada = "Ninguna";
+                            $registro_afectado = "Ninguno";
+                            $valor_antes = "Ninguno";
+                            $valor_despues = "Ninguno";
+                            $usuario = $id_user;
+
+                            //EJECUTANDO LA AUDITORIA
+                            $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
                         
                         if($rol == 1){
 
@@ -115,6 +145,7 @@ class loginController{
                             $_SESSION['usuario'] = $username;           
                             $_SESSION['cedula_identidad'] = $cedula;
                             $_SESSION['rol'] = $rol;
+
     
                             echo '<script>
                                             Swal.fire({
@@ -143,6 +174,17 @@ class loginController{
 
                             $_SESSION['usuario'] = $username;
                             $_SESSION['rol'] = $rol;
+
+                            $tipo_cambio = 6; //TIPO DE CAMBIO 6 = INICIO DE SESION
+                            $tabla_afectada = "Ninguna";
+                            $registro_afectado = "Ninguno";
+                            $valor_antes = "Ninguno";
+                            $valor_despues = "Ninguno";
+                            $usuario = $id_user;
+
+                            //EJECUTANDO LA AUDITORIA
+                            $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
     
                             echo '<script>
                                             Swal.fire({

@@ -1,15 +1,19 @@
 <?php namespace Controllers;
 
 use Models\Usuario;
-use Repository\Procesos1 as Repository1;
+use Models\Auditoria;
 
     class usuariosController{
 
         private $usuario;
+        private $auditoria;
 
         public function __construct()
         {
             $this->usuario = new Usuario();
+            $this->auditoria = new Auditoria();
+
+
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -63,6 +67,24 @@ use Repository\Procesos1 as Repository1;
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
             } else {
+
+
+                //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                $this->usuario->set('usuario', $_SESSION['usuario']);
+                $id_user = $this->usuario->getIdUserbyUsuario();
+                $user = $id_user['id_user'];
+
+
+                $tipo_cambio = 10; //TIPO DE CAMBIO 10 = Accedio a
+                $tabla_afectada = "Usuarios";
+                $registro_afectado = "Ninguno";
+                $valor_antes = "Ninguno";
+                $valor_despues = "Ninguno";
+                $usuario = $user;
+
+                //EJECUTANDO LA AUDITORIA
+                $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
+
 
                 $datos['titulo'] = "Usuarios del sistema";
                 $datos['usuarios'] = $this->usuario->lista();
@@ -287,6 +309,33 @@ use Repository\Procesos1 as Repository1;
                                     $this->usuario->set('apellidos', $apellidos);
                                     $this->usuario->set('rol', $rol);
                                     $this->usuario->set('clave', $claveEncriptada);
+
+                                    //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                                    $id_user = $this->usuario->getIdUserbyUsuario();
+                                    $user = $id_user['id_user'];
+
+                                        //PREPARANDO AUDITORIA
+                                        $tipo_cambio = 4;
+                                        $tabla_afectada = 'usuarios';
+                                        $registro_afectado = 0;
+                                        
+                                        //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                                        //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
+                                        $valorDespuesarray = array($nombres, $apellidos, $rol);
+                                        
+                                        //CONVIRITENDOLO A JSON PARA GUARDARLO
+                                        $valor_antes = 'Nuevo registro';
+                                        $valor_despues = json_encode($valorDespuesarray);;
+                                        $usuario  = $user;
+
+                                        //EJECUTANDO LA AUDITORIA
+                                        $this->auditoria->auditar($tipo_cambio, 
+                                                                $tabla_afectada, 
+                                                                $registro_afectado, 
+                                                                $valor_antes, 
+                                                                $valor_despues, 
+                                                                $usuario);
     
     
                                         //INSERTANDO
@@ -344,7 +393,30 @@ use Repository\Procesos1 as Repository1;
                     }
     
                 }
-            }                        
+            }          
+            
+            //PREPARANDO AUDITORIA
+            
+            //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+            $this->usuario->set('usuario', $_SESSION['usuario']);
+            $id_user = $this->usuario->getIdUserbyUsuario();
+            $user = $id_user['id_user'];
+
+            $tipo_cambio = 5;
+            $tabla_afectada = 'usuarios';
+            $registro_afectado = 0;
+            //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
+            $valor_antes = 'Ninguno';
+            $valor_despues = 'en proceso';
+            $usuario  = $user;
+
+            //EJECUTANDO LA AUDITORIA
+            $this->auditoria->auditar($tipo_cambio, 
+                                    $tabla_afectada, 
+                                    $registro_afectado, 
+                                    $valor_antes, 
+                                    $valor_despues, 
+                                    $usuario);
 
         }
 
@@ -375,6 +447,40 @@ use Repository\Procesos1 as Repository1;
                         $this->usuario->set('cedula', $cedula);
                         $this->usuario->set('correo', $correo);
                         $this->usuario->set('telefono', $telefono);
+
+                        //OBTENIENDO DATOS ANTES DE EDITAR
+                        $this->usuario->set('usuario', $usuario);
+                        $id_user = $this->usuario->getIdUserbyUsuario();
+                        $id_usuario = $id_user['id_user'];
+                        $this->usuario->set('id_user',$id_usuario);
+                        $data = $this->usuario->getUsuarioforAuditoria();
+
+                        //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                        $this->usuario->set('usuario', $_SESSION['usuario']);
+                        $id_user = $this->usuario->getIdUserbyUsuario();
+                        $user = $id_user['id_user'];
+
+                        //PREPARANDO AUDITORIA
+                        $tipo_cambio = 3;
+                        $tabla_afectada = 'usuarios';
+                        $registro_afectado = $data['id_user'];
+                        
+                        //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                        $valorAntesarray = array($data['nombres'], $data['apellidos'], $data['cedula'], $data['correo'], $data['telefono']);
+                        $valorDespuesarray = array($nombres, $apellidos, $cedula, $correo, $telefono);
+                        
+                        //CONVIRITENDOLO A JSON PARA GUARDARLO
+                        $valor_antes = json_encode($valorAntesarray);
+                        $valor_despues = json_encode($valorDespuesarray);;
+                        $usuario  = $user;
+
+                        //EJECUTANDO LA AUDITORIA
+                        $this->auditoria->auditar($tipo_cambio, 
+                                                $tabla_afectada, 
+                                                $registro_afectado, 
+                                                $valor_antes, 
+                                                $valor_despues, 
+                                                $usuario);
         
                         $this->usuario->edit();
         
@@ -400,11 +506,45 @@ use Repository\Procesos1 as Repository1;
         
                     }  
                     
+                    //OBTENIENDO DATA PARA AUDITORIA
+
+                    //OBTENIENDO DATOS ANTES DE EDITAR
+                    $this->usuario->set('usuario', $usuario);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $id_usuario = $id_user['id_user'];
+                    $this->usuario->set('id_user',$id_usuario);
+                    $datos = $this->usuario->getUsuarioforAuditoria();
+
+                    //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+                    
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 2;
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = $datos['id_user'];
+                    $valorAntesarray = array($datos['nombres'], $datos['apellidos'], $datos['cedula'], $datos['usuario']);
+                    $valor_antes = json_encode($valorAntesarray);
+                    $valor_despues = 'en proceso';
+                    $id_admin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $id_admin);
+
                     $this->usuario->set('usuario',$usuario);
                     $data['titulo'] = "Editando Datos del operador";
                     $data['operador'] = $this->usuario->getDataEdit();
     
                     //var_dump($data['operador']);
+                    //var_dump($usuario);
                     //die(); 
     
                     return $data;

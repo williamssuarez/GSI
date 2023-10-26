@@ -1,7 +1,7 @@
-<?php $datos = $usuarios->index(); ?>
+
 
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800"><?php echo $datos['titulo']; ?></h1>
+<h1 class="h3 mb-2 text-gray-800"><?php echo $data['titulo']; ?></h1>
  <p class="mb-4">Una tabla para los usuarios del sistema</p>
 
 <h1 class="h3 mb-2 text-gray-800">Tabla</h1>
@@ -28,7 +28,7 @@
                         </thead>
                         <tbody>
                         
-                        <?php foreach($datos['usuarios'] as $data){ ?>
+                        <?php foreach($data['usuarios'] as $data){ ?>
                             <tr class="table">
                                 <td> <?php echo $data['id_user'] ?> </td>
                                 <td> <?php echo $data['nombres'] ?> </td>

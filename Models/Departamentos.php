@@ -26,6 +26,23 @@ class Departamentos{
         return $this->$atributo;
     }
 
+    //DATA PARA LA AUDITORIA
+    public function getDepartamentoforAuditoria(){
+
+        $sql= "SELECT
+                id_departamento,
+                nombre_departamento,
+                piso
+                FROM
+                departamentos
+                WHERE
+                id_departamento = '{$this->id_departamento}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function actualizarEquiposIngresados(){
 
         $sql = "UPDATE
