@@ -7,7 +7,7 @@ use Models\Direcciones_ip;
 use Models\setRango;
 use Models\Equipos;
 use Models\Usuario;
-use Repository\Procesos1 as Repository1;
+use Models\Auditoria;
 
     class direccionesController{
 
@@ -18,6 +18,7 @@ use Repository\Procesos1 as Repository1;
         private $setRangoIp;
         private $equipo;
         private $usuario;
+        private $auditoria;
 
         public function __construct()
         {
@@ -28,6 +29,8 @@ use Repository\Procesos1 as Repository1;
             $this->setRangoIp = new setRango();
             $this->equipo = new Equipos();
             $this->usuario = new Usuario();
+            $this->auditoria = new Auditoria();
+
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -54,6 +57,32 @@ use Repository\Procesos1 as Repository1;
             if($_SESSION['rol'] != 1){
 
                 // El usuario no es administrador, redirige al inicio
+
+
+                //OBTENIENDO DATA PARA AUDITAR EL ACCESO NO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 12; //ACCESO NO AUTORIZADO
+                    $tabla_afectada = 'direcciones';
+
+                    $registro_afectado = "Ninguno";
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $$id_usuario_noAdmin);
+
                 echo '<script>
                 Swal.fire({
                     title: "Error",

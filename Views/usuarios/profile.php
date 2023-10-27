@@ -96,7 +96,7 @@
 
                                             <?php if($_SESSION['rol'] == 1){ ?>
 
-                                                <a id="editarcredenciales" href="<?php echo URL; ?>usuarios/cambiarcredencialesAdmin/<?php echo $_SESSION['usuario'] ?>" class="btn btn-secondary" aria-current="page">
+                                                <a id="editarcredenciales" href="<?php echo URL; ?>usuarios/cambiarcredencialesAdmin/<?php echo $data['user']['usuario'] ?>" class="btn btn-secondary" aria-current="page">
                                                     Editar Credenciales
                                                 </a>
 

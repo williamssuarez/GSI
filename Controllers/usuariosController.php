@@ -44,6 +44,30 @@ use Models\Auditoria;
 
             if($_SESSION['rol'] != 1){
 
+                //OBTENIENDO DATA PARA AUDITAR EL ACCESO NO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 12; //ACCESO NO AUTORIZADO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = "Ninguno";
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $$id_usuario_noAdmin);
+
                 // El usuario no es administrador, redirige al inicio
                 echo '<script>
                 Swal.fire({
@@ -99,7 +123,32 @@ use Models\Auditoria;
 
         public function newuser(){
            
+            //USUARIO NO ES ADMINISTRADOR
             if($_SESSION['rol'] != 1){
+
+                //OBTENIENDO DATA PARA AUDITAR EL ACCESO NO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 12; //ACCESO NO AUTORIZADO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = "Ninguno";
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $$id_usuario_noAdmin);
 
                 // El usuario no es administrador, redirige al inicio
                 echo '<script>
@@ -124,9 +173,10 @@ use Models\Auditoria;
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
 
-            } else {
-                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            } /*USUSARIO ES ADMIN*/else {
 
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                    
                     $nombres = $_POST['nombres'];
                     $apellidos = $_POST['apellidos'];
                     $cedula = $_POST['cedula'];
@@ -137,6 +187,9 @@ use Models\Auditoria;
                     $clave = strtolower($_POST['clave']);
                     $clave_confirmacion = strtolower($_POST['clave_confirmacion']);
                     $rol = $_POST['rol'];
+
+                    /*var_dump($nombres);
+                    die();*/
     
                     //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
                     if(empty($nombres) || 
@@ -184,26 +237,23 @@ use Models\Auditoria;
                         if (!is_numeric($cedula)) {
                             $errores[] = "Cédula de identidad debe ser un número entero.";
                         }
-                    
-                        //Validar nombre y apellido como texto
-                        if (!preg_match('/^[A-Za-z\s]+$/', $usuario)) {
-                            $errores[] = "El nombre de usuario debe contener solo letras y espacios.";
-                        }
     
                         if (empty($errores)) {
     
+
                             // No hay errores de validación, procesa los datos                        
                             $this->usuario->set('cedula', $cedula);
                             $this->usuario->set('usuario', $usuario);
                             $this->usuario->set('correo', $correo);
                             $this->usuario->set('telefono', $telefono);                        
     
+                            
                             //VERIFICANDO SI LA CEDULA YA EXISTE
                             $cuenta = $this->usuario->verificarCedula();
                             $cuenta_usuario = $this->usuario->verificarUsuario();
                             $cuenta_correo = $this->usuario->verificarCorreo();
                             $cuenta_telefono = $this->usuario->verificarTelefono(); 
-    
+
                             //SI YA EXISTE, REDIRIGIR DE NUEVO AL FORMULARIO CON MENSAJE DE ERROR
                             if($cuenta['cuenta'] > 0){
     
@@ -228,7 +278,7 @@ use Models\Auditoria;
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                             } 
-                            elseif($cuenta_usuario['cuenta'] > 0){
+                            /*VERIFICANDO SI EL USERNAME YA EXISTE*/elseif($cuenta_usuario['cuenta'] > 0){
     
                                 echo '<script>
                                             Swal.fire({
@@ -251,7 +301,7 @@ use Models\Auditoria;
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                             }
-                            elseif($cuenta_correo['cuenta'] > 0){
+                            /*VERIFICANDO CORREO*/elseif($cuenta_correo['cuenta'] > 0){
     
                                 echo '<script>
                                             Swal.fire({
@@ -274,7 +324,7 @@ use Models\Auditoria;
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                             }
-                            elseif($cuenta_telefono['cuenta'] > 0){
+                            /*VERIICANDO TELEFONO*/elseif($cuenta_telefono['cuenta'] > 0){
     
                                 echo '<script>
                                             Swal.fire({
@@ -297,18 +347,9 @@ use Models\Auditoria;
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                             }
-                            else {
+                            /*SI TODO ES VALIDO*/else {
     
                                 if($clave == $clave_confirmacion){
-    
-                                    //ENCRIPTANDO LA CLAVE
-                                    $claveEncriptada = $this->encriptar($clave);
-    
-                                    //PREPARANDO LOS DATOS PARA INSERTAR
-                                    $this->usuario->set('nombres', $nombres);
-                                    $this->usuario->set('apellidos', $apellidos);
-                                    $this->usuario->set('rol', $rol);
-                                    $this->usuario->set('clave', $claveEncriptada);
 
                                     //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
                                     $this->usuario->set('usuario', $_SESSION['usuario']);
@@ -327,7 +368,7 @@ use Models\Auditoria;
                                         //CONVIRITENDOLO A JSON PARA GUARDARLO
                                         $valor_antes = 'Nuevo registro';
                                         $valor_despues = json_encode($valorDespuesarray);;
-                                        $usuario  = $user;
+                                        $user_admin  = $user;
 
                                         //EJECUTANDO LA AUDITORIA
                                         $this->auditoria->auditar($tipo_cambio, 
@@ -335,9 +376,21 @@ use Models\Auditoria;
                                                                 $registro_afectado, 
                                                                 $valor_antes, 
                                                                 $valor_despues, 
-                                                                $usuario);
+                                                                $user_admin);
     
-    
+                                        //ENCRIPTANDO LA CLAVE
+                                        $claveEncriptada = $this->encriptar($clave);
+        
+                                        //PREPARANDO LOS DATOS PARA INSERTAR
+                                        $this->usuario->set('nombres', $nombres);
+                                        $this->usuario->set('apellidos', $apellidos);
+                                        $this->usuario->set('cedula', $cedula);
+                                        $this->usuario->set('correo', $correo);
+                                        $this->usuario->set('telefono', $telefono);
+                                        $this->usuario->set('usuario', $usuario);
+                                        $this->usuario->set('rol', $rol);
+                                        $this->usuario->set('clave', $claveEncriptada);
+
                                         //INSERTANDO
                                         $this->usuario->add();
     
@@ -393,30 +446,31 @@ use Models\Auditoria;
                     }
     
                 }
+
+                //PREPARANDO AUDITORIA
+            
+                //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                $this->usuario->set('usuario', $_SESSION['usuario']);
+                $id_user = $this->usuario->getIdUserbyUsuario();
+                $user = $id_user['id_user'];
+
+                $tipo_cambio = 5;
+                $tabla_afectada = 'usuarios';
+                $registro_afectado = 0;
+                $valor_antes = 'Ninguno';
+                $valor_despues = 'en proceso';
+                $usuario  = $user;
+
+                //EJECUTANDO LA AUDITORIA
+                $this->auditoria->auditar($tipo_cambio, 
+                                        $tabla_afectada, 
+                                        $registro_afectado, 
+                                        $valor_antes, 
+                                        $valor_despues, 
+                                        $usuario);
+
             }          
             
-            //PREPARANDO AUDITORIA
-            
-            //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
-            $this->usuario->set('usuario', $_SESSION['usuario']);
-            $id_user = $this->usuario->getIdUserbyUsuario();
-            $user = $id_user['id_user'];
-
-            $tipo_cambio = 5;
-            $tabla_afectada = 'usuarios';
-            $registro_afectado = 0;
-            //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
-            $valor_antes = 'Ninguno';
-            $valor_despues = 'en proceso';
-            $usuario  = $user;
-
-            //EJECUTANDO LA AUDITORIA
-            $this->auditoria->auditar($tipo_cambio, 
-                                    $tabla_afectada, 
-                                    $registro_afectado, 
-                                    $valor_antes, 
-                                    $valor_despues, 
-                                    $usuario);
 
         }
 
@@ -428,7 +482,7 @@ use Models\Auditoria;
         }
 
 
-        public function editarperfilAdmin($usuario){
+        public function editarperfilAdmin($username){
 
                 if($_SESSION['rol'] == 1){
 
@@ -440,19 +494,15 @@ use Models\Auditoria;
                         $cedula = $_POST['cedula'];
                         $correo = $_POST['correo'];
                         $telefono = $_POST['telefono'];
-    
-                        $this->usuario->set('usuario',$usuario);
-                        $this->usuario->set('nombres', $nombres);
-                        $this->usuario->set('apellidos', $apellidos);
-                        $this->usuario->set('cedula', $cedula);
-                        $this->usuario->set('correo', $correo);
-                        $this->usuario->set('telefono', $telefono);
 
                         //OBTENIENDO DATOS ANTES DE EDITAR
-                        $this->usuario->set('usuario', $usuario);
+                        //Obteniendo el id del usuario por el username
+                        $this->usuario->set('usuario', $username);
                         $id_user = $this->usuario->getIdUserbyUsuario();
                         $id_usuario = $id_user['id_user'];
-                        $this->usuario->set('id_user',$id_usuario);
+
+                        //Obteniendo los datos del usuario por la id antes de editar
+                        $this->usuario->set('id_user', $id_usuario);
                         $data = $this->usuario->getUsuarioforAuditoria();
 
                         //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
@@ -471,7 +521,7 @@ use Models\Auditoria;
                         
                         //CONVIRITENDOLO A JSON PARA GUARDARLO
                         $valor_antes = json_encode($valorAntesarray);
-                        $valor_despues = json_encode($valorDespuesarray);;
+                        $valor_despues = json_encode($valorDespuesarray);
                         $usuario  = $user;
 
                         //EJECUTANDO LA AUDITORIA
@@ -481,6 +531,17 @@ use Models\Auditoria;
                                                 $valor_antes, 
                                                 $valor_despues, 
                                                 $usuario);
+    
+                        //UNA VEZ AUDITADO TODO. PROCEDEMOS A EDITAR
+                        $this->usuario->set('usuario', $username);
+                        $this->usuario->set('nombres', $nombres);
+                        $this->usuario->set('apellidos', $apellidos);
+                        $this->usuario->set('cedula', $cedula);
+                        $this->usuario->set('correo', $correo);
+                        $this->usuario->set('telefono', $telefono);     
+                        
+                        //var_dump($correo);
+                        //die();
         
                         $this->usuario->edit();
         
@@ -509,7 +570,7 @@ use Models\Auditoria;
                     //OBTENIENDO DATA PARA AUDITORIA
 
                     //OBTENIENDO DATOS ANTES DE EDITAR
-                    $this->usuario->set('usuario', $usuario);
+                    $this->usuario->set('usuario', $username);
                     $id_user = $this->usuario->getIdUserbyUsuario();
                     $id_usuario = $id_user['id_user'];
                     $this->usuario->set('id_user',$id_usuario);
@@ -539,7 +600,7 @@ use Models\Auditoria;
                                             $valor_despues, 
                                             $id_admin);
 
-                    $this->usuario->set('usuario',$usuario);
+                    $this->usuario->set('usuario',$username);
                     $data['titulo'] = "Editando Datos del operador";
                     $data['operador'] = $this->usuario->getDataEdit();
     
@@ -549,7 +610,31 @@ use Models\Auditoria;
     
                     return $data;
 
-                } else {
+                } /*ACCESO NO AUTORIZADO*/else {
+
+                    //OBTENIENDO DATA PARA AUDITAR EL ACCESO NO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 12; //ACCESO NO AUTORIZADO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = "Ninguno";
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $$id_usuario_noAdmin);
 
                     // El usuario no es administrador, redirige al inicio
                     echo '<script>
@@ -578,10 +663,13 @@ use Models\Auditoria;
 
         public function cambiarcredencialesAdmin($usuario){
 
+            //USUARIO ADMIN
             if($_SESSION['rol'] == 1){
 
+                //SI ES ENVIADO EL FORM
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
+                    //RECIBIMOS LOS DATOS DEL FORM
                     $current_user = $usuario;
                     $user = $_POST['usuario'];
                     $nueva_clave = strtolower($_POST['nueva_clave']);
@@ -596,15 +684,51 @@ use Models\Auditoria;
 
                         $cuenta = $this->usuario->verificarUsuario();
 
-                        if($cuenta['cuenta'] > 0){
+                        //VERIFICAR SI EL USERNAME YA EXISTE, USUARIO NO EXISTE
+                        if($cuenta['cuenta'] == 0){
 
-                            if($user == $current_user){
 
+                                //EVALUANDO SI CLAVES COINCIDEN
                                 if($nueva_clave == $clave_confirmacion){
 
+                                    //ENCRIPTAR NUEVA CLAVE
                                     $claveHash = $this->encriptarNuevaClave($nueva_clave);
 
+                                    //SI EL USUARIO A EDITAR ES EL MISMO DEL ADMIN QUE ESTA INICIADO SESION, CERRAR SESION
                                     if($usuario == $_SESSION['usuario']){
+
+                                        //OBTENIENDO DATOS ANTES DE EDITAR
+                                        $this->usuario->set('usuario', $usuario);
+                                        $id_user = $this->usuario->getIdUserbyUsuario();
+                                        $id_usuario = $id_user['id_user'];
+
+                                        //OBTENER DATA PARA AUDITORIA
+                                        $this->usuario->set('id_user',$id_usuario);
+                                        $datos = $this->usuario->getUsuarioforAuditoria();
+
+                                        //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                                        $this->usuario->set('usuario', $_SESSION['usuario']);
+                                        $id_user = $this->usuario->getIdUserbyUsuario();
+                                        $user_id = $id_user['id_user'];
+                                        
+
+                                        //PREPARANDO AUDITORIA
+                                        $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
+                                        $tabla_afectada = 'usuarios';
+
+                                        $registro_afectado = $datos['id_user'];
+                                        $valorAntesarray = array($datos['usuario']);
+                                        $valor_antes = json_encode($valorAntesarray);
+                                        $valor_despues = $user;
+                                        $id_admin  = $user_id;
+
+                                        //EJECUTANDO LA AUDITORIA
+                                        $this->auditoria->auditar($tipo_cambio, 
+                                                                $tabla_afectada, 
+                                                                $registro_afectado, 
+                                                                $valor_antes, 
+                                                                $valor_despues, 
+                                                                $id_admin);
 
                                         $this->usuario->set('current_user', $current_user);
                                         $this->usuario->set('usuario', $user);
@@ -635,7 +759,40 @@ use Models\Auditoria;
                                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
 
 
-                                    } else {
+                                    } /*EL USUARIO A EDITAR ES DIFERENTE, PROCEDER CON NORMALIDAD*/else {
+
+                                        //OBTENIENDO DATOS ANTES DE EDITAR
+                                        $this->usuario->set('usuario', $usuario);
+                                        $id_user = $this->usuario->getIdUserbyUsuario();
+                                        $id_usuario = $id_user['id_user'];
+
+                                        //OBTENER DATA PARA AUDITORIA
+                                        $this->usuario->set('id_user',$id_usuario);
+                                        $datos = $this->usuario->getUsuarioforAuditoria();
+
+                                        //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                                        $this->usuario->set('usuario', $_SESSION['usuario']);
+                                        $id_user = $this->usuario->getIdUserbyUsuario();
+                                        $user_id = $id_user['id_user'];
+                                        
+
+                                        //PREPARANDO AUDITORIA
+                                        $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
+                                        $tabla_afectada = 'usuarios';
+
+                                        $registro_afectado = $datos['id_user'];
+                                        $valorAntesarray = array($datos['usuario']);
+                                        $valor_antes = json_encode($valorAntesarray);
+                                        $valor_despues = $user;
+                                        $id_admin  = $user_id;
+
+                                        //EJECUTANDO LA AUDITORIA
+                                        $this->auditoria->auditar($tipo_cambio, 
+                                                                $tabla_afectada, 
+                                                                $registro_afectado, 
+                                                                $valor_antes, 
+                                                                $valor_despues, 
+                                                                $id_admin);
 
                                         $this->usuario->set('current_user', $current_user);
                                         $this->usuario->set('usuario', $user);
@@ -668,7 +825,7 @@ use Models\Auditoria;
     
                                     
     
-                                } else {
+                                } /*CLAVES NO COINCIDEN*/else {
     
                                     echo '<script>
                                         Swal.fire({
@@ -691,8 +848,11 @@ use Models\Auditoria;
                                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                                 }
-                            }
 
+
+                        } /*USERNAME YA EXISTE*/else {
+                            
+                            //EL USERNAME YA EXISTE
                             echo '<script>
                                 Swal.fire({
                                     title: "Error",
@@ -705,116 +865,17 @@ use Models\Auditoria;
                                     }
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $_SESSION['usuario'] . '";
+                                        window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $usuario . '";
                                     }
                                 }).then(() => {
-                                    window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                                 </script>';
                              exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-
-                        } else {
-
-                            if($nueva_clave == $clave_confirmacion){
-
-                                $claveHash = $this->encriptarNuevaClave($nueva_clave);
-
-                                if($usuario == $_SESSION['usuario']){
-
-                                    $this->usuario->set('current_user', $current_user);
-                                    $this->usuario->set('usuario', $user);
-                                    $this->usuario->set('clave', $claveHash);
-                                    $this->usuario->set('rol', 1);
-                    
-                                    $this->usuario->editCredencialesAdmin();
-    
-                                    session_unset();
-                                    session_destroy();
-                    
-                                    echo '<script>
-                                            Swal.fire({
-                                                title: "Exito",
-                                                text: "Credenciales editadas, vuelve a iniciar sesion",
-                                                icon: "success",
-                                                showConfirmButton: true,
-                                                confirmButtonColor: "#3464eb",
-                                                customClass: {
-                                                    confirmButton: "rounded-button" // Identificador personalizado
-                                                }
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "' . URL . 'login/index";
-                                                }
-                                            }).then(() => {
-                                                window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                            });
-                                        </script>';
-                                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
-
-
-                                } else {
-
-                                    $this->usuario->set('current_user', $current_user);
-                                    $this->usuario->set('usuario', $user);
-                                    $this->usuario->set('clave', $claveHash);
-                                    $this->usuario->set('rol', $rol);
-                    
-                                    $this->usuario->editCredencialesAdmin();
-    
-                                    session_unset();
-                                    session_destroy();
-                    
-                                    echo '<script>
-                                            Swal.fire({
-                                                title: "Exito",
-                                                text: "Credenciales editadas, vuelve a iniciar sesion",
-                                                icon: "success",
-                                                showConfirmButton: true,
-                                                confirmButtonColor: "#3464eb",
-                                                customClass: {
-                                                    confirmButton: "rounded-button" // Identificador personalizado
-                                                }
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "' . URL . 'login/index";
-                                                }
-                                            }).then(() => {
-                                                window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                            });
-                                        </script>';
-                                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
-
-                                }
-
-                            } else {
-
-                                echo '<script>
-                                    Swal.fire({
-                                        title: "Error",
-                                        text: "las claves no coinciden, vuelve a intentar",
-                                        icon: "error",
-                                        showConfirmButton: true,
-                                        confirmButtonColor: "#3464eb",
-                                        customClass: {
-                                            confirmButton: "rounded-button" // Identificador personalizado
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
-                                        }
-                                    }).then(() => {
-                                        window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                    });
-                                    </script>';
-                                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-
-                            }
-                            
-
                         }
 
-                    } else {
+                    } /*DATOS VACIOS*/else {
 
                         //Si estan vacios, redirigir y salir del script
                         echo '<script>
@@ -841,6 +902,41 @@ use Models\Auditoria;
     
                 }  
                 
+                //OBTENIENDO DATA PARA AUDITORIA
+                    //OBTENIENDO DATOS ANTES DE EDITAR
+                    $this->usuario->set('usuario', $usuario);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $id_usuario = $id_user['id_user'];
+
+
+                    $this->usuario->set('id_user',$id_usuario);
+                    $datos = $this->usuario->getUsuarioforAuditoria();
+
+                    //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+                    
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 20; //EDICION DE CREDENCIALES INICIADA
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = $datos['id_user'];
+                    $valorAntesarray = array($datos['usuario']);
+                    $valor_antes = json_encode($valorAntesarray);
+                    $valor_despues = 'en proceso';
+                    $id_admin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $id_admin);
+
+                //DEVOLVIENDO EL USERNAME PARA LA EDICION DEL FORMULARIO
                 $this->usuario->set('usuario',$usuario);
                 $data['titulo'] = "Editando Datos del operador";
                 $data['operador'] = $this->usuario->getDataEdit();
@@ -850,7 +946,31 @@ use Models\Auditoria;
 
                 return $data;
 
-            } else {
+            } /*USUARIO NO ADMIN*/else {
+
+                //OBTENIENDO DATA PARA AUDITAR EL ACCESO NO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 12; //ACCESO NO AUTORIZADO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = "Ninguno";
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $$id_usuario_noAdmin);
 
                // El usuario no es administrador, redirige al inicio
                echo '<script>
@@ -880,7 +1000,32 @@ use Models\Auditoria;
 
         public function cambiarcredencialesOperador($usuario){
             
+            //USUARIO NO ADMIN INTENTA EDITAR CREDENCIALES DE OTRO USUARIO, AUDITAR Y REDIRIGIR
             if($usuario != $_SESSION['usuario']){
+
+                //OBTENIENDO DATA PARA AUDITAR EL ACCESO NO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 12; //ACCESO NO AUTORIZADO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = "Ninguno";
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $$id_usuario_noAdmin);
 
                 // El usuario no es administrador, redirige al inicio
                 echo '<script>
@@ -904,7 +1049,7 @@ use Models\Auditoria;
                 </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-            } else {
+            } /*USUARIO INTENTA EDITAR SUS CREDENCIALES*/else {
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -921,94 +1066,47 @@ use Models\Auditoria;
 
                         $cuenta = $this->usuario->verificarUsuario();
 
-                        if($cuenta['cuenta'] > 0){
-
-                            if($user == $_SESSION['usuario']){
-
-                                if($nueva_clave == $clave_confirmacion){
-
-                                    $claveHash = $this->encriptarNuevaClave($nueva_clave);
-    
-                                    $this->usuario->set('current_user', $current_user);
-                                    $this->usuario->set('usuario', $user);
-                                    $this->usuario->set('clave', $claveHash);
-    
-                                    $this->usuario->editCredencialesOperador();
-    
-                                    session_unset();
-                                    session_destroy();
-                    
-                                    echo '<script>
-                                            Swal.fire({
-                                                title: "Exito",
-                                                text: "Credenciales editadas, vuelve a iniciar sesion",
-                                                icon: "success",
-                                                showConfirmButton: true,
-                                                confirmButtonColor: "#3464eb",
-                                                customClass: {
-                                                    confirmButton: "rounded-button" // Identificador personalizado
-                                                }
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "' . URL . 'login/index";
-                                                }
-                                            }).then(() => {
-                                                window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                            });
-                                        </script>';
-                                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
-    
-                                } else {
-    
-                                    echo '<script>
-                                    Swal.fire({
-                                        title: "Error",
-                                        text: "las claves no coinciden, vuelve a intentar",
-                                        icon: "error",
-                                        showConfirmButton: true,
-                                        confirmButtonColor: "#3464eb",
-                                        customClass: {
-                                            confirmButton: "rounded-button" // Identificador personalizado
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
-                                        }
-                                    }).then(() => {
-                                        window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                    });
-                                </script>';
-                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-    
-                            }
-
-                            }
-
-                            echo '<script>
-                                Swal.fire({
-                                    title: "Error",
-                                    text: "Este nombre de usuario ya existe",
-                                    icon: "error",
-                                    showConfirmButton: true,
-                                    confirmButtonColor: "#3464eb",
-                                    customClass: {
-                                        confirmButton: "rounded-button" // Identificador personalizado
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
-                                    }
-                                }).then(() => {
-                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                });
-                                </script>';
-                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                        //VERIFICANDO SI EL USERNAME YA EXISTE
+                        if($cuenta['cuenta'] == 0){
 
 
-                        } else {
-
+                            //EVALUANDO SI LAS CLAVES COINCIDEN
                             if($nueva_clave == $clave_confirmacion){
 
+                                //OBTENIENDO DATOS ANTES DE EDITAR
+                                $this->usuario->set('usuario', $usuario);
+                                $id_user = $this->usuario->getIdUserbyUsuario();
+                                $id_usuario = $id_user['id_user'];
+
+                                //OBTENER DATA PARA AUDITORIA
+                                $this->usuario->set('id_user',$id_usuario);
+                                $datos = $this->usuario->getUsuarioforAuditoria();
+
+                                //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                                $this->usuario->set('usuario', $_SESSION['usuario']);
+                                $id_user = $this->usuario->getIdUserbyUsuario();
+                                $user_id = $id_user['id_user'];
+                                
+
+                                //PREPARANDO AUDITORIA
+                                $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
+                                $tabla_afectada = 'usuarios';
+
+                                $registro_afectado = $datos['id_user'];
+                                $valorAntesarray = array($datos['usuario']);
+                                $valor_antes = json_encode($valorAntesarray);
+                                $valor_despues = $user;
+                                $id_admin  = $user_id;
+
+                                //EJECUTANDO LA AUDITORIA
+                                $this->auditoria->auditar($tipo_cambio, 
+                                                        $tabla_afectada, 
+                                                        $registro_afectado, 
+                                                        $valor_antes, 
+                                                        $valor_despues, 
+                                                        $id_admin);
+
+                                //ENCRIPTANDO LA NUEVA CLAVE
                                 $claveHash = $this->encriptarNuevaClave($nueva_clave);
 
                                 $this->usuario->set('current_user', $current_user);
@@ -1040,7 +1138,7 @@ use Models\Auditoria;
                                     </script>';
                                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
 
-                            } else {
+                            } /*CLAVES NO COINCIDEN*/else {
 
                                 echo '<script>
                                 Swal.fire({
@@ -1063,11 +1161,35 @@ use Models\Auditoria;
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
                         }
+
+                            
+
+                        } /*EL USERNAME YA EXISTE*/else {
+
+                            echo '<script>
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Este nombre de usuario ya existe",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                                </script>';
+                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
                             
 
                     }
 
-                    } else {
+                    } /*CAMPOS VACIOS*/else {
 
                         //Si estan vacios, redirigir y salir del script
                         echo '<script>
@@ -1094,6 +1216,43 @@ use Models\Auditoria;
     
                 }  
                 
+                //AUDITANDO Y RETORNANDO CREDENCIALES DEL USUARIO PARA EDITAR
+
+                //OBTENIENDO DATA PARA AUDITORIA
+
+                    //OBTENIENDO DATOS ANTES DE EDITAR
+                    $this->usuario->set('usuario', $usuario);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $id_usuario = $id_user['id_user'];
+
+
+                    $this->usuario->set('id_user',$id_usuario);
+                    $datos = $this->usuario->getUsuarioforAuditoria();
+
+                    //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+                    
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 20; //EDICION DE CREDENCIALES INICIADA
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = $datos['id_user'];
+                    $valorAntesarray = array($datos['usuario']);
+                    $valor_antes = json_encode($valorAntesarray);
+                    $valor_despues = 'en proceso';
+                    $id_admin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $id_admin);
+
                 $this->usuario->set('usuario',$usuario);
                 $data['titulo'] = "Editando credenciales del usuario";
                 $data['operador'] = $this->usuario->getDataEdit();
@@ -1117,18 +1276,100 @@ use Models\Auditoria;
             $datos['titulo'] = "Datos del usuario";
             $datos['user'] = $this->usuario->view();
 
+            //ADMIN PUEDE VER TODOS LOS PERFILES
             if($_SESSION['rol'] == 1){
 
+                //OBTENIENDO DATA PARA AUDITAR EL ACCESO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user_admin = $this->usuario->getIdUserbyUsuario();
+                    $user_adminis = $id_user_admin['id_user'];
+
+                    //OBTENIENDO DATOS DEL PERFIL DE USUARIO QUE EL ADMIN OBSERVO
+                    $this->usuario->set('usuario', $usuario);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 25; //VER PERFIL DE USUARIO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = $user;
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_Admin  = $user_adminis;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $id_Admin);
+
+                //DEVOLVER DATA
                 return $datos;
 
-            } else {
+            } /*USUARIOS NO ADMIN SOLO PUEDEN VER SU PROPIO PERFIL*/else {
 
+                //USUARIO NO ADMIN INTENTA ACCEDER A SU PROPIO PERFIL
                 if($usuario == $_SESSION['usuario']){
 
+                    //OBTENIENDO DATA PARA AUDITAR EL ACCESO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 25; //VER PERFIL DE USUARIO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = $user;
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $$id_usuario_noAdmin);
+
+                    //DEVOLVER DATA
                     return $datos;
     
-                } else {
+                } /*USUARIO INTENTA ACCEDER A UN PERFIL DIFERENTE AL SUYO*/else {
     
+                    //OBTENIENDO DATA PARA AUDITAR EL ACCESO NO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 12; //ACCESO NO AUTORIZADO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = "Ninguno";
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $$id_usuario_noAdmin);
+
+
                     // El usuario no es administrador, redirige al inicio
                     echo '<script>
                     Swal.fire({
@@ -1168,6 +1409,7 @@ use Models\Auditoria;
 
     public function editarpreguntasSeguridad($usuario){
 
+        //USUARIOS SOLO PUEDEN EDITAR SUS PROPIAS PREGUNTAS DE SEGURIDAD
         if($usuario == $_SESSION['usuario']){
 
             //OBTENEMOS EL ID DEL USUARIO
@@ -1178,6 +1420,7 @@ use Models\Auditoria;
             $this->usuario->set('id_user', $id_user['id_user']);
             $cuenta = $this->usuario->verificarPreguntasExistencia();
 
+            //SI YA EL USUARIO TIENE PREGUNTAS, REEMPLAZARLAS
             if($cuenta['cuenta'] > 0){
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -1189,9 +1432,11 @@ use Models\Auditoria;
                     $respuesta5 = strtolower($_POST['respuesta5']);
                     $respuesta6 = strtolower($_POST['respuesta6']);
 
+                    //VALIDANDO CAMPOS VACIOS
                     if(!empty($respuesta1) || !empty($respuesta2) || !empty($respuesta3) || !empty($respuesta4) || !empty($respuesta5) || !empty($respuesta6) ){
 
                         //Validar nombre y apellido como texto
+                        //RESPUESTAS NO SON TEXTO
                         if (!preg_match('/^[A-Za-z\s]+$/', $respuesta1) || 
                             !preg_match('/^[A-Za-z\s]+$/', $respuesta2) ||
                             !preg_match('/^[A-Za-z\s]+$/', $respuesta3) ||
@@ -1217,7 +1462,7 @@ use Models\Auditoria;
                                 });
                             </script>';
                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
-                        } else {
+                        } /*LAS RESPUESTAS SON TEXTO*/else {
 
                             $id = $id_user['id_user'];
 
@@ -1251,6 +1496,39 @@ use Models\Auditoria;
                             $resp6 = $this->encriptarNuevaClave($respuesta6);                        
                             $this->editarPreguntas1($id, $id_pregunta6, $resp6);
 
+                             //OBTENIENDO DATOS ANTES DE EDITAR
+                             $this->usuario->set('usuario', $usuario);
+                             $id_user = $this->usuario->getIdUserbyUsuario();
+                             $id_usuario = $id_user['id_user'];
+ 
+ 
+                             $this->usuario->set('id_user',$id_usuario);
+                             $datos = $this->usuario->getUsuarioforAuditoria();
+ 
+                             //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                             $this->usuario->set('usuario', $_SESSION['usuario']);
+                             $id_user = $this->usuario->getIdUserbyUsuario();
+                             $user = $id_user['id_user'];
+                             
+ 
+                             //PREPARANDO AUDITORIA
+                             $tipo_cambio = 23; //EDICION DE PREGUNTAS COMPLETADAS
+                             $tabla_afectada = 'usuarios';
+ 
+                             $registro_afectado = $datos['id_user'];
+                             $valorAntesarray = array($datos['usuario']);
+                             $valor_antes = json_encode($valorAntesarray);
+                             $valor_despues = 'completado';
+                             $id_admin  = $user;
+ 
+                             //EJECUTANDO LA AUDITORIA
+                             $this->auditoria->auditar($tipo_cambio, 
+                                                     $tabla_afectada, 
+                                                     $registro_afectado, 
+                                                     $valor_antes, 
+                                                     $valor_despues, 
+                                                     $id_admin);
+
                             echo '<script>
                                 Swal.fire({
                                     title: "Exito",
@@ -1275,7 +1553,7 @@ use Models\Auditoria;
                         }
 
 
-                    } else {
+                    } /*HUBO CAMPOS VACIOS*/else {
                         echo '<script>
                                 Swal.fire({
                                     title: "Error",
@@ -1298,6 +1576,43 @@ use Models\Auditoria;
                     }
                 }
 
+                //AUDITANDO Y RETORNANDO CREDENCIALES DEL USUARIO PARA EDITAR
+
+                //OBTENIENDO DATA PARA AUDITORIA
+
+                    //OBTENIENDO DATOS ANTES DE EDITAR
+                    $this->usuario->set('usuario', $usuario);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $id_usuario = $id_user['id_user'];
+
+
+                    $this->usuario->set('id_user',$id_usuario);
+                    $datos = $this->usuario->getUsuarioforAuditoria();
+
+                    //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+                    
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 22; //EDICION DE CREDENCIALES INICIADA
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = $datos['id_user'];
+                    $valorAntesarray = array($datos['usuario']);
+                    $valor_antes = json_encode($valorAntesarray);
+                    $valor_despues = 'en proceso';
+                    $id_admin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $id_admin);
+
                 $this->usuario->set('usuario',$usuario);
                 $data['titulo'] = "Editando preguntas de seguridad del usuario";
                 $data['operador'] = $this->usuario->getDataEdit();
@@ -1309,8 +1624,9 @@ use Models\Auditoria;
                 
                  
 
-            } else {
+            } /*USUARIO NO TIENE PREGUNTAS DE SEGURIDAD CREADAS, INSERTARLAS*/else {
 
+                //RECIBIENDO RESPUESTAS DEL FORMULARIO
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                     $respuesta1 = strtolower($_POST['respuesta1']);
@@ -1320,9 +1636,11 @@ use Models\Auditoria;
                     $respuesta5 = strtolower($_POST['respuesta5']);
                     $respuesta6 = strtolower($_POST['respuesta6']);
 
+                    //EVALUANDO SI LOS CAMPOS ESTAN VACIOS
                     if(!empty($respuesta1) || !empty($respuesta2) || !empty($respuesta3) || !empty($respuesta4) || !empty($respuesta5) || !empty($respuesta6) ){
 
-                        //Validar nombre y apellido como texto
+                        //Validar como texto
+                        //RESPUESTAS NO SON TEXTO
                         if (!preg_match('/^[A-Za-z\s]+$/', $respuesta1) || 
                             !preg_match('/^[A-Za-z\s]+$/', $respuesta2) ||
                             !preg_match('/^[A-Za-z\s]+$/', $respuesta3) ||
@@ -1348,7 +1666,7 @@ use Models\Auditoria;
                                 });
                             </script>';
                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
-                        } else {
+                        } /*RESPUESTAS SON TEXTO, CONTINUAR CREANDO*/else {
 
                             $id = $id_user['id_user'];
 
@@ -1382,10 +1700,43 @@ use Models\Auditoria;
                             $resp6 = $this->encriptarNuevaClave($respuesta6);                        
                             $this->insertarRespuesta1($id, $id_pregunta6, $resp6);
 
+                            //OBTENIENDO DATOS ANTES DE EDITAR
+                            $this->usuario->set('usuario', $usuario);
+                            $id_user = $this->usuario->getIdUserbyUsuario();
+                            $id_usuario = $id_user['id_user'];
+
+
+                            $this->usuario->set('id_user',$id_usuario);
+                            $datos = $this->usuario->getUsuarioforAuditoria();
+
+                            //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                            $this->usuario->set('usuario', $_SESSION['usuario']);
+                            $id_user = $this->usuario->getIdUserbyUsuario();
+                            $user = $id_user['id_user'];
+                            
+
+                            //PREPARANDO AUDITORIA
+                            $tipo_cambio = 24; //CREACION DE PREGUNTAS POR PRIMERA VEZ
+                            $tabla_afectada = 'usuarios';
+
+                            $registro_afectado = $datos['id_user'];
+                            $valorAntesarray = array($datos['usuario']);
+                            $valor_antes = json_encode($valorAntesarray);
+                            $valor_despues = 'completadas';
+                            $id_admin  = $user;
+
+                            //EJECUTANDO LA AUDITORIA
+                            $this->auditoria->auditar($tipo_cambio, 
+                                                    $tabla_afectada, 
+                                                    $registro_afectado, 
+                                                    $valor_antes, 
+                                                    $valor_despues, 
+                                                    $id_admin);
+
                             echo '<script>
                                 Swal.fire({
                                     title: "Exito",
-                                    text: "Respuestas editadas exitosamente",
+                                    text: "Respuestas creadas exitosamente",
                                     icon: "success",
                                     showConfirmButton: true,
                                     confirmButtonColor: "#3464eb",
@@ -1406,7 +1757,7 @@ use Models\Auditoria;
                         }
 
 
-                    } else {
+                    } /*CAMPOS VACIOS*/else {
                         echo '<script>
                                 Swal.fire({
                                     title: "Error",
@@ -1429,6 +1780,43 @@ use Models\Auditoria;
                     }
                 }
 
+                //AUDITANDO Y RETORNANDO CREDENCIALES DEL USUARIO PARA EDITAR
+
+                //OBTENIENDO DATA PARA AUDITORIA
+
+                    //OBTENIENDO DATOS ANTES DE EDITAR
+                    $this->usuario->set('usuario', $usuario);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $id_usuario = $id_user['id_user'];
+
+
+                    $this->usuario->set('id_user',$id_usuario);
+                    $datos = $this->usuario->getUsuarioforAuditoria();
+
+                    //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+                    
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 24; //CREACION DE PREGUNTAS POR PRIMERA VEZ
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = $datos['id_user'];
+                    $valorAntesarray = array($datos['usuario']);
+                    $valor_antes = json_encode($valorAntesarray);
+                    $valor_despues = 'en proceso';
+                    $id_admin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $id_admin);
+
                 $this->usuario->set('usuario',$usuario);
                 $data['titulo'] = "Creando preguntas de seguridad del usuario";
                 $data['operador'] = $this->usuario->getDataEdit();
@@ -1439,7 +1827,31 @@ use Models\Auditoria;
                 return $data;
             }
 
-        } else {
+        } /*USUARIO INTENTA EDITAR PREGUNTAS DIFERENTES A LAS SUYAS, REDIRIGIR*/else {
+
+             //OBTENIENDO DATA PARA AUDITAR EL ACCESO NO AUTORIZADO
+
+                    //OBTENIENDO DATOS DEL USUARIO NO ADMIN QUE INTENTO ACCEDER 
+                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                    $id_user = $this->usuario->getIdUserbyUsuario();
+                    $user = $id_user['id_user'];
+
+                    //PREPARANDO AUDITORIA
+                    $tipo_cambio = 12; //ACCESO NO AUTORIZADO
+                    $tabla_afectada = 'usuarios';
+
+                    $registro_afectado = "Ninguno";
+                    $valor_antes = "Ninguno";
+                    $valor_despues = "Ninguno";
+                    $id_usuario_noAdmin  = $user;
+
+                    //EJECUTANDO LA AUDITORIA
+                    $this->auditoria->auditar($tipo_cambio, 
+                                            $tabla_afectada, 
+                                            $registro_afectado, 
+                                            $valor_antes, 
+                                            $valor_despues, 
+                                            $id_usuario_noAdmin);
 
             
                 // El usuario no es administrador, redirige al inicio

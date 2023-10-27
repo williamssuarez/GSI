@@ -2,6 +2,7 @@
 
 class Usuario{
 
+    //DATOS DEL MODELO DEL USUARIO
     private $id_user;
     private $rol;
     private $nombres;
@@ -295,9 +296,23 @@ class Usuario{
     public function add(){
         
         $sql = "INSERT INTO
-                usuarios(rol, nombres, apellidos, cedula, correo, telefono, usuario, clave)
+                usuarios(rol, 
+                        nombres, 
+                        apellidos, 
+                        cedula, 
+                        correo, 
+                        telefono, 
+                        usuario, 
+                        clave)
                 VALUES 
-                ('{$this->rol}', '{$this->nombres}', '{$this->apellidos}', '{$this->cedula}', '{$this->correo}', '{$this->telefono}', '{$this->usuario}','{$this->clave}')";
+                ('{$this->rol}', 
+                '{$this->nombres}', 
+                '{$this->apellidos}', 
+                '{$this->cedula}', 
+                '{$this->correo}', 
+                '{$this->telefono}', 
+                '{$this->usuario}', 
+                '{$this->clave}')";
         
         $this->con->consultaSimple($sql);
     }
