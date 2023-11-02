@@ -97,6 +97,11 @@
                                             Entregar    
                                         </a>
 
+                                        <a class="btn btn-primary btn-icon-split" href='entregarAdmin/<?php echo $data['id_ingreso'] ?>'>                                
+                                            <i class="fa-solid fa-file-pen"></i>
+                                            Reportar    
+                                        </a>
+
                                         <?php } elseif($data['estado'] == 2) { ?>
 
                                         <a class="btn btn-primary btn-icon-split" href='esperandoAprobacion'>
@@ -123,6 +128,11 @@
                                             <a id="EntregarOperador" class="btn btn-primary btn-icon-split" href='entregarOperador/<?php echo $data['id_ingreso'] ?>'>                                
                                                 <i class="fa-solid fa-truck-fast"></i>                                
                                                 Entregar    
+                                            </a>
+
+                                            <a id="EntregarOperador" class="btn btn-success btn-icon-split" href='entregarOperador/<?php echo $data['id_ingreso'] ?>'>                                
+                                                <i class="fa-solid fa-file-pen"></i>
+                                                Reportar    
                                             </a>
 
                                         <?php } ?>
