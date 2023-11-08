@@ -75,6 +75,7 @@ use Models\Auditoria;
                     $valor_despues = "Ninguno";
                     $id_usuario_noAdmin  = $user;
 
+
                     //EJECUTANDO LA AUDITORIA
                     $this->auditoria->auditar($tipo_cambio, 
                                             $tabla_afectada, 

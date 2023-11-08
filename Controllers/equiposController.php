@@ -1570,6 +1570,53 @@ use Repository\Procesos1 as Repository1;
     
         }
 
+        //NOTAS DEL OPERADOR POR INCIDENCIA
+        public function ReportarAvances(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $titulo = $_POST['titulo'];
+                
+                //OBTENIENDO EL ID DEL USUARIO
+                $recibido_por = $_POST['recibido_por'];
+                
+                $problema = $_POST['problema'];
+
+                //VERIFICANDO SI EL EQUIPO ESTA REGISTRADO
+                $this->equipo->set('numero_bien', $titulo);
+                $cuenta = $this->equipo->verificarEquipoBien();
+                    
+                    //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                    echo '<script>
+                                Swal.fire({
+                                    title: "Equipo no registrado",
+                                    text: "Este equipo no esta registrado, registrelo antes de ingresarlo.",
+                                    icon: "warning",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    confirmButtonText: "Registrar",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/newregistro";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                            </script>';
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                } else { 
+
+                    $datos['titulo'] = "Nuevo reporte";
+                    return $datos;
+
+                }
+
+        }
+
       
     }
 
