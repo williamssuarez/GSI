@@ -63,7 +63,7 @@ use Models\Usuario;
                                             $registro_afectado, 
                                             $valor_antes, 
                                             $valor_despues, 
-                                            $$id_usuario_noAdmin);
+                                            $id_usuario_noAdmin);
 
                 // El usuario no es administrador, redirige al inicio
                 echo '<script>
