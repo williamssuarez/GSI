@@ -42,16 +42,8 @@ class loginController{
                     title: "Sesion Cerrada",
                     text: "Hasta luego",
                     icon: "success",
-                    showConfirmButton: true,
-                    confirmButtonColor: "#3464eb",
-                    confirmButtonText: "Continuar",
-                    customClass: {
-                        confirmButton: "rounded-button" // Identificador personalizado
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "' . URL . 'login/index";
-                    }
+                    timer: 2000,
+                    showConfirmButton: false,
                 }).then(() => {
                     window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
@@ -152,16 +144,8 @@ class loginController{
                                                 title: "Exito",
                                                 text: "Bienvenido Administrador",
                                                 icon: "success",
-                                                showConfirmButton: true,
-                                                confirmButtonColor: "#3464eb",
-                                                confirmButtonText: "Continuar",
-                                                customClass: {
-                                                    confirmButton: "rounded-button" // Identificador personalizado
-                                                }
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "' . URL . 'inicio/index";
-                                                }
+                                                timer: 1000,
+                                                showConfirmButton: false,
                                             }).then(() => {
                                                 window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
@@ -191,16 +175,8 @@ class loginController{
                                                 title: "Exito",
                                                 text: "Bienvenido Operador",
                                                 icon: "success",
-                                                showConfirmButton: true,
-                                                confirmButtonColor: "#3464eb",
-                                                confirmButtonText: "Continuar",
-                                                customClass: {
-                                                    confirmButton: "rounded-button" // Identificador personalizado
-                                                }
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "' . URL . 'inicio/index";
-                                                }
+                                                timer: 1000,
+                                                showConfirmButton: false,
                                             }).then(() => {
                                                 window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                             });
@@ -274,19 +250,11 @@ class loginController{
         else {
             echo '<script>
             Swal.fire({
-                title: "Ya estas logeado!",
-                text: "Bienvenido!",
+                title: "Ya estas logeado",
+                text: "¡Bienvenido!",
                 icon: "success",
-                showConfirmButton: true,
-                confirmButtonColor: "#3464eb",
-                confirmButtonText: "Continuar",
-                customClass: {
-                    confirmButton: "rounded-button" // Identificador personalizado
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "' . URL . 'inicio/index";
-                }
+                timer: 1000,
+                showConfirmButton: false,
             }).then(() => {
                 window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
             });
@@ -301,19 +269,11 @@ class loginController{
             
             echo '<script>
             Swal.fire({
-                title: "Ya estas logeado!",
-                text: "Bienvenido!",
+                title: "Ya estas logeado",
+                text: "¡Bienvenido!",
                 icon: "success",
-                showConfirmButton: true,
-                confirmButtonColor: "#3464eb",
-                confirmButtonText: "Continuar",
-                customClass: {
-                    confirmButton: "rounded-button" // Identificador personalizado
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "' . URL . 'inicio/index";
-                }
+                timer: 1000,
+                showConfirmButton: false,
             }).then(() => {
                 window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
             });
@@ -401,16 +361,8 @@ class loginController{
                             title: "Redireccionando",
                             text: "Obteniendo preguntas...",
                             icon: "success",
-                            showConfirmButton: true,
-                            confirmButtonColor: "#3464eb",
-                            confirmButtonText: "Aceptar",
-                            customClass: {
-                                confirmButton: "rounded-button" // Identificador personalizado
-                            }
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "' . URL . 'login/preguntas";
-                            }
+                            timer: 1000,
+                            showConfirmButton: false,
                         }).then(() => {
                             window.location.href = "' . URL . 'login/preguntas"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
@@ -455,16 +407,8 @@ class loginController{
                             title: "Ya estas logeado",
                             text: "Bienvenido",
                             icon: "success",
-                            showConfirmButton: true,
-                            confirmButtonColor: "#3464eb",
-                            confirmButtonText: "Aceptar",
-                            customClass: {
-                                confirmButton: "rounded-button" // Identificador personalizado
-                            }
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "' . URL . 'inicio/index";
-                            }
+                            timer: 1000,
+                            showConfirmButton: false,
                         }).then(() => {
                             window.location.href = "' . URL . 'inicio/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
@@ -500,16 +444,8 @@ class loginController{
                             title: "Validado",
                             text: "Redireccionando a formulario...",
                             icon: "success",
-                            showConfirmButton: true,
-                            confirmButtonColor: "#3464eb",
-                            confirmButtonText: "Aceptar",
-                            customClass: {
-                                confirmButton: "rounded-button" // Identificador personalizado
-                            }
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "' . URL . 'login/restablecerclave";
-                            }
+                            timer: 1000,
+                            showConfirmButton: false,
                         }).then(() => {
                             window.location.href = "' . URL . 'login/restablecerclave"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
@@ -608,16 +544,8 @@ class loginController{
                             title: "Exito",
                             text: "Clave y usuario restablecido exitosamente, inicia sesion",
                             icon: "success",
-                            showConfirmButton: true,
-                            confirmButtonColor: "#3464eb",
-                            confirmButtonText: "Insertar",
-                            customClass: {
-                                confirmButton: "rounded-button" // Identificador personalizado
-                            }
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "' . URL . 'login/index";
-                            }
+                            timer: 1000,
+                            showConfirmButton: false,
                         }).then(() => {
                             window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
