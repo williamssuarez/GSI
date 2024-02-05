@@ -6,8 +6,8 @@ class Conexion{
 
     private $datos = array(
         "host" => "localhost",
-        "user" => "root",
-        "password" => "",
+        "user" => "GSI",
+        "password" => "WQ0tKWBeLEZlx2Db",
         "db" => "gsi",
     );
 
