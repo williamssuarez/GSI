@@ -42,7 +42,7 @@ class loginController{
                     title: "Sesion Cerrada",
                     text: "Hasta luego",
                     icon: "success",
-                    timer: 2000,
+                    timer: 1000,
                     showConfirmButton: false,
                 }).then(() => {
                     window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
