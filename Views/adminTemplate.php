@@ -24,6 +24,10 @@ class Template{
 
         <!-- DATATABLES CSS -->
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/css/dataTables.bootstrap5.min.css">
+
+        <!-- DATATABLES BUTTONS CSS -->
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/extensions/css/buttons.dataTables.css">
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/DataTables/extensions/css/buttons.bootstrap5.css">
         
         <!-- FONTAWESOME CSS -->
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/FontAwesome/font-awesome_6.4.2_css_all.min.css">
@@ -325,8 +329,21 @@ class Template{
     <script src="<?php echo URL; ?>Views/template/DataTables/js/jquery.dataTables.min.js"></script>
     <script src="<?php echo URL; ?>Views/template/DataTables/js/dataTables.bootstrap5.min.js"></script>
 
+    <!-- DATATABLES BUTTONS JS -->
+    <script src="<?php echo URL; ?>Views/template/DataTables/extensions/js/dataTables.buttons.js"></script>
+    <script src="<?php echo URL; ?>Views/template/DataTables/extensions/js/buttons.bootstrap5.js"></script>
+    <script src="<?php echo URL; ?>Views/template/DataTables/extensions/js/buttons.html5.js"></script>
+    <script src="<?php echo URL; ?>Views/template/DataTables/extensions/js/buttons.print.js"></script>
+
+    <!-- JSZIP JS -->
+    <script src="<?php echo URL; ?>Views/template/DataTables/extensions/js/jszip/jszip.js"></script>
+
+    <!-- PDFMAKE JS -->
+    <script src="<?php echo URL; ?>Views/template/DataTables/extensions/js/pdfmake/pdfmake.js"></script>
+    <script src="<?php echo URL; ?>Views/template/DataTables/extensions/js/pdfmake/vfs_fonts.js"></script>
+
     <!-- INICIANDO TABLAS DATATABLE -->
-    <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_registrados.js"></script>
+    <script type="module" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_registrados.mjs"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_ingresados.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_aprobacion.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_rechazados.js"></script>
@@ -336,6 +353,10 @@ class Template{
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/departamentos.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/auditoria.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/usuarios.js"></script>
+
+    <script>
+        var rootURL = "<?php echo URL; ?>";
+    </script>
     
 
     </body>
