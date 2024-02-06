@@ -327,6 +327,9 @@ class Template{
     <!-- BOOTSTRAP 5.3 JS -->
     <script src="<?php echo URL; ?>Views/template/DataTables/js/bootstrap.bundle.min.js"></script>
 
+    <!-- MOMENT JS -->
+    <script src="<?php echo URL; ?>Views/template/js/moment/moment.min.js"></script>
+
     <!-- DATATABLES JS -->
     <script src="<?php echo URL; ?>Views/template/DataTables/js/jquery.dataTables.js"></script>
     <script src="<?php echo URL; ?>Views/template/DataTables/js/jquery.dataTables.min.js"></script>
@@ -348,6 +351,10 @@ class Template{
     <!-- PDFMAKE JS -->
     <script src="<?php echo URL; ?>Views/template/DataTables/extensions/buttons/js/pdfmake/pdfmake.js"></script>
     <script src="<?php echo URL; ?>Views/template/DataTables/extensions/buttons/js/pdfmake/vfs_fonts.js"></script>
+
+    <!-- EXCEL JS DESHABILITADO POR LAS MISMAS RAZONES (NO SIRVE LA VAINA ETA)
+    <script src="<?php echo URL; ?>node_modules/exceljs/dist/exceljs.js"></script>
+    <script src="<?php echo URL; ?>node_modules/xlsx/xlsx.js"></script> -->
 
     <!-- INICIANDO TABLAS DATATABLE -->
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/equipos_registrados.js"></script>

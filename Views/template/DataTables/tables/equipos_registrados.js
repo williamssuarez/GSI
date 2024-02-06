@@ -1,18 +1,59 @@
+
 $(document).ready( function () {
+
     $('#tablaequipos_registrados').DataTable({
         dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'excelHtml5',
-                text: 'Excel',
+                text: '<i class="fa-solid fa-file-excel"></i> Excel',
                 className: 'btn btn-success',
-                title: 'Equipos Registrados'
+                title: function(){
+                    var currentDate = moment().format('DD-MM-YYYY');
+
+                    return 'Equipos Registrados - ' + currentDate;
+                },
+                exportOptions: { //OPCIONES DE EXPORTACION
+                    search: 'applied', //Para aceptar reporte de una busqueda
+                    order: 'applied', //Para mantener el orden aplicado en la datatable
+                },
+                /*customize: async function (xlsx) { DESHABILITADO PQ ETA VAINA NO SIRVE
+                    // Access and modify the ExcelJS workbook here
+                    var workbook = new ExcelJS.Workbook();
+                    await workbook.xlsx.load(xlsx); // Load the generated Excel file
+            
+                    // Customize worksheet
+                    var worksheet = workbook.worksheets[0];
+            
+                    // Example: Set column width
+                    worksheet.getColumn('A').width = 20;
+            
+                    // Example: Apply bold style to header row
+                    var headerRow = worksheet.getRow(1);
+                    headerRow.eachCell(function (cell) {
+                        cell.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: 'FFFF0000' } // Red color in ARGB format
+                        };
+                        cell.font = { color: { argb: 'FFFFFF' } }; // White text for better contrast
+                    });
+            
+                    // ... Additional customizations
+            
+                    // Return modified workbook
+                    return workbook.xlsx.writeBuffer();
+                  }*/
             },
             {
                 extend: 'pdfHtml5',
-                text: 'PDF',
+                text: '<i class="fa-solid fa-file-pdf"></i> PDF',
                 className: 'btn btn-danger',
-                title: 'Equipos Registrados',
+                title: function(){
+                    var currentDate = moment().format('DD-MM-YYYY');
+
+                    return 'Equipos Registrados - ' + currentDate;
+                },
                 pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
