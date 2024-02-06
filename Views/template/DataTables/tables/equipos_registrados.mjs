@@ -1,5 +1,30 @@
+//IMPORTANDO PLANTILLA PDF
+import pdfTemplate from "../GSI/Views/template/DataTables/extensions/js/pdf/pdfTemplate";
+
 $(document).ready( function () {
     $('#tablaequipos_registrados').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Excel',
+                className: 'btn btn-success',
+                title: 'Equipos Registrados'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: 'PDF',
+                className: 'btn btn-danger',
+                title: 'Equipos Registrados',
+                pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
+                exportOptions: { //OPCIONES DE EXPORTACION
+                    search: 'applied', //Para aceptar reporte de una busqueda
+                    order: 'applied', //Para mantener el orden aplicado en la datatable
+                    stripNewlines: false //Para mantener saltos de linea (ignorados en este caso)
+                },
+                customize: pdfTemplate
+            },
+        ],
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
             zeroRecords: "Ningun operador encontrado",
