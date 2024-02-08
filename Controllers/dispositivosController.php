@@ -117,7 +117,7 @@ use Models\Usuario;
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 $nombre = $_POST['nombre'];
-                $serial_dispositivo = $_POST['serial_dispositivo'];
+                //$serial_dispositivo = $_POST['serial_dispositivo'];
 
                 //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
                 if(empty($nombre)){
@@ -156,7 +156,7 @@ use Models\Usuario;
                     if (empty($errores)) {
                         // No hay errores de validación, procesa los datos
                         $this->dispositivos->set('nombre_dispositivo', $nombre);
-                        $this->dispositivos->set('serial_dispositivo', $serial_dispositivo);
+                        //$this->dispositivos->set('serial_dispositivo', $serial_dispositivo);
 
                         //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
                         $this->usuarios->set('usuario', $_SESSION['usuario']);

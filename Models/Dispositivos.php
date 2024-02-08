@@ -5,7 +5,7 @@ namespace Models;
 class Dispositivos{
 
     private $id_dispositivos;
-    private $serial_dispositivo;
+    //private $serial_dispositivo;
     private $nombre_dispositivo;
     private $total_asignaciones;
     private $con;
@@ -70,7 +70,6 @@ class Dispositivos{
 
         $sql= "SELECT 
                 id_dispositivos,
-                serial_dispositivos,
                 nombre_dispositivo,
                 total_asignaciones
                 FROM dispositivos";
@@ -100,7 +99,6 @@ class Dispositivos{
 
         $sql = "SELECT
                 id_dispositivos,
-                serial_dispositivos
                 nombre_dispositivo
                 FROM
                 dispositivos
@@ -119,7 +117,6 @@ class Dispositivos{
                 dispositivos
                 SET
                 nombre_dispositivo = '{$this->nombre_dispositivo}',
-                serial_dispositivo = '{$this->serial_dispositivo}'
                 WHERE
                 id_dispositivos = '{$this->id_dispositivos}'";
         
@@ -130,7 +127,6 @@ class Dispositivos{
 
         $sql = "SELECT 
                 id_dispositivos,
-                serial_dispositivo,
                 nombre_dispositivo,
                 total_asignaciones
                 FROM
