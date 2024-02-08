@@ -57,7 +57,7 @@
                     <?php foreach($ingreso['equipos'] as $data) { ?>
                         <tr>
                             <td> 
-                                <a href="viewequipo/<?php echo $data['id_equipo'] ?>" style="text-decoration:none"> 
+                                <a target="_blank" href="viewequipo/<?php echo $data['id_equipo'] ?>" style="text-decoration:none"> 
                                     <?php echo isset($data['numero_bien']) ? $data['numero_bien'] : ''; ?> 
                                 </a> 
                             </td>
@@ -102,18 +102,16 @@
                                             Reportar    
                                         </a>
 
+                                        <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            Editar
+                                        </a> 
+
                                         <?php } elseif($data['estado'] == 2) { ?>
 
                                         <a class="btn btn-primary btn-icon-split" href='esperandoAprobacion'>
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                             Revisar
-                                        </a> 
-
-                                        <?php } else { ?>
-
-                                        <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                            Editar
                                         </a> 
 
                                         <?php } ?>

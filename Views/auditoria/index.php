@@ -6,17 +6,20 @@
 
 <h1 class="h3 mb-2 text-gray-800">Tabla</h1>
 
-<a class="btn btn-primary btn-icon-split" href="filtroporFecha">
-    Filtar por Fecha
-</a>
-<br></br>
-<a class="btn btn-primary btn-icon-split" href="filtrarporUsuario">
-    Filtrar por Usuario
-</a>
-<br></br>
-<a class="btn btn-primary btn-icon-split" href="filtrarporTipoCambio">
-    Filtrar por Tipo Cambio
-</a>
+
+<div class="btn-group btn-user btn-block">
+
+    <a class="btn btn-primary btn-icon-split" href="filtroporFecha">
+        Filtar por Fecha
+    </a>
+    <a class="btn btn-secondary btn-icon-split" href="filtrarporUsuario">
+        Filtrar por Usuario
+    </a>
+    <a class="btn btn-danger btn-icon-split" href="filtrarporTipoCambio">
+        Filtrar por Accion
+    </a>
+
+</div>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">

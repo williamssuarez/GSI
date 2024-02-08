@@ -1,5 +1,11 @@
 <?php  namespace Controllers;
 
+//AUTOLOAD DE COMPOSER
+require __DIR__.'/../vendor/autoload.php';
+
+//HTML2PDF
+use Spipu\Html2Pdf\Html2Pdf;
+
 use Repository\Procesos1;
 use Models\Equipos_ingresados;
 use Models\Usuario;
@@ -78,6 +84,17 @@ class inicioController{
 
         return $datos;
     }
+
+    public function reportehtml2() {
+        ob_clean(); // Clear output buffer
+    
+        $html2pdf = new Html2Pdf();
+        $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
+    
+        header('Content-type: application/pdf');
+        return $html2pdf->output('Manual.pdf', 'S');
+    }
+    
 
     public function pieChart(){
 

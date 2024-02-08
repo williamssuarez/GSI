@@ -3,11 +3,11 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1>Bienvenido</h1>
 
-    <a href="<?php echo URL; ?>Views/template/pdf/manualsito.pdf" 
-        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" 
-        download >
-        <i class="fas fa-download fa-sm text-white-50"></i>
-        Manual PDF</a>
+        <button id="generate-pdf-btn" class="btn btn-sm btn-success shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i>
+                Manual PDF
+        </button>
+
 </div>
 
 
@@ -332,3 +332,35 @@
     </div>
 </div>
 </div> 
+
+
+<script>
+    document.getElementById('generate-pdf-btn').addEventListener('click', function () {
+        $.ajax({
+            url: '<?php echo URL; ?>inicio/reportehtml2', // Replace with your actual URL
+            type: 'POST',
+            data: { generate_pdf: true }, // Optional if not using hidden field
+            dataType: 'text', // Expect plain text PDF content
+            success: function (pdfContent) {
+                if (pdfContent) {
+                    // Create a blob object with the PDF content
+                    const blob = new Blob([pdfContent], { type: 'application/pdf' });
+
+                    // Create a download link and trigger download
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'Manual.pdf';
+                    link.click();
+
+                    // Optionally clean up the temporary object URL
+                    URL.revokeObjectURL(link.href);
+                } else {
+                    console.error('PDF generation failed!');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('AJAX error:', textStatus, errorThrown);
+            }
+        });
+    });
+</script>

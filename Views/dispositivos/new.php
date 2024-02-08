@@ -22,6 +22,9 @@
                     <label class="form-label mt-4"> Inserte el tipo de dispositivo a ingresar </label>
                     <input required class="form-control" type="text" name="nombre" id="nombre" placeholder="Introduzca Nombre">
 
+                    <label class="form-label mt-4"> Inserte el tipo de dispositivo a ingresar </label>
+                    <input required class="form-control" type="text" name="nombre" id="nombre" placeholder="Introduzca Nombre">
+
                     <br>
                     
                     <button class="btn btn-success" type="submit">

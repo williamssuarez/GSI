@@ -1,4 +1,3 @@
-
 $(document).ready( function () {
 
     $('#tablaequipos_registrados').DataTable({

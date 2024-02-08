@@ -113,12 +113,13 @@ class Template{
     <!-- Divider -->
     <hr class="sidebar-divider"> 
 
-    <!-- Nav Item - Charts -->
+    <!-- Nav Item - Charts 
+    DESHABILITADO PORQUE UN OPR NO TIENE PORQUE VER A LOS OTROS USUARIOS
     <li class="nav-item">
-        <a class="nav-link" href="<?php echo URL; ?>operadores/index">
+        <a class="nav-link" href="<?php echo URL; ?>usuarios/index">
             <i class="fa-solid fa-users-gear"></i>
             <span>Operadores</span></a>
-    </li>
+    </li> -->
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
