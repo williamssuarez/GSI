@@ -121,7 +121,7 @@ class Template{
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="<?php echo URL; ?>operadores/index">
+        <a class="nav-link" href="<?php echo URL; ?>usuarios/index">
             <i class="fa-solid fa-users-gear"></i>
             <span>Operadores</span></a>
     </li>

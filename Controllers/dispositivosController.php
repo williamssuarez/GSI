@@ -97,7 +97,6 @@ use Models\Usuario;
             $id_user = $this->usuarios->getIdUserbyUsuario();
             $user = $id_user['id_user'];
 
-
             $tipo_cambio = 10; //TIPO DE CAMBIO 10 = Accedio a
             $tabla_afectada = "Dispositivos";
             $registro_afectado = "Ninguno";
@@ -113,15 +112,12 @@ use Models\Usuario;
             return $datos;
         }
 
-        public function num($number){
-            echo "El numero que elegiste es ".$number;
-        }
-
         public function new(){
            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 $nombre = $_POST['nombre'];
+                $serial_dispositivo = $_POST['serial_dispositivo'];
 
                 //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
                 if(empty($nombre)){
@@ -152,7 +148,7 @@ use Models\Usuario;
 
                     $errores = array();
 
-                    // Validar nombre y apellido como texto
+                    // Validar nombre
                     if (!ctype_alpha($nombre)) {
                         $errores[] = "Nombre debe contener solo letras.";
                     }
@@ -160,6 +156,7 @@ use Models\Usuario;
                     if (empty($errores)) {
                         // No hay errores de validación, procesa los datos
                         $this->dispositivos->set('nombre_dispositivo', $nombre);
+                        $this->dispositivos->set('serial_dispositivo', $serial_dispositivo);
 
                         //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
                         $this->usuarios->set('usuario', $_SESSION['usuario']);

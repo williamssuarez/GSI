@@ -34,7 +34,11 @@
 
                     <?php foreach($equipo['equipos'] as $data){ ?>
                         <tr>            
-                            <td><a href="viewequipo/<?php echo $data['id_equipo'] ?>" style="text-decoration:none"> <?php echo $data['numero_bien'] ?> </a></td>
+                            <td>
+                                <a target="_blank" href="viewequipo/<?php echo $data['id_equipo'] ?>" style="text-decoration:none">
+                                    <?php echo $data['numero_bien'] ?> 
+                                </a>
+                            </td>
                             <td> <?php echo $data['departamento'] ?> </td>
                             <td> <?php echo $data['usuario'] ?> </td>
                             <td> <?php echo $data['direccion_mac'] ?> </td>
