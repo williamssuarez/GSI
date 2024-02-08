@@ -1,6 +1,7 @@
 $(document).ready( function () {
     $('#tabla_auditoria').DataTable({
         order: [[6, 'desc']],
+        responsive: true,
         dom: 'Bfrtip',
         buttons: [
             {
@@ -10,39 +11,12 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Auditoria GSI - ' + currentDate;
                 },
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
                 },
-                /*customize: async function (xlsx) { DESHABILITADO PQ ETA VAINA NO SIRVE
-                    // Access and modify the ExcelJS workbook here
-                    var workbook = new ExcelJS.Workbook();
-                    await workbook.xlsx.load(xlsx); // Load the generated Excel file
-            
-                    // Customize worksheet
-                    var worksheet = workbook.worksheets[0];
-            
-                    // Example: Set column width
-                    worksheet.getColumn('A').width = 20;
-            
-                    // Example: Apply bold style to header row
-                    var headerRow = worksheet.getRow(1);
-                    headerRow.eachCell(function (cell) {
-                        cell.fill = {
-                            type: 'pattern',
-                            pattern: 'solid',
-                            fgColor: { argb: 'FFFF0000' } // Red color in ARGB format
-                        };
-                        cell.font = { color: { argb: 'FFFFFF' } }; // White text for better contrast
-                    });
-            
-                    // ... Additional customizations
-            
-                    // Return modified workbook
-                    return workbook.xlsx.writeBuffer();
-                  }*/
             },
             {
                 extend: 'pdfHtml5',
@@ -51,7 +25,7 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Auditoria GSI - ' + currentDate;
                 },
                 pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
                 exportOptions: { //OPCIONES DE EXPORTACION
@@ -110,7 +84,7 @@ $(document).ready( function () {
                                             //La imagen debe ser en URI, usa un convertidor online para obtener el URI de una imagen
                                         },
                                         { //2DA COLUMNA ES EL TITULO
-                                            text: 'Equipos Registrados', //Titulo personalizado
+                                            text: 'Auditoria GSI', //Titulo personalizado
                                             alignment: 'center',
                                             fontSize: 14,
                                             bold: true,
@@ -123,7 +97,7 @@ $(document).ready( function () {
                                             text:
                                                 [
                                                     //Imprimiendo la variable rcout declarada en la linea 134
-                                                    { text: 'Equipos Totales: ', bold: true }, rcout.toString() +'\n',
+                                                    { text: 'Registros Totales: ', bold: true }, rcout.toString() +'\n',
                                                     { text: 'Fecha de Generacion de Reporte: ', bold: true }, jsDate.toString() +'\n',
                                                 ]
                                         },{} //CADA FILA PIDE MINIMO 2 COLUMNAS, ASI QUE PONEMOS ESTA VACIA
@@ -185,7 +159,6 @@ $(document).ready( function () {
                 }
             },
         ],
-        responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
             zeroRecords: "Ninguna direccion encontrada",

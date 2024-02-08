@@ -155,15 +155,8 @@ use Models\Auditoria;
                                     title: "Redireccionando...",
                                     text: "Rango de direcciones obtenido!",
                                     icon: "success",
-                                    showConfirmButton: true,
-                                    confirmButtonColor: "#3464eb",
-                                    customClass: {
-                                        confirmButton: "rounded-button" // Identificador personalizado
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'direcciones/new";
-                                    }
+                                    timer: 1000,
+                                    showConfirmButton: false,
                                 }).then(() => {
                                     window.location.href = "' . URL . 'direcciones/new"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
@@ -282,15 +275,8 @@ use Models\Auditoria;
                                             title: "Redireccionando...",
                                             text: "Asignacion a equipo exitosa",
                                             icon: "success",
-                                            showConfirmButton: true,
-                                            confirmButtonColor: "#3464eb",
-                                            customClass: {
-                                                confirmButton: "rounded-button" // Identificador personalizado
-                                            }
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                window.location.href = "' . URL . 'direcciones/index";
-                                            }
+                                            timer: 1500,
+                                            showConfirmButton: false,
                                         }).then(() => {
                                             window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                         });
@@ -333,14 +319,10 @@ use Models\Auditoria;
                         echo '<script>
                         Swal.fire({
                             title: "Equipo no registrado!",
-                            text: "Este equipo no esta registrado, registrelo antes de ingresarlo.",
+                            text: "Este equipo no esta registrado, registrelo para terminar la asignacion de la direccion.",
                             icon: "warning",
-                            showConfirmButton: true,
-                            confirmButtonColor: "#3464eb",
-                            confirmButtonText: "Registrar",
-                            customClass: {
-                                confirmButton: "rounded-button" // Identificador personalizado
-                            }
+                            timer: 1500,
+                            showConfirmButton: false,
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 window.location.href = "' . URL . 'equipos/newregistro";
@@ -378,18 +360,11 @@ use Models\Auditoria;
                                 title: "Redireccionando...",
                                 text: "Asignacion Exitosa!",
                                 icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'direcciones/index";
-                                }
-                            }).then(() => {
-                                window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
-                            });
+                                timer: 1500
+                                showConfirmButton: false,
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'direcciones/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
                         </script>';
                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 

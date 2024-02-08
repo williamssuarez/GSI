@@ -97,10 +97,10 @@
                                             Entregar    
                                         </a>
 
-                                        <a class="btn btn-primary btn-icon-split" href='entregarAdmin/<?php echo $data['id_ingreso'] ?>'>                                
+                                        <!-- <a class="btn btn-primary btn-icon-split" href='entregarAdmin/<?php echo $data['id_ingreso'] ?>'>                                
                                             <i class="fa-solid fa-file-pen"></i>
                                             Reportar    
-                                        </a>
+                                        </a> -->
 
                                         <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
                                             <i class="fa-solid fa-pen-to-square"></i>
