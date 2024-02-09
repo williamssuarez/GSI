@@ -1,6 +1,5 @@
 $(document).ready( function () {
-    $('#tablaequipos_ingresados').DataTable({
-        order: [[2, 'desc']],
+    $('#tabla_departamentos').DataTable({
         dom: 'Bfrtip',
         buttons: [
             {
@@ -10,7 +9,7 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Reporte GSI - ' + currentDate;
                 },
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
@@ -51,13 +50,14 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Reporte GSI - ' + currentDate;
                 },
                 pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
-                    stripNewlines: false //Para mantener saltos de linea (ignorados en este caso)
+                    stripNewlines: false, //Para mantener saltos de linea (ignorados en este caso)
+                    columns: ':not(:last-child:nth-last-child(1))'
                 },
                 customize: function (doc) { //CONFIGURACION Y STYLES DE LA PLANTILLA
 
@@ -110,7 +110,7 @@ $(document).ready( function () {
                                             //La imagen debe ser en URI, usa un convertidor online para obtener el URI de una imagen
                                         },
                                         { //2DA COLUMNA ES EL TITULO
-                                            text: 'Equipos Registrados', //Titulo personalizado
+                                            text: 'Reporte GSI', //Titulo personalizado
                                             alignment: 'center',
                                             fontSize: 14,
                                             bold: true,
@@ -123,7 +123,7 @@ $(document).ready( function () {
                                             text:
                                                 [
                                                     //Imprimiendo la variable rcout declarada en la linea 134
-                                                    { text: 'Equipos Totales: ', bold: true }, rcout.toString() +'\n',
+                                                    { text: 'Registros Totales: ', bold: true }, rcout.toString() +'\n',
                                                     { text: 'Fecha de Generacion de Reporte: ', bold: true }, jsDate.toString() +'\n',
                                                 ]
                                         },{} //CADA FILA PIDE MINIMO 2 COLUMNAS, ASI QUE PONEMOS ESTA VACIA
@@ -188,9 +188,9 @@ $(document).ready( function () {
         responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
-            zeroRecords: "Ningun equipo encontrado",
+            zeroRecords: "Ninguna direccion encontrada",
             info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "Ningun equipo encontrado",
+            infoEmpty: "Ninguna direccion encontrada",
             infoFiltered: "(filtrados desde _MAX_ registros totales)",
             search: "Buscar: ",
             loadingRecords: "Cargando... ",
@@ -201,24 +201,5 @@ $(document).ready( function () {
                 previous: "Anterior"
             }
         }
-    });
-    $("#EntregarOperador").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
-    
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Solo puedes entregar cuando el equipo este completamente listo",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, esta listo",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
-    });
+    })
 } );

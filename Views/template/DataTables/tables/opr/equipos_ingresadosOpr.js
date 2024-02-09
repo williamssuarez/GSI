@@ -1,5 +1,6 @@
 $(document).ready( function () {
-    $('#tablausuarios').DataTable({
+    $('#tablaequipos_ingresadosOpr').DataTable({
+        order: [[2, 'desc']],
         dom: 'Bfrtip',
         buttons: [
             {
@@ -9,39 +10,12 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Equipos Ingresados - ' + currentDate;
                 },
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
                 },
-                /*customize: async function (xlsx) { DESHABILITADO PQ ETA VAINA NO SIRVE
-                    // Access and modify the ExcelJS workbook here
-                    var workbook = new ExcelJS.Workbook();
-                    await workbook.xlsx.load(xlsx); // Load the generated Excel file
-            
-                    // Customize worksheet
-                    var worksheet = workbook.worksheets[0];
-            
-                    // Example: Set column width
-                    worksheet.getColumn('A').width = 20;
-            
-                    // Example: Apply bold style to header row
-                    var headerRow = worksheet.getRow(1);
-                    headerRow.eachCell(function (cell) {
-                        cell.fill = {
-                            type: 'pattern',
-                            pattern: 'solid',
-                            fgColor: { argb: 'FFFF0000' } // Red color in ARGB format
-                        };
-                        cell.font = { color: { argb: 'FFFFFF' } }; // White text for better contrast
-                    });
-            
-                    // ... Additional customizations
-            
-                    // Return modified workbook
-                    return workbook.xlsx.writeBuffer();
-                  }*/
             },
             {
                 extend: 'pdfHtml5',
@@ -50,13 +24,14 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Equipos Ingresados - ' + currentDate;
                 },
                 pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
-                    stripNewlines: false //Para mantener saltos de linea (ignorados en este caso)
+                    stripNewlines: false, //Para mantener saltos de linea (ignorados en este caso)
+                    columns: ':not(:last-child:nth-last-child(1))'
                 },
                 customize: function (doc) { //CONFIGURACION Y STYLES DE LA PLANTILLA
 
@@ -109,7 +84,7 @@ $(document).ready( function () {
                                             //La imagen debe ser en URI, usa un convertidor online para obtener el URI de una imagen
                                         },
                                         { //2DA COLUMNA ES EL TITULO
-                                            text: 'Equipos Registrados', //Titulo personalizado
+                                            text: 'Equipos Ingresados', //Titulo personalizado
                                             alignment: 'center',
                                             fontSize: 14,
                                             bold: true,
@@ -187,9 +162,9 @@ $(document).ready( function () {
         responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
-            zeroRecords: "Ningun operador encontrado",
+            zeroRecords: "Ningun equipo encontrado",
             info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "Ningun operador encontrado",
+            infoEmpty: "Ningun equipo encontrado",
             infoFiltered: "(filtrados desde _MAX_ registros totales)",
             search: "Buscar: ",
             loadingRecords: "Cargando... ",
@@ -200,80 +175,18 @@ $(document).ready( function () {
                 previous: "Anterior"
             }
         }
-    })
-    
-    $("#desactivar").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
-    
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Si decides desactivar esta cuenta de operador, el usuario no podra iniciar sesion hasta ser reactivado",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, entiendo",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
     });
-
-    $("#reactivar").on("click", function (e) {
+    $("#EntregarOperador").on("click", function (e) {
         e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
     
         Swal.fire({
             title: "¿Estás seguro?",
-            text: "Reactivar este operador lo volvera parte de los demas procesos del sistema ¿Estás seguro?",
+            text: "Solo puedes entregar cuando el equipo este completamente listo",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, seguro",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
-    });
-    
-    $("#editarpreguntasseguridad").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
-    
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Si decides editar, tendras que volver a introducir todas las respuestas a las preguntas, y una vez echo no se podra volver",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, entiendo",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
-    });
-    
-    
-    $("#editarcredenciales").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
-    
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Al editar las credenciales tendras que volver a iniciar sesion",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, editar",
+            confirmButtonText: "Sí, esta listo",
             cancelButtonText: "Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {

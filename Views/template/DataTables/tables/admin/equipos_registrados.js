@@ -57,7 +57,8 @@ $(document).ready( function () {
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
-                    stripNewlines: false //Para mantener saltos de linea (ignorados en este caso)
+                    stripNewlines: false, //Para mantener saltos de linea (ignorados en este caso)
+                    columns: ':not(:last-child:nth-last-child(1))'
                 },
                 customize: function (doc) { //CONFIGURACION Y STYLES DE LA PLANTILLA
 

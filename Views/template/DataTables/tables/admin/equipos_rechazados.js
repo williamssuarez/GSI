@@ -1,6 +1,6 @@
 $(document).ready( function () {
-    $('#tabla_auditoria').DataTable({
-        order: [[6, 'desc']],
+
+    $('#tablaequipos_rechazados').DataTable({
         dom: 'Bfrtip',
         buttons: [
             {
@@ -10,7 +10,7 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Equipos Rechazados - ' + currentDate;
                 },
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
@@ -51,13 +51,14 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Equipos Rechazados - ' + currentDate;
                 },
                 pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
-                    stripNewlines: false //Para mantener saltos de linea (ignorados en este caso)
+                    stripNewlines: false, //Para mantener saltos de linea (ignorados en este caso)
+                    columns: ':not(:last-child:nth-last-child(1))'
                 },
                 customize: function (doc) { //CONFIGURACION Y STYLES DE LA PLANTILLA
 
@@ -110,7 +111,7 @@ $(document).ready( function () {
                                             //La imagen debe ser en URI, usa un convertidor online para obtener el URI de una imagen
                                         },
                                         { //2DA COLUMNA ES EL TITULO
-                                            text: 'Equipos Registrados', //Titulo personalizado
+                                            text: 'Equipos Rechazados', //Titulo personalizado
                                             alignment: 'center',
                                             fontSize: 14,
                                             bold: true,
@@ -188,9 +189,9 @@ $(document).ready( function () {
         responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
-            zeroRecords: "Ninguna direccion encontrada",
+            zeroRecords: "No hay entregas rechazadas",
             info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "Ninguna direccion encontrada",
+            infoEmpty: "No hay entregas rechazadas",
             infoFiltered: "(filtrados desde _MAX_ registros totales)",
             search: "Buscar: ",
             loadingRecords: "Cargando... ",
@@ -202,4 +203,5 @@ $(document).ready( function () {
             }
         }
     })
+    
 } );

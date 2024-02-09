@@ -1,5 +1,7 @@
 $(document).ready( function () {
-    $('#tabla_departamentos').DataTable({
+    $('#tabla_auditoria').DataTable({
+        order: [[6, 'desc']],
+        responsive: true,
         dom: 'Bfrtip',
         buttons: [
             {
@@ -184,7 +186,6 @@ $(document).ready( function () {
                 }
             },
         ],
-        responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
             zeroRecords: "Ninguna direccion encontrada",

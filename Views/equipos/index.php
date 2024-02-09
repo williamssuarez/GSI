@@ -40,7 +40,13 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover responsive" id="tablaequipos_ingresados" width="100%" cellspacing="0">
+            <table 
+                <?php if($_SESSION['rol'] == 1) { //TABLA ADMIN ?>
+                    id="tablaequipos_ingresados"
+                <?php } else { //TABLA OPR?>
+                    id="tablaequipos_ingresadosOpr"
+                <?php } ?>
+            class="table table-striped table-bordered table-hover responsive" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Numero de Bien <i class="fa-solid fa-tag" style="color: #279608;"></i></th>
@@ -97,10 +103,10 @@
                                             Entregar    
                                         </a>
 
-                                        <a class="btn btn-primary btn-icon-split" href='entregarAdmin/<?php echo $data['id_ingreso'] ?>'>                                
+                                        <!-- <a class="btn btn-primary btn-icon-split" href='entregarAdmin/<?php echo $data['id_ingreso'] ?>'>                                
                                             <i class="fa-solid fa-file-pen"></i>
                                             Reportar    
-                                        </a>
+                                        </a> -->
 
                                         <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
                                             <i class="fa-solid fa-pen-to-square"></i>
@@ -147,12 +153,12 @@
         </div>
     </div>
 
-    <?php if ($_SESSION['rol'] == 1) { ?>
+    <?php if ($_SESSION['rol'] == 1) { ?> 
 
     <a class="btn btn-success" href="new">
         <i class="fa-solid fa-truck-arrow-right"></i>
         Ingresar
     </a>
 
-    <?php }
+    <?php  } ?>
 

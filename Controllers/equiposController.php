@@ -305,15 +305,8 @@ use Repository\Procesos1 as Repository1;
                                         title: "Exito",
                                         text: "Equipo Ingresado Exitosamente.",
                                         icon: "success",
-                                        showConfirmButton: true,
-                                        confirmButtonColor: "#3464eb",
-                                        customClass: {
-                                            confirmButton: "rounded-button" // Identificador personalizado
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'equipos/index";
-                                        }
+                                        timer: 1000,
+                                        showConfirmButton: false,
                                     }).then(() => {
                                         window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                     });
@@ -961,15 +954,8 @@ use Repository\Procesos1 as Repository1;
                                     title: "Exito",
                                     text: "Equipo Entregado Exitosamente.",
                                     icon: "success",
-                                    showConfirmButton: true,
-                                    confirmButtonColor: "#3464eb",
-                                    customClass: {
-                                        confirmButton: "rounded-button" // Identificador personalizado
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'equipos/salida";
-                                    }
+                                    timer: 1500,
+                                    showConfirmButton: false,
                                 }).then(() => {
                                     window.location.href = "' . URL . 'equipos/salida"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
@@ -1054,15 +1040,8 @@ use Repository\Procesos1 as Repository1;
                                 title: "Exito",
                                 text: "Esperando aprobacion del administrador",
                                 icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'equipos/index";
-                                }
+                                timer: 1000,
+                                showConfirmButton: false,
                             }).then(() => {
                                 window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
@@ -1280,15 +1259,8 @@ use Repository\Procesos1 as Repository1;
                                             title: "Exito",
                                             text: "Entrega rechazada exitosamente, notifiquele al operador asignado",
                                             icon: "success",
-                                            showConfirmButton: true,
-                                            confirmButtonColor: "#3464eb",
-                                            customClass: {
-                                                confirmButton: "rounded-button" // Identificador personalizado
-                                            }
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                window.location.href = "' . URL . 'equipos/rechazosAdmin";
-                                            }
+                                            timer: 1500,
+                                            showConfirmButton: false,
                                         }).then(() => {
                                             window.location.href = "' . URL . 'equipos/rechazosAdmin"; // Esta línea se ejecutará cuando se cierre la alerta.
                                         });
@@ -1405,15 +1377,8 @@ use Repository\Procesos1 as Repository1;
                             title: "Exito",
                             text: "Entrega aprobada",
                             icon: "success",
-                            showConfirmButton: true,
-                            confirmButtonColor: "#3464eb",
-                            customClass: {
-                                confirmButton: "rounded-button" // Identificador personalizado
-                            }
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "' . URL . 'equipos/salida";
-                            }
+                            timer: 1500,
+                            showConfirmButton: false,
                         }).then(() => {
                             window.location.href = "' . URL . 'equipos/salida"; // Esta línea se ejecutará cuando se cierre la alerta.
                         });
