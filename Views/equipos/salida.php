@@ -12,7 +12,19 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-striped table-hover responsive nowrap" id="tablaequipos_salida" width="100%" cellspacing="0">
+            <table
+            
+            <?php if($_SESSION['rol'] == 1){ ?>
+
+                id="tablaequipos_salida""
+
+            <?php } else { ?>
+
+                id="tablaequipos_salidaOpr"
+
+            <?php } ?>
+            
+            class="table table-striped table-hover responsive nowrap" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Equipo <i class="fa-solid fa-tag" style="color: #279608;"></i></th>

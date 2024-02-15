@@ -1,6 +1,7 @@
 $(document).ready( function () {
 
-    $('#tablaequipos_rechazados').DataTable({
+    $('#tablaequipos_registradosOpr').DataTable({
+        responsive: true,
         dom: 'Bfrtip',
         buttons: [
             {
@@ -57,7 +58,8 @@ $(document).ready( function () {
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
-                    stripNewlines: false //Para mantener saltos de linea (ignorados en este caso)
+                    stripNewlines: false, //Para mantener saltos de linea (ignorados en este caso)
+                    columns: ':not(:last-child:nth-last-child(1))'
                 },
                 customize: function (doc) { //CONFIGURACION Y STYLES DE LA PLANTILLA
 
@@ -185,12 +187,11 @@ $(document).ready( function () {
                 }
             },
         ],
-        responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
-            zeroRecords: "No hay entregas rechazadas",
+            zeroRecords: "Ningun operador encontrado",
             info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "No hay entregas rechazadas",
+            infoEmpty: "Ningun operador encontrado",
             infoFiltered: "(filtrados desde _MAX_ registros totales)",
             search: "Buscar: ",
             loadingRecords: "Cargando... ",
@@ -202,5 +203,43 @@ $(document).ready( function () {
             }
         }
     })
+
+    $("#reactivandoequipo").on("click", function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
     
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¿Deseas reactivar este equipo?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, reactivar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirmó, redirige al enlace del botón.
+                window.location.href = $(this).attr("href");
+            }
+        });
+    });
+    $("#desactivandoequipo").on("click", function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
+    
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¿Deseas desactivar este equipo?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, desactivar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirmó, redirige al enlace del botón.
+                window.location.href = $(this).attr("href");
+            }
+        });
+    });
 } );

@@ -1,5 +1,6 @@
 $(document).ready( function () {
-    $('#tablausuarios').DataTable({
+    $('#tablaequipos_ingresadosOpr').DataTable({
+        order: [[2, 'desc']],
         dom: 'Bfrtip',
         buttons: [
             {
@@ -9,7 +10,7 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Equipos Ingresados - ' + currentDate;
                 },
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
@@ -23,7 +24,7 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Usuarios del Sistema - ' + currentDate;
+                    return 'Equipos Ingresados - ' + currentDate;
                 },
                 pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
                 exportOptions: { //OPCIONES DE EXPORTACION
@@ -83,7 +84,7 @@ $(document).ready( function () {
                                             //La imagen debe ser en URI, usa un convertidor online para obtener el URI de una imagen
                                         },
                                         { //2DA COLUMNA ES EL TITULO
-                                            text: 'Usuarios del sistema', //Titulo personalizado
+                                            text: 'Equipos Ingresados', //Titulo personalizado
                                             alignment: 'center',
                                             fontSize: 14,
                                             bold: true,
@@ -96,7 +97,7 @@ $(document).ready( function () {
                                             text:
                                                 [
                                                     //Imprimiendo la variable rcout declarada en la linea 134
-                                                    { text: 'Usuarios Totales: ', bold: true }, rcout.toString() +'\n',
+                                                    { text: 'Equipos Totales: ', bold: true }, rcout.toString() +'\n',
                                                     { text: 'Fecha de Generacion de Reporte: ', bold: true }, jsDate.toString() +'\n',
                                                 ]
                                         },{} //CADA FILA PIDE MINIMO 2 COLUMNAS, ASI QUE PONEMOS ESTA VACIA
@@ -161,9 +162,9 @@ $(document).ready( function () {
         responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
-            zeroRecords: "Ningun operador encontrado",
+            zeroRecords: "Ningun equipo encontrado",
             info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "Ningun operador encontrado",
+            infoEmpty: "Ningun equipo encontrado",
             infoFiltered: "(filtrados desde _MAX_ registros totales)",
             search: "Buscar: ",
             loadingRecords: "Cargando... ",
@@ -174,80 +175,18 @@ $(document).ready( function () {
                 previous: "Anterior"
             }
         }
-    })
-    
-    $("#desactivar").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
-    
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Si decides desactivar esta cuenta de operador, el usuario no podra iniciar sesion hasta ser reactivado",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, entiendo",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
     });
-
-    $("#reactivar").on("click", function (e) {
+    $("#EntregarOperador").on("click", function (e) {
         e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
     
         Swal.fire({
             title: "¿Estás seguro?",
-            text: "Reactivar este operador lo volvera parte de los demas procesos del sistema ¿Estás seguro?",
+            text: "Solo puedes entregar cuando el equipo este completamente listo",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, seguro",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
-    });
-    
-    $("#editarpreguntasseguridad").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
-    
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Si decides editar, tendras que volver a introducir todas las respuestas a las preguntas, y una vez echo no se podra volver",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, entiendo",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
-    });
-    
-    
-    $("#editarcredenciales").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
-    
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Al editar las credenciales tendras que volver a iniciar sesion",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, editar",
+            confirmButtonText: "Sí, esta listo",
             cancelButtonText: "Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {

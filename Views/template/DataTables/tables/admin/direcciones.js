@@ -1,6 +1,6 @@
 $(document).ready( function () {
-    $('#tablaequipos_salida').DataTable({
-        order: [[2, 'desc']],
+    $('#tabla_direcciones').DataTable({
+        order: [[4, 'desc']],
         dom: 'Bfrtip',
         buttons: [
             {
@@ -10,7 +10,7 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Direcciones Asignadas - ' + currentDate;
                 },
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
@@ -24,7 +24,7 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Entregados - ' + currentDate;
+                    return 'Direcciones Asignadas - ' + currentDate;
                 },
                 pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
                 exportOptions: { //OPCIONES DE EXPORTACION
@@ -84,7 +84,7 @@ $(document).ready( function () {
                                             //La imagen debe ser en URI, usa un convertidor online para obtener el URI de una imagen
                                         },
                                         { //2DA COLUMNA ES EL TITULO
-                                            text: 'Equipos Entregados', //Titulo personalizado
+                                            text: 'Equipos Registrados', //Titulo personalizado
                                             alignment: 'center',
                                             fontSize: 14,
                                             bold: true,
@@ -97,7 +97,7 @@ $(document).ready( function () {
                                             text:
                                                 [
                                                     //Imprimiendo la variable rcout declarada en la linea 134
-                                                    { text: 'Equipos Totales: ', bold: true }, rcout.toString() +'\n',
+                                                    { text: 'Direcciones Totales: ', bold: true }, rcout.toString() +'\n',
                                                     { text: 'Fecha de Generacion de Reporte: ', bold: true }, jsDate.toString() +'\n',
                                                 ]
                                         },{} //CADA FILA PIDE MINIMO 2 COLUMNAS, ASI QUE PONEMOS ESTA VACIA
@@ -162,9 +162,9 @@ $(document).ready( function () {
         responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
-            zeroRecords: "Ningun equipo encontrado",
+            zeroRecords: "Ninguna direccion encontrada",
             info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "Ningun equipo encontrado",
+            infoEmpty: "Ninguna direccion encontrada",
             infoFiltered: "(filtrados desde _MAX_ registros totales)",
             search: "Buscar: ",
             loadingRecords: "Cargando... ",
@@ -176,4 +176,23 @@ $(document).ready( function () {
             }
         }
     })
+    $("#liberate").on("click", function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
+    
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¿Deseas liberar esta asignación?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, liberar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirmó, redirige al enlace del botón.
+                window.location.href = $(this).attr("href");
+            }
+        });
+    });
 } );

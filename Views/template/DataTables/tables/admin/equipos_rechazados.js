@@ -1,5 +1,6 @@
 $(document).ready( function () {
-    $('#tablaequipos_aprobacion').DataTable({
+
+    $('#tablaequipos_rechazados').DataTable({
         dom: 'Bfrtip',
         buttons: [
             {
@@ -9,12 +10,39 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Registrados - ' + currentDate;
+                    return 'Equipos Rechazados - ' + currentDate;
                 },
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
                 },
+                /*customize: async function (xlsx) { DESHABILITADO PQ ETA VAINA NO SIRVE
+                    // Access and modify the ExcelJS workbook here
+                    var workbook = new ExcelJS.Workbook();
+                    await workbook.xlsx.load(xlsx); // Load the generated Excel file
+            
+                    // Customize worksheet
+                    var worksheet = workbook.worksheets[0];
+            
+                    // Example: Set column width
+                    worksheet.getColumn('A').width = 20;
+            
+                    // Example: Apply bold style to header row
+                    var headerRow = worksheet.getRow(1);
+                    headerRow.eachCell(function (cell) {
+                        cell.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: 'FFFF0000' } // Red color in ARGB format
+                        };
+                        cell.font = { color: { argb: 'FFFFFF' } }; // White text for better contrast
+                    });
+            
+                    // ... Additional customizations
+            
+                    // Return modified workbook
+                    return workbook.xlsx.writeBuffer();
+                  }*/
             },
             {
                 extend: 'pdfHtml5',
@@ -23,7 +51,7 @@ $(document).ready( function () {
                 title: function(){
                     var currentDate = moment().format('DD-MM-YYYY');
 
-                    return 'Equipos Esperando Aprobacion - ' + currentDate;
+                    return 'Equipos Rechazados - ' + currentDate;
                 },
                 pageSize: 'letter', //TAMAÑO DE LA HOJA, CARTA EN ESTE CASO
                 exportOptions: { //OPCIONES DE EXPORTACION
@@ -83,7 +111,7 @@ $(document).ready( function () {
                                             //La imagen debe ser en URI, usa un convertidor online para obtener el URI de una imagen
                                         },
                                         { //2DA COLUMNA ES EL TITULO
-                                            text: 'Equipos Esperando Aprobacion', //Titulo personalizado
+                                            text: 'Equipos Rechazados', //Titulo personalizado
                                             alignment: 'center',
                                             fontSize: 14,
                                             bold: true,
@@ -161,9 +189,9 @@ $(document).ready( function () {
         responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
-            zeroRecords: "Ningun equipo por aprobar",
+            zeroRecords: "No hay entregas rechazadas",
             info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "Ningun equipo por aprobar",
+            infoEmpty: "No hay entregas rechazadas",
             infoFiltered: "(filtrados desde _MAX_ registros totales)",
             search: "Buscar: ",
             loadingRecords: "Cargando... ",
@@ -175,43 +203,5 @@ $(document).ready( function () {
             }
         }
     })
-
-    $("#aprobar_entrega").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
     
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "¿Deseas aprobar la salida de este equipo?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, aprobar",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
-    }); 
-    $("#rechazar_entrega").on("click", function (e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
-    
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "¿Deseas rechazar la salida de este equipo?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, rechazar",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si se confirmó, redirige al enlace del botón.
-                window.location.href = $(this).attr("href");
-            }
-        });
-    });
 } );

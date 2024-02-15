@@ -335,6 +335,11 @@
 
 
 <script>
+
+    $(document).ready( function () {
+
+    }
+
     document.getElementById('generate-pdf-btn').addEventListener('click', function () {
         $.ajax({
             url: '<?php echo URL; ?>inicio/reportehtml2', // Replace with your actual URL
