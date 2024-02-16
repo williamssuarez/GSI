@@ -92,7 +92,8 @@ class inicioController{
         $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
     
         header('Content-type: application/pdf');
-        return $html2pdf->output('Manual.pdf', 'S');
+        return $html2pdf->output();
+        //return $html2pdf->output('Manual.pdf', 'S');
     }
     
 

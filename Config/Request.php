@@ -5,6 +5,7 @@ class Request{
     private $controlador;
     private $metodo;
     private $argumento;
+    //private $pdf = false;
 
     public function __construct(){
 
@@ -40,10 +41,6 @@ class Request{
 
         //var_dump($ruta);
         
-    }
-
-    public function esPdf(){
-        return (isset($_REQUEST['pdf']) && $_REQUEST['pdf'] == 'true');
     }
 
     public function getControlador(){

@@ -160,16 +160,8 @@ use Repository\Procesos1 as Repository1;
                     title: "Filtro aplicado",
                     text: "Redireccinando",
                     icon: "success",
-                    showConfirmButton: true,
-                    confirmButtonColor: "#3464eb",
-                    confirmButtonText: "Aceptar",
-                    customClass: {
-                        confirmButton: "rounded-button" // Identificador personalizado
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "' . URL . 'auditoria/filtrarRangoFecha";
-                    }
+                    showConfirmButton: false,
+                    timer: 1000,
                 }).then(() => {
                     window.location.href = "' . URL . 'auditoria/filtrarRangoFecha"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
@@ -241,16 +233,8 @@ use Repository\Procesos1 as Repository1;
                     title: "Filtro aplicado",
                     text: "Redireccinando",
                     icon: "success",
-                    showConfirmButton: true,
-                    confirmButtonColor: "#3464eb",
-                    confirmButtonText: "Aceptar",
-                    customClass: {
-                        confirmButton: "rounded-button" // Identificador personalizado
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "' . URL . 'auditoria/filtroCambio";
-                    }
+                    showConfirmButton: false,
+                    timer: 1000,
                 }).then(() => {
                     window.location.href = "' . URL . 'auditoria/filtroCambio"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
@@ -323,16 +307,8 @@ use Repository\Procesos1 as Repository1;
                     title: "Filtro aplicado",
                     text: "Redireccinando",
                     icon: "success",
-                    showConfirmButton: true,
-                    confirmButtonColor: "#3464eb",
-                    confirmButtonText: "Aceptar",
-                    customClass: {
-                        confirmButton: "rounded-button" // Identificador personalizado
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "' . URL . 'auditoria/filtroUsuario";
-                    }
+                    showConfirmButton: false,
+                    timer: 1000
                 }).then(() => {
                     window.location.href = "' . URL . 'auditoria/filtroUsuario"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
@@ -498,16 +474,8 @@ use Repository\Procesos1 as Repository1;
                 title: "Deshaciendo filtro",
                 text: "Redireccinando",
                 icon: "success",
-                showConfirmButton: true,
-                confirmButtonColor: "#3464eb",
-                confirmButtonText: "Aceptar",
-                customClass: {
-                    confirmButton: "rounded-button" // Identificador personalizado
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "' . URL . 'auditoria/index";
-                }
+                showConfirmButton: false,
+                timer: 1000,
             }).then(() => {
                 window.location.href = "' . URL . 'auditoria/index"; // Esta línea se ejecutará cuando se cierre la alerta.
             });
@@ -541,16 +509,8 @@ use Repository\Procesos1 as Repository1;
                 title: "Deshaciendo filtro",
                 text: "Redireccinando",
                 icon: "success",
-                showConfirmButton: true,
-                confirmButtonColor: "#3464eb",
-                confirmButtonText: "Aceptar",
-                customClass: {
-                    confirmButton: "rounded-button" // Identificador personalizado
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "' . URL . 'auditoria/index";
-                }
+                showConfirmButton: false,
+                timer: 1000,
             }).then(() => {
                 window.location.href = "' . URL . 'auditoria/index"; // Esta línea se ejecutará cuando se cierre la alerta.
             });
@@ -585,16 +545,8 @@ use Repository\Procesos1 as Repository1;
                 title: "Deshaciendo filtro",
                 text: "Redireccinando",
                 icon: "success",
-                showConfirmButton: true,
-                confirmButtonColor: "#3464eb",
-                confirmButtonText: "Aceptar",
-                customClass: {
-                    confirmButton: "rounded-button" // Identificador personalizado
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "' . URL . 'auditoria/index";
-                }
+                showConfirmButton: false,
+                timer: 1000,
             }).then(() => {
                 window.location.href = "' . URL . 'auditoria/index"; // Esta línea se ejecutará cuando se cierre la alerta.
             });

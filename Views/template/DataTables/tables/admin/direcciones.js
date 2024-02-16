@@ -84,7 +84,7 @@ $(document).ready( function () {
                                             //La imagen debe ser en URI, usa un convertidor online para obtener el URI de una imagen
                                         },
                                         { //2DA COLUMNA ES EL TITULO
-                                            text: 'Equipos Registrados', //Titulo personalizado
+                                            text: 'Direcciones Asignadas', //Titulo personalizado
                                             alignment: 'center',
                                             fontSize: 14,
                                             bold: true,

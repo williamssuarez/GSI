@@ -3,6 +3,7 @@
 class Enrutador{
 
     public static function run(Request $request){
+        
         $controlador = $request->getControlador() . "Controller";
         $ruta = ROOT . "Controllers" . DS . $controlador . ".php";
         //print "<br>".$ruta."<br>";
@@ -40,18 +41,11 @@ class Enrutador{
 
         $ruta = ROOT . "Views" . DS . $controllerView . DS . $metodo . ".php";
         //print "<br>".$ruta."<br>";
-        if($controllerView == "reportes"){
-            //NO CARGAR NINGUNA VISTA SI EL CONTROLADOR ES DE REPORTES
-
+        if(is_readable($ruta)){
+            require_once $ruta;
         } else {
-
-            //CASO CONTRARIO, CARGAR VISTA
-            if(is_readable($ruta)){
-                require_once $ruta;
-            } else {
-                $ruta = ROOT . "Views" . DS . "error" . DS . "404" . ".php";
-                require_once $ruta;
-            }
+            $ruta = ROOT . "Views" . DS . "error" . DS . "404" . ".php";
+            require_once $ruta;
         }
     }
 }

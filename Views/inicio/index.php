@@ -336,17 +336,35 @@
 
 <script>
 
-    $(document).ready( function () {
 
-    }
+        document.getElementById('generate-pdf-btn').addEventListener('click', function () {
+            
+            $.ajax({
+                //url: '<?php echo URL; ?>Views/template/pdf/download_pdf.php',
+                url: 'http://localhost/pdf/download_pdf.php',
+                type: 'GET',
+                xhrFields: {
+                    responseType: 'blob' // Important for blob response
+                },
+                success: function(data) {
+                    console.log('Exitoso el ajax');
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(data);
+                    link.download = 'manual.pdf';
+                    link.click();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                console.error('AJAX error:', textStatus, errorThrown);
+                }
+            });
 
-    document.getElementById('generate-pdf-btn').addEventListener('click', function () {
-        $.ajax({
+        /*$.ajax({
             url: '<?php echo URL; ?>inicio/reportehtml2', // Replace with your actual URL
             type: 'POST',
             data: { generate_pdf: true }, // Optional if not using hidden field
             dataType: 'text', // Expect plain text PDF content
             success: function (pdfContent) {
+                console.log('Exitoso el ajax');
                 if (pdfContent) {
                     // Create a blob object with the PDF content
                     const blob = new Blob([pdfContent], { type: 'application/pdf' });
@@ -366,6 +384,6 @@
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('AJAX error:', textStatus, errorThrown);
             }
-        });
+        });*/
     });
 </script>
