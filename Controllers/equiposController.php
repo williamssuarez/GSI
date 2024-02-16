@@ -182,7 +182,7 @@ use Repository\Procesos1 as Repository1;
                     //OBTENIENDO EL ID DEL USUARIO
                     $recibido_por = $_POST['recibido_por'];
                     
-                    $problema = $_POST['problema'];
+                    $problema = trim($_POST['problema']);
     
                     //VERIFICANDO SI EL EQUIPO ESTA REGISTRADO
                     $this->equipo->set('numero_bien', $numero_bien);
@@ -234,16 +234,8 @@ use Repository\Procesos1 as Repository1;
                                 title: "Equipo ya en soporte",
                                 text: "Este equipo se encuentra todavia ingresado en soporte, cierre el caso para poder ingresar de nuevo",
                                 icon: "warning",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                confirmButtonText: "Registrar",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'equipos/index";
-                                }
+                                timer: 1000,
+                                showConfirmButton: false,
                             }).then(() => {
                                 window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
@@ -839,43 +831,59 @@ use Repository\Procesos1 as Repository1;
 
         public function edit($id){
 
-                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if($_SESSION['rol'] == 10){
 
-                    $nombre = $_POST['nombre'];
-                    $apellido = $_POST['apellido'];
-                    $cedula = $_POST['cedula_identidad'];
-                    $correo = $_POST['correo'];
+                    if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    $this->equipo_ingresado->set('id_operador', $id);
-                    $this->equipo_ingresado->set('nombre', $nombre);
-                    $this->equipo_ingresado->set('apellido', $apellido);
-                    $this->equipo_ingresado->set('cedula_identidad', $cedula);
-                    $this->equipo_ingresado->set('correo', $correo);
+                        $nombre = $_POST['nombre'];
+                        $apellido = $_POST['apellido'];
+                        $cedula = $_POST['cedula_identidad'];
+                        $correo = $_POST['correo'];
     
-                    $this->equipo_ingresado->edit();
-    
-                    //REDIRECCIONANDO CON UN MENSAJE DE EXITO
-                    echo '<script>
-                    Swal.fire({
-                        title: "Exito",
-                        text: "Equipo Editado Exitosamente.",
-                        icon: "info",
-                        showConfirmButton: true,
-                        confirmButtonColor: "#3464eb",
-                        customClass: {
-                            confirmButton: "rounded-button" // Identificador personalizado
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "' . URL . 'equipos/index";
-                        }
-                    }).then(() => {
-                        window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
-                    });
-                    </script>';
-                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-    
-                }            
+                        $this->equipo_ingresado->set('id_operador', $id);
+                        $this->equipo_ingresado->set('nombre', $nombre);
+                        $this->equipo_ingresado->set('apellido', $apellido);
+                        $this->equipo_ingresado->set('cedula_identidad', $cedula);
+                        $this->equipo_ingresado->set('correo', $correo);
+        
+                        $this->equipo_ingresado->edit();
+        
+                        //REDIRECCIONANDO CON UN MENSAJE DE EXITO
+                        echo '<script>
+                        Swal.fire({
+                            title: "Exito",
+                            text: "Equipo Editado Exitosamente.",
+                            icon: "info",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'equipos/index";
+                            }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                        });
+                        </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+        
+                    }
+                    
+                    $this->equipo_ingresado->set('id_equipo',$id);
+
+                    $data['titulo'] = "Editando Datos del Equipo";
+                    $data['equipo'] = $this->equipo->getDataEdit();
+        
+                    //var_dump($data['operador']);
+                    //die(); 
+        
+                    return $data;
+
+                } else {
+                    //NO ES ADMIN, REDIRIGIR
+                }
             
         }
 

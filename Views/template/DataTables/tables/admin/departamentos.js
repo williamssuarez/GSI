@@ -15,33 +15,6 @@ $(document).ready( function () {
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
                 },
-                /*customize: async function (xlsx) { DESHABILITADO PQ ETA VAINA NO SIRVE
-                    // Access and modify the ExcelJS workbook here
-                    var workbook = new ExcelJS.Workbook();
-                    await workbook.xlsx.load(xlsx); // Load the generated Excel file
-            
-                    // Customize worksheet
-                    var worksheet = workbook.worksheets[0];
-            
-                    // Example: Set column width
-                    worksheet.getColumn('A').width = 20;
-            
-                    // Example: Apply bold style to header row
-                    var headerRow = worksheet.getRow(1);
-                    headerRow.eachCell(function (cell) {
-                        cell.fill = {
-                            type: 'pattern',
-                            pattern: 'solid',
-                            fgColor: { argb: 'FFFF0000' } // Red color in ARGB format
-                        };
-                        cell.font = { color: { argb: 'FFFFFF' } }; // White text for better contrast
-                    });
-            
-                    // ... Additional customizations
-            
-                    // Return modified workbook
-                    return workbook.xlsx.writeBuffer();
-                  }*/
             },
             {
                 extend: 'pdfHtml5',

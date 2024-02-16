@@ -1,6 +1,5 @@
 $(document).ready( function () {
     $('#tablausuarios').DataTable({
-        responsive: true,
         dom: 'Bfrtip',
         buttons: [
             {
@@ -159,6 +158,7 @@ $(document).ready( function () {
                 }
             },
         ],
+        responsive: true,
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
             zeroRecords: "Ningun operador encontrado",

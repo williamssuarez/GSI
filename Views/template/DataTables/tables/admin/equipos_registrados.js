@@ -15,6 +15,7 @@ $(document).ready( function () {
                 exportOptions: { //OPCIONES DE EXPORTACION
                     search: 'applied', //Para aceptar reporte de una busqueda
                     order: 'applied', //Para mantener el orden aplicado en la datatable
+                    columns: ':not(:last-child:nth-last-child(2))'
                 },
                 /*customize: async function (xlsx) { DESHABILITADO PQ ETA VAINA NO SIRVE
                     // Access and modify the ExcelJS workbook here
