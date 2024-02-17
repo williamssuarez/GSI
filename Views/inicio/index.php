@@ -427,8 +427,8 @@
     document.getElementById('generate-pdf-btn').addEventListener('click', function () {
         
         $.ajax({
-            //url: '<?php echo URL; ?>Views/template/pdf/download_pdf.php',
-            url: 'http://localhost/pdf/download_pdf.php',
+            url: '<?php echo URL; ?>inicio/reportehtml2',
+            //url: 'http://localhost/pdf/download_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob' // Important for blob response
