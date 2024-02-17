@@ -8,6 +8,13 @@
                 Manual PDF
         </button>
 
+        <button id="backup-button" class="btn btn-sm btn-success shadow-sm">
+            Backup Database
+        </button>
+        <br>
+        <div id="backup-response"></div>
+
+
 </div>
 
 
@@ -329,6 +336,12 @@
                 </span>
             </div>
         </div>
+        <div class="card-body">
+            <div class="chart-pie pt-4 pb-2">
+                <!-- <canvas id="myPieChart"></canvas> -->
+                <div id="piechart-container"></div>
+            </div>
+        </div>
     </div>
 </div>
 </div> 
@@ -336,54 +349,100 @@
 
 <script>
 
+    document.getElementById("backup-button").addEventListener("click", function() {
+    // Prepare the Ajax request
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "<?php echo URL; ?>inicio/backup", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        document.getElementById('generate-pdf-btn').addEventListener('click', function () {
-            
-            $.ajax({
-                //url: '<?php echo URL; ?>Views/template/pdf/download_pdf.php',
-                url: 'http://localhost/pdf/download_pdf.php',
-                type: 'GET',
-                xhrFields: {
-                    responseType: 'blob' // Important for blob response
-                },
-                success: function(data) {
-                    console.log('Exitoso el ajax');
-                    var link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(data);
-                    link.download = 'manual.pdf';
-                    link.click();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                console.error('AJAX error:', textStatus, errorThrown);
-                }
-            });
+    // Display a loading message
+    document.getElementById("backup-response").innerHTML = "Creating backup...";
 
-        /*$.ajax({
-            url: '<?php echo URL; ?>inicio/reportehtml2', // Replace with your actual URL
-            type: 'POST',
-            data: { generate_pdf: true }, // Optional if not using hidden field
-            dataType: 'text', // Expect plain text PDF content
-            success: function (pdfContent) {
+    // Send the Ajax request
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+            // Handle successful backup
+            document.getElementById("backup-response").innerHTML = xhr.responseText;
+        } else {
+            // Handle errors
+            console.error("Error:", xhr.status, xhr.responseText);
+            document.getElementById("backup-response").innerHTML = "Error occurred during backup.";
+        }
+        }
+    };
+
+    // Prompt for storage location (replace with your preferred method)
+    var location = prompt("Enter desired storage location for the backup file:");
+    if (location) {
+        xhr.send("location=" + encodeURIComponent(location));
+    } else {
+        document.getElementById("backup-response").innerHTML = "Backup cancelled.";
+    }
+    });
+
+
+    //$(document).ready(function() {
+    /*document.addEventListener("DOMContentLoaded", function() {
+        $.ajax({
+            //url: "path/to/piechart.php",
+            url: '<?php echo URL; ?>inicio/pieChart',
+            method: "POST",
+            contentType: "application/json",
+            dataType: "json",
+            /*data: {
+                // Any additional data to be sent to the pieChart() method
+            },
+            success: function(response) {
+                console.log('exito el ajax del pieChart');
+                // Parse the JSON response data
+                var data = JSON.parse(response);
+
+                // Create a pie chart using Chart.js
+                var ctx = document.getElementById("piechart-container").getContext("2d");
+                var myChart = new Chart(ctx, {
+                    type: "pie",
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: [
+                                "#FF0000",
+                                "#00FF00",
+                                "#FFFF00",
+                                "#0000FF"
+                            ]
+                        }]
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors that occur during the Ajax request
+                console.log(error);
+            }
+        });
+    });*/
+
+
+    document.getElementById('generate-pdf-btn').addEventListener('click', function () {
+        
+        $.ajax({
+            //url: '<?php echo URL; ?>Views/template/pdf/download_pdf.php',
+            url: 'http://localhost/pdf/download_pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob' // Important for blob response
+            },
+            success: function(data) {
                 console.log('Exitoso el ajax');
-                if (pdfContent) {
-                    // Create a blob object with the PDF content
-                    const blob = new Blob([pdfContent], { type: 'application/pdf' });
-
-                    // Create a download link and trigger download
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = 'Manual.pdf';
-                    link.click();
-
-                    // Optionally clean up the temporary object URL
-                    URL.revokeObjectURL(link.href);
-                } else {
-                    console.error('PDF generation failed!');
-                }
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(data);
+                link.download = 'manual.pdf';
+                link.click();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.error('AJAX error:', textStatus, errorThrown);
+            console.error('AJAX error:', textStatus, errorThrown);
             }
-        });*/
+        });
     });
 </script>

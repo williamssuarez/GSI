@@ -6,6 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 //HTML2PDF
 use Spipu\Html2Pdf\Html2Pdf;
 
+use Models\Conexion;
 use Repository\Procesos1;
 use Models\Equipos_ingresados;
 use Models\Usuario;
@@ -17,9 +18,11 @@ class inicioController{
     private $equipos_ingresados;
     private $usuarios;
     private $auditoria;
+    private $conexion;
 
     public function __construct()
     {
+        $this->conexion = new Conexion();
         $this->proceso1 = new Procesos1();
         $this->equipos_ingresados = new Equipos_ingresados();
         $this->usuarios = new Usuario();
@@ -95,9 +98,33 @@ class inicioController{
         return $html2pdf->output();
         //return $html2pdf->output('Manual.pdf', 'S');
     }
-    
 
-    public function pieChart(){
+    public function backup(){
+
+        // Get the provided storage location
+        $location = $_POST["location"];
+        $date = date("Y-m-d_H-i-s");
+
+        // Generate a unique filename
+        $filename = "backup_" . $date;
+
+        // Generate the backup command
+        //$command = "mysqldump -u $db_user -p$db_password $db_name > $location/$filename";
+
+        // Execute the backup command
+        $result = $this->conexion->respaldo($location, $filename);
+
+        if ($result !== false) {
+        echo "Backup created successfully: $location/$filename";
+        } else {
+        echo "Error creating backup.";
+        }
+
+    }
+    
+    public function pieChart() {
+
+        ob_start();
 
         //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
         $this->usuarios->set('usuario', $_SESSION['usuario']);
@@ -110,7 +137,6 @@ class inicioController{
         $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
         $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
         $datos['aprobacion'] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
-        
 
         // Simulación de datos para propósitos de ejemplo
         $data = array(
@@ -119,10 +145,12 @@ class inicioController{
         );
 
         // Convierte los datos a formato JSON y envíalos de vuelta
+        header('Content-Type: application/json');
         echo json_encode($data);
 
-
+        ob_clean();
     }
+
 
 }
 

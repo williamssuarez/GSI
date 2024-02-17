@@ -58,6 +58,44 @@ class Conexion{
         return $datos;
     }
 
+    public function respaldo($location, $filename){
+
+        $db_user = $this->datos['user'];
+        $db_password = $this->datos['password'];
+        $name = $filename.".sql";
+
+        $sql = "mysqldump -u root -p gsi > C:/xampp/htdocs/GSI/pdf/$name";
+
+        $result = exec($sql);
+
+        if ($result !== false) {
+            // Backup successful
+            return true;
+        } else {
+            // Handle errors
+            return false;
+        }
+
+    }
+
+    public function auditarDelete(){
+
+        /*$sql = "INSERT INTO auditoria 
+                (tipo_cambio, tabla_afectada, registro_afectado, valor_antes, valor_despues, usuario)
+                VALUES('{$this->tipo_cambio}', 
+                        '{$this->tabla_afectada}', 
+                        '{$this->registro_afectado}', 
+                       JSON_OBJECT('{$this->json_clave1}', '{$this->json_valor1}', 
+                                    '{$this->json_clave2}', '{$this->json_valor2}', 
+                                    '{$this->json_clave3}', '{$this->json_valor3}'), 
+                       '{$this->valor_despues}', 
+                       '{$this->usuario}')";
+
+        // Ejecutar la consulta
+        $this->con->consultaSimple($sql);*/
+    }
+
+
 
 }
 ?>
