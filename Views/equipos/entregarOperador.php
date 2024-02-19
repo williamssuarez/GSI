@@ -78,3 +78,7 @@
 
 
 </script>
+
+<?php
+    require_once "Views/footers/footerOpr.php";
+?>

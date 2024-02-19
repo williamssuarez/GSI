@@ -71,5 +71,12 @@
 
 
 <script src="<?php echo URL; ?>Views/template/js/scripts/getFechaActual.js" ></script>
+<?php
+if($_SESSION['rol'] == 1) { //es admin
+    require_once "Views/footers/footer.php";
+} else {
+    require_once "Views/footers/footerOpr.php";
+}
+?>
 
 

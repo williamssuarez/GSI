@@ -300,7 +300,7 @@ class Equipos_ingresados{
     public function verificarRechazosTotales(){
 
         $sql = "SELECT
-                COUNT(*) as cuenta
+                COUNT(*) as rechazos
                 FROM
                 equipos_rechazados t1, equipos_ingresados t2
                 WHERE

@@ -4,26 +4,33 @@
 require __DIR__.'/../vendor/autoload.php';
 
 //HTML2PDF
+use Mpdf\HTMLParserMode;
 use Spipu\Html2Pdf\Html2Pdf;
+use Mpdf\Mpdf;
+
+//PLANTILLA MPDF
+use Controllers\plantillasController;
+
+//MYSQLDUMP-PHP PARA EL BACKUP
+use Ifsnop\Mysqldump as IMysqldump;
 
 use Models\Conexion;
-use Repository\Procesos1;
 use Models\Equipos_ingresados;
 use Models\Usuario;
 use Models\Auditoria;
 
 class inicioController{
 
-    private $proceso1;
     private $equipos_ingresados;
     private $usuarios;
     private $auditoria;
     private $conexion;
+    private $plantilla;
 
     public function __construct()
     {
         $this->conexion = new Conexion();
-        $this->proceso1 = new Procesos1();
+        $this->plantilla = new plantillasController();
         $this->equipos_ingresados = new Equipos_ingresados();
         $this->usuarios = new Usuario();
         $this->auditoria = new Auditoria();
@@ -91,65 +98,57 @@ class inicioController{
     public function reportehtml2() {
         ob_clean(); // Clear output buffer
     
-        $html2pdf = new Html2Pdf();
-        $plantilla = require_once "plantilla.html";
-        $html2pdf->writeHTML($plantilla);
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+        ]);
+        //require __DIR__.'/../pdf/plantilla.php';
+        //$plantilla = require_once "plantilla.php";
+
+        $imagePath = __DIR__ . '/../pdf/img/LogoAlc.png';
+        $imagePath2 = __DIR__ . '/../pdf/img/22.png'; // Adjust path as needed
+        $templateContent = $this->plantilla->getPlantilla();
+        $stylesheet = file_get_contents(__DIR__ . '/../pdf/styles/style.css');
+        $imagePathArray = [$imagePath, $imagePath2];
+        $replaceStringArray = ['[logo_path]', '[logo_path2]'];
+
+        $html = str_replace($replaceStringArray, $imagePathArray, $templateContent);
+
+
+        $mpdf->writeHTML($stylesheet, HTMLParserMode::HEADER_CSS);
+        $mpdf->writeHTML($html);
     
         header('Content-type: application/pdf');
-        return $html2pdf->output();
-        //return $html2pdf->output('Manual.pdf', 'S');*/
+        return $mpdf->output();
     }
 
     public function backup(){
 
         // Get the provided storage location
-        $location = $_POST["location"];
+        /*$location = $_POST["location"];
         $date = date("Y-m-d_H-i-s");
 
         // Generate a unique filename
         $filename = "backup_" . $date;
 
-        // Generate the backup command
-        //$command = "mysqldump -u $db_user -p$db_password $db_name > $location/$filename";
+        try {
+            $dump = new IMysqldump\Mysqldump('mysql:host=localhost;dbname=gsi', 'root', 'password');
+            $dump->start($location . $filename.'.sql');
+        } catch (\Exception $e) {
+            echo 'mysqldump-php error: ' . $e->getMessage();
+        }*/
 
-        // Execute the backup command
-        $result = $this->conexion->respaldo($location, $filename);
+        $batch = ROOT . "mysqlbackup.bat";
 
-        if ($result !== false) {
-        echo "Backup created successfully: $location/$filename";
+        $output = shell_exec("C:\\xampp\\htdocs\\GSI\\mysqlbackup.bat"); // Capture errors
+        if (strpos($output, "Backup failed") !== false) {
+            echo "Backup failed: " . $output;
+            echo $batch;
         } else {
-        echo "Error creating backup.";
+            echo "Backup successful";
+            echo $batch;
         }
 
-    }
-    
-    public function pieChart() {
 
-        ob_start();
-
-        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
-        $this->usuarios->set('usuario', $_SESSION['usuario']);
-        $id_user = $this->usuarios->getIdUserbyUsuario();
-        $user = $id_user['id_user'];
-
-        //OBTENIENDO LOS EQUIPOS RECHAZADOS DEL OPERADOR
-        $this->equipos_ingresados->set('usuario', $id_user['id_user']);
-        $datos['rechazos'] = $this->equipos_ingresados->verificarRechazosTotales();
-        $datos['pendiente'] = $this->equipos_ingresados->getIngresosTotalesEquipos();
-        $datos['entregado'] = $this->equipos_ingresados->getIngresosTotalesEntregados();
-        $datos['aprobacion'] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
-
-        // Simulación de datos para propósitos de ejemplo
-        $data = array(
-            "labels" => ["Ingresados", "Entregados", "En Revision", "Entregas Rechazadas"],
-            "data" => [$datos['pendiente'], $datos['entregado'], $datos['aprobacion'], $datos['rechazos']]
-        );
-
-        // Convierte los datos a formato JSON y envíalos de vuelta
-        header('Content-Type: application/json');
-        echo json_encode($data);
-
-        ob_clean();
     }
 
 

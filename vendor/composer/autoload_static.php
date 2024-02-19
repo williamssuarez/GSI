@@ -31,6 +31,10 @@ class ComposerStaticInitdeb97d2cf032035bb59b22c1f6fd9431
             'Mpdf\\PsrHttpMessageShim\\' => 24,
             'Mpdf\\' => 5,
         ),
+        'I' => 
+        array (
+            'Ifsnop\\' => 7,
+        ),
         'D' => 
         array (
             'DeepCopy\\' => 9,
@@ -65,6 +69,10 @@ class ComposerStaticInitdeb97d2cf032035bb59b22c1f6fd9431
         'Mpdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'Ifsnop\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ifsnop/mysqldump-php/src/Ifsnop',
         ),
         'DeepCopy\\' => 
         array (

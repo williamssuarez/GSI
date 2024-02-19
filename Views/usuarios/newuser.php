@@ -111,3 +111,6 @@
 </div>
 
 <script src="<?php echo URL; ?>Views/template/js/scripts/validarFormOperadores.js"></script>
+<?php
+    require_once "Views/footers/footer.php";
+?>

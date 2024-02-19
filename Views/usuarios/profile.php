@@ -150,3 +150,10 @@
         </div>
     </div>
 </div>
+<?php
+if($_SESSION['rol'] == 1) { //es admin
+    require_once "Views/footers/footer.php";
+} else {
+    require_once "Views/footers/footerOpr.php";
+}
+?>

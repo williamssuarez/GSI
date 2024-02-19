@@ -63,3 +63,6 @@
             
     </div>
 </div>
+<?php
+    require_once "Views/footers/footer.php";
+?>

@@ -22,14 +22,14 @@ Config\Autoload::run();
 
             ob_start();
             require_once "Views/headers/headers.php";
-            require_once "Views/adminTemplate.php";
+            //require_once "Views/adminTemplate.php";
             ob_get_contents();
 
 
         }elseif($_SESSION['rol'] == 2){
             ob_start();
             require_once "Views/headers/headersOperador.php";
-            require_once "Views/operadorTemplate.php";
+            //require_once "Views/operadorTemplate.php";
             ob_get_contents();
         }
 

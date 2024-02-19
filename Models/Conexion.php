@@ -58,23 +58,20 @@ class Conexion{
         return $datos;
     }
 
-    public function respaldo($location, $filename){
+    public function respaldo(){
 
+        $db_host = $this->datos['host'];
         $db_user = $this->datos['user'];
         $db_password = $this->datos['password'];
-        $name = $filename.".sql";
+        $db_name = $this->datos['db'];
 
-        $sql = "mysqldump -u root -p gsi > C:/xampp/htdocs/GSI/pdf/$name";
+        $fecha = date("Y-m-d");
 
-        $result = exec($sql);
+        $name = $db_name."_". $fecha .".sql";
 
-        if ($result !== false) {
-            // Backup successful
-            return true;
-        } else {
-            // Handle errors
-            return false;
-        }
+        $dump = "mysqldump -h$db_host -u$db_user -p$db_password --opt $db_name > $name";
+
+        system($dump, $output);
 
     }
 

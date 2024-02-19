@@ -8,12 +8,14 @@
                 Manual PDF
         </button>
 
-        <button id="backup-button" class="btn btn-sm btn-success shadow-sm">
-            Backup Database
-        </button>
-        <br>
-        <div id="backup-response"></div>
+    <?php if($_SESSION['rol'] == 1){ //es admin, puede ejecutar el respaldo ?>
 
+        <button id="backup-button" class="btn btn-sm btn-success shadow-sm">
+            <i class="fas fa-solid fa-database fa-sm text-white-50"></i>
+            Respaldar Base de Datos
+        </button>
+
+    <?php } ?>
 
 </div>
 
@@ -207,7 +209,7 @@
 
 <?php } else { //no es admin?>
 
-    <?php if($data['rechazos']['cuenta'] > 0){ ?>
+    <?php if($data['rechazos']['rechazos'] > 0){ ?>
     <div class="col-xl-3 col-md-6 mb-4">
                                 <div class="card border-left-danger shadow h-100 py-2">
                                     <div class="card-body">
@@ -217,7 +219,7 @@
                                                     Entregas Rechazadas</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
 
-                                                    <?php echo $data['rechazos']['cuenta'] ?>
+                                                    <?php echo $data['rechazos']['rechazos'] ?>
 
                                                 </div>
                                                 <a class="btn btn-outline-danger" href="<?php echo URL; ?>equipos/rechazosOperador">
@@ -319,27 +321,8 @@
         <!-- Card Body -->
         <div class="card-body">
             <div class="chart-pie pt-4 pb-2">
-                <canvas id="myPieChart"></canvas>
-            </div>
-            <div class="mt-4 text-center small">
-                <span class="mr-2">
-                    <i class="fas fa-circle text-primary"></i> Ingresados
-                </span>
-                <span class="mr-2">
-                    <i class="fas fa-circle text-success"></i> Entregados
-                </span>
-                <span class="mr-2">
-                    <i class="fas fa-circle text-info"></i> En Revision
-                </span>
-                <span class="mr-2">
-                    <i class="fas fa-circle text-danger"></i> Rechazos
-                </span>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="chart-pie pt-4 pb-2">
-                <!-- <canvas id="myPieChart"></canvas> -->
-                <div id="piechart-container"></div>
+                <!--<div id="piechart-container"></div>-->
+                <canvas id="piechart-container"></canvas>
             </div>
         </div>
     </div>
@@ -350,78 +333,71 @@
 <script>
 
     document.getElementById("backup-button").addEventListener("click", function() {
-    // Prepare the Ajax request
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "<?php echo URL; ?>inicio/backup", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    // Display a loading message
-    document.getElementById("backup-response").innerHTML = "Creating backup...";
+        // Use SweetAlert to prompt for storage location
+        Swal.fire({
+            title: "Iniciar respaldo",
+            text: "NOTA: El respaldo sera generado dentro de la carpeta del proyecto, la ruta es: C:/xampp/htdocs/GSI/backup",
+            showCancelButton: true,
+            cancelButtonColor: "#d33",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Iniciar Backup",
+            cancelButtonText: "Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (location) => {
+                return new Promise((resolve) => {
+                    // Send AJAX request with the provided location
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "<?php echo URL; ?>inicio/backup", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    // Send the Ajax request
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-            // Handle successful backup
-            document.getElementById("backup-response").innerHTML = xhr.responseText;
-        } else {
-            // Handle errors
-            console.error("Error:", xhr.status, xhr.responseText);
-            document.getElementById("backup-response").innerHTML = "Error occurred during backup.";
-        }
-        }
-    };
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            resolve(xhr.responseText); // Resolve with server response
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Ha ocurrido un error durante la generacion del backup',
+                            });
+                        }
+                    };
 
-    // Prompt for storage location (replace with your preferred method)
-    var location = prompt("Enter desired storage location for the backup file:");
-    if (location) {
-        xhr.send("location=" + encodeURIComponent(location));
-    } else {
-        document.getElementById("backup-response").innerHTML = "Backup cancelled.";
-    }
-    });
+                    xhr.onerror = function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error de red',
+                            text: 'Ha ocurrido un error de al enviar la solicitud de respaldo, intente de nuevo',
+                        });
+                    };
 
-
-    //$(document).ready(function() {
-    /*document.addEventListener("DOMContentLoaded", function() {
-        $.ajax({
-            //url: "path/to/piechart.php",
-            url: '<?php echo URL; ?>inicio/pieChart',
-            method: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            /*data: {
-                // Any additional data to be sent to the pieChart() method
-            },
-            success: function(response) {
-                console.log('exito el ajax del pieChart');
-                // Parse the JSON response data
-                var data = JSON.parse(response);
-
-                // Create a pie chart using Chart.js
-                var ctx = document.getElementById("piechart-container").getContext("2d");
-                var myChart = new Chart(ctx, {
-                    type: "pie",
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            data: data.data,
-                            backgroundColor: [
-                                "#FF0000",
-                                "#00FF00",
-                                "#FFFF00",
-                                "#0000FF"
-                            ]
-                        }]
-                    }
+                    xhr.send("location=" + encodeURIComponent(location));
                 });
             },
-            error: function(xhr, status, error) {
-                // Handle any errors that occur during the Ajax request
-                console.log(error);
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Handle successful backup response from server
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Backup Exitoso',
+                    text: 'Se ha generado el respaldo de la db exitosamente',
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
+            } else {
+                // Handle cancelled backup
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ha ocurrido un error al intentar generar el backup',
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
             }
         });
-    });*/
+    });
+
 
 
     document.getElementById('generate-pdf-btn').addEventListener('click', function () {
@@ -446,3 +422,11 @@
         });
     });
 </script>
+
+    <?php
+        if($_SESSION['rol'] == 1) { //es admin
+            require_once "Views/footers/footer.php";
+        } else {
+            require_once "Views/footers/footerOpr.php";
+        }
+    ?>

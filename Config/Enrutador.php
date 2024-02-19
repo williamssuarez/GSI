@@ -39,13 +39,17 @@ class Enrutador{
         
         $controllerView = $request->getControlador();
 
-        $ruta = ROOT . "Views" . DS . $controllerView . DS . $metodo . ".php";
-        //print "<br>".$ruta."<br>";
-        if(is_readable($ruta)){
-            require_once $ruta;
+        if ($controllerView == 'ajax'){
+            return;
         } else {
-            $ruta = ROOT . "Views" . DS . "error" . DS . "404" . ".php";
-            require_once $ruta;
+            $ruta = ROOT . "Views" . DS . $controllerView . DS . $metodo . ".php";
+            //print "<br>".$ruta."<br>";
+            if(is_readable($ruta)){
+                require_once $ruta;
+            } else {
+                $ruta = ROOT . "Views" . DS . "error" . DS . "404" . ".php";
+                require_once $ruta;
+            }
         }
     }
 }
