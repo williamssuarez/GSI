@@ -348,7 +348,7 @@
                 return new Promise((resolve) => {
                     // Send AJAX request with the provided location
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "<?php echo URL; ?>inicio/backup", true);
+                    xhr.open("POST", "<?php echo URL; ?>ajax/backup", true);
                     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
                     xhr.onload = function() {
@@ -403,7 +403,7 @@
     document.getElementById('generate-pdf-btn').addEventListener('click', function () {
         
         $.ajax({
-            url: '<?php echo URL; ?>inicio/reportehtml2',
+            url: '<?php echo URL; ?>ajax/reportehtml2',
             //url: 'http://localhost/pdf/download_pdf.php',
             type: 'GET',
             xhrFields: {

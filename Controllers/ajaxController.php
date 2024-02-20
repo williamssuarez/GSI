@@ -3,22 +3,36 @@
 
 namespace Controllers;
 
+//AUTOLOAD DE COMPOSER
+require __DIR__.'/../vendor/autoload.php';
+
+//HTML2PDF
+use Mpdf\HTMLParserMode;
+use Mpdf\Mpdf;
+
+//PLANTILLA MPDF
+use Controllers\plantillasController;
 
 use Models\Equipos;
 use Models\Equipos_ingresados;
 use Models\Usuario;
+use Models\Conexion;
 
 class ajaxController
 {
     private $equipos;
     private $equipos_ingresados;
     private $usuarios;
+    private $conexion;
+    private $plantilla;
 
     public function __construct()
     {
         $this->equipos = new Equipos();
         $this->equipos_ingresados = new Equipos_ingresados();
         $this->usuarios = new Usuario();
+        $this->conexion = new Conexion();
+        $this->plantilla = new plantillasController();
 
         if (!isset($_SESSION['usuario'])) {
             // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
@@ -45,6 +59,7 @@ class ajaxController
         }
     }
 
+    /* INICIO */
     //PIE CHART DEL INICIO PARA OPR
     public function pieChartAdmin() {
 
@@ -79,6 +94,7 @@ class ajaxController
         //echo $data;
     }
 
+    /* INICIO */
     //PIE CHART DEL INICIO PARA ADMIN
     public function pieChartOpr()
     {
@@ -113,6 +129,71 @@ class ajaxController
         //echo $data;
     }
 
+    /* INICIO */
+    //REPORTE PDF EN INICIO
+    public function reportehtml2() {
+        ob_clean(); // Clear output buffer
+    
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+        ]);
+        //require __DIR__.'/../pdf/plantilla.php';
+        //$plantilla = require_once "plantilla.php";
+
+        $imagePath = __DIR__ . '/../pdf/img/LogoAlc.png';
+        $imagePath2 = __DIR__ . '/../pdf/img/22.png'; // Adjust path as needed
+        $templateContent = $this->plantilla->getPlantilla();
+        $stylesheet = file_get_contents(__DIR__ . '/../pdf/styles/style.css');
+        $imagePathArray = [$imagePath, $imagePath2];
+        $replaceStringArray = ['[logo_path]', '[logo_path2]'];
+
+        $html = str_replace($replaceStringArray, $imagePathArray, $templateContent);
+
+
+        $mpdf->writeHTML($stylesheet, HTMLParserMode::HEADER_CSS);
+        $mpdf->writeHTML($html);
+    
+        header('Content-type: application/pdf');
+        return $mpdf->output();
+    }
+
+    /* INICIO */
+    //METODO DE RESPALDO OFICIAL POR MYSQLDUMP Y PHP, METODO EN EL MODELO DE CONEXION
+    public function backup(){
+        ob_end_clean(); //Limpiando el buffer
+        ob_start(); //Capturando de nuevo
+
+        $response = $this->conexion->respaldo();
+        //$dumpRoute = ROOT . "..\..\mysql\bin\mysqldump";
+
+        header('Content-Type: application/json');
+        ob_end_clean();
+
+        /*echo $dumpRoute;
+        die();*/
+
+        echo json_encode($response);
+    }
+
+    /* INICIO */
+    //METODO DE RESPALDO PROVISIONAL CON EL SCRIPT DE WINDOWS
+    public function backupWindowsBat(){
+
+        //EL QUE FUNCIONA
+        $batch = ROOT . "mysqlbackup.bat";
+
+        $output = shell_exec("C:\\xampp\\htdocs\\GSI\\mysqlbackup.bat"); // Capture errors
+        if (strpos($output, "Backup failed") !== false) {
+            echo "Backup failed: " . $output;
+            echo $batch;
+        } else {
+            echo "Backup successful";
+            echo $batch;
+        }
+
+    }
+
+    /* EQUIPOS */
     //COMPROBAR SI EL EQUIPO ESTA REGISTRADO ANTES DE INGRESARLO
     public function comprobarBien(){
 
