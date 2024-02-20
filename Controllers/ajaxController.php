@@ -45,7 +45,8 @@ class ajaxController
         }
     }
 
-    public function pieChart() {
+    //PIE CHART DEL INICIO PARA OPR
+    public function pieChartAdmin() {
 
         ob_end_clean();
         ob_start();
@@ -78,7 +79,8 @@ class ajaxController
         //echo $data;
     }
 
-    public function pieChartAdmin()
+    //PIE CHART DEL INICIO PARA ADMIN
+    public function pieChartOpr()
     {
         ob_end_clean();
         ob_start();
@@ -111,6 +113,7 @@ class ajaxController
         //echo $data;
     }
 
+    //COMPROBAR SI EL EQUIPO ESTA REGISTRADO ANTES DE INGRESARLO
     public function comprobarBien(){
 
         ob_end_clean();
@@ -120,15 +123,8 @@ class ajaxController
             // Access the value
             $numero_bien = filter_input(INPUT_POST, 'numero_bien', FILTER_SANITIZE_STRING);
 
-            // Perform actions based on the received value
             $this->equipos->set('numero_bien', $numero_bien);
             $responseAjax = $this->equipos->getEquipobyNumerodeBien();
-
-            // Optionally, return a response to the AJAX request
-            /*$response = [
-                "success" => true,
-                "message" => "Número de bien recibido: " . $numero_bien
-            ];*/
 
             if(!empty($responseAjax)){
                 $response = 1;
@@ -137,7 +133,7 @@ class ajaxController
             }
 
             ob_end_clean();
-            echo json_encode($response); // Send JSON response
+            echo json_encode($response);
         } else {
             echo "Missing required data: numero_bien";
         }

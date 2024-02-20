@@ -122,21 +122,25 @@ class inicioController{
     }
 
     public function backup(){
+        ob_end_clean(); //Limpiando el buffer
+        ob_start(); //Capturando de nuevo
 
-        // Get the provided storage location
-        /*$location = $_POST["location"];
-        $date = date("Y-m-d_H-i-s");
+        $response = $this->conexion->respaldo();
+        //$dumpRoute = ROOT . "..\..\mysql\bin\mysqldump";
 
-        // Generate a unique filename
-        $filename = "backup_" . $date;
+        header('Content-Type: application/json');
+        ob_end_clean();
 
-        try {
-            $dump = new IMysqldump\Mysqldump('mysql:host=localhost;dbname=gsi', 'root', 'password');
-            $dump->start($location . $filename.'.sql');
-        } catch (\Exception $e) {
-            echo 'mysqldump-php error: ' . $e->getMessage();
-        }*/
+        /*echo $dumpRoute;
+        die();*/
 
+        echo json_encode($response);
+    }
+
+    //METODO DE RESPALDO PROVISIONAL CON EL SCRIPT DE WINDOWS
+    public function backupWindowsBat(){
+
+        //EL QUE FUNCIONA
         $batch = ROOT . "mysqlbackup.bat";
 
         $output = shell_exec("C:\\xampp\\htdocs\\GSI\\mysqlbackup.bat"); // Capture errors
@@ -147,7 +151,6 @@ class inicioController{
             echo "Backup successful";
             echo $batch;
         }
-
 
     }
 

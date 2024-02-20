@@ -18,7 +18,7 @@ set mysql_password=
 
 rem backup file name generation with the current date
 set backup_path=C:\xampp\htdocs\GSI\backup
-set backup_name=gsi-backup-%formatted_date%
+set backup_name=gsi-auto_backup-%formatted_date%
 
 rem backup creation
 mysqldump --user=%mysql_user% --password=%mysql_password% --databases gsi --routines --events --result-file="%backup_path%\%backup_name%.sql"
