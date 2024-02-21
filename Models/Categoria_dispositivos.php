@@ -72,13 +72,14 @@ class Categoria_dispositivos{
     public function lista(){
 
         $sql= "SELECT 
-                id_categoria,
-                nombre_categoria,
-                descripcion,
-                fecha_creada,
-                creado_por
+                t1.id_categoria,
+                t1.nombre_categoria,
+                t1.descripcion,
+                t1.fecha_creada,
+                t2.nombres
                 FROM 
-                categoria_dispositivos";
+                categoria_dispositivos t1
+                INNER JOIN usuarios t2 ON t2.id_user = t1.creado_por";
 
         $datos = $this->con->consultaRetorno($sql);
 
@@ -124,8 +125,7 @@ class Categoria_dispositivos{
     public function edit(){
 
         $sql = "UPDATE
-                categoria_dispositivos,
-                descripcion
+                categoria_dispositivos
                 SET
                 nombre_categoria = '{$this->nombre_categoria}',
                 descripcion = '{$this->descripcion}'

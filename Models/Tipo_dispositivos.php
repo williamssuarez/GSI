@@ -79,8 +79,8 @@ class Tipo_dispositivos{
                     t2.nombre_categoria AS categoria,
                     t1.nombre_tipo,
                     t1.descripcion,
-                    t1.fecha_registro,
-                    t3.nombre AS nombre_usuario,
+                    t1.fecha_creado,
+                    t3.nombres
                 FROM
                     tipo_dispositivos t1 
                 LEFT JOIN categoria_dispositivos t2 ON t1.categoria_id = t2.id_categoria

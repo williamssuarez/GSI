@@ -53,7 +53,7 @@ use Models\Categoria_dispositivos;
 
                     //PREPARANDO AUDITORIA
                     $tipo_cambio = 12; //ACCESO NO AUTORIZADO
-                    $tabla_afectada = 'categoria';
+                    $tabla_afectada = 'Categorias';
 
                     $registro_afectado = "Ninguno";
                     $valor_antes = "Ninguno";
@@ -156,8 +156,8 @@ use Models\Categoria_dispositivos;
                     $errores = array();
 
                     // Validar nombre
-                    if (!ctype_alpha($nombre_categoria)) {
-                        $errores[] = "Nombre debe contener solo letras.";
+                    if (!preg_match('/^[A-Za-z\s]+$/', $nombre_categoria)) {
+                        $errores[] = "El nombre de la categoria debe contener solo letras y espacios.";
                     }
                 
                     if (empty($errores)) {
@@ -171,7 +171,7 @@ use Models\Categoria_dispositivos;
 
                             //PREPARANDO AUDITORIA
                             $tipo_cambio = 4;
-                            $tabla_afectada = 'categoria';
+                            $tabla_afectada = 'Categorias';
                             $registro_afectado = 0;
                             
                             //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
@@ -190,7 +190,7 @@ use Models\Categoria_dispositivos;
                                                     $valor_despues, 
                                                     $usuario);
 
-                            $this->dispositivos->add();
+                            $this->categoria_dispositivos->add();
 
                             echo '<script>
                                         Swal.fire({
@@ -211,7 +211,7 @@ use Models\Categoria_dispositivos;
                         echo '<script>
                                         Swal.fire({
                                             title: "Hubo errores de validacion...",
-                                            text: " Recuerda que el nombre no deben llevar numeros",
+                                            text: " Recuerda que el nombre no debe llevar numeros",
                                             icon: "error",
                                             showConfirmButton: false,
                                             timer: 1500
@@ -233,7 +233,7 @@ use Models\Categoria_dispositivos;
             $user = $id_user['id_user'];
 
             $tipo_cambio = 5;
-            $tabla_afectada = 'categoria';
+            $tabla_afectada = 'Categorias';
             $registro_afectado = 0;
             //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
             $valor_antes = 'Ninguno';
@@ -296,7 +296,7 @@ use Models\Categoria_dispositivos;
 
                     //PREPARANDO AUDITORIA
                     $tipo_cambio = 3;
-                    $tabla_afectada = 'categoria';
+                    $tabla_afectada = 'Categorias';
                     $registro_afectado = $data['id_categoria'];
                     
                     //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
@@ -316,7 +316,7 @@ use Models\Categoria_dispositivos;
                                             $valor_despues, 
                                             $usuario);
     
-                    $this->dispositivos->edit();
+                    $this->categoria_dispositivos->edit();
     
                     echo '<script>
                             Swal.fire({
@@ -344,7 +344,7 @@ use Models\Categoria_dispositivos;
 
                 //PREPARANDO AUDITORIA
                 $tipo_cambio = 2;
-                $tabla_afectada = 'categoria';
+                $tabla_afectada = 'Categorias';
 
                 $registro_afectado = $data['id_categoria'];
                 $valorAntesarray = array($data['nombre_categoria']);
@@ -361,7 +361,7 @@ use Models\Categoria_dispositivos;
                                         $usuario);
                 
                 $this->categoria_dispositivos->set('id_categoria',$id);
-                $data['titulo'] = "Editando Nombre de la categoria";
+                $data['titulo'] = "Editando datos de la categoria";
                 $data['categoria'] = $this->categoria_dispositivos->getDataforEdit();
 
                 //var_dump($data['operador']);

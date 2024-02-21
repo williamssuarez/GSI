@@ -129,28 +129,28 @@
             <span>Direcciones</span></a>
     </li>
 
-    <!-- Nav Item - Pages Collapse Menu
+    <!-- Nav Item - Pages Collapse Menu  -->
     <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Soportes</span>
+                    <i class="fa-solid fa-print"></i>
+                    <span>Dispositivos Generales</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Administrar Soportes:</h6>
-                        <a class="collapse-item" href="<?php echo URL; ?>soportes/index">
-                            <i class="fa-solid fa-person-walking-arrow-right"></i>
-                            Soportes Abiertos</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>soportes/pendientes">
-                            <i class="fa-solid fa-person-walking"></i>
-                            Soportes Pendientes</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>soportes/cerradas">
-                            <i class="fa-solid fa-people-robbery"></i>
-                            Soportes Cerradas</a>
+                        <h6 class="collapse-header">Administrar Dispositivos:</h6>
+                        <a class="collapse-item" href="<?php echo URL; ?>categoria/index">
+                            <i class="fa-solid fa-table"></i>
+                            Categorias</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>tipos/index">
+                            <i class="fa-solid fa-table-cells"></i>
+                            Tipos de Dispositivos</a>
+                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
+                            <i class="fa-solid fa-print"></i>
+                            Dispositivos</a>
             </div>
         </div>
-    </li> -->
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

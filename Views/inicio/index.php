@@ -3,14 +3,14 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1>Bienvenido</h1>
 
-        <button id="generate-pdf-btn" class="btn btn-sm btn-success shadow-sm">
+        <button id="generate-pdf-btn" class="btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50"></i>
                 Manual PDF
         </button>
 
     <?php if($_SESSION['rol'] == 1){ //es admin, puede ejecutar el respaldo ?>
 
-        <button id="backup-button" class="btn btn-sm btn-success shadow-sm">
+        <button id="backup-button" class="btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-solid fa-database fa-sm text-white-50"></i>
             Respaldar Base de Datos
         </button>

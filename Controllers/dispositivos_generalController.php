@@ -1,12 +1,12 @@
 <?php namespace Controllers;
 
-use Models\Dispositivos;
+use Models\Dispositivos_general;
 use Models\Auditoria;
 use Models\Usuario;
 use Models\Categoria_dispositivos;
 use Models\Tipo_dispositivos;
 
-    class tiposController{
+    class dispositivos_generalController{
 
         private $dispositivos;
         private $auditoria;
@@ -16,7 +16,7 @@ use Models\Tipo_dispositivos;
 
         public function __construct()
         {
-            $this->dispositivos = new Dispositivos();
+            $this->dispositivos = new Dispositivos_general();
             $this->auditoria = new Auditoria();
             $this->usuarios = new Usuario();
             $this->categoria_dispositivos = new Categoria_dispositivos();
@@ -56,7 +56,7 @@ use Models\Tipo_dispositivos;
 
                     //PREPARANDO AUDITORIA
                     $tipo_cambio = 12; //ACCESO NO AUTORIZADO
-                    $tabla_afectada = 'tipos';
+                    $tabla_afectada = 'dispositivos';
 
                     $registro_afectado = "Ninguno";
                     $valor_antes = "Ninguno";
@@ -104,7 +104,7 @@ use Models\Tipo_dispositivos;
             $user = $id_user['id_user'];
 
             $tipo_cambio = 10; //TIPO DE CAMBIO 10 = Accedio a
-            $tabla_afectada = "tipos";
+            $tabla_afectada = "dispositivos";
             $registro_afectado = "Ninguno";
             $valor_antes = "Ninguno";
             $valor_despues = "Ninguno";
@@ -113,8 +113,8 @@ use Models\Tipo_dispositivos;
             //EJECUTANDO LA AUDITORIA
             $this->auditoria->auditar($tipo_cambio, $tabla_afectada, $registro_afectado, $valor_antes, $valor_despues, $usuario);
 
-            $datos['titulo'] = "Tipos";
-            $datos['tipo_dispositivos'] = $this->tipo_dispositivos->lista();
+            $datos['titulo'] = "Dispositivos";
+            $datos['dispositivos'] = $this->dispositivos->lista();
             return $datos;
         }
 
@@ -122,16 +122,25 @@ use Models\Tipo_dispositivos;
            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                $categoria = $_POST['categoria'];
-                $nombre_tipo = $_POST['nombre_tipo'];
-                $descripcion = $_POST['descripcion'];
+                $marca = $_POST['marca'];
+                $serial = $_POST['serial'];
+                $modelo = $_POST['modelo'];
+                $departamento = $_POST['departamento'];
+                $caracteristicas = $_POST['caracteristicas'];
 
                 $this->usuarios->set('usuario', $_SESSION['usuario']);
                 $id_user = $this->usuarios->getIdUserbyUsuario();
                 $creado_por = $id_user['id_user'];
 
+                $tipo = $_POST['tipo'];
+
                 //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
-                if(empty($nombre_tipo) || empty($descripcion)){
+                if(empty($marca) || 
+                empty($serial) || 
+                empty($modelo) || 
+                empty($departamento) || 
+                empty($caracteristicas) || 
+                empty($tipo)){
 
                     echo '<script>
                                 Swal.fire({
@@ -145,10 +154,10 @@ use Models\Tipo_dispositivos;
                                     }
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'tipos/new";
+                                        window.location.href = "' . URL . 'dispositivos-general/new";
                                     }
                                 }).then(() => {
-                                    window.location.href = "' . URL . 'tipos/new"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    window.location.href = "' . URL . 'dispositivos_general/new"; // Esta línea se ejecutará cuando se cierre la alerta.
                                 });
                             </script>';
                     exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -160,28 +169,36 @@ use Models\Tipo_dispositivos;
                     $errores = array();
 
                     // Validar nombre
-                    if (!ctype_alpha($nombre_tipo)) {
+                    /*if (!ctype_alpha($)) {
                         $errores[] = "Nombre debe contener solo letras.";
-                    }
+                    }*/
                 
                     if (empty($errores)) {
                         // No hay errores de validación, procesa los datos
-                        $this->tipo_dispositivos->set('nombre_tipo', $nombre_tipo);
-                        $this->tipo_dispositivos->set('categoria_id', $categoria);
-                        $this->tipo_dispositivos->set('descripcion', $descripcion);
-                        $this->tipo_dispositivos->set('creado_por', $creado_por);
+                        $this->dispositivos->set('marca', $marca);
+                        $this->dispositivos->set('serial', $serial);
+                        $this->dispositivos->set('modelo', $modelo);
+                        $this->dispositivos->set('departamento', $departamento);
+                        $this->dispositivos->set('caracteristicas', $caracteristicas);
+                        $this->dispositivos->set('creado_por', $creado_por);
+                        $this->dispositivos->set('tipo', $tipo);
 
                         //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
                         $usuario = $creado_por;
 
                             //PREPARANDO AUDITORIA
                             $tipo_cambio = 4;
-                            $tabla_afectada = 'tipos';
+                            $tabla_afectada = 'dispositivos';
                             $registro_afectado = 0;
                             
                             //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
                             //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
-                            $valorDespuesarray = array($nombre_tipo, $categoria, $descripcion);
+                            $valorDespuesarray = array($marca, 
+                                                    $serial, 
+                                                    $modelo, 
+                                                    $departamento, 
+                                                    $caracteristicas, 
+                                                    $tipo);
                             
                             //CONVIRITENDOLO A JSON PARA GUARDARLO
                             $valor_antes = 'Nuevo registro';
@@ -195,6 +212,7 @@ use Models\Tipo_dispositivos;
                                                     $valor_despues, 
                                                     $usuario);
 
+                            //UNA VEZ AUDITADO GUARDAMOS TODO
                             $this->dispositivos->add();
 
                             echo '<script>
@@ -205,7 +223,7 @@ use Models\Tipo_dispositivos;
                                             showConfirmButton: false,
                                             timer: 1500
                                         }).then(() => {
-                                            window.location.href = "' . URL . 'tipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                            window.location.href = "' . URL . 'dispositivos_general/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                                         });
                                     </script>';
                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.   
@@ -221,7 +239,7 @@ use Models\Tipo_dispositivos;
                                             showConfirmButton: false,
                                             timer: 1500
                                         }).then(() => {
-                                            window.location.href = "' . URL . 'tipos/new"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                            window.location.href = "' . URL . 'dispositivos_general/new"; // Esta línea se ejecutará cuando se cierre la alerta.
                                         });
                                     </script>';
                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
@@ -238,7 +256,7 @@ use Models\Tipo_dispositivos;
             $user = $id_user['id_user'];
 
             $tipo_cambio = 5;
-            $tabla_afectada = 'categoria';
+            $tabla_afectada = 'dispositivos';
             $registro_afectado = 0;
             //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
             $valor_antes = 'Ninguno';
@@ -259,33 +277,46 @@ use Models\Tipo_dispositivos;
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    $categoria = $_POST['categoria'];
-                    $nombre_tipo = $_POST['nombre_tipo'];
-                    $descripcion = $_POST['descripcion'];
+                    $marca = $_POST['marca'];
+                    $serial = $_POST['serial'];
+                    $modelo = $_POST['modelo'];
+                    $departamento = $_POST['departamento'];
+                    $caracteristicas = $_POST['caracteristicas'];
+                    $tipo = $_POST['tipo'];
 
-                    if(empty($nombre_tipo) || empty($descripcion)){
+                    //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
+                    if(empty($marca) || 
+                    empty($serial) || 
+                    empty($modelo) || 
+                    empty($departamento) || 
+                    empty($caracteristicas) || 
+                    empty($tipo)){
 
                         echo '<script>
                             Swal.fire({
                                 title: "Error",
-                                text: "El nombre o la descripcion no pueden estar vacios",
+                                text: "Parece que uno de los campos quedo vacio",
                                 icon: "warning",
                                 showConfirmButton: false,
                                 timer: 1500
                             }).then(() => {
-                                window.location.href = "' . URL . 'tipos/edit' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                window.location.href = "' . URL . 'dispositivos_general/edit' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                         </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
                     }
 
-                    $this->tipo_dispositivos->set('nombre_tipo', $nombre_tipo);
-                    $this->tipo_dispositivos->set('descripcion', $descripcion);
+                    $this->dispositivos->set('marca', $marca);
+                    $this->dispositivos->set('serial', $serial);
+                    $this->dispositivos->set('modelo', $modelo);
+                    $this->dispositivos->set('departamento', $departamento);
+                    $this->dispositivos->set('caracteristicas', $caracteristicas);
+                    $this->dispositivos->set('tipo', $tipo);
 
                     //OBTENIENDO DATA PARA AUDITORIA
-                    $this->tipo_dispositivos->set('id_tipo',$id);
-                    $data = $this->tipo_dispositivos->getTipoDispositivoforAuditoria();
+                    $this->dispositivos->set('id_dispositivo',$id);
+                    $data = $this->dispositivos->getDispositivosGeneralesforAuditoria();
 
                     //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
                     $this->usuarios->set('usuario', $_SESSION['usuario']);
@@ -294,12 +325,26 @@ use Models\Tipo_dispositivos;
 
                     //PREPARANDO AUDITORIA
                     $tipo_cambio = 3;
-                    $tabla_afectada = 'tipos';
-                    $registro_afectado = $data['id_tipo'];
+                    $tabla_afectada = 'dispositivos';
+                    $registro_afectado = $data['id_dispositivo'];
                     
                     //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
-                    $valorAntesarray = array($data['nombre_tipo'], $data['descripcion']);
-                    $valorDespuesarray = array($nombre_tipo, $descripcion);
+                    $valorAntesarray = array(
+                        $data['marca'], 
+                        $data['serial'],
+                        $data['modelo'],
+                        $data['departamento'],
+                        $data['caracteristicas'],
+                        $data['tipo'],
+                    );
+                    $valorDespuesarray = array(
+                        $marca,
+                        $serial,
+                        $modelo,
+                        $departamento,
+                        $caracteristicas,
+                        $tipo
+                    );
                     
                     //CONVIRITENDOLO A JSON PARA GUARDARLO
                     $valor_antes = json_encode($valorAntesarray);
@@ -325,16 +370,16 @@ use Models\Tipo_dispositivos;
                                 showConfirmButton: false,
                                 timer: 1500
                             }).then(() => {
-                                window.location.href = "' . URL . 'tipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                window.location.href = "' . URL . 'dispositivos_general/index"; // Esta línea se ejecutará cuando se cierre la alerta.
                             });
                         </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                 }  
 
                 //OBTENIENDO DATA PARA AUDITORIA
-                $this->tipo_dispositivos->set('id_tipo', $id);
-                $data = $this->tipo_dispositivos->getTipoDispositivoforAuditoria();
+                $this->dispositivos->set('id_dispositivo', $id);
+                $data = $this->dispositivos->getDispositivosGeneralesforAuditoria();
 
                 //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
                 $this->usuarios->set('usuario', $_SESSION['usuario']);
@@ -343,10 +388,10 @@ use Models\Tipo_dispositivos;
 
                 //PREPARANDO AUDITORIA
                 $tipo_cambio = 2;
-                $tabla_afectada = 'tipos';
+                $tabla_afectada = 'dispositivos';
 
-                $registro_afectado = $data['id_categoria'];
-                $valorAntesarray = array($data['nombre_categoria']);
+                $registro_afectado = $data['id_dispositivo'];
+                $valorAntesarray = array($data['dispositivo']);
                 $valor_antes = json_encode($valorAntesarray);
                 $valor_despues = 'en proceso';
                 $usuario  = $user;
@@ -359,9 +404,9 @@ use Models\Tipo_dispositivos;
                                         $valor_despues, 
                                         $usuario);
                 
-                $this->tipo_dispositivos->set('id_tipo',$id);
-                $data['titulo'] = "Editando datos del tipo";
-                $data['tipo'] = $this->tipo_dispositivos->getDataforEdit();
+                $this->dispositivos->set('id_dispositivo',$id);
+                $data['titulo'] = "Editando datos del dispositivo";
+                $data['tipo'] = $this->dispositivos->getDataforEdit();
 
                 //var_dump($data['operador']);
                 //die(); 
@@ -371,5 +416,5 @@ use Models\Tipo_dispositivos;
       
     }
 
-    $tipos = new tiposController();
+    $dispositivos_general = new dispositivos_generalController();
 ?>
