@@ -91,7 +91,7 @@ class Dispositivos_general{
                     t2.nombre_departamento AS departamento,
                     t1.caracteristicas,
                     t1.fecha_creado,
-                    t3.nombre AS creado_por,
+                    t3.nombres AS creado_por,
                     t4.nombre_tipo AS tipo_dispositivo
                 FROM
                     dispositivos_general t1 

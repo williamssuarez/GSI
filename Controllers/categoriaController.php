@@ -120,7 +120,7 @@ use Models\Categoria_dispositivos;
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 $nombre_categoria = $_POST['nombre_categoria'];
-                $descripcion = $_POST['descripcion'];
+                $descripcion = trim($_POST['descripcion']);
 
                 $this->usuarios->set('usuario', $_SESSION['usuario']);
                 $id_user = $this->usuarios->getIdUserbyUsuario();
@@ -256,7 +256,7 @@ use Models\Categoria_dispositivos;
 
                     $this->categoria_dispositivos->set('id_categoria',$id);
                     $nombre_categoria = $_POST['nombre_categoria'];
-                    $descripcion = $_POST['descripcion'];
+                    $descripcion = trim($_POST['descripcion']);
 
                     if(empty($nombre_categoria) || empty($descripcion)){
 

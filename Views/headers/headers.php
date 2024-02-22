@@ -145,7 +145,7 @@
                         <a class="collapse-item" href="<?php echo URL; ?>tipos/index">
                             <i class="fa-solid fa-table-cells"></i>
                             Tipos de Dispositivos</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
+                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos_general/index">
                             <i class="fa-solid fa-print"></i>
                             Dispositivos</a>
             </div>

@@ -56,7 +56,7 @@ use Models\Tipo_dispositivos;
 
                     //PREPARANDO AUDITORIA
                     $tipo_cambio = 12; //ACCESO NO AUTORIZADO
-                    $tabla_afectada = 'tipos';
+                    $tabla_afectada = 'Tipos';
 
                     $registro_afectado = "Ninguno";
                     $valor_antes = "Ninguno";
@@ -96,6 +96,14 @@ use Models\Tipo_dispositivos;
             }
         }
 
+        //GET DATA PARA EL REGISTRO
+        public function getDataForRegistro(){
+            $datos['titulo'] = "Registrar nuevo tipo";
+            $datos['categorias'] = $this->categoria_dispositivos->getCategorias();
+
+            return $datos;
+        }
+
         public function index(){
 
             //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
@@ -104,7 +112,7 @@ use Models\Tipo_dispositivos;
             $user = $id_user['id_user'];
 
             $tipo_cambio = 10; //TIPO DE CAMBIO 10 = Accedio a
-            $tabla_afectada = "tipos";
+            $tabla_afectada = "Tipos";
             $registro_afectado = "Ninguno";
             $valor_antes = "Ninguno";
             $valor_despues = "Ninguno";
@@ -124,7 +132,7 @@ use Models\Tipo_dispositivos;
 
                 $categoria = $_POST['categoria'];
                 $nombre_tipo = $_POST['nombre_tipo'];
-                $descripcion = $_POST['descripcion'];
+                $descripcion = trim($_POST['descripcion']);
 
                 $this->usuarios->set('usuario', $_SESSION['usuario']);
                 $id_user = $this->usuarios->getIdUserbyUsuario();
@@ -160,8 +168,8 @@ use Models\Tipo_dispositivos;
                     $errores = array();
 
                     // Validar nombre
-                    if (!ctype_alpha($nombre_tipo)) {
-                        $errores[] = "Nombre debe contener solo letras.";
+                    if (!preg_match('/^[A-Za-z\s]+$/', $nombre_tipo)) {
+                        $errores[] = "El nombre de la categoria debe contener solo letras y espacios.";
                     }
                 
                     if (empty($errores)) {
@@ -176,7 +184,7 @@ use Models\Tipo_dispositivos;
 
                             //PREPARANDO AUDITORIA
                             $tipo_cambio = 4;
-                            $tabla_afectada = 'tipos';
+                            $tabla_afectada = 'Tipos';
                             $registro_afectado = 0;
                             
                             //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
@@ -195,7 +203,7 @@ use Models\Tipo_dispositivos;
                                                     $valor_despues, 
                                                     $usuario);
 
-                            $this->dispositivos->add();
+                            $this->tipo_dispositivos->add();
 
                             echo '<script>
                                         Swal.fire({
@@ -238,7 +246,7 @@ use Models\Tipo_dispositivos;
             $user = $id_user['id_user'];
 
             $tipo_cambio = 5;
-            $tabla_afectada = 'categoria';
+            $tabla_afectada = 'Tipos';
             $registro_afectado = 0;
             //$valorAntesarray = array($data['nombre'], $data['apellido'], $data['cedula_identidad'], $data['correo']);
             $valor_antes = 'Ninguno';
@@ -263,6 +271,7 @@ use Models\Tipo_dispositivos;
                     $nombre_tipo = $_POST['nombre_tipo'];
                     $descripcion = $_POST['descripcion'];
 
+                    //VALIDANDO QUE NO ESTEN VACIOS LAS VARIABLES
                     if(empty($nombre_tipo) || empty($descripcion)){
 
                         echo '<script>
@@ -280,6 +289,24 @@ use Models\Tipo_dispositivos;
 
                     }
 
+                    //VALIDANDO QUE EL NOMBRE SOLO LLEVE LETRAS
+                    if (!preg_match('/^[A-Za-z\s]+$/', $nombre_tipo)) {
+                        echo '<script>
+                            Swal.fire({
+                                title: "Error",
+                                text: "El nombre solo debe llevar letras",
+                                icon: "warning",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                window.location.href = "' . URL . 'tipos/edit' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                    }
+
+                    //PREPARANDO LOS DATOS
+                    $this->tipo_dispositivos->set('categoria_id', $categoria);
                     $this->tipo_dispositivos->set('nombre_tipo', $nombre_tipo);
                     $this->tipo_dispositivos->set('descripcion', $descripcion);
 
@@ -294,12 +321,12 @@ use Models\Tipo_dispositivos;
 
                     //PREPARANDO AUDITORIA
                     $tipo_cambio = 3;
-                    $tabla_afectada = 'tipos';
+                    $tabla_afectada = 'Tipos';
                     $registro_afectado = $data['id_tipo'];
                     
                     //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
-                    $valorAntesarray = array($data['nombre_tipo'], $data['descripcion']);
-                    $valorDespuesarray = array($nombre_tipo, $descripcion);
+                    $valorAntesarray = array($data['nombre_tipo'], $data['descripcion'], $data['categoria_id']);
+                    $valorDespuesarray = array($nombre_tipo, $descripcion, $categoria);
                     
                     //CONVIRITENDOLO A JSON PARA GUARDARLO
                     $valor_antes = json_encode($valorAntesarray);
@@ -315,7 +342,7 @@ use Models\Tipo_dispositivos;
                                             $usuario);
     
                     //UNA VEZ AUDITADO TODO, EDITAMOS
-                    $this->dispositivos->edit();
+                    $this->tipo_dispositivos->edit();
     
                     echo '<script>
                             Swal.fire({
@@ -343,10 +370,10 @@ use Models\Tipo_dispositivos;
 
                 //PREPARANDO AUDITORIA
                 $tipo_cambio = 2;
-                $tabla_afectada = 'tipos';
+                $tabla_afectada = 'Tipos';
 
-                $registro_afectado = $data['id_categoria'];
-                $valorAntesarray = array($data['nombre_categoria']);
+                $registro_afectado = $data['id_tipo'];
+                $valorAntesarray = array($data['nombre_tipo']);
                 $valor_antes = json_encode($valorAntesarray);
                 $valor_despues = 'en proceso';
                 $usuario  = $user;
@@ -362,6 +389,7 @@ use Models\Tipo_dispositivos;
                 $this->tipo_dispositivos->set('id_tipo',$id);
                 $data['titulo'] = "Editando datos del tipo";
                 $data['tipo'] = $this->tipo_dispositivos->getDataforEdit();
+                $data['categorias'] = $this->categoria_dispositivos->getCategorias();
 
                 //var_dump($data['operador']);
                 //die(); 

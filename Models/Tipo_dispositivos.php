@@ -5,6 +5,7 @@ namespace Models;
 class Tipo_dispositivos{
 
     private $id_tipo;
+    private $numero_bien;
     private $categoria_id;
     private $nombre_tipo;
     private $descripcion;
@@ -106,7 +107,7 @@ class Tipo_dispositivos{
                 descripcion,
                 creado_por)
                 VALUES
-                ('{$this->categoria_id}', '{$this->nombre_tipo}', '{$this->descripcion}', '{$this->creado_por}', )";
+                ('{$this->categoria_id}', '{$this->nombre_tipo}', '{$this->descripcion}', '{$this->creado_por}')";
         
         $this->con->consultaSimple($sql);
     }
@@ -133,10 +134,9 @@ class Tipo_dispositivos{
     public function edit(){
 
         $sql = "UPDATE
-                id_tipo,
-                nombre_tipo,
-                descripcion
+                tipo_dispositivos
                 SET
+                categoria_id = '{$this->categoria_id}',
                 nombre_tipo = '{$this->nombre_tipo}',
                 descripcion = '{$this->descripcion}'
                 WHERE

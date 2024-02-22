@@ -1,5 +1,6 @@
 <?php namespace Controllers;
 
+use Models\Auditoria;
 use Models\Equipos;
 use Models\Equipos_ingresados;
 use Models\Equipos_salida;
@@ -12,6 +13,7 @@ use Repository\Procesos1 as Repository1;
 
     class equiposController{
 
+        private $auditoria;
         private $equipo;
         private $equipo_ingresado;
         private $equipo_salida;
@@ -23,6 +25,7 @@ use Repository\Procesos1 as Repository1;
 
         public function __construct()
         {
+            $this->auditoria = new Auditoria();
             $this->equipo = new Equipos();
             $this->equipo_ingresado = new Equipos_ingresados();
             $this->equipo_salida = new Equipos_salida();
@@ -555,7 +558,7 @@ use Repository\Procesos1 as Repository1;
                     
                     // Validar numero de bien como número entero
                     if (!is_numeric($numero_bien) || !is_numeric($memoria_ram) || !is_numeric($almacenamiento)) {
-                        $errores[] = "Cédula de identidad debe ser un número.";
+                        $errores[] = "El numero de bien, memoria ram y almacenamientos deben ser valores enteros numericos.";
                     }
                 
                     if (empty($errores)) {
@@ -581,7 +584,7 @@ use Repository\Procesos1 as Repository1;
                             echo '<script>
                                         Swal.fire({
                                             title: "Error",
-                                            text: "Esta Numero de bien ya existe",
+                                            text: "Este Numero de bien ya existe",
                                             icon: "error",
                                             showConfirmButton: true,
                                             confirmButtonColor: "#3464eb",
@@ -755,6 +758,79 @@ use Repository\Procesos1 as Repository1;
                     $almacenamiento = $_POST['almacenamiento'];
                     $memoria_ram = $_POST['memoria_ram'];
                     $sistema_operativo = $_POST['sistema'];
+
+                    //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
+                    if(empty($numero_bien) || empty($usuario) || empty($direccion_mac)){
+
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Parece que uno de los campos quedo vacio",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/newregistro";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+                    }
+
+                    $errores = array();
+
+                    //Validar usuario como texto
+                    if (!preg_match('/^[A-Za-z\s]+$/', $usuario)) {
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "El nombre del usuario debe contener solo letras y espacios.",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/newregistro";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+                    }
+                    
+                    // Validar numero de bien como número entero
+                    if (!is_numeric($numero_bien) || !is_numeric($memoria_ram) || !is_numeric($almacenamiento)) {
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "El numero de bien, memoria ram y almacenamientos deben ser valores enteros numericos.",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/newregistro";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+                    }
     
                     $this->equipo->set('numero_bien', $numero_bien);
                     $this->equipo->set('departamento', $departamento);
@@ -764,29 +840,134 @@ use Repository\Procesos1 as Repository1;
                     $this->equipo->set('almacenamiento', $almacenamiento);
                     $this->equipo->set('memoria_ram', $memoria_ram);
                     $this->equipo->set('sistema_operativo', $sistema_operativo);
+
+                    //VERIFICANDO SI EL NUMERO DE BIEN Y LA MAC YA EXISTEN
+                    $cuenta = $this->equipo->verificarEquipoBien();
+                    $cuenta_mac = $this->equipo->verificarEquipoMac(); 
+
+                    //SI YA EXISTE, REDIRIGIR DE NUEVO AL FORMULARIO CON MENSAJE DE ERROR
+                    if($cuenta['cuenta'] > 0){
+
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Este Numero de bien ya existe",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/newregistro";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                    }
+                    if ($cuenta_mac['cuenta'] > 0) {
+                        
+                        echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Esta direccion ya existe",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/newregistro";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                    } 
+                    //CASO CONTRARIO, PROSEGUIR
+                    else {
+
+                        //OBTENIENDO DATA PARA AUDITORIA
+                        $this->equipo->set('id_equipo',$id);
+                        $data = $this->equipo->getEquipoForAuditoria();
+
+                        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA
+                        $this->usuarios->set('usuario', $_SESSION['usuario']);
+                        $id_user = $this->usuarios->getIdUserbyUsuario();
+                        $user = $id_user['id_user'];
+
+                        //PREPARANDO AUDITORIA
+                        $tipo_cambio = 3;
+                        $tabla_afectada = 'Tipos';
+                        $registro_afectado = $data['id_tipo'];
+                        
+                        //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
+                        $valorAntesarray = array(
+                            $data['numero_bien'], 
+                            $data['departamento'], 
+                            $data['usuario'],
+                            $data['direccion_mac'],
+                            $data['cpu'],
+                            $data['memoria_ram'],
+                            $data['almacenamiento'],
+                            $data['sistema_operativo'],
+                        );
+
+                        $valorDespuesarray = array(
+                            $numero_bien, 
+                            $departamento, 
+                            $usuario,
+                            $direccion_mac,
+                            $cpu,
+                            $memoria_ram,
+                            $almacenamiento,
+                            $sistema_operativo
+                        );
+                        
+                        //CONVIRITENDOLO A JSON PARA GUARDARLO
+                        $valor_antes = json_encode($valorAntesarray);
+                        $valor_despues = json_encode($valorDespuesarray);;
+                        $usuario  = $user;
+
+                        //EJECUTANDO LA AUDITORIA
+                        $this->auditoria->auditar($tipo_cambio, 
+                                                $tabla_afectada, 
+                                                $registro_afectado, 
+                                                $valor_antes, 
+                                                $valor_despues, 
+                                                $usuario);
+
+                        $this->equipo->edit();
     
-    
-                    $this->equipo->edit();
-    
-                    echo '<script>
-                            Swal.fire({
-                                title: "Exito",
-                                text: "Editado Exitosamente.",
-                                icon: "success",
-                                showConfirmButton: true,
-                                confirmButtonColor: "#3464eb",
-                                customClass: {
-                                    confirmButton: "rounded-button" // Identificador personalizado
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . URL . 'equipos/registrados";
-                                }
-                            }).then(() => {
-                                window.location.href = "' . URL . 'equipos/registrados"; // Esta línea se ejecutará cuando se cierre la alerta.
-                            });
-                        </script>';
-                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                        echo '<script>
+                                Swal.fire({
+                                    title: "Exito",
+                                    text: "Editado Exitosamente.",
+                                    icon: "success",
+                                    showConfirmButton: true,
+                                    confirmButtonColor: "#3464eb",
+                                    customClass: {
+                                        confirmButton: "rounded-button" // Identificador personalizado
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "' . URL . 'equipos/registrados";
+                                    }
+                                }).then(() => {
+                                    window.location.href = "' . URL . 'equipos/registrados"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                });
+                            </script>';
+                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                    }
     
                 }  
                 
@@ -803,8 +984,8 @@ use Repository\Procesos1 as Repository1;
 
             } else {
                  // El usuario no es administrador, redirige al index
-                 echo '<script>
-                 Swal.fire({
+                echo '<script>
+                Swal.fire({
                      title: "Error",
                      text: "No tienes autoridad de administrador para hacer esto",
                      icon: "warning",
@@ -814,19 +995,16 @@ use Repository\Procesos1 as Repository1;
                      customClass: {
                          confirmButton: "rounded-button" // Identificador personalizado
                      }
-                 }).then((result) => {
+                }).then((result) => {
                      if (result.isConfirmed) {
                          window.location.href = "' . URL . 'equipos/registrados";
                      }
-                 }).then(() => {
+                }).then(() => {
                     window.location.href = "' . URL . 'equipos/registrados"; // Esta línea se ejecutará cuando se cierre la alerta.
                 });
-                 </script>';
-                 exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                </script>';
+                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
             }
-
-
-
         }
 
         public function edit($id){
