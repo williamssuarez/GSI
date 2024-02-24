@@ -3,17 +3,6 @@
 //AUTOLOAD DE COMPOSER
 require __DIR__.'/../vendor/autoload.php';
 
-//HTML2PDF
-use Mpdf\HTMLParserMode;
-use Spipu\Html2Pdf\Html2Pdf;
-use Mpdf\Mpdf;
-
-//PLANTILLA MPDF
-use Controllers\plantillasController;
-
-//MYSQLDUMP-PHP PARA EL BACKUP
-use Ifsnop\Mysqldump as IMysqldump;
-
 use Models\Conexion;
 use Models\Equipos_ingresados;
 use Models\Usuario;
@@ -94,63 +83,6 @@ class inicioController{
 
         return $datos;
     }
-
-    public function reportehtml2() {
-        ob_clean(); // Clear output buffer
-    
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-        ]);
-        //require __DIR__.'/../pdf/plantilla.php';
-        //$plantilla = require_once "plantilla.php";
-
-        $imagePath = __DIR__ . '/../pdf/img/LogoAlc.png';
-        $imagePath2 = __DIR__ . '/../pdf/img/22.png'; // Adjust path as needed
-        $templateContent = $this->plantilla->getPlantilla();
-        $stylesheet = file_get_contents(__DIR__ . '/../pdf/styles/style.css');
-        $imagePathArray = [$imagePath, $imagePath2];
-        $replaceStringArray = ['[logo_path]', '[logo_path2]'];
-
-        $html = str_replace($replaceStringArray, $imagePathArray, $templateContent);
-
-
-        $mpdf->writeHTML($stylesheet, HTMLParserMode::HEADER_CSS);
-        $mpdf->writeHTML($html);
-    
-        header('Content-type: application/pdf');
-        return $mpdf->output();
-    }
-
-    public function backup(){
-
-        // Get the provided storage location
-        /*$location = $_POST["location"];
-        $date = date("Y-m-d_H-i-s");
-
-        // Generate a unique filename
-        $filename = "backup_" . $date;
-
-        try {
-            $dump = new IMysqldump\Mysqldump('mysql:host=localhost;dbname=gsi', 'root', 'password');
-            $dump->start($location . $filename.'.sql');
-        } catch (\Exception $e) {
-            echo 'mysqldump-php error: ' . $e->getMessage();
-        }*/
-
-        $batch = ROOT . "mysqlbackup.bat";
-
-        $output = shell_exec("C:\\xampp\\htdocs\\GSI\\mysqlbackup.bat"); // Capture errors
-        if (strpos($output, "Backup failed") !== false) {
-            echo "Backup failed: " . $output;
-            echo $batch;
-        } else {
-            echo "Backup successful";
-            echo $batch;
-        }
-
-
-    }
-
 
 }
 

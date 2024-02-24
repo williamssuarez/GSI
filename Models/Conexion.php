@@ -60,18 +60,38 @@ class Conexion{
 
     public function respaldo(){
 
+        //Preparando credenciales
         $db_host = $this->datos['host'];
         $db_user = $this->datos['user'];
         $db_password = $this->datos['password'];
         $db_name = $this->datos['db'];
 
+        //Armando nombre del archivo
         $fecha = date("Y-m-d");
-
         $name = $db_name."_". $fecha .".sql";
 
-        $dump = "mysqldump -h$db_host -u$db_user -p$db_password --opt $db_name > $name";
+        //Ruta del mysqldump para ejecutarlo
+        $dumpRoute = ROOT . "..\..\mysql\bin\mysqldump";
 
-        system($dump, $output);
+        //Ruta del backup
+        $backupRoute = ROOT . "backup" . DS . $name;
+
+        //Preparando comando
+        //$dump = "$dumpRoute -h$db_host -u$db_user -p$db_password --opt $db_name > $name";
+        $dump = "$dumpRoute -h$db_host -u$db_user -p$db_password --opt $db_name > backup/$name";
+
+        //Ejecutando
+        //system($dump, $output);
+        if (shell_exec($dump) === false) {
+            $responseDB = 'Error: mysqldump execution failed!';
+        } else {
+
+            $responseDB = 'Backup generated successfully!';
+
+        }
+
+        //Retornando resultado
+        return $responseDB;
 
     }
 

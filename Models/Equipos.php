@@ -127,6 +127,27 @@ class Equipos{
         return $result->fetch_assoc();
     }
 
+    public function getEquipoForAuditoria(){
+        $sql = "SELECT
+                id_equipo, 
+                numero_bien, 
+                departamento, 
+                usuario, 
+                direccion_mac,
+                cpu,
+                memoria_ram,
+                almacenamiento,
+                sistema_operativo
+                FROM
+                equipos
+                WHERE
+                id_equipo = '{$this->id_equipo}' ";
+
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos->fetch_assoc();
+    }
+
     public function getEquipobyNumerodeBien(){
 
         $sql = "SELECT

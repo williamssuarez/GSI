@@ -3,14 +3,14 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1>Bienvenido</h1>
 
-        <button id="generate-pdf-btn" class="btn btn-sm btn-success shadow-sm">
+        <button id="generate-pdf-btn" class="btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50"></i>
                 Manual PDF
         </button>
 
     <?php if($_SESSION['rol'] == 1){ //es admin, puede ejecutar el respaldo ?>
 
-        <button id="backup-button" class="btn btn-sm btn-success shadow-sm">
+        <button id="backup-button" class="btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-solid fa-database fa-sm text-white-50"></i>
             Respaldar Base de Datos
         </button>
@@ -348,7 +348,7 @@
                 return new Promise((resolve) => {
                     // Send AJAX request with the provided location
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "<?php echo URL; ?>inicio/backup", true);
+                    xhr.open("POST", "<?php echo URL; ?>ajax/backup", true);
                     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
                     xhr.onload = function() {
@@ -403,7 +403,7 @@
     document.getElementById('generate-pdf-btn').addEventListener('click', function () {
         
         $.ajax({
-            url: '<?php echo URL; ?>inicio/reportehtml2',
+            url: '<?php echo URL; ?>ajax/reportehtml2',
             //url: 'http://localhost/pdf/download_pdf.php',
             type: 'GET',
             xhrFields: {
