@@ -66,6 +66,7 @@ use Models\Auditoria;
             return $datos;
         }
 
+        //METODO DE PRUEBA PARA PROBAR EL ENRUTAMIENTO
         public function num($number){
             echo "El numero que elegiste es ".$number;
         }

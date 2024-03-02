@@ -403,8 +403,16 @@
     document.getElementById('generate-pdf-btn').addEventListener('click', function () {
         
         $.ajax({
-            url: '<?php echo URL; ?>ajax/reportehtml2',
-            //url: 'http://localhost/pdf/download_pdf.php',
+
+            <?php if($_SESSION['rol'] == 1){ //es admin, puede ejecutar el respaldo ?>
+
+                url: '<?php echo URL; ?>ajax/manualAdministrador',
+
+            <?php } else { ?>
+
+                url: '<?php echo URL; ?>ajax/manualAdministrador',
+
+            <?php } ?>
             type: 'GET',
             xhrFields: {
                 responseType: 'blob' // Important for blob response
@@ -413,7 +421,16 @@
                 console.log('Exitoso el ajax');
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(data);
-                link.download = 'manual.pdf';
+                
+                <?php if($_SESSION['rol'] == 1){ //es admin, puede ejecutar el respaldo ?>
+                
+                    link.download = 'Manual Administrador.pdf';
+
+                <?php } else { ?>
+
+                    link.download = 'Manual Operador.pdf';
+
+                <?php } ?>
                 link.click();
             },
             error: function (jqXHR, textStatus, errorThrown) {

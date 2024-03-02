@@ -7,8 +7,6 @@ class Departamentos{
     private $id_departamento;
     private $nombre_departamento;
     private $piso;
-    private int $ingresos;
-    private int $suma_ingresos;
     private $con;
     private $resultado;
 

@@ -129,6 +129,28 @@ class ajaxController
         //echo $data;
     }
 
+    /* INICIO*/
+    public function reportesinhtml(){
+        $route = __DIR__ . '/../pdf/Manual_Administrador.pdf';
+        // Set headers for PDF download
+        header("Content-type: application/pdf");
+        header("Content-Disposition: attachment; filename=".basename($route));
+
+        
+        // Read the PDF file content
+        $pdf_data = file_get_contents($route);
+
+        // Check if file was read successfully
+        if ($pdf_data === false) {
+        die('Error reading PDF file!');
+        }
+
+        // Output the PDF data
+        ob_end_clean();
+        readfile($route);
+        //echo $pdf_data;
+    }
+
     /* INICIO */
     //REPORTE PDF EN INICIO
     public function reportehtml2() {

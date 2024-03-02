@@ -11,16 +11,6 @@ class Equipos_rechazados{
     private $id_administrador;
     private $id_usuario;
     private $razon_rechazo;
-    private $fecha_rechazo;
-    private $fecha_recibido;
-    private $recibido_por;
-    private $problema;
-    private $estado;
-    //PARA EL HISTORIAL
-    private $id_admin;
-    private $usuario;
-    private $accion;
-    private $razon;
     //PARA RECHAZAR LA SALIDA DEL EQUIPO
     private $id_aprobacion;
     //PARA LA CONEXION A LA DB
@@ -119,40 +109,6 @@ class Equipos_rechazados{
                 ingreso = '{$this->ingreso}'";
         
         $this->con->consultaSimple($sql);
-    }
-
-    public function edit(){
-
-        $sql = "UPDATE
-                equipos_ingresados
-                SET
-                id_equipo = '{$this->id_equipo}',
-                fecha_recibido = '{$this->fecha_recibido}', 
-                recibido_por = '{$this->recibido_por}'
-                problema = '{$this->problema}'
-                WHERE
-                id_ingreso = '{$this->id_ingreso}' ";
-        
-        $this->con->consultaSimple($sql);
-    }
-
-    public function view(){
-
-        $sql = "SELECT
-                id_ingreso, 
-                id_equipo,
-                fecha_recibido, 
-                recibido_por,
-                problema 
-                FROM
-                equipos_ingresados
-                WHERE
-                id_ingreso = '{$this->id_ingreso}' ";
-
-        $datos = $this->con->consultaRetorno($sql);
-        $row = mysqli_fetch_assoc($datos);
-
-        return $row;
     }
 
     //INSERTANDO EN HISTORIAL DEL EQUIPO

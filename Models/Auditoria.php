@@ -194,8 +194,6 @@ class Auditoria{
         $this->con->consultaSimple($sql);
     }
 
-
-
     public function view(){
 
         $sql = "SELECT 
