@@ -151,7 +151,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Extras</span>
+                    <span>Configuraciones</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
@@ -163,7 +163,7 @@
                         <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
                             <i class="fa-regular fa-clipboard"></i>
                             Notas</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
+                        <a class="collapse-item" href="<?php echo URL; ?>ajax/manualOperador">
                             <i class="fa-solid fa-circle-info"></i> 
                             Ayuda</a>
                             

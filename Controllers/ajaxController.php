@@ -71,10 +71,10 @@ class ajaxController
         //OBTENIENDO TODOS LOS INGRESOS, ENTREGAS, RECHAZOS, Y APROBACIONES DEL DEPARTAMENTO
         
         $datos = array();
-        $datos[0] = $this->equipos_ingresados->getIngresosTotalesEquipos();
+        $datos[0] = $this->equipos_ingresados->getIngresosTotalesEquiposAllTime();
         $datos[1] = $this->equipos_ingresados->getIngresosTotalesEntregados();
         $datos[2] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
-        $datos[3] = $this->equipos_rechazados->verificarRechazosTotalesDelDepartamento();
+        $datos[3] = $this->equipos_rechazados->verificarRechazosTotalesDelDepartamentoAllTime();
 
         $test = $datos[0];
 

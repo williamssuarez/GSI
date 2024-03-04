@@ -10,7 +10,7 @@
 
 <div class="card border-left-primary shadow h-100 mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Tipo <i class="fa-solid fa-table"></i></h6>
+        <h6 class="m-0 font-weight-bold text-primary">Tipo <i class="fa-solid fa-table-cells"></i></h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -19,7 +19,7 @@
 
                 <div>
 
-                <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Categoria</label>
+                <label class="form-label mt-4"><i class="fa-solid fa-table" style="color: #005cfa;"></i> Categoria</label>
                 <select required class="form-select" name="categoria" id="categoria">
 
                     <?php foreach ($datos['categorias'] as $categoria) { ?>

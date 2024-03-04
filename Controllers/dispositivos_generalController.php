@@ -122,11 +122,13 @@ use Models\Tipo_dispositivos;
            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
+                $numero_bien = $_POST['numero_bien'];
                 $marca = $_POST['marca'];
                 $serial = $_POST['serial'];
                 $modelo = $_POST['modelo'];
                 $departamento = $_POST['departamento'];
                 $caracteristicas = $_POST['caracteristicas'];
+                $tipo = $_POST['tipo'];
 
                 $this->usuarios->set('usuario', $_SESSION['usuario']);
                 $id_user = $this->usuarios->getIdUserbyUsuario();

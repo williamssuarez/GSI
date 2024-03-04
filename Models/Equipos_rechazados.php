@@ -48,6 +48,20 @@ class Equipos_rechazados{
         return $result->fetch_assoc();
     }
 
+    //GET RECHAZOS TOTALES ALL TIME FROM HISTORIAL
+    public function verificarRechazosTotalesDelDepartamentoAllTime(){
+
+        $sql = "SELECT
+                COUNT(*) as rechazos
+                FROM
+                historial_equipos WHERE accion = '{$this->accion}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+
+    }
+
     //OBTENIENDO RECHAZOS TOTALES
     public function verificarRechazosTotalesDelDepartamento(){
 

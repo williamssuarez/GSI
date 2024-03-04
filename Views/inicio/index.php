@@ -3,10 +3,26 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1>Bienvenido</h1>
 
-        <button id="generate-pdf-btn" class="btn btn-sm btn-primary shadow-sm">
+        <!-- DESHABILITADO PORQUE NO FUNCIONA EN CUENTA OPERADOR 
+            <button id="generate-pdf-btn" class="btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50"></i>
                 Manual PDF
-        </button>
+        </button> -->
+
+        <a  
+            <?php if($_SESSION['rol'] == 1) { ?>
+
+                href="<?php echo URL; ?>ajax/manualAdministrador"
+
+            <?php } else { ?>
+
+                href="<?php echo URL; ?>ajax/manualOperador"
+
+            <?php } ?>
+            class="btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-download fa-sm text-white-50"></i>    
+        Manual PDF
+        </a>
 
     <?php if($_SESSION['rol'] == 1){ //es admin, puede ejecutar el respaldo ?>
 
@@ -312,7 +328,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Filter:</div>
+                        <div class="dropdown-header">Filtrar:</div>
                         <?php foreach($data['operadores'] as $data){ ?>
                             <button 
                                 class="dropdown-item"
@@ -351,11 +367,11 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                     aria-labelledby="dropdownMenuLink">
-                    <div class="dropdown-header">Filter:</div>
-                    <button class="dropdown-item" onclick="DropdownEvento1()"></button>
-                    <button class="dropdown-item" href="#">Another action</button>
+                    <div class="dropdown-header">Filtrar:</div>
+                    <button class="dropdown-item" onclick="DropdownEvento1()">No se</button>
+                    <button class="dropdown-item" href="#">Accion random</button>
                     <div class="dropdown-divider"></div>
-                    <button class="dropdown-item" onclick="resetChart()">Reset</button>
+                    <button class="dropdown-item" onclick="resetChart()">Actualizar</button>
                 </div>
             </div>
         </div>

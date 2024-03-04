@@ -107,6 +107,14 @@ class Equipos_ingresados{
 
     }
 
+    //INGRESOS TOTALES DEL DEPARTAMENTO ALL TIME
+    public function getIngresosTotalesEquiposAllTime(){
+
+        $sql = "SELECT COUNT(estado) AS totalIngreso FROM equipos_ingresados";
+        $datos = $this->con->consultaRetorno($sql);
+        return $datos->fetch_assoc();
+    }
+
     //INGRESOS TOTALES DEL DEPARTAMENTO
     public function getIngresosTotalesEquipos(){
 
