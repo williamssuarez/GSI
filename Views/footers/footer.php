@@ -12,7 +12,8 @@
 <script src="<?php echo URL; ?>Views/template/js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="<?php echo URL; ?>Views/template/vendor/chart.js/Chart.min.js"></script>
+<script src="<?php echo URL; ?>Views/template/vendor/chart.js/Chart.min.js"></script> 
+<script src="<?php echo URL; ?>Views/template/vendor/chart.js/Chart.bundle.min.js"></script> 
 
 <!-- Page level custom scripts -->
 <script src="<?php echo URL; ?>Views/template/js/demo/chart-area-demo.js"></script>

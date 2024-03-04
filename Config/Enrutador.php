@@ -40,6 +40,7 @@ class Enrutador{
         $controllerView = $request->getControlador();
 
         if ($controllerView == 'ajax'){
+            //SI EL CONTROLADOR ES AJAX, SAL DEL SCRIPT SIN CARGAR NINGUNA VISTA
             exit;
         } else {
             $ruta = ROOT . "Views" . DS . $controllerView . DS . $metodo . ".php";

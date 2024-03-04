@@ -107,6 +107,7 @@ class Equipos_ingresados{
 
     }
 
+    //INGRESOS TOTALES DEL DEPARTAMENTO
     public function getIngresosTotalesEquipos(){
 
         $sql = "SELECT COUNT(estado) AS totalIngreso FROM equipos_ingresados WHERE estado = 0";
@@ -114,6 +115,15 @@ class Equipos_ingresados{
         return $datos->fetch_assoc();
     }
 
+    //INGRESOS TOTALES DEL OPERADOR AL DEPARTAMENTO
+    public function getIngresosTotalesEquiposByOperador(){
+
+        $sql = "SELECT COUNT(estado) AS totalIngreso FROM equipos_ingresados WHERE recibido_por = '{$this->recibido_por}'";
+        $datos = $this->con->consultaRetorno($sql);
+        return $datos->fetch_assoc();
+    }
+
+    //ENTREGAS TOTALES DEL DEPARTAMENTO
     public function getIngresosTotalesEntregados(){
 
         $sql = "SELECT COUNT(estado) AS totalEntrega FROM equipos_ingresados WHERE estado != 0";
@@ -121,15 +131,34 @@ class Equipos_ingresados{
         return $datos->fetch_assoc();
     }
 
+    //ENTREGAS TOTALES DEL DEPARTAMENTO POR OPERADOR
+    public function getIngresosTotalesEntregadosByOperador(){
+
+        $sql = "SELECT COUNT(estado) AS totalEntrega FROM equipos_ingresados WHERE estado != 0 AND recibido_por = '{$this->recibido_por}'";
+        $datos = $this->con->consultaRetorno($sql);
+        return $datos->fetch_assoc();
+    }
+
+    //EQUIPOS PENDIENTES DEL OPERADOR
     public function getAsignacionesTotalesaUsuario(){
         $sql = "SELECT COUNT(estado) AS totalAsignaciones FROM equipos_ingresados WHERE estado = 0 AND recibido_por = '{$this->recibido_por}'";
         $datos = $this->con->consultaRetorno($sql);
         return $datos->fetch_assoc();
     }
 
+    //GET EQUIPOS ESPERANDO APROBACIONES TOTALES DEL DEPARTAMENTO
     public function getIngresosTotalesAprobacion(){
 
         $sql = "SELECT COUNT(*) AS totalAprobacion FROM equipos_aprobacion";
+        $datos = $this->con->consultaRetorno($sql);
+        return $datos->fetch_assoc();
+
+    }
+
+    //GET EQUIPOS ESPERANDO APROBACIONES TOTALES DEL DEPARTAMENTO POR OPERADOR
+    public function getIngresosTotalesAprobacionByOperador(){
+
+        $sql = "SELECT COUNT(*) AS totalAprobacion FROM equipos_aprobacion WHERE entregado_por = '{$this->recibido_por}'";
         $datos = $this->con->consultaRetorno($sql);
         return $datos->fetch_assoc();
 
@@ -297,14 +326,17 @@ class Equipos_ingresados{
     }
 
     //VERIFICAR RECHAZOS DEL OPERADOR
-    public function verificarRechazosTotales(){
+    public function verificarRechazosTotalesByOperador(){
 
         $sql = "SELECT
                 COUNT(*) as rechazos
                 FROM
                 equipos_rechazados t1, equipos_ingresados t2
                 WHERE
-                t1.id_usuario = '{$this->usuario}' AND t1.id_usuario = t2.recibido_por AND t2.estado = 0 AND t2.id_equipo = t1.id_equipo";
+                t1.id_usuario = '{$this->usuario}' 
+                AND t1.id_usuario = t2.recibido_por 
+                AND t2.estado = 0 
+                AND t2.id_equipo = t1.id_equipo";
 
         $result = $this->con->consultaRetorno($sql);
 
@@ -365,9 +397,5 @@ class Equipos_ingresados{
     }
 
 }
-
-
-
-
 
 ?>

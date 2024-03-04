@@ -15,6 +15,7 @@ use Controllers\plantillasController;
 
 use Models\Equipos;
 use Models\Equipos_ingresados;
+use Models\Equipos_rechazados;
 use Models\Usuario;
 use Models\Conexion;
 
@@ -22,6 +23,7 @@ class ajaxController
 {
     private $equipos;
     private $equipos_ingresados;
+    private $equipos_rechazados;
     private $usuarios;
     private $conexion;
     private $plantilla;
@@ -30,6 +32,7 @@ class ajaxController
     {
         $this->equipos = new Equipos();
         $this->equipos_ingresados = new Equipos_ingresados();
+        $this->equipos_rechazados = new Equipos_rechazados();
         $this->usuarios = new Usuario();
         $this->conexion = new Conexion();
         $this->plantilla = new plantillasController();
@@ -60,29 +63,24 @@ class ajaxController
     }
 
     /* INICIO */
-    //PIE CHART DEL INICIO PARA OPR
+    //PIE CHART DEL INICIO PARA ADMINISRTADOR
     public function pieChartAdmin() {
 
         ob_end_clean();
         ob_start();
-        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
-        $this->usuarios->set('usuario', $_SESSION['usuario']);
-        $id_user = $this->usuarios->getIdUserbyUsuario();
-        $user = $id_user['id_user'];
-
-        //OBTENIENDO LOS EQUIPOS RECHAZADOS DEL OPERADOR
-        $this->equipos_ingresados->set('usuario', $id_user['id_user']);
+        //OBTENIENDO TODOS LOS INGRESOS, ENTREGAS, RECHAZOS, Y APROBACIONES DEL DEPARTAMENTO
+        
         $datos = array();
         $datos[0] = $this->equipos_ingresados->getIngresosTotalesEquipos();
         $datos[1] = $this->equipos_ingresados->getIngresosTotalesEntregados();
         $datos[2] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
-        $datos[3] = $this->equipos_ingresados->verificarRechazosTotales();
+        $datos[3] = $this->equipos_rechazados->verificarRechazosTotalesDelDepartamento();
 
         $test = $datos[0];
 
         // Simulación de datos para propósitos de ejemplo
         $data = array(
-            "labels" => ["Ingresados", "Entregados", "En Revision", "Entregas Rechazadas"],
+            "labels" => ["Ingresos", "Entregas", "En Revision", "Entregas Rechazadas"],
             "data" => [$datos],
             "test" => $test
         );
@@ -95,29 +93,67 @@ class ajaxController
     }
 
     /* INICIO */
-    //PIE CHART DEL INICIO PARA ADMIN
+    //PIE CHART DEL INICIO PARA OPERADOR
     public function pieChartOpr()
     {
         ob_end_clean();
         ob_start();
-        //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO
+        //OBTENIENDO TODOS LOS INGRESOS, ENTREGAS, RECHAZOS, Y APROBACIONES DEL OPERADOR
         $this->usuarios->set('usuario', $_SESSION['usuario']);
         $id_user = $this->usuarios->getIdUserbyUsuario();
         $user = $id_user['id_user'];
 
-        //OBTENIENDO LOS EQUIPOS RECHAZADOS DEL OPERADOR
-        $this->equipos_ingresados->set('usuario', $id_user['id_user']);
+        //OBTENIENDO LOS EQUIPOS RELACIONADOS AL OPERADOR
+        $this->equipos_ingresados->set('recibido_por', $id_user['id_user']);
+        $this->equipos_rechazados->set('id_usuario', $id_user['id_user']);
+        
         $datos = array();
-        $datos[0] = $this->equipos_ingresados->getIngresosTotalesEquipos();
-        $datos[1] = $this->equipos_ingresados->getIngresosTotalesEntregados();
-        $datos[2] = $this->equipos_ingresados->getIngresosTotalesAprobacion();
-        $datos[3] = $this->equipos_ingresados->verificarRechazosTotales();
+        $datos[0] = $this->equipos_ingresados->getIngresosTotalesEquiposByOperador();
+        $datos[1] = $this->equipos_ingresados->getIngresosTotalesEntregadosByOperador();
+        $datos[2] = $this->equipos_ingresados->getIngresosTotalesAprobacionByOperador();
+        $datos[3] = $this->equipos_rechazados->getHistorialRechazosByUser();
 
         $test = $datos[0];
 
         // Simulación de datos para propósitos de ejemplo
         $data = array(
-            "labels" => ["Ingresados", "Entregados", "En Revision", "Entregas Rechazadas"],
+            "labels" => ["Ingresos", "Entregas", "En Revision", "Entregas Rechazadas"],
+            "data" => [$datos],
+            "test" => $test
+        );
+
+        // Convierte los datos a formato JSON y envíalos de vuelta
+        header('Content-Type: application/json');
+        ob_end_clean();
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        //echo $data;
+    }
+
+    /* INICIO */
+    //PIE CHART DE INICIO PARA OPERADOR EN ESPECIFICO (SOLO PARA ADMINS)
+    public function pieChartByOpr($username){
+        ob_end_clean();
+        ob_start();
+        //OBTENIENDO TODOS LOS INGRESOS, ENTREGAS, RECHAZOS, Y APROBACIONES DEL OPERADOR
+        $this->usuarios->set('usuario', $username);
+        $id_user = $this->usuarios->getIdUserbyUsuario();
+        $user = $id_user['id_user'];
+
+        //OBTENIENDO LOS EQUIPOS RECHAZADOS DEL OPERADOR
+        $this->equipos_ingresados->set('recibido_por', $id_user['id_user']);
+        $this->equipos_rechazados->set('id_usuario', $id_user['id_user']);
+
+        $datos = array();
+        $datos[0] = $this->equipos_ingresados->getIngresosTotalesEquiposByOperador();
+        $datos[1] = $this->equipos_ingresados->getIngresosTotalesEntregadosByOperador();
+        $datos[2] = $this->equipos_ingresados->getIngresosTotalesAprobacionByOperador();
+        $datos[3] = $this->equipos_rechazados->getHistorialRechazosByUser();
+
+        $test = $datos[0];
+
+        // Simulación de datos para propósitos de ejemplo
+        $data = array(
+            "labels" => ["Ingresos", "Entregas", "En Revision", "Entregas Rechazadas"],
             "data" => [$datos],
             "test" => $test
         );
@@ -130,8 +166,30 @@ class ajaxController
     }
 
     /* INICIO*/
-    public function reportesinhtml(){
+    public function manualAdministrador(){
         $route = __DIR__ . '/../pdf/Manual_Administrador.pdf';
+        // Set headers for PDF download
+        header("Content-type: application/pdf");
+        header("Content-Disposition: attachment; filename=".basename($route));
+
+        
+        // Read the PDF file content
+        $pdf_data = file_get_contents($route);
+
+        // Check if file was read successfully
+        if ($pdf_data === false) {
+        die('Error reading PDF file!');
+        }
+
+        // Output the PDF data
+        ob_end_clean();
+        readfile($route);
+        //echo $pdf_data;
+    }
+
+    /* INICIO*/
+    public function manualOperador(){
+        $route = __DIR__ . '/../pdf/Manual_Operador.pdf';
         // Set headers for PDF download
         header("Content-type: application/pdf");
         header("Content-Disposition: attachment; filename=".basename($route));

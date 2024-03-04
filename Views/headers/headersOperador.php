@@ -47,6 +47,10 @@
 
         <!-- Page level custom scripts -->
         <script src="<?php echo URL; ?>Views/template/DataTables/demo/datatables-demo.js"></script>
+
+        <script>
+            const URL = "http://localhost/GSI/";
+        </script>
     </head>
     <body>
 

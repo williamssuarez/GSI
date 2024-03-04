@@ -12,6 +12,9 @@ class Equipos_rechazados{
     private $id_usuario;
     private $razon_rechazo;
     //PARA RECHAZAR LA SALIDA DEL EQUIPO
+
+    //PARA OBTENER DEL HISTORIAL
+    private $accion = "Rechazo entrega";
     private $id_aprobacion;
     //PARA LA CONEXION A LA DB
     private $con;
@@ -31,6 +34,33 @@ class Equipos_rechazados{
         return $this->$atributo;
     }
 
+    //GET RECHAZOS TOTALES POR USUARIO DEL DESDE EL HISTORIAL DEL EQUIPO
+    public function getHistorialRechazosByUser(){
+
+        $sql = "SELECT 
+                COUNT(*) as rechazos
+                FROM 
+                historial_equipos
+                WHERE usuario = '{$this->id_usuario}' AND accion = '{$this->accion}'";
+        
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
+    //OBTENIENDO RECHAZOS TOTALES
+    public function verificarRechazosTotalesDelDepartamento(){
+
+        $sql = "SELECT
+                COUNT(*) as rechazos
+                FROM
+                equipos_rechazados";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+
+    }
 
     public function listaAdmin(){
 

@@ -296,13 +296,54 @@
     </div>
 </div>
 
-<!-- Pie Chart -->
+<?php if($_SESSION['rol'] == 1) { ?>
+
+    <!-- Pie Chart ADMIN-->
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Equipos Soporte</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Filter:</div>
+                        <?php foreach($data['operadores'] as $data){ ?>
+                            <button 
+                                class="dropdown-item"
+                                id="<?php echo $data['usuario'] ?>"
+                                onclick="DropdownEvento1(this)">
+                                <?php echo $data['nombre'] ?>
+                            </button>
+                        <?php } ?>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" onclick="resetChart()">Todo el Departamento</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-pie pt-4 pb-2">
+                    <!--<div id="piechart-container"></div>-->
+                    <canvas id="piechart-container"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<?php } else { ?>
+    <!-- Pie Chart OPERADOR-->
 <div class="col-xl-4 col-lg-5">
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Equipos Soporte</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Tus Equipos</h6>
             <div class="dropdown no-arrow">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -310,11 +351,11 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                     aria-labelledby="dropdownMenuLink">
-                    <div class="dropdown-header">Dropdown Header:</div>
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-header">Filter:</div>
+                    <button class="dropdown-item" onclick="DropdownEvento1()"></button>
+                    <button class="dropdown-item" href="#">Another action</button>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <button class="dropdown-item" onclick="resetChart()">Reset</button>
                 </div>
             </div>
         </div>
@@ -327,6 +368,8 @@
         </div>
     </div>
 </div>
+<?php } ?>
+
 </div> 
 
 
@@ -404,13 +447,13 @@
         
         $.ajax({
 
-            <?php if($_SESSION['rol'] == 1){ //es admin, puede ejecutar el respaldo ?>
+            <?php if($_SESSION['rol'] == 1){ //es admin ?>
 
                 url: '<?php echo URL; ?>ajax/manualAdministrador',
 
             <?php } else { ?>
 
-                url: '<?php echo URL; ?>ajax/manualAdministrador',
+                url: '<?php echo URL; ?>ajax/manualOperador',
 
             <?php } ?>
             type: 'GET',
@@ -422,13 +465,13 @@
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(data);
                 
-                <?php if($_SESSION['rol'] == 1){ //es admin, puede ejecutar el respaldo ?>
+                <?php if($_SESSION['rol'] == 1){ //es admin ?>
                 
-                    link.download = 'Manual Administrador.pdf';
+                    link.download = 'Manual de Administrador GSI.pdf';
 
                 <?php } else { ?>
 
-                    link.download = 'Manual Operador.pdf';
+                    link.download = 'Manual de Operador GSI.pdf';
 
                 <?php } ?>
                 link.click();
@@ -441,9 +484,17 @@
 </script>
 
     <?php
-        if($_SESSION['rol'] == 1) { //es admin
+        if($_SESSION['rol'] == 1) { ?>
+
+            <script src="<?php echo URL; ?>Views/template/js/scripts/charts/admin/chart-pie-admin.js"></script>
+        <?php    
             require_once "Views/footers/footer.php";
-        } else {
+
+        } else { ?>
+        
+            <script src="<?php echo URL; ?>Views/template/js/scripts/charts/opr/chart-pie.js"></script>
+        <?php
             require_once "Views/footers/footerOpr.php";
+
         }
     ?>

@@ -226,6 +226,7 @@ class Usuario{
 
         $sql= "SELECT
                 id_user,
+                usuario,
                 nombres as nombre,
                 apellidos as apellido
                 FROM

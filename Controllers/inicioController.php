@@ -5,12 +5,14 @@ require __DIR__.'/../vendor/autoload.php';
 
 use Models\Conexion;
 use Models\Equipos_ingresados;
+use Models\Equipos_rechazados;
 use Models\Usuario;
 use Models\Auditoria;
 
 class inicioController{
 
     private $equipos_ingresados;
+    private $equipos_rechazados;
     private $usuarios;
     private $auditoria;
     private $conexion;
@@ -21,6 +23,7 @@ class inicioController{
         $this->conexion = new Conexion();
         $this->plantilla = new plantillasController();
         $this->equipos_ingresados = new Equipos_ingresados();
+        $this->equipos_rechazados = new Equipos_rechazados();
         $this->usuarios = new Usuario();
         $this->auditoria = new Auditoria();
 
@@ -64,12 +67,14 @@ class inicioController{
 
         //OBTENIENDO LOS EQUIPOS RECHAZADOS DEL OPERADOR
         $this->equipos_ingresados->set('usuario', $id_user['id_user']);
-        $datos['rechazos'] = $this->equipos_ingresados->verificarRechazosTotales();
+        $datos['rechazos'] = $this->equipos_ingresados->verificarRechazosTotalesByOperador();
 
         // PARA OBTENER LOS EQUIPOS ASIGNADOS A EL
         $this->equipos_ingresados->set('recibido_por', $user);
         $datos['asignados'] = $this->equipos_ingresados->getAsignacionesTotalesaUsuario();
 
+        //OBTENIENDO A TODOS LOS OPERADORES REGISTRADOS ACTUALMENTE
+        $datos['operadores'] = $this->usuarios->getUsuarios();
 
         $tipo_cambio = 10;
         $tabla_afectada = "Inicio";
