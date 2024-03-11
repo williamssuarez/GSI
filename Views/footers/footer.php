@@ -4,6 +4,9 @@
 </div>
 </div>
 
+<!-- SELECT2 INCIALIZACION -->
+<script src="<?php echo URL; ?>Views/template/js/scripts/forms/select2Inicio.js" ></script>
+
 <!-- Bootstrap core JavaScript-->
 <script src="<?php echo URL; ?>Views/template/vendor/jquery/jquery.min.js"></script>
 <script src="<?php echo URL; ?>Views/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -52,6 +55,9 @@
 <!-- PDFMAKE JS -->
 <script src="<?php echo URL; ?>Views/template/DataTables/extensions/buttons/js/pdfmake/pdfmake.js"></script>
 <script src="<?php echo URL; ?>Views/template/DataTables/extensions/buttons/js/pdfmake/vfs_fonts.js"></script>
+
+<!-- SELECT2 JS -->
+<script src="<?php echo URL; ?>Views/template/select2/js/select2.min.js"></script>
 
 <!-- INICIANDO TABLAS DATATABLE -->
 <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/admin/equipos_registrados.js"></script>

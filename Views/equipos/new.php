@@ -26,7 +26,7 @@
                 <input class="form-control" required type="datetime-local" name="fecha_recibido" id="fecha_recibido" value="" max="" min="2020-01-01T00:00"> 
 
                     <label class="form-label mt-4"><i class="fa-solid fa-user-gear" style="color: #005af5;"></i> Recibido Por</label>
-                    <select required class="form-select" name="recibido_por" id="recibido_por">
+                    <select required class="form-select Select2" name="recibido_por" id="recibido_por">
                             
                             <?php foreach($datos['operadores'] as $operadores) {  ?>
                                 <option value="<?php echo $operadores['id_user']; ?>"> <?php echo $operadores['nombre'] ?> <?php echo $operadores['apellido']?> </option>
@@ -58,16 +58,13 @@
     </div>
 </div>
 
-
 <script src="<?php echo URL; ?>Views/template/js/scripts/getFechaActual.js" ></script>
+<script src="<?php echo URL; ?>Views/template/js/scripts/forms/equiposIngreso.js" ></script>
+
 <script>
-
-    // Obtén el elemento del textarea y el botón submit
     const inputTexto = document.getElementById('problema');
-    const btnSubmit = document.getElementById('btnSubmit');
-    const numeroBienInput = document.getElementById('numero_bien');
-    const mensajeValidacion = document.getElementById('mensajeValidacion');
 
+    //VALIDAR TEXTAREA
     // Agrega un evento de entrada al textarea para validar en tiempo real
     inputTexto.addEventListener('input', function () {
         // Obtiene el valor del textarea y cuenta la longitud
@@ -89,82 +86,6 @@
             btnSubmit.disabled = true;
         }
     });
-
-    numeroBienInput.addEventListener('input', function() {
-        console.log('si entra a la funcion');
-        const newValue = this.value;
-        const url = URL + 'ajax/comprobarBien';
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', url);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        const data = `numero_bien=${newValue}`;
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                console.log('Exitoso el ajax');
-                const response = JSON.parse(xhr.responseText); // Assuming JSON response
-
-                if (response === 1) {
-                    numeroBienInput.classList.remove('is-invalid');
-                    numeroBienInput.classList.add('is-valid');
-                    //document.getElementById('btnSubmit').disabled = false;
-                    btnSubmit.disabled = false;
-                    //mensajeValidacion.textContent = '';
-                    document.getElementById('mensajeBienValidacion').textContent = 'El equipo esta registrado.';
-                } else {
-                    numeroBienInput.classList.remove('is-valid');
-                    numeroBienInput.classList.add('is-invalid');
-                    //document.getElementById('btnSubmit').disabled = true;
-                    btnSubmit.disabled = true;
-                    document.getElementById('mensajeBienValidacion').textContent = 'Este equipo no esta registrado, registrelo para poder ingresarlo.';
-                }
-            } else {
-                console.error('Error en el ajax:', xhr.statusText);
-            }
-        };
-
-        xhr.onerror = function() {
-            console.error('Error en la red');
-        };
-
-        xhr.send(data);
-    });
-
-
-    /*numeroBienInput.addEventListener('change', function () {
-    //$('#numero_bien').on("change", function() {
-        console.log('si entra a la funcion');
-        var newValue = $(this).val();
-        var URL = "http://localhost/GSI/";
-        $.ajax({
-            url: URL + "ajax/comprobarBien",
-            type: "POST",
-            data: { numero_bien: numeroBienValue },
-            success: function(response) {
-                // Handle successful response
-                console.log('Exitoso el ajax');
-
-                if(response === 1){
-                    $("#numero_bien").removeClass("is-invalid");
-                    $("#numero_bien").addClass("is-valid");
-                    $('#btnSubmit').removeAttr("disabled");
-                } else {
-                    $("#numero_bien").removeClass("is-valid");
-                    $("#numero_bien").addClass("is-invalid")
-                    $('#btnSubmit').attr("disabled", true);
-                }
-
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log('Error en el ajax');
-            }
-        });
-
-    });*/
-
-
-
 </script>
 <?php
     require_once "Views/footers/footer.php";

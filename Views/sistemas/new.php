@@ -25,7 +25,7 @@
                     <br>
 
                     <label class="form-label mt-4">Tipo de dispositivo</label>
-                    <select required class="form-select" name="tipo" id="tipo">
+                    <select required class="form-select Select2" name="tipo" id="tipo">
                         <option value="0">Windows</option>
                         <option value="1">Linux</option>
                     </select>

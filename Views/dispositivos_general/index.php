@@ -40,7 +40,7 @@
                                 <td> <?php echo $data['fecha_creado'] ?> </td>
                                 <td> <?php echo $data['creado_por'] ?> </td>
                                 <td>                         
-                                    <a class="btn btn-primary" href='edit/<?php echo $data['id_tipo'] ?>'>                                        
+                                    <a class="btn btn-primary" href='edit/<?php echo $data['id_dispositivo'] ?>'>                                        
                                         Editar
                                     </a>                    
                                 </td>

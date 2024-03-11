@@ -22,7 +22,7 @@ echo $data['tipo']['descripcion'];
                 <div>
 
                 <label class="form-label mt-4"><i class="fa-solid fa-table" style="color: #005cfa;"></i> Categoria</label>
-                <select required class="form-select" name="categoria" id="categoria">
+                <select required class="form-select Select2" name="categoria" id="categoria">
 
                     <?php foreach ($data['categorias'] as $categoria) { 
                         $selected = ($categoria['id_categoria'] == $data['tipo']['categoria_id']) ? 'selected' : '';    

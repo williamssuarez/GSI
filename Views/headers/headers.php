@@ -30,6 +30,9 @@
         <!-- SWEETALERT2 CSS -->
         <link rel="stylesheet" href="<?php echo URL; ?>Views/template/sweetalert2/dist/sweetalert2.min.css">
 
+        <!-- SELECT2 CSS -->
+        <link rel="stylesheet" href="<?php echo URL; ?>Views/template/select2/css/select2.min.css">
+
         <!-- FONTAWESOME JS -->
         <script src="<?php echo URL; ?>Views/template/FontAwesome/font-awesome_6.4.2_js_all.min.js"></script>
         
@@ -38,6 +41,8 @@
 
         <!-- SWEETALERT2 JS -->
         <script src="<?php echo URL; ?>Views/template/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+        
 
         <!--Redirigir-->
         <script src="<?php echo URL; ?>Views/template/js/scripts/redirigirTopbar.js" ></script>

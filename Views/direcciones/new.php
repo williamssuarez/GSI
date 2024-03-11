@@ -19,7 +19,7 @@
         <form action="new" method="post">
             <div>
                 <label class="form-label mt-4">Tipo de dispositivo</label>
-                <select required class="form-select" name="dispositivo" id="dispositivo">
+                <select required class="form-select Select2" name="dispositivo" id="dispositivo">
 
                     <?php foreach ($datos['dispositivos'] as $dispositivo) { ?>
                         <option value="<?php echo $dispositivo['id_dispositivos']; ?>"> <?php echo $dispositivo['nombre_dispositivo'] ?> </option>
@@ -30,7 +30,7 @@
                 <br>
                 
                 <label class="form-label mt-4">Direccion</label>
-                <select required class="form-select" name="direccion" id="direccion">
+                <select required class="form-select Select2" name="direccion" id="direccion">
                         
                         <?php foreach($datos['direcciones'] as $direcciones) {  ?>
                             <option value="<?php echo $direcciones['id_ip']; ?>"> <?php echo $direcciones['direccion'] ?> </option>

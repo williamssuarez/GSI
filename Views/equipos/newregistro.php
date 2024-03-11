@@ -20,9 +20,10 @@
             <div>
                 <label class="form-label mt-4"><i class="fa-solid fa-tag" style="color: #279608;"></i> Numero de Bien</label>
                 <input required class="form-control" type="number" name="numero_bien" id="numero_bien" maxlength="6" minlength="6" placeholder="Introduzca Numero de Bien">
+                <div id="mensajeBienValidacion" class="form-text"></div>
                 
                 <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Departamento</label>
-                <select required class="form-select" name="departamento" id="departamento">
+                <select required class="form-select Select2" name="departamento" id="departamento">
 
                     <?php foreach ($datos['departamentos'] as $departamento) { ?>
                         <option value="<?php echo $departamento['id_departamento']; ?>"> <?php echo $departamento['nombre_departamento'] ?> </option>
@@ -46,7 +47,7 @@
                 <input required class="form-control" type="number" name="memoria_ram" id="memoria_ram" placeholder="Memoria total del equipo, en GB">
 
                 <label class="form-label mt-4"><i class="fa-brands fa-linux" style="color: #e08910;"></i> Sistema Operativo</label>
-                <select required class="form-select" name="sistema" id="sistema">
+                <select required class="form-select Select2" name="sistema" id="sistema">
 
                     <?php foreach ($datos['sistemas'] as $sistemas) { ?>
                         <option value="<?php echo $sistemas['id_os']; ?>"> <?php echo $sistemas['nombre'] ?> </option>
@@ -55,10 +56,11 @@
                 </select>
                 
                 <br>
+                <br>
             
-                <button class="btn btn-success" type="submit">
+                <button id="btnSubmit" class="btn btn-success" type="submit" disabled>
                 <i class="fa-solid fa-truck-arrow-right fa-flip-horizontal"></i>
-                    Ingresar
+                    Registrar
                 </button>
 
             </div>
@@ -70,7 +72,7 @@
 </div>
 
 
-<script src="<?php echo URL; ?>Views/template/js/scripts/getFechaActual.js" ></script>
+<script src="<?php echo URL; ?>Views/template/js/scripts/forms/equiposIngreso.js" ></script>
 <?php
 if($_SESSION['rol'] == 1) { //es admin
     require_once "Views/footers/footer.php";

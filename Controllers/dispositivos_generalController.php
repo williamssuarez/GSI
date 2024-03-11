@@ -96,6 +96,15 @@ use Models\Tipo_dispositivos;
             }
         }
 
+        public function getDataForRegistro(){
+
+            $datos['titulo'] = "Registrar nuevo dispositivo";
+            $datos['categorias'] = $this->categoria_dispositivos->getCategorias();
+            $datos['tipos'] = $this->tipo_dispositivos->getTiposDispositivos();
+
+            return $datos;
+        }
+
         public function index(){
 
             //OBTENIENDO EL ID DEL USUARIO POR EL NOMBRE USUARIO PARA LA AUDITORIA

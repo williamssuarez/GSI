@@ -20,13 +20,16 @@
             <div>
 
                 <label class="form-label mt-4">Direccion</label>
-                <select required class="form-select" name="departamento" id="departamento">
+                <select required class="form-select Select2" name="departamento" id="departamento">
                         
                         <?php foreach($datos['departamentos'] as $direcciones) {  ?>
                             <option value="<?php echo $direcciones['id_departamento']; ?>"> <?php echo $direcciones['nombre_departamento'] ?> </option>
                         <?php } ?>
 
                 </select>
+
+                <br>
+                <br>
 
                 <button class="btn btn-success" type="submit">Obtener Rango</button>
             </div>

@@ -20,7 +20,7 @@
                 <div>
 
                 <label class="form-label mt-4"><i class="fa-solid fa-table" style="color: #005cfa;"></i> Categoria</label>
-                <select required class="form-select" name="categoria" id="categoria">
+                <select required class="form-select Select2" name="categoria" id="categoria">
 
                     <?php foreach ($datos['categorias'] as $categoria) { ?>
                         <option value="<?php echo $categoria['id_categoria']; ?>"> <?php echo $categoria['nombre_categoria'] ?> </option>

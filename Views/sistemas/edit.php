@@ -24,7 +24,7 @@
                     <br>
 
                     <label class="form-label mt-4">Tipo de dispositivo</label>
-                    <select required class="form-select" name="tipo" id="tipo">
+                    <select required class="form-select Select2" name="tipo" id="tipo">
                         <option value="0" <?php echo ($data['sistemas']['tipo'] == 0) ? 'selected' : ''; ?>>Windows</option>
                         <option value="1" <?php echo ($data['sistemas']['tipo'] == 1) ? 'selected' : ''; ?>>Linux</option>
                     </select>
