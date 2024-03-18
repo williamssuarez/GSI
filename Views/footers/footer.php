@@ -70,6 +70,7 @@
 <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/admin/departamentos.js"></script>
 <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/admin/auditoria.js"></script>
 <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/admin/usuarios.js"></script>
+<script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/admin/empleados.js"></script>
 
 
 </body>

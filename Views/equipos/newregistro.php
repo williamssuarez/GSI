@@ -32,7 +32,13 @@
                 </select>
                 
                 <label class="form-label mt-4"><i class="fa-solid fa-person" style="color: #00040a;"></i> Usuario</label>
-                <input required class="form-control" type="text" name="usuario" id="usuario" placeholder="Introduzca El nombre del Usuario">
+                <select required class="form-select Select2" name="usuario" id="usuario">
+
+                    <?php foreach ($datos['empleados'] as $empleado) { ?>
+                        <option value="<?php echo $empleado['id_empleado']; ?>"><?php echo $empleado['nombre_completo'] ?> - C.I: <?php echo $empleado['cedula'] ?> </option>
+                    <?php } ?>
+
+                </select>
 
                 <label class="form-label mt-4"><i class="fa-solid fa-receipt" style="color: #545454;"></i>Direccion MAC</label>
                 <input class="form-control" required type="text" name="direccion_mac" id="direccion_mac" placeholder="Introduzca la direccion Mac del equipo">
@@ -73,6 +79,17 @@
 
 
 <script src="<?php echo URL; ?>Views/template/js/scripts/forms/equiposIngreso.js" ></script>
+<script>
+  const selectElement = document.getElementById("departamento");
+
+  // Add event listener for the "change" event
+  selectElement.addEventListener("change", function() {
+    
+    console.log("Selected value");
+  });
+
+</script>
+
 <?php
 if($_SESSION['rol'] == 1) { //es admin
     require_once "Views/footers/footer.php";

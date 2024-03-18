@@ -9,6 +9,7 @@ use Models\Departamentos;
 use Models\Operadores;
 use Models\Sistemas_operativos;
 use Models\Usuario;
+use Models\Empleados;
 use Repository\Procesos1 as Repository1;
 
     class equiposController{
@@ -22,6 +23,7 @@ use Repository\Procesos1 as Repository1;
         private $operadores;
         private $sistema_operativo;
         private $usuarios;
+        private $empleados;
 
         public function __construct()
         {
@@ -34,6 +36,8 @@ use Repository\Procesos1 as Repository1;
             $this->operadores = new Operadores();
             $this->sistema_operativo = new Sistemas_operativos();
             $this->usuarios = new Usuario();
+            $this->empleados = new Empleados();
+
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
                 echo '<script>
@@ -143,6 +147,7 @@ use Repository\Procesos1 as Repository1;
 
             $datos['titulo'] = "Registrar equipo nuevo";
             $datos['departamentos'] = $this->departamento->getDepartamentos();
+            $datos['empleados'] = $this->empleados->getEmpleados();
             $datos['sistemas'] = $this->sistema_operativo->getSistemas();
 
             return $datos;

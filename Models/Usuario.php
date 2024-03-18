@@ -165,6 +165,22 @@ class Usuario{
 
     }
 
+    public function getUserbyCedulaforAjax(){
+
+        $sql = "SELECT 
+                nombres,
+                apellidos, 
+                cedula 
+                FROM
+                usuarios
+                WHERE
+                cedula = '{$this->cedula}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function verificarCedula(){
 
         $sql = "SELECT

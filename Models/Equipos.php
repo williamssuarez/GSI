@@ -169,7 +169,7 @@ class Equipos{
                     t1.id_equipo, 
                     t1.numero_bien, 
                     t2.nombre_departamento AS departamento,
-                    t1.usuario,
+                    t5.nombre_completo AS usuario,
                     t1.direccion_mac,
                     t4.direccion AS direccion_ip,
                     t1.fecha_registro,
@@ -179,7 +179,8 @@ class Equipos{
                     equipos t1 
                 LEFT JOIN departamentos t2 ON t1.departamento = t2.id_departamento
                 LEFT JOIN direcciones_asignadas t3 ON t1.direccion_ip = t3.id_asignacion
-                LEFT JOIN direccion_ip t4 ON t3.id_direccion = t4.id_ip;
+                LEFT JOIN direccion_ip t4 ON t3.id_direccion = t4.id_ip
+                LEFT JOIN empleados t5 ON t1.usuario = t5.id_empleado;
                 ";
 
                 $datos = $this->con->consultaRetorno($sql);

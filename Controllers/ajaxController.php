@@ -17,6 +17,7 @@ use Models\Equipos;
 use Models\Equipos_ingresados;
 use Models\Equipos_rechazados;
 use Models\Usuario;
+use Models\Empleados;
 use Models\Conexion;
 
 class ajaxController
@@ -25,6 +26,7 @@ class ajaxController
     private $equipos_ingresados;
     private $equipos_rechazados;
     private $usuarios;
+    private $empleados;
     private $conexion;
     private $plantilla;
 
@@ -34,6 +36,7 @@ class ajaxController
         $this->equipos_ingresados = new Equipos_ingresados();
         $this->equipos_rechazados = new Equipos_rechazados();
         $this->usuarios = new Usuario();
+        $this->empleados = new Empleados();
         $this->conexion = new Conexion();
         $this->plantilla = new plantillasController();
 
@@ -269,6 +272,41 @@ class ajaxController
         } else {
             echo "Backup successful";
             echo $batch;
+        }
+
+    }
+
+    /* EMPLEADOS */
+    //COMPROBAR SI EL EQUIPO ESTA REGISTRADO ANTES DE INGRESARLO
+    public function comprobarCedula(){
+
+        ob_end_clean();
+        ob_start();
+
+        if (isset($_POST['cedula'])) {
+            //ACCEDIENDO AL VALOR
+            $cedula = filter_input(INPUT_POST, 'cedula', FILTER_SANITIZE_STRING);
+
+            //VALIDANDO SI LA CEDULA NO PERTENECE A ALGUN EMPLEADO
+            $this->empleados->set('cedula', $cedula);
+            $responseAjax = $this->empleados->getEmpleadobyCedulaforAjax();
+
+            //VALIDANDO SI LA CEDULA NO PERTENECE A ALGUN USUARIO DEL SISTEMA
+            $this->usuarios->set('cedula', $cedula);
+            $responseAjax2 = $this->usuarios->getUserbyCedulaforAjax();
+
+            if(empty($responseAjax) && empty($responseAjax2)){
+                //VACIO, CEDULA VALIDA
+                $response = 1;
+            } else {
+                //NO VACIO, CEDULA YA REGISTRADA
+                $response = 0;
+            }
+
+            ob_end_clean();
+            echo json_encode($response);
+        } else {
+            echo "Falta dato: cedula";
         }
 
     }

@@ -183,9 +183,9 @@
                         <a class="collapse-item" href="<?php echo URL; ?>auditoria/index">
                             <i class="fas fa-list fa-sm fa-fw mr-2"></i>
                             Auditoria</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>usuarios/index">
+                        <a class="collapse-item" href="<?php echo URL; ?>empleados/index">
                             <i class="fa-solid fa-users"></i>
-                            Usuarios</a>
+                            Empleados</a>
                         <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
                             <i class="fa-regular fa-clipboard"></i>
                             Notas</a>
