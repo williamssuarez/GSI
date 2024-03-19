@@ -339,4 +339,24 @@ class ajaxController
 
     }
 
+    public function getEmpleadosByDpto($departamento_id){
+        ob_end_clean();
+        ob_start();
+
+        if (!empty($departamento_id)) {
+            // Access the value
+
+            $this->empleados->set('departamento_id', $departamento_id);
+            $responseAjax = $this->empleados->lista();
+
+            ob_end_clean();
+            //return json_encode($responseAjax);
+            echo json_encode($responseAjax);
+            //var_dump($responseAjax);
+        } else {
+            echo "Missing required data: departamento_id";
+        }
+
+    }
+
 }

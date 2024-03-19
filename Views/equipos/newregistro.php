@@ -21,6 +21,11 @@
                 <label class="form-label mt-4"><i class="fa-solid fa-tag" style="color: #279608;"></i> Numero de Bien</label>
                 <input required class="form-control" type="number" name="numero_bien" id="numero_bien" maxlength="6" minlength="6" placeholder="Introduzca Numero de Bien">
                 <div id="mensajeBienValidacion" class="form-text"></div>
+
+                <input type="text" id="myInput">
+                <button type="button" id="myBtn">Show Value</button>
+
+                <br>
                 
                 <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Departamento</label>
                 <select required class="form-select Select2" name="departamento" id="departamento">
@@ -79,16 +84,6 @@
 
 
 <script src="<?php echo URL; ?>Views/template/js/scripts/forms/equiposIngreso.js" ></script>
-<script>
-  const selectElement = document.getElementById("departamento");
-
-  // Add event listener for the "change" event
-  selectElement.addEventListener("change", function() {
-    
-    console.log("Selected value");
-  });
-
-</script>
 
 <?php
 if($_SESSION['rol'] == 1) { //es admin

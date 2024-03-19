@@ -84,6 +84,23 @@ class Empleados
         return $result->fetch_assoc();
     }
 
+    public function getEmpleadosByDpto(){
+
+        $sql = "SELECT 
+                id_empleado,
+                nombre_completo,
+                cedula,
+                departamento_id 
+                FROM
+                empleados
+                WHERE
+                departamento_id = '{$this->departamento_id}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function lista(){
 
         $sql= "SELECT
