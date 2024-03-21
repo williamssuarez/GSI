@@ -996,6 +996,7 @@ use Repository\Procesos1 as Repository1;
                 $data['titulo'] = "Editando Datos del Equipo";
                 $data['equipo'] = $this->equipo->getDataEdit();
                 $data['departamentos'] = $this->departamento->getDepartamentos();
+                $data['empleados'] = $this->empleados->getEmpleados();
                 $data['sistemas'] = $this->sistema_operativo->getSistemas();
     
                 //var_dump($data['operador']);

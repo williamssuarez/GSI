@@ -22,7 +22,7 @@
                     <input required value="<?php echo $data['equipo']['numero_bien'] ?>" class="form-control" type="number" name="numero_bien" id="numero_bien" maxlength="6" minlength="6" placeholder="Introduzca Numero de Bien">
 
                     <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Departamento</label>
-                    <select required class="form-select" name="departamento" id="departamento">
+                    <select required class="form-select Select2" name="departamento" id="departamento">
 
                         <?php foreach ($data['departamentos'] as $departamentos) { 
                             $selected = ($departamentos['id_departamento'] == $data['equipo']['departamento']) ? 'selected' : '';
@@ -31,9 +31,17 @@
                         <?php } ?>
 
                     </select>
-                    
+
                     <label class="form-label mt-4"><i class="fa-solid fa-person" style="color: #00040a;"></i> Usuario</label>
-                    <input required value="<?php echo $data['equipo']['usuario'] ?>" class="form-control" type="text" name="usuario" id="usuario" placeholder="Introduzca El nombre del Usuario">
+                    <select required class="form-select Select2" name="usuario" id="usuario">
+
+                        <?php foreach ($data['empleado'] as $empleado) { 
+                            $selected = ($empleado['id_empleado'] == $data['equipo']['usuario']) ? 'selected' : '';
+                        ?>
+                            <option value="<?php echo $empleado['id_empleado']; ?>" <?php echo $selected; ?>> <?php echo $empleado['nombre_completo'] ?> </option>
+                        <?php } ?>
+
+                    </select>
 
                     <label class="form-label mt-4"><i class="fa-solid fa-receipt" style="color: #545454;"></i>Direccion MAC</label>
                     <input required value="<?php echo $data['equipo']['direccion_mac'] ?>"class="form-control" type="text" name="direccion_mac" id="direccion_mac" placeholder="Introduzca la direccion Mac del equipo">
@@ -48,7 +56,7 @@
                     <input required value="<?php echo $data['equipo']['memoria_ram'] ?>" class="form-control" type="number" name="memoria_ram" id="memoria_ram" placeholder="Memoria total del equipo, en GB">
 
                     <label class="form-label mt-4"><i class="fa-brands fa-linux" style="color: #e08910;"></i> Sistema Operativo</label>
-                    <select required class="form-select" name="sistema" id="sistema">
+                    <select required class="form-select Select2" name="sistema" id="sistema">
 
                         <?php foreach ($data['sistemas'] as $sistemas) { 
                             $selected = ($sistemas['id_os'] == $data['equipo']['sistema_operativo']) ? 'selected' : '';
@@ -58,6 +66,7 @@
 
                     </select>
 
+                    <br>
                     <br>
                     
                     <button class="btn btn-success" type="submit">
