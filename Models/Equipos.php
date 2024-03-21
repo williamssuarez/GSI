@@ -284,7 +284,7 @@ class Equipos{
                     t1.id_equipo, 
                     t1.numero_bien, 
                     t3.nombre_departamento AS departamento,
-                    t1.usuario,
+                    t8.nombre_completo AS usuario,
                     t1.direccion_mac,
                     t6.direccion AS direccion_ip,
                     t1.fecha_registro,
@@ -304,6 +304,7 @@ class Equipos{
                 LEFT JOIN direcciones_asignadas t5 ON t1.direccion_ip = t5.id_asignacion
                 LEFT JOIN direccion_ip t6 ON t5.id_direccion = t6.id_ip
                 INNER JOIN usuarios t7 ON t7.id_user = t1.registrado_por
+                INNER JOIN empleados t8 ON t8.id_empleado = t1.usuario
                 WHERE
                     t1.id_equipo = '{$this->id_equipo}' ";
 

@@ -9,7 +9,7 @@
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Dispositivos <i class="fa-solid fa-table"></i></h6>
+                <h6 class="m-0 font-weight-bold text-primary">Dispositivos <i class="fa-solid fa-print"></i></h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
