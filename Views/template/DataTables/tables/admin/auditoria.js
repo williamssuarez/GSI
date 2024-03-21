@@ -161,9 +161,9 @@ $(document).ready( function () {
         ],
         language: {
             lengthMenu: "Mostrar _MENU_ registros por pagina",
-            zeroRecords: "Ninguna direccion encontrada",
+            zeroRecords: "Ninguna auditoria encontrada",
             info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "Ninguna direccion encontrada",
+            infoEmpty: "Ninguna auditoria encontrada",
             infoFiltered: "(filtrados desde _MAX_ registros totales)",
             search: "Buscar: ",
             loadingRecords: "Cargando... ",

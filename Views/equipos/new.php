@@ -19,7 +19,7 @@
 
             <div>
                 <label class="form-label mt-4"><i class="fa-solid fa-tag" style="color: #279608;"></i> Numero de Bien</label>
-                <input required class="form-control" type="number" name="numero_bien" id="numero_bien" maxlength="6" minlength="6" placeholder="Introduzca Numero de Bien">
+                <input required class="form-control" type="number" name="numero_bien2" id="numero_bien2" maxlength="6" minlength="6" placeholder="Introduzca Numero de Bien">
                 <div id="mensajeBienValidacion" class="form-text"></div>
 
                 <label class="form-label mt-4"><i class="fa-solid fa-calendar-days"></i> Fecha Recibido</label>

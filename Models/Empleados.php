@@ -96,9 +96,15 @@ class Empleados
                 WHERE
                 departamento_id = '{$this->departamento_id}'";
             
-        $result = $this->con->consultaRetorno($sql);
+            $datos = $this->con->consultaRetorno($sql);
 
-        return $result->fetch_assoc();
+            while($row = $datos->fetch_assoc()){
+    
+                $this->resultado[] = $row;
+    
+            }
+    
+            return $this->resultado;
     }
 
     public function lista(){

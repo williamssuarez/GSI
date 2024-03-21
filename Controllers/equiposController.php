@@ -179,7 +179,7 @@ use Repository\Procesos1 as Repository1;
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    $numero_bien = $_POST['numero_bien'];
+                    $numero_bien = $_POST['numero_bien2'];
     
                     if(isset($_POST['fecha_recibido']) > 0){
                         $fecha_recibido = $_POST['fecha_recibido'];
@@ -556,9 +556,19 @@ use Repository\Procesos1 as Repository1;
 
                     $errores = array();
 
-                    //Validar usuario como texto
-                    if (!preg_match('/^[A-Za-z\s]+$/', $usuario)) {
-                        $errores[] = "El nombre del usuario debe contener solo letras y espacios.";
+                    // Function to validate MAC address format
+                    /*function validateMacAddress($mac) {
+                        $pattern = '/^([0-9A-F]{2}:){5}[0-9A-F]{2}$/i';
+                        return preg_match($pattern, $mac);
+                    }*/
+
+                    function validateMacAddress($mac) {
+                        $pattern = '/^([0-9A-F]{2}(?:[:-])){5}[0-9A-F]{2}$/i';
+                        return preg_match($pattern, $mac);
+                      }
+                    
+                    if (!validateMacAddress($direccion_mac)) {
+                        $errores[] = "La direccion MAC debe tener un formato MAC válido (XX-XX-XX-XX-XX-XX).";
                     }
                     
                     // Validar numero de bien como número entero
@@ -657,11 +667,17 @@ use Repository\Procesos1 as Repository1;
 
                         }
                     } else {
+
+                        $errorMessage = "";
+                        foreach ($errores as $error) {
+                        $errorMessage .= "<li>$error</li>";
+                        }
+
                         // Hubo errores de validación, muestra los mensajes de error
                         echo '<script>
                                         Swal.fire({
                                             title: "Hubo errores de validacion...",
-                                            text: " Recuerda que el numero de bien deben ser solo los numeros, y los nombres y apellidos no deben llevar numeros",
+                                            html: "<ul>' . $errorMessage . '</ul>",
                                             icon: "error",
                                             showConfirmButton: true,
                                             confirmButtonColor: "#3464eb",
@@ -1012,6 +1028,7 @@ use Repository\Procesos1 as Repository1;
             }
         }
 
+        //EDITAR EQUIPO INGRESADO
         public function edit($id){
 
                 if($_SESSION['rol'] == 10){

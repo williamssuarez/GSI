@@ -339,15 +339,17 @@ class ajaxController
 
     }
 
+    /* EQUIPOS */
+    //GET EMPLEADOS POR DEPARTAMENTO ID PARA PROCESO 3
     public function getEmpleadosByDpto($departamento_id){
         ob_end_clean();
         ob_start();
 
         if (!empty($departamento_id)) {
-            // Access the value
+            
 
             $this->empleados->set('departamento_id', $departamento_id);
-            $responseAjax = $this->empleados->lista();
+            $responseAjax = $this->empleados->getEmpleadosByDpto();
 
             ob_end_clean();
             //return json_encode($responseAjax);
@@ -355,6 +357,58 @@ class ajaxController
             //var_dump($responseAjax);
         } else {
             echo "Missing required data: departamento_id";
+        }
+
+    }
+
+    public function checkBMforRegistro($numero_bien){
+
+        ob_end_clean();
+        ob_start();
+
+        if (!empty($numero_bien)) {
+
+            $this->equipos->set('numero_bien', $numero_bien);
+            $responseAjax = $this->equipos->getEquipobyNumerodeBien();
+
+            if(!empty($responseAjax)){
+                //NO ESTA VACIO, EQUIPO YA REGISTRADO, DESHABILITAR BOTON
+                $response = false;
+            } else {
+                //VACIO, EQUIPO NO REGISTRADO, HABILITAR BOTON
+                $response = true;
+            }
+
+            ob_end_clean();
+            echo json_encode($response);
+        } else {
+            echo "Missing required data: numero_bien";
+        }
+
+    }
+
+    public function checkMACforRegistro($direccion_mac){
+
+        ob_end_clean();
+        ob_start();
+
+        if (!empty($direccion_mac)) {
+
+            $this->equipos->set('direccion_mac', $direccion_mac);
+            $responseAjax = $this->equipos->getEquipobyDireccionMac();
+
+            if(!empty($responseAjax)){
+                //NO ESTA VACIO, EQUIPO YA REGISTRADO, DESHABILITAR BOTON
+                $response = false;
+            } else {
+                //VACIO, EQUIPO NO REGISTRADO, HABILITAR BOTON
+                $response = true;
+            }
+
+            ob_end_clean();
+            echo json_encode($response);
+        } else {
+            echo "Missing required data: direccion_mac";
         }
 
     }

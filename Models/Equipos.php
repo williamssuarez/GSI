@@ -163,6 +163,21 @@ class Equipos{
         return $result->fetch_assoc();
     }
 
+    public function getEquipobyDireccionMac(){
+
+        $sql = "SELECT
+                id_equipo,
+                departamento
+                FROM
+                equipos
+                WHERE
+                direccion_mac = '{$this->direccion_mac}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function lista(){
 
         $sql = "SELECT
