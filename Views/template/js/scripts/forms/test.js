@@ -108,4 +108,38 @@ $(document).ready(function(){
     });
 
     //INGRESO DE EQUIPOS
+
+    //DISPOSITIVOS
+    $("#numero_bien_dispositivo").keyup(function() {
+      const numeroBien = $(this).val();
+  
+      // Removiendo estilos de validacion previos
+      $(this).removeClass("is-valid is-invalid");
+      $("#mensajeBienValidacion").text("");
+  
+      // Validar si es unico el registro
+      $.ajax({
+        url: URL + 'ajax/checkBMforDispositivo/' + numeroBien,
+        type: 'GET',
+        //data: { numero_bien: numeroBien },
+        success: function(response) {
+
+          if (response === 'true') {
+            // Numero no registrado, permitir nuevo registro
+            $("#numero_bien").addClass("is-valid");
+            $("#mensajeBienValidacion").text("El numero de bien no esta registrado, puede ingresarlo");
+            $("#btnSubmit").removeAttr("disabled"); // Habilitar boton
+          } else {
+            // Numero ya registrado, no permitir nuevo registro
+            $("#numero_bien").addClass("is-invalid");
+            $("#mensajeBienValidacion").text("Ya hay un equipo registrado con este numero de bien");
+            $("#btnSubmit").attr("disabled", true); // Deshabilitar boton
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error("Error:", textStatus, errorThrown);
+          // Handle AJAX request errors (optional)
+        }
+      });
+    });
 });

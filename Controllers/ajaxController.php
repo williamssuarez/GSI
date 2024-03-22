@@ -18,6 +18,7 @@ use Models\Equipos_ingresados;
 use Models\Equipos_rechazados;
 use Models\Usuario;
 use Models\Empleados;
+use Models\Dispositivos_general;
 use Models\Conexion;
 
 class ajaxController
@@ -27,6 +28,7 @@ class ajaxController
     private $equipos_rechazados;
     private $usuarios;
     private $empleados;
+    private $dispositivos_general;
     private $conexion;
     private $plantilla;
 
@@ -37,6 +39,7 @@ class ajaxController
         $this->equipos_rechazados = new Equipos_rechazados();
         $this->usuarios = new Usuario();
         $this->empleados = new Empleados();
+        $this->dispositivos_general = new Dispositivos_general();
         $this->conexion = new Conexion();
         $this->plantilla = new plantillasController();
 
@@ -409,6 +412,38 @@ class ajaxController
             echo json_encode($response);
         } else {
             echo "Missing required data: direccion_mac";
+        }
+
+    }
+
+    public function checkBMforDispositivo($numero_bien){
+
+        ob_end_clean();
+        ob_start();
+
+        if (!empty($numero_bien)) {
+
+            $this->dispositivos_general->set('numero_bien', $numero_bien);
+            $responseAjax = $this->dispositivos_general->getDispositivobyNumerodeBien();
+
+            $this->equipos->set('numero_bien', $numero_bien);
+            $responseAjax2 = $this->equipos->getEquipobyNumerodeBien();
+
+            if(!empty($responseAjax)){
+                //NO ESTA VACIO, NUMERO DE BIEN YA REGISTRADO CON OTRO DISPOSITIVO, DESHABILITAR BOTON
+                $response = 2;
+            } elseif(!empty($responseAjax2)){
+                //NO ESTA VACIO, NUMERO DE BIEN YA REGISTRADO CON OTRO EQUIPO, DESHABILITAR BOTON
+                $response = 3;
+            } else {
+                //VACIO, EQUIPO NO REGISTRADO, HABILITAR BOTON
+                $response = 1;
+            }
+
+            ob_end_clean();
+            echo json_encode($response);
+        } else {
+            echo "Missing required data: numero_bien";
         }
 
     }

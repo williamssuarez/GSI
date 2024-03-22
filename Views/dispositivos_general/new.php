@@ -19,41 +19,47 @@
 
                 <div>
 
-                <label class="form-label mt-4">
-                        <i class="fa-solid fa-building" style="color: #913080;"></i> 
-                        Inserte el departamento
-                    </label>
-                    <input required class="form-control" type="text" name="modelo" id="modelo" placeholder="Introduzca Modelo">
+                <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Seleccione un tipo</label>
+                    <select required class="form-select Select2" name="tipo" id="tipo">
+
+                        <?php foreach ($datos['tipos'] as $tipo) { ?>
+                            <option value="<?php echo $departamento['id_tipo']; ?>"> <?php echo $tipo['nombre_tipo'] ?> </option>
+                        <?php } ?>
+
+                    </select>
 
                 <label class="form-label mt-4">
                     <i class="fa-solid fa-tag" style="color: #279608;"></i> 
                         Inserte el numero de bien
                     </label>
-                    <input required class="form-control" type="text" name="numero_bien" id="numero_bien" placeholder="Introduzca numero de bien">
+                    <input required class="form-control" type="text" name="numero_bien_dispositivo" id="numero_bien_dispositivo" placeholder="Introduzca numero de bien">
 
                     <label class="form-label mt-4">
                         <i class="fa-solid fa-copyright"></i>
-                        Inserte el nombre de la marca 
+                        Inserte el nombre de la marca (Opcional)
                     </label>
                     <input required class="form-control" type="text" name="marca" id="marca" placeholder="Introduzca Marca">
 
                     <label class="form-label mt-4">
                         <i class="fa-solid fa-barcode"></i> 
-                        Inserte el serial del equipo 
+                        Inserte el serial (Opcional)
                     </label>
                     <input required class="form-control" type="text" name="serial" id="serial" placeholder="Introduzca Serial">
 
                     <label class="form-label mt-4">
                         <i class="fa-solid fa-database" style="color: #c00c0c;"></i> 
-                        Inserte el modelo
+                        Inserte el modelo (Opcional)
                     </label>
                     <input required class="form-control" type="text" name="modelo" id="modelo" placeholder="Introduzca Modelo">
 
-                    <label class="form-label mt-4">
-                        <i class="fa-solid fa-building" style="color: #913080;"></i> 
-                        Inserte el departamento
-                    </label>
-                    <input required class="form-control" type="text" name="modelo" id="modelo" placeholder="Introduzca Modelo">
+                    <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Seleccione un Departamento</label>
+                    <select required class="form-select Select2" name="departamento" id="departamento">
+
+                        <?php foreach ($datos['departamentos'] as $departamento) { ?>
+                            <option value="<?php echo $departamento['id_departamento']; ?>"> <?php echo $departamento['nombre_departamento'] ?> </option>
+                        <?php } ?>
+
+                    </select>
 
                     <div class="form-group">
                         <label class="form-label mt-4"> 

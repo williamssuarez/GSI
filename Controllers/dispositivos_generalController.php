@@ -5,6 +5,7 @@ use Models\Auditoria;
 use Models\Usuario;
 use Models\Categoria_dispositivos;
 use Models\Tipo_dispositivos;
+use Models\Departamentos;
 
     class dispositivos_generalController{
 
@@ -13,6 +14,7 @@ use Models\Tipo_dispositivos;
         private $usuarios;
         private $categoria_dispositivos;
         private $tipo_dispositivos;
+        private $departamentos;
 
         public function __construct()
         {
@@ -21,6 +23,7 @@ use Models\Tipo_dispositivos;
             $this->usuarios = new Usuario();
             $this->categoria_dispositivos = new Categoria_dispositivos();
             $this->tipo_dispositivos = new Tipo_dispositivos();
+            $this->departamentos = new Departamentos();
 
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
@@ -101,6 +104,7 @@ use Models\Tipo_dispositivos;
             $datos['titulo'] = "Registrar nuevo dispositivo";
             $datos['categorias'] = $this->categoria_dispositivos->getCategorias();
             $datos['tipos'] = $this->tipo_dispositivos->getTiposDispositivos();
+            $datos['departamentos'] = $this->departamentos->getDepartamentos();
 
             return $datos;
         }

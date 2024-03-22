@@ -5,6 +5,7 @@ namespace Models;
 class Dispositivos_general{
 
     private $id_dispositivo;
+    private $numero_bien;
     private $marca;
     private $serial;
     private $modelo;
@@ -34,6 +35,7 @@ class Dispositivos_general{
 
         $sql= "SELECT
                 id_dispositivo,
+                numero_bien,
                 marca,
                 serial,
                 modelo,
@@ -57,6 +59,7 @@ class Dispositivos_general{
 
         $sql = "SELECT 
                 id_dispositivo,
+                numero_bien,
                 marca,
                 serial,
                 modelo,
@@ -81,10 +84,26 @@ class Dispositivos_general{
         return $this->resultado;
     }
 
+    public function getDispositivobyNumerodeBien(){
+
+        $sql = "SELECT
+                id_dispositivo,
+                departamento
+                FROM
+                dispositivos_general
+                WHERE
+                numero_bien = '{$this->numero_bien}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function lista(){
 
         $sql = "SELECT
                     t1.id_dispositivo, 
+                    t1.numero_bien,
                     t1.marca, 
                     t1.serial, 
                     t1.modelo, 
@@ -114,7 +133,8 @@ class Dispositivos_general{
     public function add(){
         
         $sql = "INSERT INTO
-                dispositivos_general(marca,
+                dispositivos_general(numero_bien, 
+                marca,
                 serial,
                 modelo,
                 departamento,
@@ -122,7 +142,8 @@ class Dispositivos_general{
                 creado_por,
                 tipo_id)
                 VALUES
-                ('{$this->marca}', 
+                ('{$this->numero_bien}', 
+                '{$this->marca}', 
                 '{$this->serial}', 
                 '{$this->modelo}', 
                 '{$this->departamento}', 
@@ -137,6 +158,7 @@ class Dispositivos_general{
 
         $sql = "SELECT 
                     id_dispositivo,
+                    numero_bien,
                     marca,
                     serial,
                     modelo,
@@ -158,6 +180,7 @@ class Dispositivos_general{
     public function edit(){
 
         $sql = "UPDATE
+                    numero_bien,
                     marca,
                     serial,
                     modelo,
@@ -165,6 +188,7 @@ class Dispositivos_general{
                     caracteristicas,
                     tipo_id
                 SET
+                numero_bien = '{$this->numero_bien}',
                 marca = '{$this->marca}',
                 serial = '{$this->serial}',
                 modelo = '{$this->modelo}',
@@ -191,6 +215,7 @@ class Dispositivos_general{
 
         $sql = "SELECT
                     t1.id_dispositivo, 
+                    t1.numero_bien,
                     t1.marca, 
                     t1.serial, 
                     t1.modelo, 
