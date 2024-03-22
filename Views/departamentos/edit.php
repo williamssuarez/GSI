@@ -19,10 +19,10 @@
 
 
                 <div>
-                    <label class="form-label mt-4"><i class="fa-solid fa-user-gear" style="color: #005af5;"></i> Nombre del Departamento </label>
+                    <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Nombre del Departamento </label>
                     <input required value="<?php echo $data['departamento']['nombre_departamento'] ?>" class="form-control" type="text" name="nombre" id="nombre" placeholder="Introduzca Nombres">
                     
-                    <label class="form-label mt-4"><i class="fa-solid fa-person"></i> Piso localizado</label>
+                    <label class="form-label mt-4"><i class="fa-solid fa-stairs" style="color: #005cfa;"></i> Piso localizado</label>
                     <input required value="<?php echo $data['departamento']['piso'] ?>" class="form-control" type="text" name="piso" id="piso" placeholder="Introduzca Apellido">
 
                     <br>
