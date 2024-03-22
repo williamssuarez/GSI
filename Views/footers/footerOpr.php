@@ -61,6 +61,7 @@
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/admin/departamentos.js"></script>
     <script type="text/javascript" src="<?php echo URL; ?>Views/template/DataTables/tables/opr/usuariosOpr.js"></script>
 
+    <script src="<?php echo URL; ?>Views/template/js/scripts/forms/test.js" ></script>
 
     </body>
     </html>

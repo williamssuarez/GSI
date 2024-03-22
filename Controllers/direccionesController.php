@@ -347,10 +347,10 @@ use Models\Auditoria;
 
                 //Sumando el numero de direcciones asignadas al departamento
                 //El departamento no requiere pasar ninguna variable porque se usa el especificado en el rango
-                $this->actualizarDireccionesenDepartamento();
+                //$this->actualizarDireccionesenDepartamento();
 
                 //Sumando el numero de direcciones asignadas al dispositivo
-                $this->actualizarDireccionesenDispositivos($dispositivo);
+                //$this->actualizarDireccionesenDispositivos($dispositivo);
 
                 //Liberando el rango en la tabla setrango en la base de datos
                 $this->liberarRango();
