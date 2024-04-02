@@ -280,7 +280,7 @@ class ajaxController
     }
 
     /* EMPLEADOS */
-    //COMPROBAR SI EL EQUIPO ESTA REGISTRADO ANTES DE INGRESARLO
+    //COMPROBAR SI EL EMPLEADO ESTA REGISTRADO ANTES DE INGRESARLO
     public function comprobarCedula(){
 
         ob_end_clean();

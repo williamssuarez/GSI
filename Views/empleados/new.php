@@ -49,6 +49,6 @@
     </div>
 </div>
 
-<!-- <script src="<?php echo URL; ?>Views/template/js/scripts/forms/empleados.js" ></script> -->
+<script src="<?php echo URL; ?>Views/template/js/scripts/forms/empleados.js" ></script>
 
 <?php require_once "Views/footers/footer.php"; ?>

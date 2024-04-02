@@ -108,11 +108,6 @@
                                             Reportar    
                                         </a> -->
 
-                                        <a class="btn btn-info btn-icon-split" href='edit/<?php echo $data['id_ingreso'] ?>'>
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                            Editar
-                                        </a> 
-
                                         <?php } elseif($data['estado'] == 2) { ?>
 
                                         <a class="btn btn-primary btn-icon-split" href='esperandoAprobacion'>

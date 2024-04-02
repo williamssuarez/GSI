@@ -795,10 +795,10 @@ use Repository\Procesos1 as Repository1;
                                         }
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'equipos/newregistro";
+                                            window.location.href = "' . URL . 'equipos/editregistro/' . $id . '";
                                         }
                                     }).then(() => {
-                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                        window.location.href = "' . URL . 'equipos/editregistro/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                     });
                                 </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -806,29 +806,6 @@ use Repository\Procesos1 as Repository1;
                     }
 
                     $errores = array();
-
-                    //Validar usuario como texto
-                    if (!preg_match('/^[A-Za-z\s]+$/', $usuario)) {
-                        echo '<script>
-                                    Swal.fire({
-                                        title: "Error",
-                                        text: "El nombre del usuario debe contener solo letras y espacios.",
-                                        icon: "error",
-                                        showConfirmButton: true,
-                                        confirmButtonColor: "#3464eb",
-                                        customClass: {
-                                            confirmButton: "rounded-button" // Identificador personalizado
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'equipos/newregistro";
-                                        }
-                                    }).then(() => {
-                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                    });
-                                </script>';
-                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
-                    }
                     
                     // Validar numero de bien como número entero
                     if (!is_numeric($numero_bien) || !is_numeric($memoria_ram) || !is_numeric($almacenamiento)) {
@@ -844,10 +821,10 @@ use Repository\Procesos1 as Repository1;
                                         }
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'equipos/newregistro";
+                                            window.location.href = "' . URL . 'equipos/editregistro/' . $id . '";
                                         }
                                     }).then(() => {
-                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                        window.location.href = "' . URL . 'equipos/editregistro/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
                                     });
                                 </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
@@ -863,58 +840,10 @@ use Repository\Procesos1 as Repository1;
                     $this->equipo->set('sistema_operativo', $sistema_operativo);
 
                     //VERIFICANDO SI EL NUMERO DE BIEN Y LA MAC YA EXISTEN
-                    $cuenta = $this->equipo->verificarEquipoBien();
-                    $cuenta_mac = $this->equipo->verificarEquipoMac(); 
+                    /*$cuenta = $this->equipo->verificarEquipoBien();
+                    $cuenta_mac = $this->equipo->verificarEquipoMac(); */
 
-                    //SI YA EXISTE, REDIRIGIR DE NUEVO AL FORMULARIO CON MENSAJE DE ERROR
-                    if($cuenta['cuenta'] > 0){
-
-                        echo '<script>
-                                    Swal.fire({
-                                        title: "Error",
-                                        text: "Este Numero de bien ya existe",
-                                        icon: "error",
-                                        showConfirmButton: true,
-                                        confirmButtonColor: "#3464eb",
-                                        customClass: {
-                                            confirmButton: "rounded-button" // Identificador personalizado
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'equipos/newregistro";
-                                        }
-                                    }).then(() => {
-                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                    });
-                                </script>';
-                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-
-                    }
-                    if ($cuenta_mac['cuenta'] > 0) {
-                        
-                        echo '<script>
-                                    Swal.fire({
-                                        title: "Error",
-                                        text: "Esta direccion ya existe",
-                                        icon: "error",
-                                        showConfirmButton: true,
-                                        confirmButtonColor: "#3464eb",
-                                        customClass: {
-                                            confirmButton: "rounded-button" // Identificador personalizado
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'equipos/newregistro";
-                                        }
-                                    }).then(() => {
-                                        window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                    });
-                                </script>';
-                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-
-                    } 
-                    //CASO CONTRARIO, PROSEGUIR
-                    else {
+                
 
                         //OBTENIENDO DATA PARA AUDITORIA
                         $this->equipo->set('id_equipo',$id);
@@ -927,8 +856,8 @@ use Repository\Procesos1 as Repository1;
 
                         //PREPARANDO AUDITORIA
                         $tipo_cambio = 3;
-                        $tabla_afectada = 'Tipos';
-                        $registro_afectado = $data['id_tipo'];
+                        $tabla_afectada = 'Equipos';
+                        $registro_afectado = $data['id_equipo'];
                         
                         //PREPARANDO EL VALOR ANTES Y EL VALOR DESPUES
                         $valorAntesarray = array(
@@ -988,7 +917,7 @@ use Repository\Procesos1 as Repository1;
                             </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-                    }
+                    
     
                 }  
                 

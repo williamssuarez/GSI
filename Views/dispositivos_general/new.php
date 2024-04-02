@@ -19,7 +19,7 @@
 
                 <div>
 
-                <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Seleccione un tipo</label>
+                <label class="form-label mt-4"><i class="fa-solid fa-building" style="color: #913080;"></i> Seleccione un tipo NOTA: Si el dispositivo requiere la asignacion de una direccion ip para funcionar o conectarse a la red entonces deberia ser de la categoria de redes</label>
                     <select required class="form-select Select2" name="tipo" id="tipo">
 
                         <?php foreach ($datos['tipos'] as $tipo) { ?>
@@ -33,6 +33,7 @@
                         Inserte el numero de bien
                     </label>
                     <input required class="form-control" type="text" name="numero_bien_dispositivo" id="numero_bien_dispositivo" placeholder="Introduzca numero de bien">
+                    <div id="mensajeBienValidacion" class="form-text"></div>
 
                     <label class="form-label mt-4">
                         <i class="fa-solid fa-copyright"></i>

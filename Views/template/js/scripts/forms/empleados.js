@@ -19,6 +19,7 @@ cedulaInput.addEventListener('input', function() {
             console.log('Exitoso el ajax');
             const response = JSON.parse(xhr.responseText);
 
+            console.log(response);
             if (response === 0) {
 
                 cedulaInput.classList.remove('is-valid');

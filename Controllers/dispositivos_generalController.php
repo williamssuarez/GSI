@@ -140,7 +140,7 @@ use Models\Departamentos;
                 $serial = $_POST['serial'];
                 $modelo = $_POST['modelo'];
                 $departamento = $_POST['departamento'];
-                $caracteristicas = $_POST['caracteristicas'];
+                $caracteristicas = trim($_POST['caracteristicas']);
                 $tipo = $_POST['tipo'];
 
                 $this->usuarios->set('usuario', $_SESSION['usuario']);
@@ -150,12 +150,10 @@ use Models\Departamentos;
                 $tipo = $_POST['tipo'];
 
                 //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
-                if(empty($marca) || 
-                empty($serial) || 
-                empty($modelo) || 
-                empty($departamento) || 
+                if(empty($departamento) || 
                 empty($caracteristicas) || 
-                empty($tipo)){
+                empty($tipo) || 
+                empty($numero_bien)){
 
                     echo '<script>
                                 Swal.fire({
@@ -190,6 +188,7 @@ use Models\Departamentos;
                 
                     if (empty($errores)) {
                         // No hay errores de validación, procesa los datos
+                        $this->dispositivos->set('numero_bien', $numero_bien);
                         $this->dispositivos->set('marca', $marca);
                         $this->dispositivos->set('serial', $serial);
                         $this->dispositivos->set('modelo', $modelo);
@@ -292,6 +291,7 @@ use Models\Departamentos;
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
+                    $numero_bien = $_POST['numero_bien'];
                     $marca = $_POST['marca'];
                     $serial = $_POST['serial'];
                     $modelo = $_POST['modelo'];
