@@ -1,8 +1,12 @@
+Options All -Indexes
+
 RewriteEngine On
 
-RewriteCond %{REQUEST_FILENAME} !=d
-RewriteCond %{REQUEST_FILENAME} !=f
-RewriteCond %{REQUEST_FILENAME} !=l
+RewriteRule ^([a-zA-Z0-9/]+)$ index.php?url=$1
 
-RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.gif|robots\.txt)$ [NC]
-RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+Order Deny,Allow
+Deny from all
+Allow from 127.0.0.1
+Allow from ::1
+Allow from localhost
+Allow from 192.168
