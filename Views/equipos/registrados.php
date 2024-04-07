@@ -35,9 +35,17 @@
                         <th>Estado <i class="fa-solid fa-question" style="color: #5b0d9b;"></i></th>
 
                         <?php if($_SESSION['rol'] == 1){ ?>
-                        <th>Acciones <i class="fa-solid fa-gears"></i></th>
+                        <th>Registrado Por <i class="fa-solid fa-user" style="color: #054cc7;"></i></th>
                         <?php } ?>
                         
+                        <th>CPU <i class="fa-solid fa-microchip" style="color: #701ab7;"></i></th>
+                        <th>RAM <i class="fa-solid fa-memory" style="color: #298a00;"></i></th>
+                        <th>Almacenamiento <i class="fa-solid fa-hard-drive" style="color: #545454;"></i></th>
+                        <th>O.S <i class="fa-brands fa-linux" style="color: #e08910;"></i></th>
+
+                        <?php if($_SESSION['rol'] == 1){ ?>
+                            <th>Acciones <i class="fa-solid fa-gears"></i></th>
+                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,6 +77,12 @@
                                         En Soporte <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i>
                                     </span> 
 
+                                <?php } elseif ($data['estado'] == 4) { ?>
+                                
+                                    <span class=" font-weight-bold" >
+                                        Registro por Aprobar <i class="fa-solid fa-circle-info" style="color: #0045bd;"></i>
+                                    </span> 
+
                                 <?php } else { ?>
 
                                     <span class=" font-weight-bold" >
@@ -78,9 +92,26 @@
                                 <?php }  ?>
                             </td>
                             <?php if($_SESSION['rol'] == 1){ ?>
-                            <td>
-                                <a class="btn btn-info" href='editregistro/<?php echo $data['id_equipo'] ?>'>Editar</a>
-                            </td>
+                                <td> <?php echo $data['nombres'] ?> </td>
+                            <?php } ?>
+
+                            <td> <?php echo $data['cpu'] ?> </td>
+                            <td> <?php echo $data['memoria_ram'] ?> </td>
+                            <td> <?php echo $data['almacenamiento'] ?> </td>
+                            <td> <?php echo $data['sistema_operativo'] ?> </td>
+
+                            <?php if($_SESSION['rol'] == 1){ ?>
+                                <?php if($data['estado'] == 4){ ?>
+                                    <td>
+                                        <a id="aprobarRegistroEquipo" class="btn btn-primary" href='aprobarregistro/<?php echo $data['id_equipo'] ?>'>Aprobar</a>
+
+                                        <a id="rechazarRegistroEquipo" class="btn btn-danger" href='rechazarregistro/<?php echo $data['id_equipo'] ?>'>Rechazar</a>
+                                    </td>
+                                <?php } else { ?>
+                                    <td>
+                                        <a class="btn btn-info" href='editregistro/<?php echo $data['id_equipo'] ?>'>Editar</a>
+                                    </td>
+                                <?php } ?>
                             <?php } ?>
                         </tr>
                     <?php } ?>

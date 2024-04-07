@@ -10,7 +10,12 @@ use Models\Operadores;
 use Models\Sistemas_operativos;
 use Models\Usuario;
 use Models\Empleados;
+use Models\Direcciones_ip;
+use Models\Direcciones;
 use Repository\Procesos1 as Repository1;
+
+//CONTROLADORES
+use Controllers\direccionesController;
 
     class equiposController{
 
@@ -24,6 +29,8 @@ use Repository\Procesos1 as Repository1;
         private $sistema_operativo;
         private $usuarios;
         private $empleados;
+        private $direcciones_ip;
+        private $direcciones_asignacion;
 
         public function __construct()
         {
@@ -37,6 +44,8 @@ use Repository\Procesos1 as Repository1;
             $this->sistema_operativo = new Sistemas_operativos();
             $this->usuarios = new Usuario();
             $this->empleados = new Empleados();
+            $this->direcciones_ip = new Direcciones_ip();
+            $this->direcciones_asignacion = new Direcciones();
 
             if (!isset($_SESSION['usuario'])) {
                 // El usuario no está autenticado, muestra la alerta y redirige al formulario de inicio de sesión.
@@ -222,12 +231,34 @@ use Repository\Procesos1 as Repository1;
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
     
                     } else {
-    
-                        //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
-                        $id_equipo = $this->equipo->getEquipobyNumerodeBien();
 
                         //OBTENIENDO EL ID DEL EQUIPO PARA INSERTARLO
                         $id_equipo = $this->equipo->getEquipobyNumerodeBien();
+
+                        if($id_equipo['estado'] == 4){
+                            
+                            //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+                            echo '<script>
+                                    Swal.fire({
+                                        title: "Equipo no Aprobado",
+                                        text: "El registro de este equipo no esta aprobado, apruebelo, o rechazelo y vuelva a cargarlo con los datos correctos para hacerlo parte de los proceso del sistema.",
+                                        icon: "warning",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        confirmButtonText: "OK",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'equipos/registrados";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'equipos/registrados"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                        }
 
                         //VERIFICANDO SI ESE EQUIPO SE ENCUENTRA INGRESADO
                         $this->equipo_ingresado->set('id_equipo', $id_equipo['id_equipo']);
@@ -515,6 +546,7 @@ use Repository\Procesos1 as Repository1;
                 $numero_bien = $_POST['numero_bien'];
                 $departamento = $_POST['departamento'];
                 $usuario = $_POST['usuario'];
+                $direccion_ip = $_POST['direccion_ip'];
                 $direccion_mac = $_POST['direccion_mac'];
                 $cpu = $_POST['cpu'];
                 $almacenamiento = $_POST['almacenamiento'];
@@ -528,7 +560,7 @@ use Repository\Procesos1 as Repository1;
 
 
                 //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
-                if(empty($numero_bien) || empty($usuario) || empty($direccion_mac)){
+                if(empty($numero_bien)){
 
                     echo '<script>
                                 Swal.fire({
@@ -556,31 +588,63 @@ use Repository\Procesos1 as Repository1;
 
                     $errores = array();
 
-                    // Function to validate MAC address format
-                    /*function validateMacAddress($mac) {
-                        $pattern = '/^([0-9A-F]{2}:){5}[0-9A-F]{2}$/i';
-                        return preg_match($pattern, $mac);
-                    }*/
+                    if(!empty($direccion_mac)){
+                        function validateMacAddress($direccion_mac) {
+                            $pattern = '/^([0-9A-F]{2}:){5}[0-9A-F]{2}$/i';
+                            return preg_match($pattern, $direccion_mac);
+                        }
+                        
+                        if (!validateMacAddress($direccion_mac)) {
+                            $errores[] = "La direccion MAC debe tener un formato MAC válido (XX:XX:XX:XX:XX:XX).";
+                        }
+                    }
 
-                    function validateMacAddress($mac) {
-                        $pattern = '/^([0-9A-F]{2}(?:[:-])){5}[0-9A-F]{2}$/i';
-                        return preg_match($pattern, $mac);
-                      }
-                    
-                    if (!validateMacAddress($direccion_mac)) {
-                        $errores[] = "La direccion MAC debe tener un formato MAC válido (XX-XX-XX-XX-XX-XX).";
+                    if(empty($direccion_ip)){
+                        //SIN IP
+                        $direccion_ip = 66050;
+                    } else {
+
+                        $direccion_ip = trim($direccion_ip);
+                        $pattern = $this->validateIpAddress($direccion_ip);
+
+                        if($pattern == true){
+
+                            $this->direcciones_ip->set('direccion', $direccion_ip);
+
+                            //OBTENER ID POR DIRECCION (SI ESTA LIBRE)
+                            $id_ip = $this->direcciones_ip->getIdByDireccion();
+
+                            if(!$id_ip){
+                                $errores[] = "Parece que esta direccion ya se encuentra asignada a otro equipo.";
+                            } else {
+                                //SI ENCONTRO ENTONCES ESTA LIBRE
+                                $direccion_ip = $id_ip;
+                            }
+
+                        } else {
+                            $errores[] = "La direccion IP debe tener un formato válido, por ejemplo (192.9.100.16).";
+                        }
                     }
                     
                     // Validar numero de bien como número entero
-                    if (!is_numeric($numero_bien) || !is_numeric($memoria_ram) || !is_numeric($almacenamiento)) {
-                        $errores[] = "El numero de bien, memoria ram y almacenamientos deben ser valores enteros numericos.";
+                    if(!empty($memoria_ram)){
+                        if(!is_numeric($memoria_ram)){
+                            $errores[] = "La memoria ram debe ser un valor entero numerico.";
+                        }
+                    }
+                    if(!empty($almacenamiento)){
+                        if(!is_numeric($almacenamiento)){
+                            $errores[] = "La memoria de almacenamiento debe ser un valor entero numerico.";
+                        }
                     }
                 
                     if (empty($errores)) {
                         // No hay errores de validación, procesa los datos
+
                         $this->equipo->set('numero_bien', $numero_bien);
                         $this->equipo->set('departamento', $departamento);
                         $this->equipo->set('usuario', $usuario);
+                        //$this->equipo->set('direccion_ip', $direccion_ip);
                         $this->equipo->set('direccion_mac', $direccion_mac);
                         $this->equipo->set('cpu', $cpu);
                         $this->equipo->set('almacenamiento', $almacenamiento);
@@ -591,7 +655,34 @@ use Repository\Procesos1 as Repository1;
 
                         //VERIFICANDO SI EL NUMERO DE BIEN Y LA MAC YA EXISTEN
                         $cuenta = $this->equipo->verificarEquipoBien();
-                        $cuenta_mac = $this->equipo->verificarEquipoMac(); 
+                        
+                        if(!empty($mac)){
+                            $cuenta_mac = $this->equipo->verificarEquipoMac(); 
+
+                            if ($cuenta_mac['cuenta'] > 0) {
+                            
+                                echo '<script>
+                                            Swal.fire({
+                                                title: "Error",
+                                                text: "Esta direccion ya existe",
+                                                icon: "error",
+                                                showConfirmButton: true,
+                                                confirmButtonColor: "#3464eb",
+                                                customClass: {
+                                                    confirmButton: "rounded-button" // Identificador personalizado
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = "' . URL . 'equipos/newregistro";
+                                                }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                            });
+                                        </script>';
+                                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+    
+                            }
+                        }
 
                         //SI YA EXISTE, REDIRIGIR DE NUEVO AL FORMULARIO CON MENSAJE DE ERROR
                         if($cuenta['cuenta'] > 0){
@@ -616,34 +707,70 @@ use Repository\Procesos1 as Repository1;
                                     </script>';
                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
 
-                        }
-                        if ($cuenta_mac['cuenta'] > 0) {
-                            
-                            echo '<script>
-                                        Swal.fire({
-                                            title: "Error",
-                                            text: "Esta direccion ya existe",
-                                            icon: "error",
-                                            showConfirmButton: true,
-                                            confirmButtonColor: "#3464eb",
-                                            customClass: {
-                                                confirmButton: "rounded-button" // Identificador personalizado
-                                            }
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                window.location.href = "' . URL . 'equipos/newregistro";
-                                            }
-                                        }).then(() => {
-                                            window.location.href = "' . URL . 'equipos/newregistro"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                        });
-                                    </script>';
-                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-
                         } 
                         //CASO CONTRARIO, PROSEGUIR
                         else {
 
                             $this->equipo->add();
+
+                            if($direccion_ip != 66050){
+                                
+                                $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
+
+                                //OCUPAR
+                                $this->direcciones_ip->ocupar();
+
+                                //ENCONTRAR DATOS DEL EQUIPO POR EL NUMERO DEL BIEN PARA LA ASIGNACION
+                                $this->equipo->set('numero_bien', $numero_bien);
+                                $equipo_data = $this->equipo->getEquipobyNumerodeBien();
+                                
+                                //PREPARAR DATA PARA INSERTAR EN ASIGNACIONES
+                                $this->usuarios->set('usuario', $_SESSION['usuario']);
+                                $id_user = $this->usuarios->getIdUserbyUsuario();
+
+                                /*var_dump($equipo_data['numero_bien']);
+                                die();*/
+
+                                $this->direcciones_asignacion->set('id_administrador', $id_user['id_user']);
+                                $this->direcciones_asignacion->set('id_direccion', $direccion_ip['id_ip']);
+                                $this->direcciones_asignacion->set('tipo_dispositivo', 2);
+                                $this->direcciones_asignacion->set('numero_bien', $equipo_data['numero_bien']);
+                                $this->direcciones_asignacion->set('equipo', $equipo_data['id_equipo']);
+
+                                $this->direcciones_asignacion->add();
+
+                                //OBTENIENDO LA ID DE ASIGNACION PARA INSERTARLA EN LA TABLA EQUIPOS
+                                $this->direcciones_asignacion->set('numero_bien', $equipo_data['numero_bien']);
+                                $id_asignacion = $this->direcciones_asignacion->getAsignacionIDbyNumeroBien();
+
+                                //INSERTANDO EL ID DE ASIGNACION AL EQUIPO CORRESPONDIENTE
+                                $this->equipo->set('id_equipo', $equipo_data['id_equipo']);
+                                $this->equipo->set('direccion_ip', $id_asignacion['id_asignacion']);
+                                $this->equipo->AsignarDireccionEquipo();
+
+                                $accion = 0;
+                                $razon = "Asignacion de direccion";
+                            
+                                $this->direcciones_ip->set('usuario_administrador', $id_user['id_user']);
+                                $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
+                                $this->direcciones_ip->set('tipo_dispositivo', 2);
+                                $this->direcciones_ip->set('numero_bien_dispositivo', $equipo_data['numero_bien']);
+                                $this->direcciones_ip->set('accion', $accion);
+                                $this->direcciones_ip->set('razon', $razon);
+
+                                //INSERTANDO EN EL HISTORIAL
+                                $this->direcciones_ip->asignarDireccionHistorial();
+                                
+                            }
+
+                            //SI EL USUARIO NO ES ADMIN INSERTAR CON ESTADO 4 DE PENDIENTE DE APROBAR EL REGISTRO
+                            if($_SESSION['rol'] != 1){
+                                $this->equipo->set('numero_bien', $numero_bien);
+                                $equipo_data = $this->equipo->getEquipobyNumerodeBien();
+
+                                $this->equipo->set('id_equipo', $equipo_data['id_equipo']);
+                                $this->equipo->cambiarEstadoaPendienteAprobacion();
+                            }
 
                             echo '<script>
                                         Swal.fire({
@@ -698,7 +825,145 @@ use Repository\Procesos1 as Repository1;
 
     }     
     
-}
+    }
+
+    public function aprobarregistro($id){
+
+        if($_SESSION['rol'] != 1){
+
+            //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+            echo '<script>
+                        Swal.fire({
+                            title: "Error",
+                            text: "No tienes privilegios de administrador",
+                            icon: "error",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'equipos/index";
+                            }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                        });
+                </script>';
+            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+        } else {
+
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                
+                $this->equipo->set('id_equipo', $id);
+                $this->equipo->aprobarRegistro();
+
+                echo '<script>
+                            Swal.fire({
+                                title: "Registro Aprobado Exitosamente",
+                                text: "El registro ahora es considerado activo y forma parte de los proceso del sistema",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/registrados";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'equipos/registrados"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                    exit; 
+            }
+
+        }
+
+    }
+
+    public function rechazarregistro($id){
+
+        if($_SESSION['rol'] != 1){
+
+            //REDIRECCIONANDO CON UN MENSAJE DE ERROR
+            echo '<script>
+                        Swal.fire({
+                            title: "Error",
+                            text: "No tienes privilegios de administrador",
+                            icon: "error",
+                            showConfirmButton: true,
+                            confirmButtonColor: "#3464eb",
+                            customClass: {
+                                confirmButton: "rounded-button" // Identificador personalizado
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "' . URL . 'equipos/index";
+                            }
+                        }).then(() => {
+                            window.location.href = "' . URL . 'equipos/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                        });
+                </script>';
+            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+        } else {
+
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                
+                $this->equipo->set('id_equipo', $id);
+                //VERIFICAR SI TIENE UNA DIRECCION ASIGNADA
+                $equipo_data = $this->equipo->getEquipoForAuditoria();//USAR LA FUNCION DE LA AUDITORIA YA QUE TRAE TODOS LOS DATOS DEL EQUIPO POR EL ID
+
+                if($equipo_data['direccion_ip'] != NULL){
+
+                    //SI LA DIRECCION IP NO ESTA VACIA ES DECIR QUE HAY UNA ASIGNACION, ELIMINAR DICHA ASIGNACION ANTES DE PROSEGUIR
+
+                    $this->direcciones_asignacion->set('id_asignacion', $equipo_data['direccion_ip']);
+
+                    $id_ip = $this->direcciones_asignacion->getDataForLiberation();
+
+                    //LIBERANDO LA DIRECCION DEL EQUIPO
+                    //$this->equipo->set('id_equipo', $id_ip['id_equipo']);
+                    $this->equipo->liberarDireccionEquipo();
+
+                    //CAMBIANDO EL ESTADO DE LA DIRECCION DE OCUPADO A LIBRE
+                    $this->direcciones_ip->set('id_ip', $id_ip['id_direccion']);
+                    $this->direcciones_ip->release();
+
+                    //ELIMINAR ASIGNACION
+                    $this->direcciones_asignacion->delete();
+                }
+
+                //SI NO, PROSEGUIR CON LA ELIMINACION
+                $this->equipo->delete();
+
+                echo '<script>
+                            Swal.fire({
+                                title: "Registro eliminado Exitosamente",
+                                text: "El registro ha sido rechazado y eliminado, notifiquele al operador para que vuelva a cargar los datos correctos",
+                                icon: "success",
+                                showConfirmButton: true,
+                                confirmButtonColor: "#3464eb",
+                                customClass: {
+                                    confirmButton: "rounded-button" // Identificador personalizado
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "' . URL . 'equipos/registrados";
+                                }
+                            }).then(() => {
+                                window.location.href = "' . URL . 'equipos/registrados"; // Esta línea se ejecutará cuando se cierre la alerta.
+                            });
+                        </script>';
+                    exit; 
+            }
+
+        }
+
+    }
 
          
 
@@ -771,22 +1036,33 @@ use Repository\Procesos1 as Repository1;
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                     $this->equipo->set('id_equipo',$id);
+
+                    //OBTENIENDO DATA ACTUAL PARA COMPARAR CON LA DEL FORM
+                    $current_data = $this->equipo->getDataEdit();
+
+                    /*var_dump($current_data['numero_bien']);
+                    die();*/
+
                     $numero_bien = $_POST['numero_bien'];
                     $departamento = $_POST['departamento'];
                     $usuario = $_POST['usuario'];
+                    $direccion_ip = $_POST['direccion_ip'];
                     $direccion_mac = $_POST['direccion_mac'];
                     $cpu = $_POST['cpu'];
                     $almacenamiento = $_POST['almacenamiento'];
                     $memoria_ram = $_POST['memoria_ram'];
                     $sistema_operativo = $_POST['sistema'];
 
+                    var_dump($direccion_ip);
+                    die();
+
                     //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
-                    if(empty($numero_bien) || empty($usuario) || empty($direccion_mac)){
+                    if(empty($numero_bien)){
 
                         echo '<script>
                                     Swal.fire({
                                         title: "Error",
-                                        text: "Parece que uno de los campos quedo vacio",
+                                        text: "Parece que el numero de bien quedo vacio",
                                         icon: "error",
                                         showConfirmButton: true,
                                         confirmButtonColor: "#3464eb",
@@ -807,43 +1083,133 @@ use Repository\Procesos1 as Repository1;
 
                     $errores = array();
                     
+                    if(!empty($direccion_mac)){
+                        function validateMacAddress($direccion_mac) {
+                            $pattern = '/^([0-9A-F]{2}(?:[:-])){5}[0-9A-F]{2}$/i';
+                            return preg_match($pattern, $direccion_mac);
+                          }
+                        
+                        if (!validateMacAddress($direccion_mac)) {
+                            $errores[] = "La direccion MAC debe tener un formato MAC válido (XX-XX-XX-XX-XX-XX).";
+                        }
+                    }
+
+                    if(empty($direccion_ip)){
+                        //SIN IP
+                        $direccion_ip = 66050;
+                    } else {
+
+                        $direccion_ip = trim($direccion_ip);
+                        $pattern = $this->validateIpAddress($direccion_ip);
+
+                        if($pattern == true){
+
+                            $this->direcciones_ip->set('direccion', $direccion_ip);
+
+                            //OBTENER ID POR DIRECCION (SI ESTA LIBRE)
+                            $id_ip = $this->direcciones_ip->getIdByDireccion();
+
+                            if(!$id_ip){
+                                $errores[] = "Parece que esta direccion ya se encuentra asignada a otro equipo.";
+                            } else {
+                                //SI ENCONTRO ENTONCES ESTA LIBRE
+                                $direccion_ip = $id_ip;
+                            }
+
+                        } else {
+                            $errores[] = "La direccion IP debe tener un formato válido, por ejemplo (192.9.100.16).";
+                        }
+                    }
+                    
                     // Validar numero de bien como número entero
-                    if (!is_numeric($numero_bien) || !is_numeric($memoria_ram) || !is_numeric($almacenamiento)) {
-                        echo '<script>
-                                    Swal.fire({
-                                        title: "Error",
-                                        text: "El numero de bien, memoria ram y almacenamientos deben ser valores enteros numericos.",
-                                        icon: "error",
-                                        showConfirmButton: true,
-                                        confirmButtonColor: "#3464eb",
-                                        customClass: {
-                                            confirmButton: "rounded-button" // Identificador personalizado
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = "' . URL . 'equipos/editregistro/' . $id . '";
-                                        }
-                                    }).then(() => {
-                                        window.location.href = "' . URL . 'equipos/editregistro/' . $id . '"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                    });
-                                </script>';
-                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+                    if(!empty($memoria_ram)){
+                        if(!is_numeric($memoria_ram)){
+                            $errores[] = "La memoria ram debe ser un valor entero numerico.";
+                        }
+                    }
+                    if(!empty($almacenamiento)){
+                        if(!is_numeric($almacenamiento)){
+                            $errores[] = "La memoria de almacenamiento debe ser un valor entero numerico.";
+                        }
                     }
     
-                    $this->equipo->set('numero_bien', $numero_bien);
-                    $this->equipo->set('departamento', $departamento);
-                    $this->equipo->set('usuario', $usuario);
-                    $this->equipo->set('direccion_mac', $direccion_mac);
-                    $this->equipo->set('cpu', $cpu);
-                    $this->equipo->set('almacenamiento', $almacenamiento);
-                    $this->equipo->set('memoria_ram', $memoria_ram);
-                    $this->equipo->set('sistema_operativo', $sistema_operativo);
+                    if(empty($errores)){
+                        $this->equipo->set('numero_bien', $numero_bien);
+                        $this->equipo->set('departamento', $departamento);
+                        $this->equipo->set('usuario', $usuario);
+                        $this->equipo->set('direccion_mac', $direccion_mac);
+                        $this->equipo->set('cpu', $cpu);
+                        $this->equipo->set('almacenamiento', $almacenamiento);
+                        $this->equipo->set('memoria_ram', $memoria_ram);
+                        $this->equipo->set('sistema_operativo', $sistema_operativo);
 
-                    //VERIFICANDO SI EL NUMERO DE BIEN Y LA MAC YA EXISTEN
-                    /*$cuenta = $this->equipo->verificarEquipoBien();
-                    $cuenta_mac = $this->equipo->verificarEquipoMac(); */
+                        //VERIFICANDO SI EL NUMERO DE BIEN Y LA MAC YA EXISTEN
+                        /*$cuenta = $this->equipo->verificarEquipoBien();
+                        $cuenta_mac = $this->equipo->verificarEquipoMac(); */
 
-                
+                        //SI EL NUMERO DE BIEN DEL FORM ES DIFERENTE AL ACTUAL ENTONCES CAMBIO
+                        if($current_data['numero_bien'] != $numero_bien){
+
+                            $cuenta = $this->equipo->verificarEquipoBien();
+
+                            //SI YA EXISTE, REDIRIGIR DE NUEVO AL FORMULARIO CON MENSAJE DE ERROR
+                            if($cuenta['cuenta'] > 0){
+
+                                echo '<script>
+                                            Swal.fire({
+                                                title: "Error",
+                                                text: "Este Numero de bien ya existe",
+                                                icon: "error",
+                                                showConfirmButton: true,
+                                                confirmButtonColor: "#3464eb",
+                                                customClass: {
+                                                    confirmButton: "rounded-button" // Identificador personalizado
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = "' . URL . 'equipos/editregistro/' . $id . '";
+                                                }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'equipos/editregistro/' . $id . '";
+                                            });
+                                        </script>';
+                                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                            } 
+                        }
+
+                        //SI LA MAC DEL FORM ES DIFERENTE A LA ACTUAL ENTONCES CAMBIO TAMBIEN
+                        if($current_data['direccion_mac'] != $direccion_mac){
+
+                            if(!empty($direccion_mac)){
+                                $cuenta_mac = $this->equipo->verificarEquipoMac(); 
+    
+                                if ($cuenta_mac['cuenta'] > 0) {
+                                
+                                    echo '<script>
+                                                Swal.fire({
+                                                    title: "Error",
+                                                    text: "Esta direccion ya existe",
+                                                    icon: "error",
+                                                    showConfirmButton: true,
+                                                    confirmButtonColor: "#3464eb",
+                                                    customClass: {
+                                                        confirmButton: "rounded-button" // Identificador personalizado
+                                                    }
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = "' . URL . 'equipos/editregistro/' . $id . '";
+                                                    }
+                                                }).then(() => {
+                                                    window.location.href = "' . URL . 'equipos/editregistro/' . $id . '";
+                                                });
+                                            </script>';
+                                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+        
+                                }
+                            }
+                        }
+
+
 
                         //OBTENIENDO DATA PARA AUDITORIA
                         $this->equipo->set('id_equipo',$id);
@@ -916,14 +1282,27 @@ use Repository\Procesos1 as Repository1;
                                 });
                             </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                    }
 
-                    
-    
                 }  
                 
                 $this->equipo->set('id_equipo',$id);
                 $data['titulo'] = "Editando Datos del Equipo";
                 $data['equipo'] = $this->equipo->getDataEdit();
+
+                if($data['equipo']['direccion_ip'] != NULL){
+
+                    //OBTENER DIRECCION POR ASIGNACION
+                    $this->direcciones_asignacion->set('id_asignacion', $data['equipo']['direccion_ip']);
+                    $id_ip = $this->direcciones_asignacion->getIdDireccionByIdAsignacion();
+
+                    $this->direcciones_ip->set('id_ip', $id_ip['id_direccion']);
+                    $ip = $this->direcciones_ip->getDireccionIpById();
+                    $data['equipo']['direccion_ip'] = $ip['direccion'];
+
+                }
+
+
                 $data['departamentos'] = $this->departamento->getDepartamentos();
                 $data['empleados'] = $this->empleados->getEmpleados();
                 $data['sistemas'] = $this->sistema_operativo->getSistemas();
@@ -1672,6 +2051,24 @@ use Repository\Procesos1 as Repository1;
             return $flag;
     
         }
+
+        private function validateIpAddress($ipAddress) {
+            $pattern = '/^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/';
+        
+            /* Ensure each segment is within the valid range (0-255) */
+            if (preg_match($pattern, $ipAddress)) {
+               $segments = explode('.', $ipAddress);
+               foreach ($segments as $segment) {
+                   if ($segment < 0 || $segment > 255) {
+                       return false;
+                   }
+               }
+               return true;
+            } else {
+                return false;
+            }
+        }
+        
 
         //NOTAS DEL OPERADOR POR INCIDENCIA
         public function ReportarAvances(){

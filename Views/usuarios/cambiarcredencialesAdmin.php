@@ -36,7 +36,7 @@
                                             Nueva Clave                                     
                                         </label>
                                         <input type="password" class="form-control form-control-user" name="nueva_clave" id="nueva_clave"
-                                            placeholder="Introduzca Nombres" required>
+                                            placeholder="Introduzca Clave" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label class="form-label mt-4">
@@ -44,7 +44,7 @@
                                             Confirmar Clave
                                         </label>
                                         <input type="password" class="form-control form-control-user" name="clave_confirmacion" id="clave_confirmacion" 
-                                            placeholder="Introduzca Apellido" required>
+                                            placeholder="Repita la Clave" required>
                                     </div>
                                     <div class="form-group">
                                     <label class="form-label mt-4"><i class="fa-solid fa-key" style="color: #04225d;"></i> Rol del sistema</label>

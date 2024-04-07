@@ -52,7 +52,8 @@
         <script src="<?php echo URL; ?>Views/template/DataTables/demo/datatables-demo.js"></script>
 
         <script>
-            const URL = "http://192.168.0.105/GSI/";
+            //const URL = "http://192.168.0.105/GSI/";
+            const URL = "http://localhost/GSI/";
         </script>
     </head>
     <body>
@@ -110,11 +111,6 @@
                 </div>
             </li>
 
-    
-
-    <!-- Divider -->
-    <hr class="sidebar-divider"> 
-
     <!-- Nav Item - Charts 
     DESHABILITADO PORQUE UN OPR NO TIENE PORQUE VER A LOS OTROS USUARIOS
     <li class="nav-item">
@@ -124,27 +120,6 @@
     </li> -->
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Soportes</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Administrar Soportes:</h6>
-                        <a class="collapse-item" href="<?php echo URL; ?>soportes/index">
-                            <i class="fa-solid fa-person-walking-arrow-right"></i>
-                            Soportes Abiertos</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>soportes/pendientes">
-                            <i class="fa-solid fa-person-walking"></i>
-                            Soportes Pendientes</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>soportes/cerradas">
-                            <i class="fa-solid fa-people-robbery"></i>
-                            Soportes Cerradas</a>
-            </div>
-        </div>
-    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
@@ -163,9 +138,6 @@
                         <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
                             <i class="fa-brands fa-ubuntu"></i>    
                             Sistemas</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
-                            <i class="fa-regular fa-clipboard"></i>
-                            Notas</a>
                         <a class="collapse-item" href="<?php echo URL; ?>ajax/manualOperador">
                             <i class="fa-solid fa-circle-info"></i> 
                             Ayuda</a>

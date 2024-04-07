@@ -410,8 +410,6 @@ class ajaxController
 
             ob_end_clean();
             echo json_encode($response);
-        } else {
-            echo "Missing required data: direccion_mac";
         }
 
     }

@@ -99,6 +99,30 @@ class Equipos{
 
     }
 
+    public function cambiarEstadoaPendienteAprobacion(){
+
+        $sql = "UPDATE 
+                equipos
+                SET
+                estado = 4
+                WHERE
+                id_equipo = '{$this->id_equipo}' ";
+
+        $this->con->consultaSimple($sql);
+
+    }
+
+    public function aprobarRegistro(){
+        $sql = "UPDATE 
+                equipos
+                SET
+                estado = 0
+                WHERE
+                id_equipo = '{$this->id_equipo}' ";
+
+        $this->con->consultaSimple($sql);
+    }
+
     public function verificarEquipoBien(){
 
         $sql = "SELECT
@@ -133,6 +157,7 @@ class Equipos{
                 numero_bien, 
                 departamento, 
                 usuario, 
+                direccion_ip,
                 direccion_mac,
                 cpu,
                 memoria_ram,
@@ -152,6 +177,8 @@ class Equipos{
 
         $sql = "SELECT
                 id_equipo,
+                numero_bien,
+                estado,
                 departamento
                 FROM
                 equipos
@@ -178,24 +205,46 @@ class Equipos{
         return $result->fetch_assoc();
     }
 
+    public function getEquipobyDireccionIP(){
+
+        $sql = "SELECT
+                id_equipo,
+                numero_bien
+                FROM
+                equipos
+                WHERE
+                direccion_ip = '{$this->direccion_ip}'";
+            
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function lista(){
 
         $sql = "SELECT
                     t1.id_equipo, 
                     t1.numero_bien, 
                     t2.nombre_departamento AS departamento,
-                    t5.nombre_completo AS usuario,
+                    t1.usuario,
                     t1.direccion_mac,
                     t4.direccion AS direccion_ip,
                     t1.fecha_registro,
+                    t5.nombres,
+                    t5.apellidos,
                     t1.ingresos,
-                    t1.estado
+                    t1.estado,
+                    t1.cpu,
+                    t1.memoria_ram,
+                    t1.almacenamiento,
+                    t6.nombre AS sistema_operativo
                 FROM
                     equipos t1 
                 LEFT JOIN departamentos t2 ON t1.departamento = t2.id_departamento
                 LEFT JOIN direcciones_asignadas t3 ON t1.direccion_ip = t3.id_asignacion
                 LEFT JOIN direccion_ip t4 ON t3.id_direccion = t4.id_ip
-                LEFT JOIN empleados t5 ON t1.usuario = t5.id_empleado;
+                LEFT JOIN usuarios t5 ON t1.registrado_por = t5.id_user
+                LEFT JOIN sistemas_operativos t6 ON t1.sistema_operativo = t6.id_os
                 ";
 
                 $datos = $this->con->consultaRetorno($sql);
@@ -284,7 +333,7 @@ class Equipos{
                     t1.id_equipo, 
                     t1.numero_bien, 
                     t3.nombre_departamento AS departamento,
-                    t8.nombre_completo AS usuario,
+                    t1.usuario,
                     t1.direccion_mac,
                     t6.direccion AS direccion_ip,
                     t1.fecha_registro,
@@ -304,7 +353,6 @@ class Equipos{
                 LEFT JOIN direcciones_asignadas t5 ON t1.direccion_ip = t5.id_asignacion
                 LEFT JOIN direccion_ip t6 ON t5.id_direccion = t6.id_ip
                 INNER JOIN usuarios t7 ON t7.id_user = t1.registrado_por
-                INNER JOIN empleados t8 ON t8.id_empleado = t1.usuario
                 WHERE
                     t1.id_equipo = '{$this->id_equipo}' ";
 
@@ -321,6 +369,7 @@ class Equipos{
                 numero_bien, 
                 departamento, 
                 usuario, 
+                direccion_ip,
                 direccion_mac,
                 cpu,
                 memoria_ram,

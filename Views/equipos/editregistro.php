@@ -32,28 +32,32 @@
 
                     </select>
 
-                    <label class="form-label mt-4"><i class="fa-solid fa-person" style="color: #00040a;"></i> Usuario</label>
-                    <select required class="form-select Select2" name="usuario" id="usuario">
+                    <label class="form-label mt-4"><i class="fa-solid fa-person" style="color: #00040a;"></i> Usuario (Opcional)</label>
+                    <input value="<?php echo $data['equipo']['usuario'] ?>" class="form-control" type="text" name="usuario" id="usuario" placeholder="Introduzca el nombre del usuario asignado a este equipo">
 
-                        <?php foreach ($data['empleado'] as $empleado) { 
-                            $selected = ($empleado['id_empleado'] == $data['equipo']['usuario']) ? 'selected' : '';
-                        ?>
-                            <option value="<?php echo $empleado['id_empleado']; ?>" <?php echo $selected; ?>> <?php echo $empleado['nombre_completo'] ?> </option>
-                        <?php } ?>
+                    <label class="form-label mt-4"><i class="fa-solid fa-globe" style="color: #1049ad;"></i> Direccion IP (Si requiere editar la direccion IP solicitele al administrador que libere la actual, para poder ingresar la nueva)</label>
+                    
+                    <?php if($data['equipo']['direccion_ip'] != NULL){ ?>
 
-                    </select>
+                        <input value="<?php echo $data['equipo']['direccion_ip'] ?>" class="form-control" type="text" name="direccion_ip" id="direccion_ip" readonly>
 
-                    <label class="form-label mt-4"><i class="fa-solid fa-receipt" style="color: #545454;"></i>Direccion MAC</label>
-                    <input required value="<?php echo $data['equipo']['direccion_mac'] ?>"class="form-control" type="text" name="direccion_mac" id="direccion_mac" placeholder="Introduzca la direccion Mac del equipo">
+                    <?php } else { ?>
+
+                        <input class="form-control" type="text" name="direccion_ip" id="direccion_ip" placeholder="Introduzca la direccion IP del equipo">
+
+                    <?php } ?>
+
+                    <label class="form-label mt-4"><i class="fa-solid fa-receipt" style="color: #545454;"></i>Direccion MAC (Opcional)</label>
+                    <input value="<?php echo $data['equipo']['direccion_mac'] ?>"class="form-control" type="text" name="direccion_mac" id="direccion_mac" placeholder="Introduzca la direccion Mac del equipo">
 
                     <label class="form-label mt-4"><i class="fa-solid fa-microchip" style="color: #701ab7;"></i>CPU (Opcional)</label>
-                    <input required value="<?php echo $data['equipo']['cpu'] ?>" class="form-control" type="text" name="cpu" id="cpu" placeholder="Introduzca el CPU del equipo, 'Pentium 4' o 'Dual Core' por ejemplo">
+                    <input value="<?php echo $data['equipo']['cpu'] ?>" class="form-control" type="text" name="cpu" id="cpu" placeholder="Introduzca el CPU del equipo, 'Pentium 4' o 'Dual Core' por ejemplo">
 
                     <label class="form-label mt-4"><i class="fa-solid fa-hard-drive" style="color: #545454;"></i>Almacenamiento (Opcional)</label>
-                    <input required value="<?php echo $data['equipo']['almacenamiento'] ?>" class="form-control" type="number" name="almacenamiento" id="almacenamiento" placeholder="Almacenamiento total del equipo, en GB">
+                    <input value="<?php echo $data['equipo']['almacenamiento'] ?>" class="form-control" type="number" name="almacenamiento" id="almacenamiento" placeholder="Almacenamiento total del equipo, en GB">
 
                     <label class="form-label mt-4"><i class="fa-solid fa-memory" style="color: #298a00;"></i>Memoria RAM (Opcional)</label>
-                    <input required value="<?php echo $data['equipo']['memoria_ram'] ?>" class="form-control" type="number" name="memoria_ram" id="memoria_ram" placeholder="Memoria total del equipo, en GB">
+                    <input value="<?php echo $data['equipo']['memoria_ram'] ?>" class="form-control" type="number" name="memoria_ram" id="memoria_ram" placeholder="Memoria total del equipo, en GB">
 
                     <label class="form-label mt-4"><i class="fa-brands fa-linux" style="color: #e08910;"></i> Sistema Operativo</label>
                     <select required class="form-select Select2" name="sistema" id="sistema">

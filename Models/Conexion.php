@@ -12,6 +12,13 @@ class Conexion{
     );
 
     /*private $datos = array(
+        "host" => "192.168.0.105",
+        "user" => "GSI",
+        "password" => "WQ0tKWBeLEZlx2Db",
+        "db" => "gsi",
+    );*/
+
+    /*private $datos = array(
         "host" => "localhost",
         "user" => "root",
         "password" => "",

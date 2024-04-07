@@ -1,6 +1,6 @@
 $(document).ready(function(){
     
-    //REGISTRO DE EQUIPOS
+    /*REGISTRO DE EQUIPOS
     $("#departamento").change(function(){
         const selectedDeptId = $(this).val();
 
@@ -37,7 +37,7 @@ $(document).ready(function(){
                 }
               }
         })
-    });
+    });*/
 
     //REGISTRO DE EQUIPOS
     $("#numero_bien").keyup(function() {
@@ -74,15 +74,23 @@ $(document).ready(function(){
     });
 
     //REGISTRO DE EQUIPOS
-    $("#direccion_mac").keyup(function() {
+    /*$("#direccion_mac").keyup(function() {
       const direccionMac = $(this).val();
+
+      if(!direccionMac){
+
+        // Numero no registrado, permitir nuevo registro
+        $("#direccion_mac").addClass("is-valid");
+        $("#btnSubmit").removeAttr("disabled"); // Habilitar boton
+
+      } else {
+
+        // Removiendo estilos de validacion previos
+        $(this).removeClass("is-valid is-invalid");
+        $("#mensajeMACValidacion").text("");
   
-      // Removiendo estilos de validacion previos
-      $(this).removeClass("is-valid is-invalid");
-      $("#mensajeMACValidacion").text("");
-  
-      // Validar si es unico el registro
-      $.ajax({
+        // Validar si es unico el registro
+        $.ajax({
         url: URL + 'ajax/checkMACforRegistro/' + direccionMac,
         type: 'GET',
         //data: { numero_bien: numeroBien },
@@ -105,7 +113,9 @@ $(document).ready(function(){
           // Handle AJAX request errors (optional)
         }
       });
-    });
+
+      }
+    });*/
 
     //INGRESO DE EQUIPOS
     

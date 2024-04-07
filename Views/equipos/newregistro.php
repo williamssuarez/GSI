@@ -31,28 +31,27 @@
 
                 </select>
                 
-                <label class="form-label mt-4"><i class="fa-solid fa-person" style="color: #00040a;"></i> Usuario</label>
-                <select required class="form-select Select2" name="usuario" id="usuario">
+                <label class="form-label mt-4"><i class="fa-solid fa-person" style="color: #00040a;"></i> Usuario (Opcional)</label>
+                <input class="form-control" type="text" name="usuario" id="usuario" placeholder="Introduzca el nombre del usuario asignado a este equipo">
 
-                        <option> Seleccione un departamento </option>
+                <label class="form-label mt-4"><i class="fa-solid fa-globe" style="color: #1049ad;"></i> Direccion IP (Opcional)</label>
+                <input class="form-control" type="text" name="direccion_ip" id="direccion_ip" placeholder="Introduzca la direccion IP del equipo">
 
-                </select>
-
-                <label class="form-label mt-4"><i class="fa-solid fa-receipt" style="color: #545454;"></i>Direccion MAC</label>
-                <input class="form-control" required type="text" name="direccion_mac" id="direccion_mac" placeholder="Introduzca la direccion Mac del equipo">
+                <label class="form-label mt-4"><i class="fa-solid fa-receipt" style="color: #545454;"></i> Direccion MAC (Opcional)</label>
+                <input class="form-control" type="text" name="direccion_mac" id="direccion_mac" placeholder="Introduzca la direccion Mac del equipo">
                 <div id="mensajeMACValidacion" class="form-text"></div>
 
-                <label class="form-label mt-4"><i class="fa-solid fa-microchip" style="color: #701ab7;"></i>CPU (Opcional)</label>
-                <input required class="form-control" type="text" name="cpu" id="cpu" placeholder="Introduzca el CPU del equipo, 'Pentium 4' o 'Dual Core' por ejemplo">
+                <label class="form-label mt-4"><i class="fa-solid fa-microchip" style="color: #701ab7;"></i> CPU (Opcional)</label>
+                <input class="form-control" type="text" name="cpu" id="cpu" placeholder="Introduzca el CPU del equipo, 'Pentium 4' o 'Dual Core' por ejemplo">
 
-                <label class="form-label mt-4"><i class="fa-solid fa-hard-drive" style="color: #545454;"></i>Almacenamiento (Opcional)</label>
-                <input required class="form-control" type="number" name="almacenamiento" id="almacenamiento" placeholder="Almacenamiento total del equipo, en GB">
+                <label class="form-label mt-4"><i class="fa-solid fa-hard-drive" style="color: #545454;"></i> Almacenamiento (Opcional)</label>
+                <input class="form-control" type="number" name="almacenamiento" id="almacenamiento" placeholder="Almacenamiento total del equipo, en GB">
 
-                <label class="form-label mt-4"><i class="fa-solid fa-memory" style="color: #298a00;"></i>Memoria RAM (Opcional)</label>
-                <input required class="form-control" type="number" name="memoria_ram" id="memoria_ram" placeholder="Memoria total del equipo, en GB">
+                <label class="form-label mt-4"><i class="fa-solid fa-memory" style="color: #298a00;"></i> Memoria RAM (Opcional)</label>
+                <input class="form-control" type="number" name="memoria_ram" id="memoria_ram" placeholder="Memoria total del equipo, en GB">
 
                 <label class="form-label mt-4"><i class="fa-brands fa-linux" style="color: #e08910;"></i> Sistema Operativo</label>
-                <select required class="form-select Select2" name="sistema" id="sistema">
+                <select class="form-select Select2" name="sistema" id="sistema">
 
                     <?php foreach ($datos['sistemas'] as $sistemas) { ?>
                         <option value="<?php echo $sistemas['id_os']; ?>"> <?php echo $sistemas['nombre'] ?> </option>

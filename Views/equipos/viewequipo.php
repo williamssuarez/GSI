@@ -24,6 +24,12 @@
                                                     Activo <i class="fa-solid fa-circle-check" style="color: #3aa413;"></i>
                                                 </span>
 
+                                                    <?php } elseif($data['equipo']['estado'] == 4) { ?>
+
+                                                        <span class=" font-weight-bold" >
+                                                            Registro por Aprobar <i class="fa-solid fa-circle-info" style="color: #0045bd;"></i>
+                                                        </span> 
+
                                                     <?php } elseif($data['equipo']['estado'] == 1) { ?>
 
                                                         <span class=" font-weight-bold" >
@@ -61,14 +67,17 @@
                                         <div class="btn-group btn-user btn-block">
                                             <a href="<?php echo URL; ?>equipos/registrados" class="btn btn-primary" aria-current="page">Volver</a>
 
-
-                                            <a href="<?php echo URL; ?>reportes/generarPdfEquipo/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-info" aria-current="page">Reporte</a>
-
                                             <?php if($_SESSION['rol'] == 1){ ?>    
-                                                <a href="<?php echo URL; ?>equipos/editregistro/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-warning">Editar</a>
+                                                <a href="<?php echo URL; ?>equipos/editregistro/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-info">Editar</a>
                                                 <?php if($data['equipo']['estado'] == 0) { ?>
 
                                                     <a id="desactivandoequipo" href="<?php echo URL; ?>equipos/desactivar/<?php echo $data['equipo']['id_equipo'] ?>" class="btn btn-danger">Desactivar</a>
+
+                                                <?php } elseif($data['equipo']['estado'] == 4) { ?>
+
+                                                    <a id="aprobarRegistroEquipo" class="btn btn-success" href='aprobarregistro/<?php echo $data['equipo']['id_equipo'] ?>'>Aprobar</a>
+
+                                                    <a id="rechazarRegistroEquipo" class="btn btn-danger" href='rechazarregistro/<?php echo $data['equipo']['id_equipo'] ?>'>Rechazar</a>
 
                                                 <?php } elseif($data['equipo']['estado'] == 1) { ?>
 

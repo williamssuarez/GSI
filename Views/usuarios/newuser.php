@@ -59,7 +59,7 @@
                                             <i class="fa-solid fa-envelope" style="color: #0043b8;"></i> 
                                             Correo del Operador                                     
                                         </label>
-                                        <input type="text" class="form-control form-control-user" 
+                                        <input type="email" class="form-control form-control-user" 
                                         name="correo" id="correo" placeholder="Introduzca Correo"  required>
                                     </div>
                                     <div class="col-sm-6">

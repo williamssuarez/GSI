@@ -676,202 +676,370 @@ use Models\Auditoria;
                     $clave_confirmacion = strtolower($_POST['clave_confirmacion']);
                     $rol = $_POST['rol'];
 
-
                     //validando que no esten vacios los datos
                     if(!empty($user) || !empty($nueva_clave) || !empty($clave_confirmacion)){
 
-                        $this->usuario->set('usuario',$user);
+                        if($current_user == $user){
+                            //SI EL NOMBRE DE USUARIO VIEJO Y EL NUEVO SON IGUALES ES DECIR QUE NO CAMBIO EL NOMBRE DE USUARIO, PROSEGUIR CON NORMALIDAD
+                            //EVALUANDO SI CLAVES COINCIDEN
+                            if($nueva_clave == $clave_confirmacion){
 
-                        $cuenta = $this->usuario->verificarUsuario();
+                                //ENCRIPTAR NUEVA CLAVE
+                                $claveHash = $this->encriptarNuevaClave($nueva_clave);
 
-                        //VERIFICAR SI EL USERNAME YA EXISTE, USUARIO NO EXISTE
-                        if($cuenta['cuenta'] == 0){
+                                //SI EL USUARIO A EDITAR ES EL MISMO DEL ADMIN QUE ESTA INICIADO SESION, CERRAR SESION
+                                if($usuario == $_SESSION['usuario']){
 
+                                    //OBTENIENDO DATOS ANTES DE EDITAR
+                                    $this->usuario->set('usuario', $usuario);
+                                    $id_user = $this->usuario->getIdUserbyUsuario();
+                                    $id_usuario = $id_user['id_user'];
 
-                                //EVALUANDO SI CLAVES COINCIDEN
-                                if($nueva_clave == $clave_confirmacion){
+                                    //OBTENER DATA PARA AUDITORIA
+                                    $this->usuario->set('id_user',$id_usuario);
+                                    $datos = $this->usuario->getUsuarioforAuditoria();
 
-                                    //ENCRIPTAR NUEVA CLAVE
-                                    $claveHash = $this->encriptarNuevaClave($nueva_clave);
-
-                                    //SI EL USUARIO A EDITAR ES EL MISMO DEL ADMIN QUE ESTA INICIADO SESION, CERRAR SESION
-                                    if($usuario == $_SESSION['usuario']){
-
-                                        //OBTENIENDO DATOS ANTES DE EDITAR
-                                        $this->usuario->set('usuario', $usuario);
-                                        $id_user = $this->usuario->getIdUserbyUsuario();
-                                        $id_usuario = $id_user['id_user'];
-
-                                        //OBTENER DATA PARA AUDITORIA
-                                        $this->usuario->set('id_user',$id_usuario);
-                                        $datos = $this->usuario->getUsuarioforAuditoria();
-
-                                        //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
-                                        $this->usuario->set('usuario', $_SESSION['usuario']);
-                                        $id_user = $this->usuario->getIdUserbyUsuario();
-                                        $user_id = $id_user['id_user'];
-                                        
-
-                                        //PREPARANDO AUDITORIA
-                                        $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
-                                        $tabla_afectada = 'usuarios';
-
-                                        $registro_afectado = $datos['id_user'];
-                                        $valorAntesarray = array($datos['usuario']);
-                                        $valor_antes = json_encode($valorAntesarray);
-                                        $valor_despues = $user;
-                                        $id_admin  = $user_id;
-
-                                        //EJECUTANDO LA AUDITORIA
-                                        $this->auditoria->auditar($tipo_cambio, 
-                                                                $tabla_afectada, 
-                                                                $registro_afectado, 
-                                                                $valor_antes, 
-                                                                $valor_despues, 
-                                                                $id_admin);
-
-                                        $this->usuario->set('current_user', $current_user);
-                                        $this->usuario->set('usuario', $user);
-                                        $this->usuario->set('clave', $claveHash);
-                                        $this->usuario->set('rol', 1);
-                        
-                                        $this->usuario->editCredencialesAdmin();
-        
-                                        session_unset();
-                                        session_destroy();
-                        
-                                        echo '<script>
-                                                Swal.fire({
-                                                    title: "Exito",
-                                                    text: "Credenciales editadas, vuelve a iniciar sesion",
-                                                    icon: "success",
-                                                    showConfirmButton: true,
-                                                    confirmButtonColor: "#3464eb",
-                                                    customClass: {
-                                                        confirmButton: "rounded-button" // Identificador personalizado
-                                                    }
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        window.location.href = "' . URL . 'login/index";
-                                                    }
-                                                });
-                                            </script>';
-                                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
-
-
-                                    } /*EL USUARIO A EDITAR ES DIFERENTE, PROCEDER CON NORMALIDAD*/else {
-
-                                        //OBTENIENDO DATOS ANTES DE EDITAR
-                                        $this->usuario->set('usuario', $usuario);
-                                        $id_user = $this->usuario->getIdUserbyUsuario();
-                                        $id_usuario = $id_user['id_user'];
-
-                                        //OBTENER DATA PARA AUDITORIA
-                                        $this->usuario->set('id_user',$id_usuario);
-                                        $datos = $this->usuario->getUsuarioforAuditoria();
-
-                                        //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
-                                        $this->usuario->set('usuario', $_SESSION['usuario']);
-                                        $id_user = $this->usuario->getIdUserbyUsuario();
-                                        $user_id = $id_user['id_user'];
-                                        
-
-                                        //PREPARANDO AUDITORIA
-                                        $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
-                                        $tabla_afectada = 'usuarios';
-
-                                        $registro_afectado = $datos['id_user'];
-                                        $valorAntesarray = array($datos['usuario']);
-                                        $valor_antes = json_encode($valorAntesarray);
-                                        $valor_despues = $user;
-                                        $id_admin  = $user_id;
-
-                                        //EJECUTANDO LA AUDITORIA
-                                        $this->auditoria->auditar($tipo_cambio, 
-                                                                $tabla_afectada, 
-                                                                $registro_afectado, 
-                                                                $valor_antes, 
-                                                                $valor_despues, 
-                                                                $id_admin);
-
-                                        $this->usuario->set('current_user', $current_user);
-                                        $this->usuario->set('usuario', $user);
-                                        $this->usuario->set('clave', $claveHash);
-                                        $this->usuario->set('rol', $rol);
-                        
-                                        $this->usuario->editCredencialesAdmin();
-                        
-                                        echo '<script>
-                                                Swal.fire({
-                                                    title: "Exito",
-                                                    text: "Credenciales editadas, notifiquele al usuario del cambio",
-                                                    icon: "success",
-                                                    showConfirmButton: true,
-                                                    confirmButtonColor: "#3464eb",
-                                                    customClass: {
-                                                        confirmButton: "rounded-button" // Identificador personalizado
-                                                    }
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        window.location.href = "' . URL . 'usuarios/index";
-                                                    }
-                                                }).then(() => {
-                                                    window.location.href = "' . URL . 'usuarios/index"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                                });
-                                            </script>';
-                                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
-
-                                    }
-    
+                                    //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                                    $id_user = $this->usuario->getIdUserbyUsuario();
+                                    $user_id = $id_user['id_user'];
                                     
+
+                                    //PREPARANDO AUDITORIA
+                                    $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
+                                    $tabla_afectada = 'usuarios';
+
+                                    $registro_afectado = $datos['id_user'];
+                                    $valorAntesarray = array($datos['usuario']);
+                                    $valor_antes = json_encode($valorAntesarray);
+                                    $valor_despues = $user;
+                                    $id_admin  = $user_id;
+
+                                    //EJECUTANDO LA AUDITORIA
+                                    $this->auditoria->auditar($tipo_cambio, 
+                                                            $tabla_afectada, 
+                                                            $registro_afectado, 
+                                                            $valor_antes, 
+                                                            $valor_despues, 
+                                                            $id_admin);
+
+                                    $this->usuario->set('current_user', $current_user);
+                                    $this->usuario->set('usuario', $user);
+                                    $this->usuario->set('clave', $claveHash);
+                                    $this->usuario->set('rol', 1);
+                    
+                                    $this->usuario->editCredencialesAdmin();
     
-                                } /*CLAVES NO COINCIDEN*/else {
-    
+                                    session_unset();
+                                    session_destroy();
+                    
                                     echo '<script>
-                                        Swal.fire({
-                                            title: "Error",
-                                            text: "las claves no coinciden, vuelve a intentar",
-                                            icon: "error",
-                                            showConfirmButton: true,
-                                            confirmButtonColor: "#3464eb",
-                                            customClass: {
-                                                confirmButton: "rounded-button" // Identificador personalizado
-                                            }
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
-                                            }
-                                        }).then(() => {
-                                            window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                        });
+                                            Swal.fire({
+                                                title: "Exito",
+                                                text: "Credenciales editadas, vuelve a iniciar sesion",
+                                                icon: "success",
+                                                showConfirmButton: true,
+                                                confirmButtonColor: "#3464eb",
+                                                customClass: {
+                                                    confirmButton: "rounded-button" // Identificador personalizado
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = "' . URL . 'login/index";
+                                                }
+                                            });
                                         </script>';
-                                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
-    
+                                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+
+                                } /*EL USUARIO A EDITAR ES DIFERENTE, PROCEDER CON NORMALIDAD*/else {
+
+                                    //OBTENIENDO DATOS ANTES DE EDITAR
+                                    $this->usuario->set('usuario', $usuario);
+                                    $id_user = $this->usuario->getIdUserbyUsuario();
+                                    $id_usuario = $id_user['id_user'];
+
+                                    //OBTENER DATA PARA AUDITORIA
+                                    $this->usuario->set('id_user',$id_usuario);
+                                    $datos = $this->usuario->getUsuarioforAuditoria();
+
+                                    //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                                    $this->usuario->set('usuario', $_SESSION['usuario']);
+                                    $id_user = $this->usuario->getIdUserbyUsuario();
+                                    $user_id = $id_user['id_user'];
+                                    
+
+                                    //PREPARANDO AUDITORIA
+                                    $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
+                                    $tabla_afectada = 'usuarios';
+
+                                    $registro_afectado = $datos['id_user'];
+                                    $valorAntesarray = array($datos['usuario']);
+                                    $valor_antes = json_encode($valorAntesarray);
+                                    $valor_despues = $user;
+                                    $id_admin  = $user_id;
+
+                                    //EJECUTANDO LA AUDITORIA
+                                    $this->auditoria->auditar($tipo_cambio, 
+                                                            $tabla_afectada, 
+                                                            $registro_afectado, 
+                                                            $valor_antes, 
+                                                            $valor_despues, 
+                                                            $id_admin);
+
+                                    $this->usuario->set('current_user', $current_user);
+                                    $this->usuario->set('usuario', $user);
+                                    $this->usuario->set('clave', $claveHash);
+                                    $this->usuario->set('rol', $rol);
+                    
+                                    $this->usuario->editCredencialesAdmin();
+                    
+                                    echo '<script>
+                                            Swal.fire({
+                                                title: "Exito",
+                                                text: "Credenciales editadas, notifiquele al usuario del cambio",
+                                                icon: "success",
+                                                showConfirmButton: true,
+                                                confirmButtonColor: "#3464eb",
+                                                customClass: {
+                                                    confirmButton: "rounded-button" // Identificador personalizado
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = "' . URL . 'usuarios/index";
+                                                }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'usuarios/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                            });
+                                        </script>';
+                                    exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
                                 }
 
+                                
 
-                        } /*USERNAME YA EXISTE*/else {
+                            } /*CLAVES NO COINCIDEN*/else {
+
+                                echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "las claves no coinciden, vuelve a intentar",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                    </script>';
+                                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                            }
+
+                        } else {
+                            //NOMBRE DE USUARIO NUEVO Y VIEJO DIFERENTES, CAMBIO NOMBRE DE USUARIO
+                            $this->usuario->set('usuario',$user);
+
+                            $cuenta = $this->usuario->verificarUsuario();
+
+                            //VERIFICAR SI EL USERNAME YA EXISTE, USUARIO NO EXISTE
+                            if($cuenta['cuenta'] == 0){
+
+
+                                    //EVALUANDO SI CLAVES COINCIDEN
+                                    if($nueva_clave == $clave_confirmacion){
+
+                                        //ENCRIPTAR NUEVA CLAVE
+                                        $claveHash = $this->encriptarNuevaClave($nueva_clave);
+
+                                        //SI EL USUARIO A EDITAR ES EL MISMO DEL ADMIN QUE ESTA INICIADO SESION, CERRAR SESION
+                                        if($usuario == $_SESSION['usuario']){
+
+                                            //OBTENIENDO DATOS ANTES DE EDITAR
+                                            $this->usuario->set('usuario', $usuario);
+                                            $id_user = $this->usuario->getIdUserbyUsuario();
+                                            $id_usuario = $id_user['id_user'];
+
+                                            //OBTENER DATA PARA AUDITORIA
+                                            $this->usuario->set('id_user',$id_usuario);
+                                            $datos = $this->usuario->getUsuarioforAuditoria();
+
+                                            //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                                            $this->usuario->set('usuario', $_SESSION['usuario']);
+                                            $id_user = $this->usuario->getIdUserbyUsuario();
+                                            $user_id = $id_user['id_user'];
+                                            
+
+                                            //PREPARANDO AUDITORIA
+                                            $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
+                                            $tabla_afectada = 'usuarios';
+
+                                            $registro_afectado = $datos['id_user'];
+                                            $valorAntesarray = array($datos['usuario']);
+                                            $valor_antes = json_encode($valorAntesarray);
+                                            $valor_despues = $user;
+                                            $id_admin  = $user_id;
+
+                                            //EJECUTANDO LA AUDITORIA
+                                            $this->auditoria->auditar($tipo_cambio, 
+                                                                    $tabla_afectada, 
+                                                                    $registro_afectado, 
+                                                                    $valor_antes, 
+                                                                    $valor_despues, 
+                                                                    $id_admin);
+
+                                            $this->usuario->set('current_user', $current_user);
+                                            $this->usuario->set('usuario', $user);
+                                            $this->usuario->set('clave', $claveHash);
+                                            $this->usuario->set('rol', 1);
                             
-                            //EL USERNAME YA EXISTE
-                            echo '<script>
-                                Swal.fire({
-                                    title: "Error",
-                                    text: "Este nombre de usuario ya existe",
-                                    icon: "error",
-                                    showConfirmButton: true,
-                                    confirmButtonColor: "#3464eb",
-                                    customClass: {
-                                        confirmButton: "rounded-button" // Identificador personalizado
+                                            $this->usuario->editCredencialesAdmin();
+            
+                                            session_unset();
+                                            session_destroy();
+                            
+                                            echo '<script>
+                                                    Swal.fire({
+                                                        title: "Exito",
+                                                        text: "Credenciales editadas, vuelve a iniciar sesion",
+                                                        icon: "success",
+                                                        showConfirmButton: true,
+                                                        confirmButtonColor: "#3464eb",
+                                                        customClass: {
+                                                            confirmButton: "rounded-button" // Identificador personalizado
+                                                        }
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            window.location.href = "' . URL . 'login/index";
+                                                        }
+                                                    }).then(() => {
+                                                        window.location.href = "' . URL . 'login/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                                    });
+                                                </script>';
+                                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+
+                                        } /*EL USUARIO A EDITAR ES DIFERENTE, PROCEDER CON NORMALIDAD*/else {
+
+                                            //OBTENIENDO DATOS ANTES DE EDITAR
+                                            $this->usuario->set('usuario', $usuario);
+                                            $id_user = $this->usuario->getIdUserbyUsuario();
+                                            $id_usuario = $id_user['id_user'];
+
+                                            //OBTENER DATA PARA AUDITORIA
+                                            $this->usuario->set('id_user',$id_usuario);
+                                            $datos = $this->usuario->getUsuarioforAuditoria();
+
+                                            //OBTENIENDO DATOS DE ADMINISTRADOR QUE HACE LA EDICION 
+                                            $this->usuario->set('usuario', $_SESSION['usuario']);
+                                            $id_user = $this->usuario->getIdUserbyUsuario();
+                                            $user_id = $id_user['id_user'];
+                                            
+
+                                            //PREPARANDO AUDITORIA
+                                            $tipo_cambio = 21; //EDICION CREDENCIALES COMPLETADA
+                                            $tabla_afectada = 'usuarios';
+
+                                            $registro_afectado = $datos['id_user'];
+                                            $valorAntesarray = array($datos['usuario']);
+                                            $valor_antes = json_encode($valorAntesarray);
+                                            $valor_despues = $user;
+                                            $id_admin  = $user_id;
+
+                                            //EJECUTANDO LA AUDITORIA
+                                            $this->auditoria->auditar($tipo_cambio, 
+                                                                    $tabla_afectada, 
+                                                                    $registro_afectado, 
+                                                                    $valor_antes, 
+                                                                    $valor_despues, 
+                                                                    $id_admin);
+
+                                            $this->usuario->set('current_user', $current_user);
+                                            $this->usuario->set('usuario', $user);
+                                            $this->usuario->set('clave', $claveHash);
+                                            $this->usuario->set('rol', $rol);
+                            
+                                            $this->usuario->editCredencialesAdmin();
+                            
+                                            echo '<script>
+                                                    Swal.fire({
+                                                        title: "Exito",
+                                                        text: "Credenciales editadas, notifiquele al usuario del cambio",
+                                                        icon: "success",
+                                                        showConfirmButton: true,
+                                                        confirmButtonColor: "#3464eb",
+                                                        customClass: {
+                                                            confirmButton: "rounded-button" // Identificador personalizado
+                                                        }
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            window.location.href = "' . URL . 'usuarios/index";
+                                                        }
+                                                    }).then(() => {
+                                                        window.location.href = "' . URL . 'usuarios/index"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                                    });
+                                                </script>';
+                                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional
+
+                                        }
+        
+                                        
+        
+                                    } /*CLAVES NO COINCIDEN*/else {
+        
+                                        echo '<script>
+                                            Swal.fire({
+                                                title: "Error",
+                                                text: "las claves no coinciden, vuelve a intentar",
+                                                icon: "error",
+                                                showConfirmButton: true,
+                                                confirmButtonColor: "#3464eb",
+                                                customClass: {
+                                                    confirmButton: "rounded-button" // Identificador personalizado
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '";
+                                                }
+                                            }).then(() => {
+                                                window.location.href = "' . URL . 'usuarios/profile/' . $_SESSION['usuario'] . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                            });
+                                            </script>';
+                                        exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+        
                                     }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $usuario . '";
-                                    }
-                                }).then(() => {
-                                    window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
-                                });
-                                </script>';
-                             exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+
+                            } /*USERNAME YA EXISTE*/else {
+                                
+                                //EL USERNAME YA EXISTE
+                                echo '<script>
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Este nombre de usuario ya existe",
+                                        icon: "error",
+                                        showConfirmButton: true,
+                                        confirmButtonColor: "#3464eb",
+                                        customClass: {
+                                            confirmButton: "rounded-button" // Identificador personalizado
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $usuario . '";
+                                        }
+                                    }).then(() => {
+                                        window.location.href = "' . URL . 'usuarios/cambiarcredencialesAdmin/' . $usuario . '"; // Esta línea se ejecutará cuando se cierre la alerta.
+                                    });
+                                    </script>';
+                                exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+
+                            }
 
                         }
 

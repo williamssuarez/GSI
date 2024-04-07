@@ -54,7 +54,8 @@
         <script src="<?php echo URL; ?>Views/template/DataTables/demo/datatables-demo.js"></script>
 
         <script>
-            const URL = "http://192.168.0.105/GSI/";
+            //const URL = "http://192.168.0.105/GSI/";
+            const URL = "http://localhost/GSI/";
         </script>
     </head>
     <body>
@@ -174,7 +175,7 @@
                         <a class="collapse-item" href="<?php echo URL; ?>departamentos/index">
                             <i class="fa-solid fa-building"></i>    
                             Departamentos</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
+                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos_general/index">
                             <i class="fa-solid fa-print"></i>
                             Dispositivos</a>
                         <a class="collapse-item" href="<?php echo URL; ?>sistemas/index">
@@ -183,12 +184,9 @@
                         <a class="collapse-item" href="<?php echo URL; ?>auditoria/index">
                             <i class="fas fa-list fa-sm fa-fw mr-2"></i>
                             Auditoria</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>empleados/index">
-                            <i class="fa-solid fa-users"></i>
-                            Empleados</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
-                            <i class="fa-regular fa-clipboard"></i>
-                            Notas</a>
+                        <!-- <a class="collapse-item" href="<?php echo URL; ?>empleados/index">
+                            <i class="fa-solid fa-users"></i> 
+                            Empleados</a> -->
                         <a class="collapse-item" href="<?php echo URL; ?>ajax/manualAdministrador">
                             <i class="fa-solid fa-circle-info"></i> 
                             Ayuda</a>

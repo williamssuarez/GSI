@@ -205,6 +205,45 @@ $(document).ready( function () {
         }
     })
 
+    $("#aprobarRegistroEquipo").on("click", function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
+    
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "Aprobar el registro de este equipo lo volvera parte de los proceso del sistema ¿Deseas aprobar el registro de este equipo?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, aprobar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirmó, redirige al enlace del botón.
+                window.location.href = $(this).attr("href");
+            }
+        });
+    });
+    $("#rechazarRegistroEquipo").on("click", function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
+    
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "Al rechazar el registro, sera eliminado de la tabla definitivamente y tendras que notificarle al operador para que lo vuelva a cargar ¿Deseas rechazar el registro de este equipo?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, rechazar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirmó, redirige al enlace del botón.
+                window.location.href = $(this).attr("href");
+            }
+        });
+    });
+
     $("#reactivandoequipo").on("click", function (e) {
         e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
     
