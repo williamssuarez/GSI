@@ -175,17 +175,18 @@ $(document).ready( function () {
                 previous: "Anterior"
             }
         }
-    })
-    $("#liberate").on("click", function (e) {
+    });
+
+    $("#liberardireccionIP").on("click", function (e) {
         e.preventDefault(); // Evita el comportamiento predeterminado del enlace.
     
         Swal.fire({
             title: "¿Estás seguro?",
-            text: "¿Deseas liberar esta asignación?",
+            text: "Esta accion eliminara la asignacion de la IP al dispositivo",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
             confirmButtonText: "Sí, liberar",
             cancelButtonText: "Cancelar",
         }).then((result) => {

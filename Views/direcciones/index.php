@@ -46,7 +46,7 @@
                                 </td>
                                 <td> <?php echo $data['fecha_asignada'] ?> </td>
                                 <td>                         
-                                    <a id="liberate" class="btn btn-danger btn-icon-split" href='liberarDireccion/<?php echo $data['id_asignacion'] ?>'>                                
+                                    <a id="liberardireccionIP" class="btn btn-danger btn-icon-split" href='liberarDireccion/<?php echo $data['id_asignacion'] ?>'>                                
                                         Liberar
                                     </a>               
                                 </td>

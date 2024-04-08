@@ -7,6 +7,9 @@ class Departamentos{
     private $id_departamento;
     private $nombre_departamento;
     private $piso;
+    private $descripcion;
+    private $creado_por;
+    private $fecha_creado;
     private $con;
     private $resultado;
 
@@ -30,7 +33,10 @@ class Departamentos{
         $sql= "SELECT
                 id_departamento,
                 nombre_departamento,
-                piso
+                piso,
+                descripcion,
+                creado_por,
+                fecha_creado
                 FROM
                 departamentos
                 WHERE
@@ -71,7 +77,8 @@ class Departamentos{
         $sql = "SELECT
                 id_departamento, 
                 nombre_departamento, 
-                piso
+                piso,
+                descripcion
                 FROM
                 departamentos
                 WHERE
@@ -106,13 +113,19 @@ class Departamentos{
     public function lista(){
 
         $sql = "SELECT
-                id_departamento, 
-                nombre_departamento, 
-                piso,
-                direcciones_asignadas
+                t1.id_departamento, 
+                t1.nombre_departamento, 
+                t1.piso,
+                t1.descripcion,
+                t1.creado_por,
+                t2.nombres,
+                t2.apellidos,
+                t1.fecha_creado,
+                t1.direcciones_asignadas
                 FROM
-                departamentos
-                ORDER BY nombre_departamento";
+                departamentos t1
+                LEFT JOIN usuarios t2 ON t1.creado_por = t2.id_user
+                ORDER BY t1.nombre_departamento";
         $datos = $this->con->consultaRetorno($sql);
 
         while($row = $datos->fetch_assoc()){
@@ -127,9 +140,14 @@ class Departamentos{
     public function add(){
         
         $sql = "INSERT INTO
-                departamentos(nombre_departamento, piso )
+                departamentos(
+                    nombre_departamento, 
+                    piso, 
+                    descripcion,
+                    creado_por
+                )
                 VALUES 
-                ('{$this->nombre_departamento}', '{$this->piso}')";
+                ('{$this->nombre_departamento}', '{$this->piso}', '{$this->descripcion}', '{$this->creado_por}')";
         
         $this->con->consultaSimple($sql);
     }
@@ -150,7 +168,8 @@ class Departamentos{
                 departamentos
                 SET
                 nombre_departamento = '{$this->nombre_departamento}', 
-                piso = '{$this->piso}'
+                piso = '{$this->piso}',
+                descripcion = '{$this->descripcion}'
                 WHERE
                 id_departamento = '{$this->id_departamento}' ";
         

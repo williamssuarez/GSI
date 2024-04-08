@@ -9,4 +9,4 @@ Deny from all
 Allow from 127.0.0.1
 Allow from ::1
 Allow from localhost
-Allow from 192.168
+Allow from 192.9

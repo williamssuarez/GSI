@@ -72,7 +72,7 @@ class Direcciones_ip{
         return $result->fetch_assoc();
     }
 
-    public function getIdByDireccion(){
+    public function getIdByDireccionLibre(){
 
         $sql = "SELECT
                 id_ip,
@@ -81,6 +81,21 @@ class Direcciones_ip{
                 direccion_ip
                 WHERE
                 estado = 0 AND
+                direccion = '{$this->direccion}'";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
+    public function getIdByDireccion(){
+
+        $sql = "SELECT
+                id_ip,
+                direccion
+                FROM
+                direccion_ip
+                WHERE
                 direccion = '{$this->direccion}'";
 
         $result = $this->con->consultaRetorno($sql);

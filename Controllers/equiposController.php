@@ -612,7 +612,7 @@ use Controllers\direccionesController;
                             $this->direcciones_ip->set('direccion', $direccion_ip);
 
                             //OBTENER ID POR DIRECCION (SI ESTA LIBRE)
-                            $id_ip = $this->direcciones_ip->getIdByDireccion();
+                            $id_ip = $this->direcciones_ip->getIdByDireccionLibre();
 
                             if(!$id_ip){
                                 $errores[] = "Parece que esta direccion ya se encuentra asignada a otro equipo.";
@@ -1105,15 +1105,24 @@ use Controllers\direccionesController;
                         if($pattern == true){
 
                             $this->direcciones_ip->set('direccion', $direccion_ip);
-
-                            //OBTENER ID POR DIRECCION (SI ESTA LIBRE)
                             $id_ip = $this->direcciones_ip->getIdByDireccion();
 
-                            if(!$id_ip){
-                                $errores[] = "Parece que esta direccion ya se encuentra asignada a otro equipo.";
+                            //OBTENER ASIGNACION BY ID
+                            $asignacion = $this->direcciones_asignacion->get
+
+                            //VERIFICIAR SI NO HAY YA OTRA ASIGNACION
+                            if(){
+
                             } else {
-                                //SI ENCONTRO ENTONCES ESTA LIBRE
-                                $direccion_ip = $id_ip;
+                                //OBTENER ID POR DIRECCION (SI ESTA LIBRE)
+                                $id_ip = $this->direcciones_ip->getIdByDireccionLibre();
+
+                                if(!$id_ip){
+                                    $errores[] = "Parece que esta direccion ya se encuentra asignada a otro equipo.";
+                                } else {
+                                    //SI ENCONTRO ENTONCES ESTA LIBRE
+                                    $direccion_ip = $id_ip;
+                                }
                             }
 
                         } else {
