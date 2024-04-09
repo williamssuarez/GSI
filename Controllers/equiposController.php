@@ -1053,16 +1053,13 @@ use Controllers\direccionesController;
                     $memoria_ram = $_POST['memoria_ram'];
                     $sistema_operativo = $_POST['sistema'];
 
-                    var_dump($direccion_ip);
-                    die();
-
                     //VERIFICANDO SI LOS CAMPOS ESTAN VACIOS
                     if(empty($numero_bien)){
 
                         echo '<script>
                                     Swal.fire({
                                         title: "Error",
-                                        text: "Parece que el numero de bien quedo vacio",
+                                        text: "Parece que el numero de bien quedo vacio, recuerda que siempre debe haber un numero de bien",
                                         icon: "error",
                                         showConfirmButton: true,
                                         confirmButtonColor: "#3464eb",
@@ -1094,26 +1091,25 @@ use Controllers\direccionesController;
                         }
                     }
 
+                    //SI LA DIRECCION DEL POST ESTA VACIA ENTONCES EL USUARIO QUIERE LIBERAR, NO HAY VALIDACIONES QUE HACER
                     if(empty($direccion_ip)){
-                        //SIN IP
-                        $direccion_ip = 66050;
-                    } else {
+                        //EJECUTAR LIBERACION
+                        $flag_ip = "liberateIP";
 
+                    } else {
+                        //SI NO ESTA VACIA ENTONCES INGRESO UNA, VALIDAR PATRON
                         $direccion_ip = trim($direccion_ip);
                         $pattern = $this->validateIpAddress($direccion_ip);
 
                         if($pattern == true){
 
-                            $this->direcciones_ip->set('direccion', $direccion_ip);
-                            $id_ip = $this->direcciones_ip->getIdByDireccion();
+                            //SI EL EQUIPO NO TIENE ASIGNACION SALTAR ESTE PASO Y EVALUAR SI LA DIRECCION INTRODUCIDA POR POST ESTA LIBRE
 
-                            //OBTENER ASIGNACION BY ID
-                            $asignacion = $this->direcciones_asignacion->get
+                            if($current_data['direccion_ip'] == NULL){
+                                //NO TIENE ASIGNACION, ASIGNAR NUEVA
 
-                            //VERIFICIAR SI NO HAY YA OTRA ASIGNACION
-                            if(){
+                                $this->direcciones_ip->set('direccion', $direccion_ip);
 
-                            } else {
                                 //OBTENER ID POR DIRECCION (SI ESTA LIBRE)
                                 $id_ip = $this->direcciones_ip->getIdByDireccionLibre();
 
@@ -1121,14 +1117,49 @@ use Controllers\direccionesController;
                                     $errores[] = "Parece que esta direccion ya se encuentra asignada a otro equipo.";
                                 } else {
                                     //SI ENCONTRO ENTONCES ESTA LIBRE
-                                    $direccion_ip = $id_ip;
+                                    $direccion_ip = $id_ip['id_ip'];//ESTA SERA ASIGNADA
+                                    $flag_ip = "newIP";
                                 }
+
+                            } else {
+
+                                //EL EQUIPO TIENE ASIGNACION, EVALUAR SI LA QUE LLEGA POR POST CORRESPONDE A LA MISMA ASIGNACION (NO HUBO CAMBIO)
+                                $equipo_asignacion = $current_data['direccion_ip'];
+
+                                $this->direcciones_ip->set('direccion', $direccion_ip);
+                                $post_ip = $this->direcciones_ip->getIdByDireccion();
+
+                                //SI LAS ASIGNACIONES SON LAS MISMAS, NO HUBO CAMBIO
+                                if($post_ip['id_ip'] == $equipo_asignacion){
+                                    $direccion_ip = $equipo_asignacion;
+                                    $flag_ip = "sameIP";
+                                } else {
+                                    //SI SON DISTINTAS SI HUBO UN CAMBIO, ENTONCES EVALUAR SI ESTA LIBRE
+
+                                    $this->direcciones_ip->set('direccion', $direccion_ip);
+
+                                    //OBTENER ID POR DIRECCION (SI ESTA LIBRE)
+                                    $id_ip = $this->direcciones_ip->getIdByDireccionLibre();
+
+                                    if(!$id_ip){
+                                        $errores[] = "Parece que esta direccion ya se encuentra asignada a otro equipo.";
+                                    } else {
+                                        //SI ENCONTRO ENTONCES ESTA LIBRE
+                                        $direccion_ip = $id_ip;//ESTA SERA ASIGNADA
+                                        $flag_ip = "changeIP";
+                                    }
+                                    
+                                }
+
                             }
 
                         } else {
+                            //SI NO ES CORRECTO RETORNAR CON ERROR
                             $errores[] = "La direccion IP debe tener un formato válido, por ejemplo (192.9.100.16).";
                         }
+
                     }
+
                     
                     // Validar numero de bien como número entero
                     if(!empty($memoria_ram)){
@@ -1218,8 +1249,6 @@ use Controllers\direccionesController;
                             }
                         }
 
-
-
                         //OBTENIENDO DATA PARA AUDITORIA
                         $this->equipo->set('id_equipo',$id);
                         $data = $this->equipo->getEquipoForAuditoria();
@@ -1270,7 +1299,152 @@ use Controllers\direccionesController;
                                                 $valor_despues, 
                                                 $usuario);
 
-                        $this->equipo->edit();
+                        //EDITAR DEPENDIENDO DEL TIPO DE FLAG
+                        if($flag_ip == "liberate"){
+                            //LIBERAR Y LUEGO ACTUALIZAR DATOS DE EQUIPO
+                            $this->equipo->edit();
+
+                            //OBTENER ID IP BY ASIGNACION
+                            $this->direcciones_asignacion->set('id_asignacion', $current_data['direccion_ip']);
+                            $id_direccion = $this->direcciones_asignacion->getIdDireccionByIdAsignacion();
+                            //Fijando la direccion ip
+                            $this->direcciones_ip->set('id_ip', $id_direccion['id_ip']);
+
+                            //Fijando el id del equipo
+                            $this->equipo->set('id_equipo', $id);
+
+                            //Cambiandole el estado de ocupado a libre y reduciendole 1 al departamento correspondiente
+                            $this->direcciones_ip->release();
+
+                            //Eliminando la id de asignacion del equipo
+                            $this->equipo->liberarDireccionEquipo();
+
+                            //Eliminando de la DB
+                            $this->direcciones_asignacion->delete(); //YA LA ID ESTA SETEADA PARA OBTENER LA ID_IP
+
+                        } elseif($flag_ip == "newIP"){
+
+                            //EDITAR EQUIPO Y HACER NUEVA ASIGNACION
+                            $this->equipo->edit();
+
+                            //OBTENER ID IP
+                            $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
+
+                            //OCUPAR
+                            $this->direcciones_ip->ocupar();
+
+                            //ENCONTRAR DATOS DEL EQUIPO POR EL NUMERO DEL BIEN PARA LA ASIGNACION
+                            $this->equipo->set('numero_bien', $numero_bien);
+                            $equipo_data = $this->equipo->getEquipobyNumerodeBien();
+                            
+                            //PREPARAR DATA PARA INSERTAR EN ASIGNACIONES
+                            $this->usuarios->set('usuario', $_SESSION['usuario']);
+                            $id_user = $this->usuarios->getIdUserbyUsuario();
+
+                            $this->direcciones_asignacion->set('id_administrador', $id_user['id_user']);
+                            $this->direcciones_asignacion->set('id_direccion', $direccion_ip['id_ip']);
+                            $this->direcciones_asignacion->set('tipo_dispositivo', 2);
+                            $this->direcciones_asignacion->set('numero_bien', $equipo_data['numero_bien']);
+                            $this->direcciones_asignacion->set('equipo', $equipo_data['id_equipo']);
+
+                            $this->direcciones_asignacion->add();
+
+                            //OBTENIENDO LA ID DE ASIGNACION PARA INSERTARLA EN LA TABLA EQUIPOS
+                            $this->direcciones_asignacion->set('numero_bien', $equipo_data['numero_bien']);
+                            $id_asignacion = $this->direcciones_asignacion->getAsignacionIDbyNumeroBien();
+
+                            //INSERTANDO EL ID DE ASIGNACION AL EQUIPO CORRESPONDIENTE
+                            $this->equipo->set('id_equipo', $equipo_data['id_equipo']);
+                            $this->equipo->set('direccion_ip', $id_asignacion['id_asignacion']);
+                            $this->equipo->AsignarDireccionEquipo();
+
+                            $accion = 0;
+                            $razon = "Asignacion de direccion";
+                        
+                            $this->direcciones_ip->set('usuario_administrador', $id_user['id_user']);
+                            $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
+                            $this->direcciones_ip->set('tipo_dispositivo', 2);
+                            $this->direcciones_ip->set('numero_bien_dispositivo', $equipo_data['numero_bien']);
+                            $this->direcciones_ip->set('accion', $accion);
+                            $this->direcciones_ip->set('razon', $razon);
+
+                            //INSERTANDO EN EL HISTORIAL
+                            $this->direcciones_ip->asignarDireccionHistorial();
+                            
+                        } elseif($flag_ip == "changeIP"){
+
+                            //ACTUALIZAR DATOS DEL EQUIPO, ELIMINAR ASIGNACION ANTERIOR Y HACER NUEVA ASIGNACION
+                            $this->equipo->edit();
+
+                            //ELIMINAR ASIGNACION ANTERIOR
+                            $this->direcciones_asignacion->set('id_asignacion', $current_data['direccion_ip']);
+                            $id_direccion = $this->direcciones_asignacion->getIdDireccionByIdAsignacion();
+
+                            //-->Fijando la direccion ip
+                            $this->direcciones_ip->set('id_ip', $id_direccion['id_ip']);
+
+                            //-->Fijando el id del equipo
+                            $this->equipo->set('id_equipo', $id);
+
+                            //-->Cambiandole el estado de ocupado a libre y reduciendole 1 al departamento correspondiente
+                            $this->direcciones_ip->release();
+
+                            //-->Eliminando la id de asignacion del equipo
+                            $this->equipo->liberarDireccionEquipo();
+
+                            //-->Eliminando de la DB
+                            $this->direcciones_asignacion->delete();
+
+                            //HACER NUEVA ASIGNACION
+                            $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
+
+                            //OCUPAR
+                            $this->direcciones_ip->ocupar();
+
+                            //ENCONTRAR DATOS DEL EQUIPO POR EL NUMERO DEL BIEN PARA LA ASIGNACION
+                            $this->equipo->set('numero_bien', $numero_bien);
+                            $equipo_data = $this->equipo->getEquipobyNumerodeBien();
+                            
+                            //PREPARAR DATA PARA INSERTAR EN ASIGNACIONES
+                            $this->usuarios->set('usuario', $_SESSION['usuario']);
+                            $id_user = $this->usuarios->getIdUserbyUsuario();
+
+                            $this->direcciones_asignacion->set('id_administrador', $id_user['id_user']);
+                            $this->direcciones_asignacion->set('id_direccion', $direccion_ip['id_ip']);
+                            $this->direcciones_asignacion->set('tipo_dispositivo', 2);
+                            $this->direcciones_asignacion->set('numero_bien', $equipo_data['numero_bien']);
+                            $this->direcciones_asignacion->set('equipo', $equipo_data['id_equipo']);
+
+                            $this->direcciones_asignacion->add();
+
+                            //OBTENIENDO LA ID DE ASIGNACION PARA INSERTARLA EN LA TABLA EQUIPOS
+                            $this->direcciones_asignacion->set('numero_bien', $equipo_data['numero_bien']);
+                            $id_asignacion = $this->direcciones_asignacion->getAsignacionIDbyNumeroBien();
+
+                            //INSERTANDO EL ID DE ASIGNACION AL EQUIPO CORRESPONDIENTE
+                            $this->equipo->set('id_equipo', $equipo_data['id_equipo']);
+                            $this->equipo->set('direccion_ip', $id_asignacion['id_asignacion']);
+                            $this->equipo->AsignarDireccionEquipo();
+
+                            $accion = 0;
+                            $razon = "Asignacion de direccion";
+                        
+                            $this->direcciones_ip->set('usuario_administrador', $id_user['id_user']);
+                            $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
+                            $this->direcciones_ip->set('tipo_dispositivo', 2);
+                            $this->direcciones_ip->set('numero_bien_dispositivo', $equipo_data['numero_bien']);
+                            $this->direcciones_ip->set('accion', $accion);
+                            $this->direcciones_ip->set('razon', $razon);
+
+                            //INSERTANDO EN EL HISTORIAL
+                            $this->direcciones_ip->asignarDireccionHistorial();
+
+
+                        } elseif($flag_ip == "sameIP"){
+
+                            //SOLO ACTUALIZAR DATOS DE EQUIPO
+                            $this->equipo->edit();
+                        }
     
                         echo '<script>
                                 Swal.fire({

@@ -44,6 +44,22 @@ class Direcciones{
         return $result->fetch_assoc();
     }
 
+    public function getAsignacionbyDireccionId(){
+
+        $sql = "SELECT
+                id_asignacion,
+                id_direccion,
+                equipo
+                FROM
+                direcciones_asignadas
+                WHERE 
+                id_direccion = {$this->id_direccion}";
+
+        $result = $this->con->consultaRetorno($sql);
+
+        return $result->fetch_assoc();
+    }
+
     public function listar(){
 
         $sql = "SELECT 

@@ -92,7 +92,8 @@ class Direcciones_ip{
 
         $sql = "SELECT
                 id_ip,
-                direccion
+                direccion,
+                estado
                 FROM
                 direccion_ip
                 WHERE
