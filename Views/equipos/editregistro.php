@@ -36,16 +36,7 @@
                     <input value="<?php echo $data['equipo']['usuario'] ?>" class="form-control" type="text" name="usuario" id="usuario" placeholder="Introduzca el nombre del usuario asignado a este equipo">
 
                     <label class="form-label mt-4"><i class="fa-solid fa-globe" style="color: #1049ad;"></i> Direccion IP (Si requiere editar la direccion IP solicitele al administrador que libere la actual, para poder ingresar la nueva)</label>
-                    
-                    <?php if($data['equipo']['direccion_ip'] != NULL){ ?>
-
-                        <input value="<?php echo $data['equipo']['direccion_ip'] ?>" class="form-control" type="text" name="direccion_ip" id="direccion_ip" readonly>
-
-                    <?php } else { ?>
-
-                        <input class="form-control" type="text" name="direccion_ip" id="direccion_ip" placeholder="Introduzca la direccion IP del equipo">
-
-                    <?php } ?>
+                    <input value="<?php echo $data['equipo']['direccion_ip'] ?>" class="form-control" type="text" name="direccion_ip" id="direccion_ip" placeholder="Introduzca la direccion IP del equipo">
 
                     <label class="form-label mt-4"><i class="fa-solid fa-receipt" style="color: #545454;"></i>Direccion MAC (Opcional)</label>
                     <input value="<?php echo $data['equipo']['direccion_mac'] ?>"class="form-control" type="text" name="direccion_mac" id="direccion_mac" placeholder="Introduzca la direccion Mac del equipo">

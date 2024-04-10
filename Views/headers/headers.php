@@ -54,8 +54,8 @@
         <script src="<?php echo URL; ?>Views/template/DataTables/demo/datatables-demo.js"></script>
 
         <script>
-            const URL = "http://192.9.101.46/GSI/";
-            //const URL = "http://localhost/GSI/";
+            //const URL = "http://192.9.101.46/GSI/";
+            const URL = "http://localhost/GSI/";
         </script>
     </head>
     <body>

@@ -1035,7 +1035,7 @@ use Controllers\direccionesController;
 
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    $this->equipo->set('id_equipo',$id);
+                    $this->equipo->set('id_equipo', $id);
 
                     //OBTENIENDO DATA ACTUAL PARA COMPARAR CON LA DEL FORM
                     $current_data = $this->equipo->getDataEdit();
@@ -1129,8 +1129,11 @@ use Controllers\direccionesController;
                                 $this->direcciones_ip->set('direccion', $direccion_ip);
                                 $post_ip = $this->direcciones_ip->getIdByDireccion();
 
+                                $this->direcciones_ip->set('id_direccion', $post_ip['id_ip']);
+                                $asignacion = $this->direcciones_asignacion->getAsignacionbyDireccionId();
+
                                 //SI LAS ASIGNACIONES SON LAS MISMAS, NO HUBO CAMBIO
-                                if($post_ip['id_ip'] == $equipo_asignacion){
+                                if($asignacion['id_asignacion'] == $equipo_asignacion){
                                     $direccion_ip = $equipo_asignacion;
                                     $flag_ip = "sameIP";
                                 } else {
@@ -1174,6 +1177,8 @@ use Controllers\direccionesController;
                     }
     
                     if(empty($errores)){
+                        echo "No hay errores guardando data";
+                        die();
                         $this->equipo->set('numero_bien', $numero_bien);
                         $this->equipo->set('departamento', $departamento);
                         $this->equipo->set('usuario', $usuario);
@@ -1465,6 +1470,32 @@ use Controllers\direccionesController;
                                 });
                             </script>';
                         exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
+                    } else {
+                        $errorMessage = "";
+                        foreach ($errores as $error) {
+                        $errorMessage .= "<li>$error</li>";
+                        }
+
+                        // Hubo errores de validación, muestra los mensajes de error
+                        echo '<script>
+                                        Swal.fire({
+                                            title: "Hubo errores de validacion...",
+                                            html: "<ul>' . $errorMessage . '</ul>",
+                                            icon: "error",
+                                            showConfirmButton: true,
+                                            confirmButtonColor: "#3464eb",
+                                            customClass: {
+                                                confirmButton: "rounded-button" // Identificador personalizado
+                                            }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = "' . URL . 'equipos/editregistro/'. $id .'";
+                                            }
+                                        }).then(() => {
+                                            window.location.href = "' . URL . 'equipos/editregistro/'. $id .'";
+                                        });
+                                    </script>';
+                            exit; // Asegúrate de salir del script de PHP para evitar cualquier salida adicional.
                     }
 
                 }  
