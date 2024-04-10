@@ -60,7 +60,7 @@ class Tipo_dispositivos{
                 FROM
                 tipo_dispositivos
                 ORDER BY 
-                nombre_tipo";
+                categoria_id";
         
         $datos = $this->con->consultaRetorno($sql);
 

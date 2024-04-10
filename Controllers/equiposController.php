@@ -1093,8 +1093,13 @@ use Controllers\direccionesController;
 
                     //SI LA DIRECCION DEL POST ESTA VACIA ENTONCES EL USUARIO QUIERE LIBERAR, NO HAY VALIDACIONES QUE HACER
                     if(empty($direccion_ip)){
-                        //EJECUTAR LIBERACION
-                        $flag_ip = "liberateIP";
+                        if($current_data['direccion_ip'] != NULL){
+                            //EJECUTAR LIBERACION
+                            $flag_ip = "liberateIP";
+                        } else {
+                            //NUNCA HUBO UNA IP ASIGNADA EN EL EQUIPO, ACTUALIZAR TAL CUAL
+                            $flag_ip = "noIP";
+                        }
 
                     } else {
                         //SI NO ESTA VACIA ENTONCES INGRESO UNA, VALIDAR PATRON
@@ -1129,11 +1134,24 @@ use Controllers\direccionesController;
                                 $this->direcciones_ip->set('direccion', $direccion_ip);
                                 $post_ip = $this->direcciones_ip->getIdByDireccion();
 
-                                $this->direcciones_ip->set('id_direccion', $post_ip['id_ip']);
+                                /*var_dump($post_ip['id_ip']);
+                                die();*/
+
+                                $this->direcciones_asignacion->set('id_direccion', $post_ip['id_ip']);
                                 $asignacion = $this->direcciones_asignacion->getAsignacionbyDireccionId();
 
+                                //SI LA ASIGNACION ESTA VACIA SIGNIFICA QUE LAS DIRECCIONES SON DISTINTAS Y LA DEL POST ESTA LIBRE
+                                if($asignacion == NULL){
+
+                                    $this->direcciones_ip->set('direccion', $direccion_ip);
+                                    $id_ip = $this->direcciones_ip->getIdByDireccionLibre();
+
+                                    $flag_ip = "chageIP";
+                                    $direccion_ip = $post_ip['id_ip'];
+
+                                }
                                 //SI LAS ASIGNACIONES SON LAS MISMAS, NO HUBO CAMBIO
-                                if($asignacion['id_asignacion'] == $equipo_asignacion){
+                                elseif($asignacion['id_asignacion'] == $equipo_asignacion){
                                     $direccion_ip = $equipo_asignacion;
                                     $flag_ip = "sameIP";
                                 } else {
@@ -1162,7 +1180,6 @@ use Controllers\direccionesController;
                         }
 
                     }
-
                     
                     // Validar numero de bien como número entero
                     if(!empty($memoria_ram)){
@@ -1177,8 +1194,6 @@ use Controllers\direccionesController;
                     }
     
                     if(empty($errores)){
-                        echo "No hay errores guardando data";
-                        die();
                         $this->equipo->set('numero_bien', $numero_bien);
                         $this->equipo->set('departamento', $departamento);
                         $this->equipo->set('usuario', $usuario);
@@ -1304,8 +1319,14 @@ use Controllers\direccionesController;
                                                 $valor_despues, 
                                                 $usuario);
 
+                        /*echo "Todo bien hasta aca";
+                        var_dump($flag_ip);
+                        die();*/
+
                         //EDITAR DEPENDIENDO DEL TIPO DE FLAG
                         if($flag_ip == "liberate"){
+                            echo "Quedamos aca";
+                            die();
                             //LIBERAR Y LUEGO ACTUALIZAR DATOS DE EQUIPO
                             $this->equipo->edit();
 
@@ -1333,7 +1354,7 @@ use Controllers\direccionesController;
                             $this->equipo->edit();
 
                             //OBTENER ID IP
-                            $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
+                            $this->direcciones_ip->set('id_ip', $direccion_ip);
 
                             //OCUPAR
                             $this->direcciones_ip->ocupar();
@@ -1347,7 +1368,7 @@ use Controllers\direccionesController;
                             $id_user = $this->usuarios->getIdUserbyUsuario();
 
                             $this->direcciones_asignacion->set('id_administrador', $id_user['id_user']);
-                            $this->direcciones_asignacion->set('id_direccion', $direccion_ip['id_ip']);
+                            $this->direcciones_asignacion->set('id_direccion', $direccion_ip);
                             $this->direcciones_asignacion->set('tipo_dispositivo', 2);
                             $this->direcciones_asignacion->set('numero_bien', $equipo_data['numero_bien']);
                             $this->direcciones_asignacion->set('equipo', $equipo_data['id_equipo']);
@@ -1367,7 +1388,7 @@ use Controllers\direccionesController;
                             $razon = "Asignacion de direccion";
                         
                             $this->direcciones_ip->set('usuario_administrador', $id_user['id_user']);
-                            $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
+                            $this->direcciones_ip->set('id_ip', $direccion_ip);
                             $this->direcciones_ip->set('tipo_dispositivo', 2);
                             $this->direcciones_ip->set('numero_bien_dispositivo', $equipo_data['numero_bien']);
                             $this->direcciones_ip->set('accion', $accion);
@@ -1386,7 +1407,7 @@ use Controllers\direccionesController;
                             $id_direccion = $this->direcciones_asignacion->getIdDireccionByIdAsignacion();
 
                             //-->Fijando la direccion ip
-                            $this->direcciones_ip->set('id_ip', $id_direccion['id_ip']);
+                            $this->direcciones_ip->set('id_ip', $id_direccion['id_direccion']);
 
                             //-->Fijando el id del equipo
                             $this->equipo->set('id_equipo', $id);
@@ -1446,8 +1467,9 @@ use Controllers\direccionesController;
 
 
                         } elseif($flag_ip == "sameIP"){
-
                             //SOLO ACTUALIZAR DATOS DE EQUIPO
+                            $this->equipo->edit();
+                        } elseif($flag_ip == "noIP"){
                             $this->equipo->edit();
                         }
     
