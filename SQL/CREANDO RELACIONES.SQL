@@ -1,3 +1,3 @@
-ALTER TABLE direcciones_asignadas
-ADD FOREIGN KEY (equipo)
-REFERENCES equipos (id_equipo)
+ALTER TABLE clubes
+ADD FOREIGN KEY (user_id)
+REFERENCES usuarios (id)
