@@ -546,7 +546,7 @@ use Controllers\direccionesController;
                 $numero_bien = $_POST['numero_bien'];
                 $departamento = $_POST['departamento'];
                 $usuario = $_POST['usuario'];
-                $direccion_ip = $_POST['direccion_ip'];
+                //$direccion_ip = $_POST['direccion_ip'];
                 $direccion_mac = $_POST['direccion_mac'];
                 $cpu = $_POST['cpu'];
                 $almacenamiento = $_POST['almacenamiento'];
@@ -599,7 +599,7 @@ use Controllers\direccionesController;
                         }
                     }
 
-                    if(empty($direccion_ip)){
+                    /*if(empty($direccion_ip)){
                         //SIN IP
                         $direccion_ip = 66050;
                     } else {
@@ -624,7 +624,7 @@ use Controllers\direccionesController;
                         } else {
                             $errores[] = "La direccion IP debe tener un formato válido, por ejemplo (192.9.100.16).";
                         }
-                    }
+                    }*/
                     
                     // Validar numero de bien como número entero
                     if(!empty($memoria_ram)){
@@ -713,7 +713,7 @@ use Controllers\direccionesController;
 
                             $this->equipo->add();
 
-                            if($direccion_ip != 66050){
+                            /*if($direccion_ip != 66050){
                                 
                                 $this->direcciones_ip->set('id_ip', $direccion_ip['id_ip']);
 
@@ -729,7 +729,7 @@ use Controllers\direccionesController;
                                 $id_user = $this->usuarios->getIdUserbyUsuario();
 
                                 /*var_dump($equipo_data['numero_bien']);
-                                die();*/
+                                die();
 
                                 $this->direcciones_asignacion->set('id_administrador', $id_user['id_user']);
                                 $this->direcciones_asignacion->set('id_direccion', $direccion_ip['id_ip']);
@@ -761,8 +761,9 @@ use Controllers\direccionesController;
                                 //INSERTANDO EN EL HISTORIAL
                                 $this->direcciones_ip->asignarDireccionHistorial();
                                 
-                            }
+                            }*/
 
+                            
                             //SI EL USUARIO NO ES ADMIN INSERTAR CON ESTADO 4 DE PENDIENTE DE APROBAR EL REGISTRO
                             if($_SESSION['rol'] != 1){
                                 $this->equipo->set('numero_bien', $numero_bien);
@@ -1046,7 +1047,7 @@ use Controllers\direccionesController;
                     $numero_bien = $_POST['numero_bien'];
                     $departamento = $_POST['departamento'];
                     $usuario = $_POST['usuario'];
-                    $direccion_ip = $_POST['direccion_ip'];
+                    //$direccion_ip = $_POST['direccion_ip'];
                     $direccion_mac = $_POST['direccion_mac'];
                     $cpu = $_POST['cpu'];
                     $almacenamiento = $_POST['almacenamiento'];
@@ -1092,7 +1093,7 @@ use Controllers\direccionesController;
                     }
 
                     //SI LA DIRECCION DEL POST ESTA VACIA ENTONCES EL USUARIO QUIERE LIBERAR, NO HAY VALIDACIONES QUE HACER
-                    if(empty($direccion_ip)){
+                    /*if(empty($direccion_ip)){
                         //EJECUTAR LIBERACION
                         $flag_ip = "liberateIP";
 
@@ -1161,7 +1162,7 @@ use Controllers\direccionesController;
                             $errores[] = "La direccion IP debe tener un formato válido, por ejemplo (192.9.100.16).";
                         }
 
-                    }
+                    }*/
 
                     
                     // Validar numero de bien como número entero
@@ -1177,8 +1178,6 @@ use Controllers\direccionesController;
                     }
     
                     if(empty($errores)){
-                        echo "No hay errores guardando data";
-                        die();
                         $this->equipo->set('numero_bien', $numero_bien);
                         $this->equipo->set('departamento', $departamento);
                         $this->equipo->set('usuario', $usuario);
@@ -1305,7 +1304,7 @@ use Controllers\direccionesController;
                                                 $usuario);
 
                         //EDITAR DEPENDIENDO DEL TIPO DE FLAG
-                        if($flag_ip == "liberate"){
+                        /*if($flag_ip == "liberate"){
                             //LIBERAR Y LUEGO ACTUALIZAR DATOS DE EQUIPO
                             $this->equipo->edit();
 
@@ -1446,10 +1445,10 @@ use Controllers\direccionesController;
 
 
                         } elseif($flag_ip == "sameIP"){
+                        }*/
 
-                            //SOLO ACTUALIZAR DATOS DE EQUIPO
-                            $this->equipo->edit();
-                        }
+                        //SOLO ACTUALIZAR DATOS DE EQUIPO
+                        $this->equipo->edit();
     
                         echo '<script>
                                 Swal.fire({

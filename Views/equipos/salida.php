@@ -35,12 +35,6 @@
                         <th>Entregado Por <i class="fa-solid fa-user-gear" style="color: #005af5;"></i></th>
                         <th>Problema <i class="fa-solid fa-triangle-exclamation" style="color: #f50a0a;"></i></th>
                         <th>Conclusion <i class="fa-solid fa-clipboard-check" style="color: #1c931a;"></i></th>
-
-                        <?php if($_SESSION['rol'] == 1){ ?>
-
-                        <th>Acciones <i class="fa-solid fa-gears"></i></th>
-
-                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,14 +49,6 @@
                             <td> <?php echo $data['entregado_por'] ?> </td>
                             <td> <?php echo $data['problema'] ?> </td>
                             <td> <?php echo $data['conclusion'] ?> </td>
-
-                            <?php if($_SESSION['rol'] == 1){ ?>
-
-                            <td>                             
-                                <a class="btn btn-info" href='edit/<?php echo $data['id_entrega'] ?>'>Editar</a>
-                            </td>
-
-                            <?php } ?>
                         </tr>
                     <?php } ?>
 
