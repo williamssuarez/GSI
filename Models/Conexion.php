@@ -11,19 +11,19 @@ class Conexion{
         "db" => "gsi",
     );*/
 
-    private $datos = array(
+    /*private $datos = array(
         "host" => "192.9.101.46",
         "user" => "GSI",
         "password" => "WQ0tKWBeLEZlx2Db",
         "db" => "gsi",
-    );
+    );*/
 
-    /*private $datos = array(
+    private $datos = array(
         "host" => "localhost",
         "user" => "root",
         "password" => "",
         "db" => "gsi",
-    );*/
+    );
 
     private $con;
 
