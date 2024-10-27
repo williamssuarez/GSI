@@ -3,8 +3,8 @@ ob_start();
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', realpath(dirname(__FILE__)) . DS);
-define('URL', "http://localhost/GSI/");
-//define('URL', "http://192.9.101.46/GSI/");
+//define('URL', "http://localhost/GSI/");
+define('URL', "http://192.9.101.46/GSI/");
 
 session_start();
 

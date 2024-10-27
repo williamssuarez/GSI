@@ -9,9 +9,9 @@ class Enrutador{
         //print "<br>".$ruta."<br>";
         $metodo = $request->getMetodo();
 
-        /*if(!method_exists($controlador, $metodo)){
+        if(!method_exists($controlador, $metodo)){
             $metodo = 'index';            
-        }*/
+        } //PRUEBA
         if($metodo == "index.php"){
             $metodo = "index";
         }

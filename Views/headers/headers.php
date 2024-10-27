@@ -54,8 +54,8 @@
         <script src="<?php echo URL; ?>Views/template/DataTables/demo/datatables-demo.js"></script>
 
         <script>
-            //const URL = "http://192.9.101.46/GSI/";
-            const URL = "http://localhost/GSI/";
+            const URL = "http://192.9.101.46/GSI/";
+            //const URL = "http://localhost/GSI/";
         </script>
     </head>
     <body>
@@ -151,7 +151,7 @@
                         <a class="collapse-item" href="<?php echo URL; ?>tipos/index">
                             <i class="fa-solid fa-table-cells"></i>
                             Tipos de Dispositivos</a>
-                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos_general/index">
+                        <a class="collapse-item" href="<?php echo URL; ?>dispositivos/index">
                             <i class="fa-solid fa-print"></i>
                             Dispositivos</a>
             </div>

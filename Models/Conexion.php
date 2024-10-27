@@ -4,19 +4,19 @@ namespace Models;
 
 class Conexion{
 
-    private $datos = array(
+    /*private $datos = array(
         "host" => "localhost",
         "user" => "GSI",
         "password" => "WQ0tKWBeLEZlx2Db",
         "db" => "gsi",
-    );
+    );*/
 
-    /*private $datos = array(
-        "host" => "192.168.0.105",
+    private $datos = array(
+        "host" => "192.9.101.46",
         "user" => "GSI",
         "password" => "WQ0tKWBeLEZlx2Db",
         "db" => "gsi",
-    );*/
+    );
 
     /*private $datos = array(
         "host" => "localhost",
